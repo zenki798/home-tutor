@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko" data-state="loading">
+<head>
+  <meta charset="utf-8">
+  <!-- 이 페이지는 자기 파일만 싣고 밖으로 아무것도 보내지 않는다(AGENTS.md 규칙 4·7). 인라인 스크립트·이벤트 속성도 쓰지 않는다.
+       file: 은 더블클릭(file://)으로 열 때 자기 파일을 싣기 위해 둔다. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file:; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; worker-src 'self'; manifest-src 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>가정교사</title>
+  <meta name="description" content="초등학생부터 성인까지 교과과정 순서대로 개념을 배우고, 예상문제를 풀고, 선생님께 묻는 무료 가정교사. AI·서버 없이 이 기기 안에서만 동작합니다.">
+  <meta name="color-scheme" content="light dark">
+  <!-- 홈 화면에 추가하면 주소창 없이 앱처럼(standalone) 뜬다 -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14161b" media="(prefers-color-scheme: dark)">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="가정교사">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/mathtext.css">
+</head>
+<body>
+  <button type="button" class="skip-link" id="skipLink">본문으로 건너뛰기</button>
+
+  <header class="topbar" id="topbar">
+    <div class="topbar-in">
+      <button type="button" class="icon-btn back-btn" id="backBtn" aria-label="뒤로" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <a class="brand" id="brand" href="#/home" aria-label="가정교사 홈">
+        <img src="icons/icon-192.png" alt="" width="32" height="32">
+      </a>
+      <h1 class="top-title" id="topTitle">가정교사</h1>
+
+      <!-- 넓은 화면에서는 위쪽 막대 안에, 좁은 화면에서는 아래쪽 탭 막대로 붙는다 -->
+      <nav class="tabbar" id="tabbar" aria-label="주요 메뉴">
+        <a href="#/home" data-tab="home">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/></svg>
+          <span>홈</span>
+        </a>
+        <a href="#/ask" data-tab="ask">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 5.5h15v10h-8l-4.5 4v-4H4.5z"/><path d="M10.2 9.2a1.9 1.9 0 1 1 2.6 1.8c-.5.2-.8.6-.8 1.1"/><path d="M12 13.6v.1"/></svg>
+          <span>질문</span>
+        </a>
+        <a href="#/notes" data-tab="notes">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8.5h6M9 12h6M9 15.5h3"/></svg>
+          <span>오답노트</span>
+        </a>
+        <a href="#/stats" data-tab="stats">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20v-8M12 20V5M19 20v-5"/><path d="M3.5 20.5h17"/></svg>
+          <span>기록</span>
+        </a>
+      </nav>
+
+      <a class="student-chip" id="studentChip" href="#/" hidden></a>
+      <a class="icon-btn settings-btn" id="settingsBtn" href="#/settings" aria-label="설정">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <div class="install" id="install-bar" role="region" aria-label="앱 설치 안내" hidden>
+    <span class="install-icon" aria-hidden="true">📲</span>
+    <span id="install-text"></span>
+    <button type="button" class="btn small primary" id="install-btn" hidden>앱으로 설치</button>
+    <button type="button" class="icon-btn small" id="install-close" aria-label="설치 안내 닫기">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
+  <main id="main" class="main" tabindex="-1">
+    <div class="page"><p class="loading-text">가정교사를 준비하고 있어요…</p></div>
+  </main>
+
+  <div id="announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+  <div id="modal-root"></div>
+  <noscript><p class="noscript">이 페이지는 자바스크립트가 켜져 있어야 동작해요.</p></noscript>
+
+  <!-- ES 모듈을 쓰지 않는다(file:// 에서 막힘). 순서대로 전역 객체를 만든다: docs/ARCHITECTURE.md §0 -->
+  <script src="js/mathlib.js"></script>
+  <script src="js/mathtext.js"></script>
+  <script src="js/figures.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/solver.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/core.js"></script>
+  <script src="data/catalog.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

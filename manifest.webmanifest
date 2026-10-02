@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "가정교사 — 초등부터 성인까지 혼자 공부",
+  "short_name": "가정교사",
+  "description": "교과과정 순서대로 개념을 배우고, 예상문제를 풀고, 선생님께 묻는 무료 가정교사. AI·서버 없이 이 기기 안에서만 동작합니다.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f7f4ee",
+  "theme_color": "#f7f4ee",
+  "categories": ["education", "kids", "books"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

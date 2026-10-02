@@ -1,0 +1,1490 @@
+{
+  "group": "eng-A",
+  "courses": [
+    {
+      "id": "eng-e3",
+      "subject": "eng",
+      "level": "elem",
+      "grades": [
+        "e3"
+      ],
+      "title": "3학년 영어",
+      "note": "2022 개정 교육과정 · 초등 3~4학년군 · 출판사마다 단원 순서가 조금 달라요",
+      "units": [
+        {
+          "id": "eng-e3-01",
+          "title": "알파벳 대문자 익히기",
+          "summary": "A부터 Z까지 알파벳 대문자의 이름과 순서를 익히고, 모양이 비슷한 글자를 구별해 바르게 써요.",
+          "sem": 1,
+          "standards": [
+            "[4영01-01]",
+            "[4영01-02]",
+            "[4영02-02]"
+          ],
+          "topics": [
+            "알파벳 26자의 이름과 순서(A~Z)",
+            "대문자의 모양과 바르게 쓰는 순서(획순)",
+            "모양이 비슷한 대문자 구별하기(E와 F, M과 N, O와 Q, P와 R)",
+            "간판·표지판 속 대문자 읽기(STOP, EXIT, BUS)"
+          ]
+        },
+        {
+          "id": "eng-e3-02",
+          "title": "인사하고 이름 말하기",
+          "summary": "Hello.로 인사하고 I'm ~.으로 이름을 말하는 법과 헤어질 때 하는 인사를 배워요.",
+          "sem": 1,
+          "standards": [
+            "[4영02-05]",
+            "[4영02-10]",
+            "[4영01-10]"
+          ],
+          "topics": [
+            "만날 때 하는 인사(Hello./Hi./Good morning.)",
+            "이름 말하기(I'm Jiho./My name is Jiho.)",
+            "이름 묻기(What's your name?)와 처음 만났을 때 인사(Nice to meet you.)",
+            "헤어질 때 하는 인사(Goodbye./See you later.)",
+            "인사할 때의 예절과 나라마다 다른 인사 몸짓(악수, 고개 숙여 인사하기)"
+          ]
+        },
+        {
+          "id": "eng-e3-03",
+          "title": "알파벳 소문자 익히기",
+          "summary": "a부터 z까지 소문자의 모양을 익히고, 대문자와 짝을 지으며 헷갈리는 글자를 구별해요.",
+          "sem": 1,
+          "standards": [
+            "[4영01-02]",
+            "[4영02-02]"
+          ],
+          "topics": [
+            "소문자 26자의 모양과 바르게 쓰는 순서",
+            "대문자와 소문자 짝 짓기(A-a, B-b, G-g, Q-q)",
+            "헷갈리는 소문자 구별하기(b와 d, p와 q, m과 n, i와 j)",
+            "네 줄 칸에 맞춰 쓰기: 위로 올라가는 글자(b, d, h)와 아래로 내려가는 글자(g, p, y)"
+          ]
+        },
+        {
+          "id": "eng-e3-04",
+          "title": "물건 이름 묻고 답하기",
+          "summary": "What's this?로 물건 이름을 묻고 It's a ~.로 답하며 교실에 있는 물건 낱말을 익혀요.",
+          "sem": 1,
+          "standards": [
+            "[4영01-05]",
+            "[4영02-04]",
+            "[4영02-08]"
+          ],
+          "topics": [
+            "가까운 물건 묻기(What's this?)와 먼 물건 묻기(What's that?)",
+            "It's a ~.로 답하기와 모음 소리 앞의 an(It's an apple.)",
+            "교실 물건 낱말(book, pencil, eraser, ruler, bag, desk, chair)",
+            "Is it a ~?로 확인하고 답하기(Yes, it is./No, it isn't.)"
+          ]
+        },
+        {
+          "id": "eng-e3-05",
+          "title": "알파벳 첫소리 익히기",
+          "summary": "bag의 b, cat의 c처럼 자음 글자가 내는 첫소리를 익히고 같은 소리로 시작하는 낱말을 찾아요.",
+          "sem": 1,
+          "standards": [
+            "[4영01-01]",
+            "[4영01-04]",
+            "[4영02-03]"
+          ],
+          "topics": [
+            "글자의 이름과 글자가 내는 소리는 달라요(B의 이름과 bag의 첫소리)",
+            "자음 b, c, d, f, g, h, j, k, l, m의 첫소리와 대표 낱말(bag, cat, dog, fish, map …)",
+            "자음 n, p, q, r, s, t, v, w, x, y, z의 소리와 대표 낱말(net, pig, queen, sun, box, zoo …)",
+            "같은 첫소리로 시작하는 낱말 찾기(bag, bed, bus)",
+            "그림을 보고 빠진 첫 글자 채워 쓰기(_at → cat)"
+          ]
+        },
+        {
+          "id": "eng-e3-06",
+          "title": "행동을 지시하는 말",
+          "summary": "Stand up.처럼 행동을 지시하는 말과 please를 붙인 공손한 말을 익히고, 교실에서 자주 듣는 지시를 알아들어요.",
+          "sem": 1,
+          "standards": [
+            "[4영02-06]",
+            "[4영01-05]",
+            "[4영01-07]"
+          ],
+          "topics": [
+            "행동을 지시하는 말(Stand up./Sit down./Open the door./Close your book.)",
+            "please를 붙여 공손하게 지시하기(Open the window, please.)",
+            "교실에서 자주 듣는 지시(Look at the board./Raise your hand./Line up.)",
+            "그림이나 동작을 보고 알맞은 지시 고르기",
+            "지시에 대답하기(Okay./All right.)"
+          ]
+        },
+        {
+          "id": "eng-e3-07",
+          "title": "수 세고 개수 묻기",
+          "summary": "one부터 twenty까지 수를 세고 How many ~?로 개수를 묻고 답하는 법을 배워요.",
+          "sem": 2,
+          "standards": [
+            "[4영01-06]",
+            "[4영02-08]",
+            "[4영01-05]"
+          ],
+          "topics": [
+            "1~10을 나타내는 낱말(one~ten)",
+            "11~20을 나타내는 낱말(eleven~twenty)과 철자",
+            "개수 묻고 답하기(How many apples? Three apples.)",
+            "둘 이상일 때 낱말 끝에 -s 붙이기(one cat, two cats)"
+          ]
+        },
+        {
+          "id": "eng-e3-08",
+          "title": "좋아하는 것 말하기",
+          "summary": "I like ~.와 I don't like ~.로 좋아하는 것과 싫어하는 것을 말하고 Do you like ~?로 물어요.",
+          "sem": 2,
+          "standards": [
+            "[4영02-08]",
+            "[4영01-06]",
+            "[4영02-04]"
+          ],
+          "topics": [
+            "좋아하는 것 말하기(I like grapes.)",
+            "좋아하지 않는 것 말하기(I don't like snakes.)",
+            "좋아하는지 묻고 답하기(Do you like carrots? Yes, I do./No, I don't.)",
+            "음식과 동물 낱말(apple, grape, banana, carrot, milk, cat, dog, tiger)"
+          ]
+        },
+        {
+          "id": "eng-e3-09",
+          "title": "가진 물건 묻고 답하기",
+          "summary": "Do you have ~?로 가진 물건을 묻고 Yes, I do./No, I don't.로 답하며, 친구에게 학용품을 빌리는 말을 익혀요.",
+          "sem": 2,
+          "standards": [
+            "[4영02-08]",
+            "[4영01-06]",
+            "[4영02-10]"
+          ],
+          "topics": [
+            "가진 물건 묻고 답하기(Do you have a crayon? Yes, I do./No, I don't.)",
+            "가진 것 말하기(I have a notebook./I have two markers.)",
+            "학용품 낱말(crayon, glue, notebook, marker, brush)",
+            "물건을 빌리고 건네며 고마움 표현하기(Here you are./Thank you.)"
+          ]
+        },
+        {
+          "id": "eng-e3-10",
+          "title": "색깔과 크기 말하기",
+          "summary": "What color is it?으로 색깔을 묻고 big, small 같은 말로 물건의 크기와 모습을 말해요.",
+          "sem": 2,
+          "standards": [
+            "[4영02-04]",
+            "[4영02-05]",
+            "[4영01-06]"
+          ],
+          "topics": [
+            "색깔 낱말(red, blue, yellow, green, black, white, pink)",
+            "색깔 묻고 답하기(What color is it? It's blue.)",
+            "크기와 길이를 나타내는 말(big, small, long, short)",
+            "물건 묘사하기(It's big. It's red./It's a small ball.)"
+          ]
+        },
+        {
+          "id": "eng-e3-11",
+          "title": "할 수 있는 일 말하기",
+          "summary": "I can ~.으로 할 수 있는 일을, I can't ~.으로 못 하는 일을 말하고 Can you ~?로 물어요.",
+          "sem": 2,
+          "standards": [
+            "[4영02-04]",
+            "[4영02-08]",
+            "[4영01-07]"
+          ],
+          "topics": [
+            "동작을 나타내는 낱말(swim, run, jump, dance, sing, skate)",
+            "할 수 있는 일 말하기(I can dance.)",
+            "할 수 없는 일 말하기(I can't skate.)",
+            "할 수 있는지 묻고 답하기(Can you sing? Yes, I can./No, I can't.)"
+          ]
+        },
+        {
+          "id": "eng-e3-12",
+          "title": "날씨 묻고 답하기",
+          "summary": "How's the weather?로 날씨를 묻고 It's cloudy.처럼 답하며, 날씨에 맞게 챙길 것을 말해요.",
+          "sem": 2,
+          "standards": [
+            "[4영01-06]",
+            "[4영02-08]",
+            "[4영02-06]",
+            "[4영01-08]"
+          ],
+          "topics": [
+            "날씨 묻고 답하기(How's the weather? It's cloudy.)",
+            "날씨 낱말(sunny, cloudy, rainy, snowy, windy, hot, cold)",
+            "비나 눈이 내리고 있을 때 말하기(It's raining now./It's snowing a lot.)",
+            "날씨에 맞게 지시하기(Take your umbrella./Wear your coat.)",
+            "그림 일기 예보를 보고 날씨 알아맞히기"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eng-e4",
+      "subject": "eng",
+      "level": "elem",
+      "grades": [
+        "e4"
+      ],
+      "title": "4학년 영어",
+      "note": "2022 개정 교육과정 · 초등 3~4학년군 · 출판사마다 단원 순서가 조금 달라요",
+      "units": [
+        {
+          "id": "eng-e4-01",
+          "title": "기분 묻고 답하기",
+          "summary": "How are you?로 기분을 묻고 I'm great.처럼 내 기분을 말하며 친구의 기분에 알맞게 반응해요.",
+          "sem": 1,
+          "standards": [
+            "[4영02-07]",
+            "[4영01-03]",
+            "[4영02-01]"
+          ],
+          "topics": [
+            "기분을 나타내는 낱말(happy, sad, angry, tired, sleepy, scared)",
+            "기분 묻고 답하기(How are you? I'm great./I'm fine, thank you.)",
+            "Are you ~?로 묻고 답하기(Are you sad? Yes, I am./No, I'm not.)",
+            "묻는 말의 억양: 예/아니오로 답하는 질문은 끝을 올려 말해요",
+            "친구의 기분에 맞게 반응하기(That's great!/That's too bad.)"
+          ]
+        },
+        {
+          "id": "eng-e4-02",
+          "title": "친구와 가족 소개하기",
+          "summary": "This is my friend ~.로 사람을 소개하고, Who is he?와 How old is he?로 누구인지와 나이를 묻고 답해요.",
+          "sem": 1,
+          "standards": [
+            "[4영02-05]",
+            "[4영01-06]",
+            "[4영02-08]",
+            "[4영02-09]"
+          ],
+          "topics": [
+            "사람 소개하기(This is my friend, Mina.)와 소개받을 때 인사(Nice to meet you, too.)",
+            "남자는 he, 여자는 she(He is my brother./She is my sister.)",
+            "누구인지 묻고 답하기(Who is she? She's my grandma.)",
+            "가족 낱말(mom, dad, brother, sister, grandma, grandpa, uncle, aunt)",
+            "나이 묻고 답하기(How old are you? I'm ten./How old is he? He's seven.)",
+            "가족 그림에 이름과 낱말을 써서 소개 카드 꾸미기"
+          ]
+        },
+        {
+          "id": "eng-e4-03",
+          "title": "하지 말라고 말하기",
+          "summary": "Don't shout.처럼 하지 말라고 말하고, please를 붙여 부드럽게 말하며 장소에 맞는 규칙을 알아봐요.",
+          "sem": 1,
+          "standards": [
+            "[4영02-06]",
+            "[4영01-05]",
+            "[4영02-10]"
+          ],
+          "topics": [
+            "하지 말라고 말하기(Don't shout./Don't jump on the bed.)",
+            "please를 붙여 부드럽게 말하기(Don't touch it, please.)",
+            "장소에 맞는 규칙 말하기(Don't eat here./Don't swim here.)",
+            "사과하고 받아 주기(I'm sorry./That's okay.)",
+            "그림을 보고 알맞은 금지의 말 고르기"
+          ]
+        },
+        {
+          "id": "eng-e4-04",
+          "title": "짧은 모음 소리 익히기",
+          "summary": "cat의 a, pen의 e처럼 모음 글자가 내는 짧은 소리를 익히고 세 글자 낱말을 소리 내어 읽어요.",
+          "sem": 1,
+          "standards": [
+            "[4영01-04]",
+            "[4영02-03]",
+            "[4영01-01]"
+          ],
+          "topics": [
+            "짧은 모음 a, e, i(cat, map / pen, bed / pig, six)",
+            "짧은 모음 o, u(dog, box / cup, sun)",
+            "자음·모음·자음 소리를 이어 낱말 읽기(c-a-t → cat)",
+            "끝소리가 같은 낱말 묶기(cat, hat, bat / pig, big, dig)",
+            "가운데 모음을 바꿔 새 낱말 만들기(bag → big → bug)"
+          ]
+        },
+        {
+          "id": "eng-e4-05",
+          "title": "함께 하자고 제안하기",
+          "summary": "Let's ~.로 함께 하자고 제안하고 Sounds good.이나 Sorry, I can't.로 알맞게 대답해요.",
+          "sem": 1,
+          "standards": [
+            "[4영02-08]",
+            "[4영02-10]",
+            "[4영01-05]"
+          ],
+          "topics": [
+            "함께 하자고 제안하기(Let's play tag./Let's go to the park.)",
+            "제안에 좋다고 답하기(Okay./Sounds good./Great!)",
+            "정중하게 거절하기(Sorry, I can't.)",
+            "운동과 놀이 낱말(soccer, baseball, badminton, tag, jump rope)"
+          ]
+        },
+        {
+          "id": "eng-e4-06",
+          "title": "잃어버린 물건 찾기",
+          "summary": "Where is my ball?로 물건이 어디 있는지 묻고 in, on, under로 답하며, Is this your ~?로 주인을 확인해요.",
+          "sem": 1,
+          "standards": [
+            "[4영02-08]",
+            "[4영01-06]",
+            "[4영01-07]",
+            "[4영02-10]"
+          ],
+          "topics": [
+            "위치 묻고 답하기(Where is my ball? It's under the chair.)",
+            "위치를 나타내는 말 in, on, under(It's in the basket./It's on the bed.)",
+            "집과 교실 물건 낱말(ball, umbrella, basket, chair, bed, sofa, table)",
+            "내 물건인지 묻고 답하기(Is this your umbrella? Yes, it is./No, it isn't.)",
+            "누구의 것인지 나타내는 말(my, your, his, her)",
+            "물건을 찾아 준 친구에게 고마움 표현하기(Thank you./You're welcome.)"
+          ]
+        },
+        {
+          "id": "eng-e4-07",
+          "title": "시각 묻고 답하기",
+          "summary": "What time is it?으로 시각을 묻고 It's seven o'clock.처럼 답하며 할 일을 시각과 함께 말해요.",
+          "sem": 2,
+          "standards": [
+            "[4영02-08]",
+            "[4영01-06]",
+            "[4영01-03]"
+          ],
+          "topics": [
+            "시각 묻고 답하기(What time is it? It's three o'clock.)",
+            "몇 시 몇 분 말하기(7:30 → It's seven thirty.)",
+            "21~60을 나타내는 낱말(twenty-one, thirty, forty-five)",
+            "thirteen과 thirty처럼 헷갈리는 수 구별하기(끝 철자와 강세 위치)",
+            "할 일을 시각과 함께 말하기(It's time for lunch./It's time for bed.)"
+          ]
+        },
+        {
+          "id": "eng-e4-08",
+          "title": "물건 값 묻고 답하기",
+          "summary": "How much is it?으로 물건값을 묻고 It's 500 won.처럼 답하며, 가게에서 주고받는 말을 익혀요.",
+          "sem": 2,
+          "standards": [
+            "[4영02-08]",
+            "[4영01-06]",
+            "[4영02-04]"
+          ],
+          "topics": [
+            "값 묻고 답하기(How much is it? It's 500 won.)",
+            "값을 나타내는 수 읽기(one hundred, five hundred, one thousand, two thousand)",
+            "문구점 물건 낱말(pen, notebook, ball, cap, robot)",
+            "물건을 사고팔 때 주고받는 말(Here you are./Thank you.)",
+            "가격표를 보고 값 말하기"
+          ]
+        },
+        {
+          "id": "eng-e4-09",
+          "title": "요일 묻고 답하기",
+          "summary": "What day is it today?로 요일을 묻고 It's Tuesday.처럼 답하며, 요일마다 하는 일을 말해요.",
+          "sem": 2,
+          "standards": [
+            "[4영01-06]",
+            "[4영02-08]",
+            "[4영02-02]"
+          ],
+          "topics": [
+            "요일 낱말(Monday~Sunday)과 요일 이름의 첫 글자는 대문자",
+            "요일 묻고 답하기(What day is it today? It's Tuesday.)",
+            "요일마다 하는 일 말하기(I play soccer on Saturday.)",
+            "주간 계획표를 보고 요일 정보 찾기"
+          ]
+        },
+        {
+          "id": "eng-e4-10",
+          "title": "지금 하는 일 말하기",
+          "summary": "What are you doing?으로 지금 하는 일을 묻고 I'm reading.처럼 -ing를 붙여 답해요.",
+          "sem": 2,
+          "standards": [
+            "[4영02-04]",
+            "[4영02-08]",
+            "[4영01-05]"
+          ],
+          "topics": [
+            "지금 하는 일 묻고 답하기(What are you doing? I'm reading a book.)",
+            "동작 낱말에 -ing 붙이기(read → reading, dance → dancing, swim → swimming)",
+            "다른 사람이 하는 일 말하기(He's sleeping./She's singing.)",
+            "Are you ~ing?로 묻고 답하기(Yes, I am./No, I'm not.)"
+          ]
+        },
+        {
+          "id": "eng-e4-11",
+          "title": "긴 모음과 두 글자 소리",
+          "summary": "cake, bike처럼 끝의 e가 모음을 길게 만드는 규칙과 sh, ch, th처럼 두 글자가 내는 소리를 익혀요.",
+          "sem": 2,
+          "standards": [
+            "[4영01-04]",
+            "[4영02-03]",
+            "[4영01-01]"
+          ],
+          "topics": [
+            "끝의 e가 앞 모음을 길게 만드는 낱말(cap → cape, kit → kite, hop → hope, cub → cube)",
+            "긴 모음 낱말 읽기(cake, bike, home, cute, five)",
+            "두 글자가 한 소리를 내는 sh, ch(ship, fish / chair, lunch)",
+            "th, wh, ck가 내는 소리(three, this / whale / duck)"
+          ]
+        },
+        {
+          "id": "eng-e4-12",
+          "title": "그림 이야기 읽기",
+          "summary": "그림을 보며 짧은 이야기를 읽고 누가 나오는지, 무슨 일이 있었는지, 인물의 기분은 어떤지 알아봐요.",
+          "sem": 2,
+          "standards": [
+            "[4영01-09]",
+            "[4영01-07]",
+            "[4영01-08]",
+            "[4영02-01]"
+          ],
+          "topics": [
+            "그림과 제목을 보고 이야기 내용 짐작하기",
+            "이야기 속 인물과 장소 찾기",
+            "인물의 기분 알아보고 공감하기(happy, sad, scared)",
+            "반복되는 문장을 리듬에 맞춰 소리 내어 읽기"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eng-e5",
+      "subject": "eng",
+      "level": "elem",
+      "grades": [
+        "e5"
+      ],
+      "title": "5학년 영어",
+      "note": "2022 개정 교육과정 · 초등 5~6학년군 · 출판사마다 단원 순서가 조금 달라요",
+      "units": [
+        {
+          "id": "eng-e5-01",
+          "title": "나를 소개하는 글 쓰기",
+          "summary": "Where are you from?으로 출신을 묻고, 대문자와 마침표를 바르게 써서 나를 소개하는 글을 써요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-04]",
+            "[6영02-03]",
+            "[6영02-07]",
+            "[6영01-10]"
+          ],
+          "topics": [
+            "출신 묻고 답하기(Where are you from? I'm from Canada.)",
+            "나라 이름 낱말과 첫 글자 대문자(Korea, Canada, Kenya, Brazil)",
+            "이름 철자 묻고 답하기(How do you spell your name? J-I-H-O.)",
+            "문장의 첫 글자는 대문자, 끝에는 마침표나 물음표 쓰기",
+            "자기소개 글의 짜임(이름·나이·출신·좋아하는 것) 알고 쓰기"
+          ]
+        },
+        {
+          "id": "eng-e5-02",
+          "title": "허락 구하고 답하기",
+          "summary": "May I ~?나 Can I ~?로 허락을 구하고, Sure.나 Sorry, you can't.로 알맞게 답해요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-07]",
+            "[6영01-08]",
+            "[6영01-03]"
+          ],
+          "topics": [
+            "허락 구하기(May I come in?/Can I open the window?)",
+            "허락하기(Sure./Of course./Go ahead.)와 거절하기(Sorry, you can't.)",
+            "규칙 말하기(You can't run here./You can take pictures here.)",
+            "공공장소의 안내 표지 읽기(No food./No pets./Quiet, please.)"
+          ]
+        },
+        {
+          "id": "eng-e5-03",
+          "title": "물건 주인 묻고 답하기",
+          "summary": "Whose ~ is this?로 물건의 주인을 묻고 It's Mina's.나 It's mine.처럼 누구의 것인지 답해요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-07]",
+            "[6영01-04]",
+            "[6영01-03]"
+          ],
+          "topics": [
+            "주인 묻고 답하기(Whose cap is this? It's Mina's.)",
+            "이름에 's를 붙여 누구의 것인지 말하기(Mina's bag, my brother's cap)",
+            "'~의 것'을 나타내는 말(mine, yours, his, hers)",
+            "여러 개일 때 묻고 답하기(Whose shoes are these? They're mine.)",
+            "분실물 안내문을 읽고 물건 주인 찾기"
+          ]
+        },
+        {
+          "id": "eng-e5-04",
+          "title": "음식 주문하고 물건 사기",
+          "summary": "What would you like?로 음식을 주문하고, How much are these?로 값을 물으며 가게에서 물건을 사요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-07]",
+            "[6영01-04]",
+            "[6영01-08]"
+          ],
+          "topics": [
+            "음식 주문하기(What would you like? I'd like a cheese sandwich.)",
+            "음식 권하고 답하기(Do you want some juice? Yes, please./No, thanks.)",
+            "가게에서 쓰는 말(Can I help you? I'm looking for a cap.)",
+            "하나와 여러 개의 값 묻고 답하기(How much is it? It's 9,000 won./How much are these? They're 15,000 won.)",
+            "큰 수 읽기(nine thousand, fifteen thousand, fifty thousand)",
+            "메뉴판·가격표를 읽고 필요한 정보 찾기"
+          ]
+        },
+        {
+          "id": "eng-e5-05",
+          "title": "좋아하는 것과 이유 말하기",
+          "summary": "What's your favorite ~?으로 가장 좋아하는 과목을 묻고, 좋아하는 계절과 그 이유를 because로 말해요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-06]",
+            "[6영02-07]",
+            "[6영01-03]"
+          ],
+          "topics": [
+            "가장 좋아하는 것 묻고 답하기(What's your favorite subject? My favorite subject is music.)",
+            "과목 낱말(Korean, math, science, social studies, music, art, P.E.)",
+            "좋아하는 계절 말하기(What season do you like? I like fall.)와 계절 낱말(spring, summer, fall, winter)",
+            "이유 묻고 답하기(Why do you like it? Because I like singing.)",
+            "둘 중에서 고르기(Which do you like better, dogs or cats?)"
+          ]
+        },
+        {
+          "id": "eng-e5-06",
+          "title": "하루 일과 말하기",
+          "summary": "What time do you get up?으로 일과를 묻고, 하루 동안 하는 일과 얼마나 자주 하는지 말해요.",
+          "sem": 1,
+          "standards": [
+            "[6영01-06]",
+            "[6영02-02]",
+            "[6영02-07]"
+          ],
+          "topics": [
+            "일과 묻고 답하기(What time do you get up? I get up at seven thirty.)",
+            "일과를 나타내는 말(get up, have breakfast, go to school, do my homework, go to bed)",
+            "다른 사람의 일과 말하기(She gets up at six./He goes to bed at nine.)",
+            "얼마나 자주 하는지 나타내는 말(always, usually, sometimes, never)",
+            "일과를 소개하는 글을 읽고 일의 순서 파악하기"
+          ]
+        },
+        {
+          "id": "eng-e5-07",
+          "title": "방학 계획 말하기",
+          "summary": "What will you do this winter?로 계획을 묻고 I will ~.로 방학 동안 할 일을 말해요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-06]",
+            "[6영02-08]",
+            "[6영01-04]"
+          ],
+          "topics": [
+            "계획 묻고 답하기(What will you do this winter? I will go skiing.)",
+            "will의 줄임말과 부정(I'll, won't)",
+            "다른 사람의 계획 말하기(Jiho will go camping.)",
+            "앞으로의 때를 나타내는 말(tomorrow, this weekend, next week, this summer)",
+            "방학 계획표를 읽고 계획을 담은 글 쓰기"
+          ]
+        },
+        {
+          "id": "eng-e5-08",
+          "title": "지난 일 말하기",
+          "summary": "What did you do last weekend?로 지난 일을 묻고 played, went처럼 과거를 나타내는 말로 답하며 그때의 느낌을 말해요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-06]",
+            "[6영01-06]",
+            "[6영02-02]"
+          ],
+          "topics": [
+            "지난 일 묻고 답하기(What did you do last weekend? I visited my grandma.)",
+            "-ed를 붙여 지난 일 나타내기(play → played, watch → watched, visit → visited)",
+            "모양이 바뀌는 과거 낱말(go → went, eat → ate, see → saw, make → made)",
+            "Did you ~?로 묻고 답하기(Did you go fishing? Yes, I did./No, I didn't.)",
+            "지난 일의 느낌 말하기(How was it? It was fun./The food was delicious.)",
+            "주말 일기를 읽고 일어난 순서 파악하기"
+          ]
+        },
+        {
+          "id": "eng-e5-09",
+          "title": "사람의 모습 묘사하기",
+          "summary": "What does she look like?로 생김새를 묻고 외모와 성격을 나타내는 말로 사람을 소개해요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-04]",
+            "[6영02-02]",
+            "[6영01-04]"
+          ],
+          "topics": [
+            "생김새 묻기(What does he look like?)",
+            "외모를 나타내는 말(tall, short, long hair, curly hair, glasses)",
+            "성격을 나타내는 말(kind, funny, brave, shy, smart)",
+            "사람을 소개하는 글 읽고 쓰기(She is tall. She has short hair. She is kind.)"
+          ]
+        },
+        {
+          "id": "eng-e5-10",
+          "title": "장소와 위치 말하기",
+          "summary": "Where is the bank?로 장소를 묻고 next to, across from 같은 말로 위치를 말하며, There is ~.로 무엇이 있는지 설명해요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-05]",
+            "[6영01-04]",
+            "[6영01-07]"
+          ],
+          "topics": [
+            "장소 낱말(library, bank, hospital, park, post office, bakery)",
+            "위치를 나타내는 말(next to, across from, between A and B, in front of, behind)",
+            "장소의 위치 묻고 답하기(Where is the bank? It's next to the park.)",
+            "무엇이 있는지 말하기(There is a bakery near my house./There are two beds in my room.)",
+            "마을 지도나 집 그림을 보고 위치를 설명하는 글 읽기"
+          ]
+        },
+        {
+          "id": "eng-e5-11",
+          "title": "장래 희망 말하기",
+          "summary": "What do you want to be?로 장래 희망을 묻고 직업 낱말과 그 꿈을 가진 이유를 말해요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-06]",
+            "[6영01-05]",
+            "[6영02-02]"
+          ],
+          "topics": [
+            "직업 낱말(doctor, cook, pilot, scientist, firefighter, vet)",
+            "장래 희망 묻고 답하기(What do you want to be? I want to be a vet.)",
+            "하는 일 설명하기(A vet helps sick animals.)",
+            "꿈과 그 이유 말하기(I want to be a pilot because I like airplanes.)",
+            "꿈을 소개하는 글 읽고 중심 내용 찾기"
+          ]
+        },
+        {
+          "id": "eng-e5-12",
+          "title": "이야기 읽고 순서 파악하기",
+          "summary": "짧은 이야기를 소리 내어 읽고 중심 내용과 일이 일어난 순서를 파악하며 인물의 마음에 공감해요.",
+          "sem": 2,
+          "standards": [
+            "[6영01-09]",
+            "[6영01-05]",
+            "[6영01-06]",
+            "[6영01-02]"
+          ],
+          "topics": [
+            "제목과 그림으로 이야기 내용 예측하기",
+            "이야기의 중심 내용 찾기",
+            "일이 일어난 순서대로 사건 정리하기",
+            "인물의 마음에 공감하고 내 생각 말하기",
+            "의미 단위로 끊어 강세에 맞춰 소리 내어 읽기"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eng-e6",
+      "subject": "eng",
+      "level": "elem",
+      "grades": [
+        "e6"
+      ],
+      "title": "6학년 영어",
+      "note": "2022 개정 교육과정 · 초등 5~6학년군 · 출판사마다 단원 순서가 조금 달라요",
+      "units": [
+        {
+          "id": "eng-e6-01",
+          "title": "학년과 생일 말하기",
+          "summary": "What grade are you in?으로 학년을, When is your birthday?로 생일을 묻고 first, second 같은 순서의 말로 답해요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-07]",
+            "[6영01-04]",
+            "[6영02-03]"
+          ],
+          "topics": [
+            "학년 묻고 답하기(What grade are you in? I'm in the sixth grade.)",
+            "순서를 나타내는 말(first, second, third, fourth … twelfth, twentieth)",
+            "달 이름(January~December)과 날짜 읽기(May 5th → May fifth)",
+            "생일과 행사 날짜 묻고 답하기(When is your birthday? It's July 10th.)",
+            "생일 축하하고 선물 주고받기(Happy birthday! This is for you. Thank you.)"
+          ]
+        },
+        {
+          "id": "eng-e6-02",
+          "title": "아픈 곳 묻고 조언하기",
+          "summary": "What's wrong?으로 어디가 아픈지 묻고 I have a fever.처럼 답하며 알맞은 조언과 위로를 해요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-07]",
+            "[6영01-04]",
+            "[6영01-03]"
+          ],
+          "topics": [
+            "어디가 아픈지 묻기(What's wrong?/What's the matter?)",
+            "아픈 곳 말하기(I have a fever./I have a toothache./My leg hurts.)",
+            "몸의 부분 낱말(head, tooth, stomach, arm, leg)과 -ache(headache, toothache)",
+            "조언하기(Get some rest./Drink warm water./See a doctor.)",
+            "걱정하고 위로하는 말(That's too bad./Get well soon.)"
+          ]
+        },
+        {
+          "id": "eng-e6-03",
+          "title": "길 묻고 안내하기",
+          "summary": "How can I get to the library?로 가는 길을 묻고 Go straight. Turn left.처럼 길을 안내해요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-05]",
+            "[6영01-04]",
+            "[6영01-07]"
+          ],
+          "topics": [
+            "가는 길 묻기(How can I get to the library?/Where is the post office?)",
+            "길 안내하기(Go straight. Turn left. It's on your right.)",
+            "몇 블록 가서 어디서 도는지 말하기(Go straight two blocks and turn right.)",
+            "탈것으로 가는 방법 말하기(Take bus number 7./You can go there by subway.)",
+            "지도를 보며 안내를 읽고 도착할 장소 찾기"
+          ]
+        },
+        {
+          "id": "eng-e6-04",
+          "title": "방법과 순서 설명하기",
+          "summary": "first, then, finally 같은 말로 순서를 나타내며 음식을 만드는 방법이나 일의 차례를 설명해요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-05]",
+            "[6영01-06]",
+            "[6영01-07]"
+          ],
+          "topics": [
+            "순서를 나타내는 말(first, second, then, next, finally)",
+            "방법을 알려 주는 명령문(Wash the apples. Cut them. Put them in a bowl.)",
+            "요리할 때 쓰는 동작 낱말(wash, cut, mix, put, pour, bake)",
+            "만드는 방법 묻기(How do you make it?)",
+            "설명을 읽고 차례대로 그림 놓기"
+          ]
+        },
+        {
+          "id": "eng-e6-05",
+          "title": "키와 크기 비교하기",
+          "summary": "taller, bigger처럼 -er을 붙인 말과 than을 써서 두 사람이나 두 물건을 비교해 말해요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-04]",
+            "[6영02-07]",
+            "[6영01-03]"
+          ],
+          "topics": [
+            "-er을 붙여 비교하는 말 만들기(tall → taller, big → bigger, heavy → heavier)",
+            "두 대상 비교하기(Jiho is taller than Mina.)",
+            "누가 더 ~한지 묻기(Who is taller, Jiho or Mina?/Which is heavier?)",
+            "키·무게·크기 묻고 답하기(How tall are you?/How heavy is it?)",
+            "표를 보고 알맞은 비교 문장 고르기"
+          ]
+        },
+        {
+          "id": "eng-e6-06",
+          "title": "앞으로의 계획 말하기",
+          "summary": "What are you going to do?로 계획을 묻고 I'm going to ~.로 가까운 앞날에 할 일을 말해요.",
+          "sem": 1,
+          "standards": [
+            "[6영02-06]",
+            "[6영01-04]",
+            "[6영02-08]"
+          ],
+          "topics": [
+            "계획 묻고 답하기(What are you going to do this Saturday? I'm going to clean my room.)",
+            "다른 사람의 계획 말하기(He's going to visit his uncle./They're going to play soccer.)",
+            "will과 be going to 모두 계획을 말할 때 써요(I will ~./I'm going to ~.)",
+            "앞으로의 때를 나타내는 말(this afternoon, tomorrow, next Saturday, this winter)",
+            "계획을 소개하는 글 읽고 쓰기"
+          ]
+        },
+        {
+          "id": "eng-e6-07",
+          "title": "건강한 습관 말하기",
+          "summary": "How often do you ~?로 얼마나 자주 하는지 묻고 once a week처럼 횟수를 넣어 건강 습관을 말해요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-07]",
+            "[6영01-04]",
+            "[6영02-06]"
+          ],
+          "topics": [
+            "얼마나 자주 하는지 묻기(How often do you read books?)",
+            "횟수 말하기(once, twice, three times a week/a day)",
+            "건강 습관 낱말(exercise, wash my hands, eat vegetables, go to bed early)",
+            "설문 결과 표를 읽고 정보 찾기"
+          ]
+        },
+        {
+          "id": "eng-e6-08",
+          "title": "의견 나누며 대화하기",
+          "summary": "What do you think?로 의견을 묻고 I think ~.로 생각과 이유를 말하며, 되묻기와 맞장구로 대화를 이어 가요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-06]",
+            "[6영02-09]",
+            "[6영01-01]",
+            "[6영02-01]"
+          ],
+          "topics": [
+            "의견 묻고 생각과 이유 말하기(What do you think? I think it's a good idea because ~.)",
+            "동의하기와 반대하기(I agree./Me, too./I don't think so.)",
+            "다시 말해 달라고 하거나 뜻 묻기(Pardon?/Can you say that again?/What does 'giraffe' mean?)",
+            "맞장구치며 대화 이어 가기(Really?/Wow!/That sounds fun.)",
+            "의문사로 묻는 말과 예/아니오로 묻는 말의 억양 비교하기",
+            "생각이 다른 친구의 말을 존중하며 대화하기"
+          ]
+        },
+        {
+          "id": "eng-e6-09",
+          "title": "우리 문화 소개하기",
+          "summary": "Do you know anything about ~?으로 알고 있는지 묻고, 한옥이나 윷놀이 같은 우리 문화를 쉬운 문장으로 소개해요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-04]",
+            "[6영01-10]",
+            "[6영01-04]"
+          ],
+          "topics": [
+            "알고 있는지 묻고 답하기(Do you know anything about Chuseok? Yes, I do./No, I don't.)",
+            "우리 문화 소개하기(Hanok is a traditional Korean house.)",
+            "누가 만들었는지 묻고 답하기(Who made Hangeul? King Sejong did.)",
+            "전통 놀이·음식·옷 낱말(yunnori, tuho, songpyeon, hanbok)",
+            "다른 나라 친구에게 쓴 문화 소개 글을 읽고 서로의 문화 존중하기"
+          ]
+        },
+        {
+          "id": "eng-e6-10",
+          "title": "환경 지키기 포스터 만들기",
+          "summary": "Let's ~.와 We should ~.로 환경을 지키자고 말하고, 그림과 짧은 문장으로 포스터를 꾸며요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-09]",
+            "[6영01-08]",
+            "[6영01-05]",
+            "[6영02-10]"
+          ],
+          "topics": [
+            "환경 낱말(save, recycle, trash, plastic, energy, water)",
+            "함께 하자고 제안하기(Let's save water./How about walking to school?)",
+            "해야 할 일 말하기(We should save energy.)",
+            "하지 말자고 말하기(Don't waste paper./Don't throw trash on the street.)",
+            "포스터의 짜임(제목·그림·짧은 문장)과 꾸미는 방법",
+            "다른 사람의 포스터를 읽고 중심 내용 찾기"
+          ]
+        },
+        {
+          "id": "eng-e6-11",
+          "title": "초대와 감사의 이메일 쓰기",
+          "summary": "예시 이메일을 참고해 친구를 초대하거나 고마움을 전하는 이메일을 쓰고, 문장 부호와 철자를 점검해요.",
+          "sem": 2,
+          "standards": [
+            "[6영02-08]",
+            "[6영02-03]",
+            "[6영02-09]"
+          ],
+          "topics": [
+            "초대하고 답하기(Can you come to my party? Sure./Sorry, I can't.)",
+            "초대 이메일의 짜임(받는 사람·인사·무슨 일·날짜·시각·장소·끝인사·보내는 사람)",
+            "소식과 계획 전하기(I joined a soccer club. I'm going to ~.)",
+            "고마움 전하기(Thank you for the gift.)",
+            "예시 이메일을 바꿔 쓰고 대문자·문장 부호·철자 점검하기"
+          ]
+        },
+        {
+          "id": "eng-e6-12",
+          "title": "이야기와 시 즐기기",
+          "summary": "짧은 시를 리듬에 맞춰 읽고, 이야기의 중심 내용과 교훈을 찾으며 뒷이야기를 상상해 봐요.",
+          "sem": 2,
+          "standards": [
+            "[6영01-09]",
+            "[6영01-02]",
+            "[6영01-05]",
+            "[6영01-07]"
+          ],
+          "topics": [
+            "시에서 반복되는 말과 리듬 찾기",
+            "시를 강세와 리듬에 맞춰 소리 내어 읽기(중요한 낱말은 세게)",
+            "이야기의 중심 내용과 교훈 파악하기",
+            "인물의 마음과 행동 이해하기",
+            "이야기의 뒷부분 상상하기"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eng-m1",
+      "subject": "eng",
+      "level": "mid",
+      "grades": [
+        "m1"
+      ],
+      "title": "중1 영어",
+      "note": "2022 개정 교육과정 · 중학교 1~3학년군 · 출판사마다 단원 순서가 조금 달라요",
+      "units": [
+        {
+          "id": "eng-m1-01",
+          "title": "나를 소개하기 (be동사)",
+          "summary": "주어에 맞는 be동사와 인칭대명사를 정리하고, 이름·나이·관심사를 담아 나를 소개하는 글을 써요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-03]",
+            "[9영01-02]",
+            "[9영01-01]",
+            "[9영02-01]"
+          ],
+          "topics": [
+            "주어에 따른 be동사(am/are/is)와 줄임말(I'm, you're, she's, isn't)",
+            "be동사의 부정문과 의문문(Is she ~? Yes, she is./No, she isn't.)",
+            "인칭대명사의 격(I-my-me-mine)과 재귀대명사(myself, yourself)",
+            "자기소개 글의 짜임(인사-소개-관심사-끝인사)과 세부 정보 찾기"
+          ]
+        },
+        {
+          "id": "eng-m1-02",
+          "title": "일상생활 말하기 (일반동사 현재형)",
+          "summary": "일반동사 현재형의 3인칭 단수 규칙과 부정문·의문문을 익혀 매일 하는 일과 습관을 말하고 써요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-03]",
+            "[9영01-02]",
+            "[9영01-04]"
+          ],
+          "topics": [
+            "3인칭 단수 현재형 만들기(-s, -es, -ies, have → has)",
+            "일반동사의 부정문(don't/doesn't + 동사원형)",
+            "일반동사의 의문문(Do/Does ~?)과 의문사 의문문(Where do you live?)",
+            "빈도부사의 자리(be동사 뒤, 일반동사 앞: She always walks to school.)",
+            "일과를 소개하는 글에서 시간 순서 파악하기"
+          ]
+        },
+        {
+          "id": "eng-m1-03",
+          "title": "장면 묘사하기 (현재진행형)",
+          "summary": "현재진행형과 There is/are, 수량을 나타내는 말을 써서 사진이나 그림 속 장면을 묘사해요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-03]",
+            "[9영01-02]",
+            "[9영01-08]"
+          ],
+          "topics": [
+            "현재진행형의 부정문과 의문문(She isn't sleeping./Are they playing?)",
+            "현재형(늘 하는 일)과 현재진행형(지금 하는 일) 구별하기",
+            "There is + 단수 명사 / There are + 복수 명사",
+            "셀 수 있는 명사와 셀 수 없는 명사, 수량 표현(many/much, a few/a little, some/any)",
+            "사진 속 장면을 묘사하는 글 쓰기"
+          ]
+        },
+        {
+          "id": "eng-m1-04",
+          "title": "지난 일 이야기하기 (과거시제)",
+          "summary": "be동사와 일반동사의 과거형, 때를 나타내는 접속사를 익혀 지난 일을 순서대로 이야기해요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-04]",
+            "[9영01-04]",
+            "[9영02-08]"
+          ],
+          "topics": [
+            "be동사의 과거형(was, were)과 부정문·의문문",
+            "규칙 동사의 과거형 만들기(-ed, -d, 자음 하나 더 쓰기, y → ied)",
+            "불규칙 동사의 과거형(go-went, make-made, read-read, put-put)",
+            "과거시제의 부정문(didn't + 동사원형)과 의문문(Did you ~?)",
+            "접속사 when·before·after로 일의 순서를 나타내며 일기 쓰기"
+          ]
+        },
+        {
+          "id": "eng-m1-05",
+          "title": "계획과 의무 말하기 (조동사)",
+          "summary": "will·be going to로 계획을, must·have to·should로 의무와 충고를 나타내는 조동사 문장을 익혀요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-04]",
+            "[9영01-06]",
+            "[9영02-03]"
+          ],
+          "topics": [
+            "조동사의 공통 규칙(조동사 + 동사원형, 부정문·의문문 만드는 법)",
+            "will과 be going to로 미래의 계획 말하기(won't, Are you going to ~?)",
+            "must·have to로 의무 말하기와 must not(금지)·don't have to(필요 없음)의 차이",
+            "should로 충고하기(You should ~./You shouldn't ~.)",
+            "규칙 안내문을 읽고 글의 목적 파악하기"
+          ]
+        },
+        {
+          "id": "eng-m1-06",
+          "title": "취미 소개하기 (동명사·to부정사)",
+          "summary": "동명사와 to부정사를 명사처럼 써서 좋아하는 활동과 하고 싶은 일을 말하고 취미를 소개해요.",
+          "sem": 2,
+          "standards": [
+            "[9영01-03]",
+            "[9영01-10]",
+            "[9영02-03]"
+          ],
+          "topics": [
+            "동명사(-ing)의 쓰임: 주어·목적어·보어(Playing soccer is fun.)",
+            "to부정사의 명사적 용법: 주어·목적어·보어(My dream is to be a cook.)",
+            "목적어로 동명사를 쓰는 동사(enjoy, finish)와 to부정사를 쓰는 동사(want, hope, decide), 둘 다 쓰는 동사(like, start)",
+            "전치사 뒤의 동명사(be good at -ing, be interested in -ing, How about -ing?)",
+            "관심 있는 주제의 글을 골라 읽고 중심 내용 찾기"
+          ]
+        },
+        {
+          "id": "eng-m1-07",
+          "title": "비교하여 말하기 (비교급·최상급)",
+          "summary": "비교급과 최상급을 만드는 규칙을 익혀 여러 대상을 비교하고, 표나 그래프의 내용을 설명해요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-03]",
+            "[9영01-08]",
+            "[9영01-02]"
+          ],
+          "topics": [
+            "비교급·최상급 만들기(-er/-est, more/most, good-better-best 같은 불규칙)",
+            "비교급 + than으로 두 대상 비교하기(This bag is more expensive than that one.)",
+            "the + 최상급 + in/of로 가장 ~한 것 말하기",
+            "선호 묻고 답하기(Which do you prefer, A or B? I prefer A to B.)",
+            "표·그래프를 읽고 비교하는 문장으로 설명하기"
+          ]
+        },
+        {
+          "id": "eng-m1-08",
+          "title": "목적과 이유 말하기 (부사적 to부정사)",
+          "summary": "to부정사로 목적과 감정의 원인을, because와 so로 이유와 결과를 나타내며 글의 흐름을 파악해요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-05]",
+            "[9영01-04]",
+            "[9영01-02]"
+          ],
+          "topics": [
+            "목적을 나타내는 to부정사(I went to the library to borrow books.)",
+            "감정의 원인을 나타내는 to부정사(I'm glad to see you.)",
+            "because + 문장(이유)과 so + 문장(결과)",
+            "원인과 결과를 설명하는 글에서 논리적 관계 파악하기"
+          ]
+        },
+        {
+          "id": "eng-m1-09",
+          "title": "느낌과 생각 말하기 (감각동사·that절)",
+          "summary": "look, sound 같은 감각동사와 I think that ~ 문장으로 느낌과 생각을 나타내고 인물의 감정을 추론해요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-02]",
+            "[9영01-05]",
+            "[9영02-06]"
+          ],
+          "topics": [
+            "감각동사 + 형용사(look, sound, smell, taste, feel + happy/good)",
+            "감각동사 + like + 명사(It looks like a cloud.)",
+            "접속사 that이 이끄는 생각과 의견(I think (that) ~./I hope (that) ~.)과 that의 생략",
+            "인물의 기분이나 감정을 묘사하는 글 쓰기",
+            "이야기 속 인물의 기분이나 감정 추론하기"
+          ]
+        },
+        {
+          "id": "eng-m1-10",
+          "title": "고마운 마음 전하기 (수여동사·감탄문)",
+          "summary": "give, send 같은 수여동사와 감탄문을 익혀 고마운 마음을 전하는 편지나 이메일을 예의 바르게 써요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-08]",
+            "[9영02-11]",
+            "[9영01-06]"
+          ],
+          "topics": [
+            "수여동사 문장(give/send/show/tell + 사람 + 물건)",
+            "4형식을 3형식으로 바꾸기(give A to B, buy A for B)",
+            "감탄문(What a nice day!/How kind you are!)",
+            "감사 편지·이메일의 짜임(인사-감사한 일-느낌-끝인사)",
+            "상대를 배려하는 공손한 표현으로 쓰기"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eng-m2",
+      "subject": "eng",
+      "level": "mid",
+      "grades": [
+        "m2"
+      ],
+      "title": "중2 영어",
+      "note": "2022 개정 교육과정 · 중학교 1~3학년군 · 출판사마다 단원 순서가 조금 달라요",
+      "units": [
+        {
+          "id": "eng-m2-01",
+          "title": "할 일 말하기 (형용사적 to부정사)",
+          "summary": "명사를 꾸미는 to부정사와 '의문사 + to부정사'를 익혀 할 일, 필요한 것, 하는 방법을 말해요.",
+          "sem": 1,
+          "standards": [
+            "[9영01-02]",
+            "[9영02-03]",
+            "[9영01-08]"
+          ],
+          "topics": [
+            "명사를 뒤에서 꾸미는 to부정사(homework to do, time to go)",
+            "-thing + 형용사 (+ to부정사)(something cold to drink)",
+            "의문사 + to부정사(how to cook, what to do, where to go)",
+            "to부정사의 세 가지 쓰임(명사적·형용사적·부사적) 구별하기",
+            "방법을 안내하는 글에서 세부 정보 찾기"
+          ]
+        },
+        {
+          "id": "eng-m2-02",
+          "title": "경험 말하기 (현재완료)",
+          "summary": "have/has + 과거분사로 경험·계속·완료를 나타내는 현재완료를 익히고 과거시제와 구별해 써요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-04]",
+            "[9영01-02]",
+            "[9영01-03]"
+          ],
+          "topics": [
+            "현재완료의 형태(have/has + 과거분사)와 과거분사 만들기",
+            "경험 말하기(Have you ever ~? I have never ~./the best movie I've ever seen)",
+            "계속 말하기(for + 기간, since + 시작한 때)",
+            "완료·결과 말하기(already, yet, just / He has gone to Busan.)",
+            "현재완료와 과거시제 구별하기(yesterday, ago, last ~는 과거시제와)"
+          ]
+        },
+        {
+          "id": "eng-m2-03",
+          "title": "사람과 사물 설명하기 (관계대명사)",
+          "summary": "관계대명사 who·which·that으로 사람과 사물을 꾸며 자세히 설명하고, 생략할 수 있는 경우를 알아봐요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-03]",
+            "[9영01-02]",
+            "[9영01-03]"
+          ],
+          "topics": [
+            "관계대명사의 역할(두 문장을 잇고 앞의 명사를 꾸미기)과 선행사",
+            "주격 관계대명사 who·which·that과 뒤에 오는 동사의 수 일치",
+            "목적격 관계대명사 who(m)·which·that",
+            "목적격 관계대명사의 생략",
+            "인물이나 발명품을 소개하는 글에서 꾸밈을 받는 말 찾기"
+          ]
+        },
+        {
+          "id": "eng-m2-04",
+          "title": "사실 전달하기 (수동태)",
+          "summary": "be동사 + 과거분사로 나타내는 수동태를 익혀, 행동한 사람보다 대상에 초점을 두고 사실을 설명해요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-03]",
+            "[9영01-03]",
+            "[9영01-02]"
+          ],
+          "topics": [
+            "수동태의 형태(be + 과거분사)와 뜻(~되다, ~받다)",
+            "능동태를 수동태로 바꾸기(by + 행위자, by를 쓰지 않는 경우)",
+            "수동태의 시제(is made, was built)와 부정문·의문문",
+            "by 이외의 전치사를 쓰는 수동태(be made of, be interested in, be covered with)",
+            "건축물·발명품을 소개하는 설명문의 중심 내용 파악하기"
+          ]
+        },
+        {
+          "id": "eng-m2-05",
+          "title": "부탁하고 시키기 (목적격 보어)",
+          "summary": "want·tell + 목적어 + to부정사와 make·let + 목적어 + 동사원형으로 남에게 바라는 일을 말해요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-11]",
+            "[9영02-10]",
+            "[9영01-06]"
+          ],
+          "topics": [
+            "want/ask/tell/advise + 목적어 + to부정사",
+            "사역동사 make/have/let + 목적어 + 동사원형",
+            "help + 목적어 + (to) 동사원형",
+            "make/keep/find + 목적어 + 형용사, call/name + 목적어 + 명사",
+            "공손하게 부탁하고 답하기(Could you ~? Sure./I'm afraid I can't.)"
+          ]
+        },
+        {
+          "id": "eng-m2-06",
+          "title": "보고 들은 일 말하기 (지각동사)",
+          "summary": "see, hear + 목적어 + 동사원형/-ing로 보고 들은 것을, 과거진행형으로 그때 하던 일을 묘사해요.",
+          "sem": 2,
+          "standards": [
+            "[9영01-05]",
+            "[9영01-04]",
+            "[9영02-02]"
+          ],
+          "topics": [
+            "지각동사 see/watch/hear/feel + 목적어 + 동사원형/-ing",
+            "과거진행형(was/were + -ing)의 형태와 뜻",
+            "when과 while로 동시에 일어난 일 나타내기(I was reading when the phone rang.)",
+            "이야기 속 사건의 흐름과 인물의 감정 파악하기"
+          ]
+        },
+        {
+          "id": "eng-m2-07",
+          "title": "조건과 결과 말하기 (if·so ~ that)",
+          "summary": "조건의 if, 결과의 so ~ that, 양보의 although를 익혀 조건과 결과를 논리적으로 말해요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-05]",
+            "[9영01-04]",
+            "[9영02-07]"
+          ],
+          "topics": [
+            "조건의 if(If it rains tomorrow, we will stay home.)와 if절의 현재시제",
+            "명령문, and ~ / 명령문, or ~",
+            "so + 형용사/부사 + that ~(너무 ~해서 …하다)",
+            "양보의 although/though(~이지만)",
+            "원인과 결과를 설명하는 글을 읽고 내용 요약하기"
+          ]
+        },
+        {
+          "id": "eng-m2-08",
+          "title": "의견 주장하기 (가주어 it)",
+          "summary": "가주어 it과 to부정사, 의미상 주어를 익혀 의견을 분명하게 주장하고 다른 관점도 존중하며 읽어요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-06]",
+            "[9영01-06]",
+            "[9영01-09]"
+          ],
+          "topics": [
+            "가주어 it과 진주어 to부정사(It is important to recycle.)",
+            "to부정사의 의미상 주어: for + 목적격(It is hard for me to ~.), of + 목적격(It is kind of you to ~.)",
+            "가목적어 it(I found it easy to make friends.)",
+            "동의·반대 표현(So do I./I see your point, but ~.)",
+            "주장하는 글의 짜임(주장-이유-근거-마무리)과 필자의 의도 파악하기"
+          ]
+        },
+        {
+          "id": "eng-m2-09",
+          "title": "정중하게 묻기 (간접의문문)",
+          "summary": "의문문을 문장 속에 넣는 간접의문문과 부가의문문을 익혀 공손하게 묻고 내용을 확인해요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-10]",
+            "[9영02-11]",
+            "[9영01-02]"
+          ],
+          "topics": [
+            "의문사가 있는 간접의문문의 어순(Do you know where he lives?)",
+            "do/does/did가 있는 의문문을 간접의문문으로 바꾸기",
+            "Can you tell me ~?/I wonder ~로 공손하게 묻기",
+            "부가의문문으로 확인하기(You like it, don't you?/She isn't here, is she?)",
+            "인터뷰 글을 읽고 질문과 답 연결하기"
+          ]
+        },
+        {
+          "id": "eng-m2-10",
+          "title": "정도 비교하기 (원급·비교급 강조)",
+          "summary": "as ~ as, 비교급 강조, 'the + 비교급' 구문과 one·the other 같은 대명사를 익혀 정도를 비교하고 도표 내용을 요약해요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-07]",
+            "[9영02-09]",
+            "[9영01-08]"
+          ],
+          "topics": [
+            "as + 원급 + as(~만큼 …한)와 not as ~ as",
+            "비교급 강조(much, even, far, a lot + 비교급)",
+            "the + 비교급, the + 비교급(~할수록 더 …하다)",
+            "반복을 피하는 one·that of·those of(a bigger one/The population of Seoul is larger than that of Busan.)",
+            "나누어 가리키는 one·another·the other(s)(I have two caps. One is red, and the other is blue.)",
+            "도표를 설명하는 글을 요약하고 자료의 출처 밝히기"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eng-m3",
+      "subject": "eng",
+      "level": "mid",
+      "grades": [
+        "m3"
+      ],
+      "title": "중3 영어",
+      "note": "2022 개정 교육과정 · 중학교 1~3학년군 (2026년 중3 교과서는 2015 개정: to부정사의 의미상 주어와 'the + 비교급, the + 비교급'은 중2 과정에, It ~ that 강조 구문과 관계부사는 고1 공통영어 과정에 있어요)",
+      "units": [
+        {
+          "id": "eng-m3-01",
+          "title": "덧붙여 설명하기 (관계대명사 what)",
+          "summary": "관계대명사 what과 whose, 쉼표로 덧붙이는 계속적 용법을 익혀 대상을 더 자세히 설명해요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-03]",
+            "[9영01-02]",
+            "[9영01-03]"
+          ],
+          "topics": [
+            "관계대명사 what(~하는 것: This is what I want.)",
+            "that·which와 what 구별하기(앞에 꾸밀 명사가 있는지)",
+            "소유격 관계대명사 whose(I have a friend whose dream is to be a pilot.)",
+            "관계대명사의 계속적 용법(, who ~)과 쉼표로 덧붙이는 동격(Ms. Kim, my teacher, ~)",
+            "인물을 소개하는 글에서 덧붙인 정보 찾기"
+          ]
+        },
+        {
+          "id": "eng-m3-02",
+          "title": "이어 온 일 말하기 (완료 시제 심화)",
+          "summary": "현재완료진행형으로 지금까지 이어 온 일을, 과거완료로 과거보다 먼저 일어난 일을 나타내요.",
+          "sem": 1,
+          "standards": [
+            "[9영01-04]",
+            "[9영02-04]",
+            "[9영02-05]"
+          ],
+          "topics": [
+            "현재완료진행형(have/has been + -ing)의 형태와 뜻",
+            "How long have you been ~ing?와 for·since로 답하기",
+            "과거완료(had + 과거분사)의 형태와 뜻",
+            "과거완료와 과거시제로 두 사건의 순서 나타내기(When I arrived, the bus had left.)",
+            "이야기 글에서 사건의 앞뒤 관계 파악하기"
+          ]
+        },
+        {
+          "id": "eng-m3-03",
+          "title": "명사 꾸며 말하기 (분사)",
+          "summary": "현재분사와 과거분사의 뜻 차이를 익히고, 분사로 명사를 꾸며 사람과 사물을 생생하게 묘사해요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-02]",
+            "[9영02-03]",
+            "[9영01-05]"
+          ],
+          "topics": [
+            "현재분사(-ing: 능동·진행)와 과거분사(-ed: 수동·완료)의 뜻 차이",
+            "명사 앞에서 꾸미는 분사(a sleeping baby, a broken window)",
+            "명사 뒤에서 꾸미는 -ing 구(the boy playing the guitar)",
+            "감정을 나타내는 분사(exciting과 excited, boring과 bored)",
+            "사진 속 인물의 모습과 감정을 묘사하는 글 쓰기"
+          ]
+        },
+        {
+          "id": "eng-m3-04",
+          "title": "상황 설명하기 (분사구문)",
+          "summary": "접속사와 주어를 줄여 쓰는 분사구문을 익혀 때·이유·동시 동작을 간결하게 나타내요.",
+          "sem": 1,
+          "standards": [
+            "[9영01-04]",
+            "[9영01-02]",
+            "[9영02-05]"
+          ],
+          "topics": [
+            "분사구문 만들기(접속사와 같은 주어를 빼고 동사를 -ing로)",
+            "분사구문의 뜻: 때, 이유, 동시 동작",
+            "Being이 생략된 분사구문((Being) tired, he went to bed.)",
+            "분사구문을 접속사가 있는 문장으로 바꿔 이해하기",
+            "이야기 글에서 인물의 행동과 상황 파악하기"
+          ]
+        },
+        {
+          "id": "eng-m3-05",
+          "title": "상상하여 말하기 (가정법 과거)",
+          "summary": "가정법 과거와 I wish 문장을 익혀 현재 사실과 반대되는 일을 상상하고 바라는 일을 말해요.",
+          "sem": 1,
+          "standards": [
+            "[9영02-06]",
+            "[9영01-06]",
+            "[9영01-07]"
+          ],
+          "topics": [
+            "가정법 과거의 형태(If + 주어 + 과거형, 주어 + would/could + 동사원형)",
+            "be동사는 were로(If I were you, I would ~.) 충고하기",
+            "조건문(일어날 수 있는 일)과 가정법(현재 사실과 반대) 구별하기",
+            "I wish + 가정법 과거(I wish I could fly.)",
+            "상상을 담은 글에서 필자의 바람과 의도 추론하기"
+          ]
+        },
+        {
+          "id": "eng-m3-06",
+          "title": "남의 말 전하기 (간접화법)",
+          "summary": "다른 사람의 말을 전하는 간접화법과 if·whether 명사절을 익혀 들은 내용을 정확히 전하고 요약해요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-07]",
+            "[9영02-09]",
+            "[9영01-02]"
+          ],
+          "topics": [
+            "직접화법과 간접화법(He said, “I'm tired.” → He said that he was tired.)",
+            "간접화법에서 인칭과 시제 바꾸기(시제 일치)",
+            "의문사가 있는 질문 전하기(She asked me where I lived.)",
+            "if·whether가 이끄는 명사절(I wonder if ~./I don't know whether ~.)",
+            "인터뷰를 요약하고 인용한 말의 출처 밝히기"
+          ]
+        },
+        {
+          "id": "eng-m3-07",
+          "title": "목적과 정도 말하기 (so that·too ~ to)",
+          "summary": "so that으로 목적을, too ~ to와 enough to로 정도를 나타내며 같은 뜻의 문장으로 바꿔 써요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-05]",
+            "[9영01-04]",
+            "[9영01-03]"
+          ],
+          "topics": [
+            "so that + 주어 + can ~(~하기 위해서, ~하도록)",
+            "too + 형용사/부사 + to부정사(너무 ~해서 …할 수 없다)",
+            "형용사/부사 + enough + to부정사(~할 만큼 충분히 …하다)",
+            "too ~ to와 so ~ that ... can't 바꿔 쓰기",
+            "설명문에서 목적과 결과를 나타내는 표현 찾기"
+          ]
+        },
+        {
+          "id": "eng-m3-08",
+          "title": "글의 흐름 잇기 (상관접속사·접속부사)",
+          "summary": "상관접속사와 however, therefore 같은 연결어를 익혀 문장을 논리적으로 잇고 글의 요지를 파악해요.",
+          "sem": 2,
+          "standards": [
+            "[9영01-03]",
+            "[9영01-04]",
+            "[9영02-10]"
+          ],
+          "topics": [
+            "상관접속사(both A and B, either A or B, neither A nor B)",
+            "not only A but (also) B와 동사의 수 일치",
+            "접속부사(however, therefore, on the other hand)로 문장 잇기",
+            "이유의 since와 대조의 while(~인 반면에)",
+            "연결어를 단서로 글의 흐름과 요지 파악하기"
+          ]
+        },
+        {
+          "id": "eng-m3-09",
+          "title": "과정 설명하기 (수동태 심화)",
+          "summary": "조동사가 있는 수동태, 4형식 수동태, 'have + 목적어 + 과거분사'로 일이 이루어지는 과정을 설명해요.",
+          "sem": 2,
+          "standards": [
+            "[9영02-03]",
+            "[9영01-02]",
+            "[9영01-04]"
+          ],
+          "topics": [
+            "조동사가 있는 수동태(will be held, can be seen, must be done)",
+            "4형식 문장의 수동태(She was given a prize./A prize was given to her.)",
+            "have + 목적어 + 과거분사(I had my hair cut.)",
+            "능동태와 수동태 중 알맞은 것 고르기(누가 했는지가 중요할 때와 아닐 때)",
+            "물건이 만들어지는 과정을 설명하는 글 읽고 순서 정리하기"
+          ]
+        },
+        {
+          "id": "eng-m3-10",
+          "title": "추측하고 충고하기 (조동사 심화)",
+          "summary": "추측의 may·must, 충고의 had better, 과거 습관의 would·used to로 생각과 충고를 알맞게 표현해요.",
+          "sem": 2,
+          "standards": [
+            "[9영01-07]",
+            "[9영02-06]",
+            "[9영02-11]"
+          ],
+          "topics": [
+            "추측의 may(~일지도 모른다)·must(~임에 틀림없다)와 의무의 must 구별",
+            "had better(~하는 게 좋겠다)와 had better not — 윗사람에게는 피하는 강한 충고",
+            "과거의 습관 would와 used to(예전에는 ~했다)",
+            "강조의 do(I do like it.)",
+            "글 속 표현의 숨은 뜻(함축 의미) 추론하기"
+          ]
+        }
+      ]
+    }
+  ]
+}

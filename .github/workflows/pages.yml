@@ -1,0 +1,89 @@
+name: 테스트 후 GitHub Pages 배포
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Pages 배포에 필요한 최소 권한만 부여한다.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포가 겹치지 않도록 한 번에 하나만 진행한다.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # AGENTS.md 규칙 1 — 테스트를 모두 통과해야 배포로 넘어간다.
+  test:
+    name: Playwright 테스트
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      # Git 이력 전체를 받아 비밀정보 검사에 쓴다
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # AGENTS.md 규칙 2·6 — 키·토큰·비밀번호·개인정보·학생 백업 파일이 있으면 배포하지 않는다
+      - name: 비밀 인증정보·개인정보 검사 (파일·Git 이력)
+        run: |
+          node scripts/scan-secrets.js
+          node scripts/scan-secrets.js --history
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: 브라우저 설치
+        run: npx playwright install --with-deps chromium
+
+      # 학습 내용 검사(정답·형식·문제 생성기)부터 — 실패하면 어디가 틀렸는지 바로 보이게
+      - name: 학습 내용 검사
+        run: node scripts/validate-content.js --quiet --seeds 100
+
+      - name: 전체 테스트 실행
+        run: npx playwright test
+
+      - name: 실패 시 리포트 보관
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  deploy:
+    name: Pages 배포
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      # 실제 페이지에 필요한 파일만 추린다. (테스트·서버·스크립트·문서·교육과정 원본은 배포하지 않는다)
+      - name: 배포할 파일 모으기
+        run: |
+          mkdir -p _site
+          cp index.html manifest.webmanifest sw.js _site/
+          cp -r css js data icons _site/
+          echo "파일 수: $(find _site -type f | wc -l)"
+          du -sh _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

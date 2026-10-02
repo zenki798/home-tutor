@@ -1,0 +1,500 @@
+# 가정교사 — 설계 계약서 (ARCHITECTURE)
+
+이 문서는 모듈끼리, 그리고 화면과 학습 내용 데이터가 서로 지키는 **계약**이다.
+여러 사람(에이전트)이 동시에 다른 파일을 만들므로, 여기 적힌 이름·형식을 바꾸려면 이 문서부터 고친다.
+
+## 0. 원칙
+
+- **서버·AI·외부 요청 없음.** 정적 파일만. GitHub Pages 로 배포하고 `index.html` 더블클릭(file://)으로도 동작한다.
+- **ES 모듈 금지.** 모든 JS 는 일반 `<script>` 로 싣고 전역 객체로 잇는다. 브라우저 밖(node 테스트)에서도 쓰도록
+  엔진 모듈은 아래 UMD 꼴로 끝낸다. (`js/app.js` 는 화면 전용이라 예외)
+
+```js
+(function (root, factory) {
+  var mod = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = mod;
+  else root.TutorMath = mod;          // 모듈마다 이름이 다르다
+})(typeof self !== 'undefined' ? self : this, function (root) {
+  'use strict';
+  /* ... */
+  return { /* 공개 API */ };
+});
+```
+
+- 엔진 모듈(mathlib, mathtext, figures, search, solver)은 **DOM 을 쓰지 않는 순수 함수**다. 문자열을 받아 문자열을 낸다.
+  node 에서 `require('../../js/mathlib.js')` 로 바로 테스트한다.
+- 모듈 간 의존: `mathtext`·`figures`·`search` 는 독립. `solver` 는 `TutorMath` 를 쓴다
+  (브라우저: 전역 `TutorMath`, node: `require('./mathlib.js')`). 화면(`app.js`)이 모두를 쓴다.
+- 문법은 ES2018 까지 (구형 태블릿 사파리 고려). 선택적 체이닝 `?.`·`??` 는 쓰지 않는다.
+- 사용자에게 보이는 문구는 모두 한국어. 코드 주석도 한국어로 짧게.
+
+`index.html` 이 싣는 순서 (모두 `defer` 없는 일반 스크립트, body 끝):
+
+```
+js/mathlib.js → js/mathtext.js → js/figures.js → js/search.js → js/solver.js → js/storage.js → js/core.js → data/catalog.js → js/app.js
+```
+
+단원 내용(`data/units/<id>.js`)과 검색 색인(`data/index/<과목>-<학교급>.js`)은 필요할 때 `Tutor.loadScript` 로 싣는다.
+화면은 색인을 `Tutor.loadIndex('<과목>-<학교급>')`(과정의 학교급, 없으면 학생의 학교급)으로 싣고, 실패하면 `Tutor.loadIndex('<과목>')` 으로 한 번 더 찾는다.
+
+`index.html` 머리의 CSP(`<meta http-equiv="Content-Security-Policy">`)가 자기 파일(`'self' file:`)만 허용한다 — 인라인 스크립트·`onclick=` 같은
+인라인 이벤트를 쓰지 않는다(이벤트는 코드로 단다). 스타일 속성(`style="width:…"`)은 `'unsafe-inline'` 으로 허용한다.
+
+---
+
+## 1. `js/core.js` — `window.Tutor`
+
+```
+Tutor.registerCatalog(catalog)        data/catalog.js 가 부른다
+Tutor.catalog                         등록된 카탈로그 (없으면 null)
+Tutor.registerUnit(unit)              data/units/<id>.js 가 부른다. Tutor.units[unit.id] = unit
+Tutor.registerIndex(subject, entries) data/index/<subject>.js 가 부른다
+Tutor.units                           { [unitId]: unit }   불러온 단원
+Tutor.indexes                         { [subject]: entries[] }
+Tutor.loadScript(src) → Promise       <script> 주입. 성공 resolve, 실패·15초 초과 reject. 같은 src 는 한 번만
+Tutor.loadUnit(unitId) → Promise<unit>      이미 있으면 바로. 없으면 data/units/<unitId>.js
+Tutor.loadIndex(subject) → Promise<entries> data/index/<subject>.js
+Tutor.level(id) / Tutor.subject(id) / Tutor.course(id)   카탈로그에서 찾기 (없으면 null)
+Tutor.unitMeta(unitId) → { course, unit(stub), index }   카탈로그의 단원 요약
+Tutor.coursesFor(gradeId, subjectId?) → course[]          그 학년이 보는 과정
+Tutor.store.get(key, fallback) / set(key, value) / remove(key) / keys(prefix?)
+            ready() → Promise / flush() → Promise / removePrefix(prefix)
+                                      브라우저: js/storage.js 가 먼저 실렸으면 TutorStorage.createStore() (IndexedDB → localStorage → 메모리, §9).
+                                      화면은 ready() 뒤에 처음 그린다.
+                                      그 밖(node 시험 등): localStorage JSON, 키 앞에 'tutor.'. ready() 는 바로 끝난다.
+                                      막혀 있으면 메모리에만 두고 조용히 계속한다 (예외를 밖으로 던지지 않는다)
+```
+
+## 2. `js/mathlib.js` — `TutorMath`
+
+### 2.1 분수 `Frac` (정확한 유리수)
+
+```
+TutorMath.F(n, d = 1) → Frac           n, d: 정수(number). d=0 이면 throw
+TutorMath.Frac.from(x) → Frac           x: 정수·유한소수(number) | 문자열('3/4','-1 2/3','0.25','2','1,000') | Frac
+f.num, f.den                            항상 기약, den > 0
+f.add(g) f.sub(g) f.mul(g) f.div(g)     g 는 Frac|number|string (from 으로 변환)
+f.neg() f.inv() f.abs() f.pow(k)        k: 정수
+f.cmp(g) → -1|0|1   f.eq(g) → bool   f.sign()   f.isInt()   f.isZero()
+f.valueOf() → number                    f.toString() → '3/4' | '-2'
+f.toTex({ mixed }) → '\frac{3}{4}' | '-\frac{3}{4}' | '2' | (mixed) '1\frac{1}{2}'
+f.toMixed() → { sign, whole, num, den }
+f.toDecimal(maxDigits = 12) → '0.75' | null (무한소수면 null)
+```
+
+정수 범위는 `Number.MAX_SAFE_INTEGER` 안에서만 쓴다(넘으면 throw). 문제 생성기는 작은 수만 쓴다.
+
+### 2.2 정수 도구
+
+```
+gcd(a, b)  lcm(a, b)  isPrime(n)  primeFactors(n) → [[p, e], ...]  divisors(n) → [1, ..., n]
+```
+
+### 2.3 난수와 문제 생성 도구 `R`
+
+```
+TutorMath.rng(seed) → () => [0,1)              mulberry32. 같은 seed → 같은 수열
+TutorMath.toolkit(seed) → R
+  R.seed
+  R.random()                  [0,1)
+  R.int(a, b)                 a 이상 b 이하 정수
+  R.nonzero(a, b)             0 이 아닌 정수
+  R.pick(arr)  R.shuffle(arr) (사본)  R.sample(arr, n) (서로 다른 n개)  R.bool(p = 0.5)  R.sign()
+  R.F(n, d)                   = TutorMath.F
+  R.distinct(n, make, tries = 200)        make() 로 서로 다른 값 n 개 (String 기준). 못 만들면 throw
+  R.choices(correct, wrongs, n = 4)       → { choices, answer }  정답 1 + 서로 다른 오답 (n-1)개를 섞는다.
+                                          문자열 기준 중복·정답과 같은 오답 제거. 오답이 모자라면 throw
+  R.fmt.num(n)                1234567 → '1,234,567' (정수만 콤마; 소수는 그대로)
+  R.fmt.dec(x, digits)        부동소수 오차 없이 소수 표기 ('0.1+0.2' 같은 오차 제거)
+  R.fmt.frac(f, { mixed })    Frac → TeX
+  R.fmt.signed(n)             3 → '+3', -3 → '-3' (TeX 에서 그대로 쓸 수 있게)
+  R.fmt.paren(n)              음수면 '(-3)', 아니면 '3'  (대입 식을 쓸 때)
+  R.fmt.poly(coeffs, v = 'x') 내림차순 계수 → TeX.  [2,-3,1] → '2x^{2}-3x+1', [1,0,-4] → 'x^{2}-4', [0,0,0] → '0'
+                              계수는 number 또는 Frac. 1·-1 계수는 생략, 0 항은 생략
+  R.fmt.term(c, v, first)     한 항 → TeX (poly 가 쓴다)
+  R.josa(x, pair)             조사 고르기. x: 수(읽는 소리의 끝) | 한글 낱말(마지막 글자 받침) | 영어 낱말·단위(대표 읽기)
+                              pair: '은/는' '이/가' '을/를' '과/와' '으로/로' '이에요/예요' '이라고/라고' '이다/다' (앞=받침 있을 때)
+                              '으로/로' 는 ㄹ 받침이면 '로'. 예: R.josa(9, '은/는') → '는', R.josa(6, '이/가') → '이', R.josa(7, '으로/로') → '로'
+TutorMath.josa(x, pair)       R.josa 와 같다 (화면 문구에도 쓴다)
+```
+
+### 2.4 식 계산
+
+```
+TutorMath.parseExpr(str) → AST         지원: 정수·소수·분수 a/b, 변수(한 글자 a~z, 단 e·i 도 변수로 본다),
+                                       + - * / ^ × ÷ · ( ) [ ] { }, 암묵적 곱(2x, 3(x+1), (x+1)(x-1), xy),
+                                       ² ³, √ 또는 sqrt(…), π 또는 pi, 단항 마이너스. 못 읽으면 throw
+TutorMath.evalExpr(astOrStr, vars = {}) → number
+TutorMath.exprEqual(a, b, { vars }) → bool   두 식이 같은 식인지: 변수에 무작위 값 8번 대입해 비교(상대오차 1e-9)
+TutorMath.exactValue(str) → Frac|null        변수 없이 + - × ÷ 거듭제곱(정수 지수)·괄호만 있으면 정확한 분수로
+```
+
+### 2.5 채점
+
+```
+TutorMath.normText(s) → string     비교용: NFKC, 앞뒤·중간 공백 제거, 소문자, 끝의 마침표·물음표 제거,
+                                   '−'·'–'→'-', '×'→'*', '÷'→'/', '²'→'^2', '³'→'^3', 따옴표 통일
+TutorMath.parseNumberAnswer(s) → Frac|null
+                                   '3/4' '-0.25' '1 2/3' '1과 2/3' '4분의 3'(=3/4) '1,000' '+5' '½' 을 읽는다
+TutorMath.checkAnswer(problem, input) → { correct: bool, empty: bool }
+   problem.type === 'choice'  input: 고른 보기의 원래 번호(number)  → input === problem.answer
+   problem.type === 'ox'      input: true|false                    → input === problem.answer
+   problem.type === 'order'   input: 원래 번호 배열                 → 배열이 problem.answer 와 같음
+   problem.type === 'short'   input: 문자열. problem.check 로 채점 (없으면 'text')
+       'text'   normText(input) 이 정답(들) 중 하나의 normText 와 같다
+       'number' 단위(problem.unit)·공백을 떼고 parseNumberAnswer 로 읽어 정답(들) 중 하나와 값이 같다
+       'expr'   exprEqual(input, 정답)  (정답이 여러 개면 하나라도)
+       'set'    input 을 ',' '또는' 'or' '와' '과' 공백으로 나눠 수의 모음으로 읽고, 정답 모음과 (순서 무관) 같다
+   빈 입력은 { correct: false, empty: true }
+TutorMath.answerText(problem) → string     화면에 보일 정답 문구 (choice 면 보기 내용, ox 면 'O'/'X', short 면 첫 정답)
+```
+
+---
+
+## 3. `js/mathtext.js` — `TutorText`
+
+학습 내용의 모든 글(`body`, `q`, `explain`, 보기, 풀이 단계 …)은 **"서식 글"** 이다: 마크다운 일부 + `$TeX$` 수식.
+
+```
+TutorText.render(src) → HTML        블록 서식까지 (문단·목록·표·상자)
+TutorText.inline(src) → HTML        한 줄 서식만 (보기·버튼 안 글자) — 블록 문법은 글자 그대로
+TutorText.tex(texSrc) → HTML        수식 하나
+TutorText.plain(src) → string       검색·aria-label 용 평문. \frac{3}{4} → 3/4, x^{2} → x², \sqrt{2} → √2
+TutorText.check(src) → string[]     문제점 목록 (닫히지 않은 $, 모르는 명령, 중괄호 짝, 표 칸 수 불일치 …). 정상이면 []
+```
+
+**안전:** 입력의 모든 글자를 HTML 이스케이프한다. 입력에 HTML 태그를 쓰면 글자 그대로 보인다(태그로 해석하지 않는다).
+
+### 3.1 블록 문법
+
+| 쓰는 법 | 결과 |
+|---|---|
+| 빈 줄 | 문단 나눔. 문단 안의 줄바꿈은 `<br>` |
+| `- 항목` / `* 항목` | 점 목록 |
+| `1. 항목` | 번호 목록 |
+| `> 글` | 강조 상자 (팁·주의). `> 💡`, `> ⚠️` 처럼 이모지로 시작해도 된다 |
+| `### 제목` | 소제목 (h4 로 낸다) |
+| `\| 가 \| 나 \|` 줄들 | 표. 둘째 줄이 `\|---\|---\|` 면 첫 줄이 머리행 |
+
+### 3.2 한 줄 문법
+
+`**굵게**`, `__밑줄__`(국어: 밑줄 친 부분), `$수식$`, `\$`(달러 글자), `[[빈칸]]` → 빈칸 상자(괄호 대신, 내용은 보이지 않고 칸 길이만), `[[?]]` → 물음표 칸.
+
+### 3.3 TeX 부분집합 (`$...$` 안)
+
+- 글자: 숫자, 영문자(변수는 기울임), 한글(그대로), `+ - = < > ( ) [ ] , . : ; ! ' |`
+- 위·아래 첨자: `x^2`, `x^{10}`, `a_1`, `a_{n+1}`, `x_1^2`
+- 분수: `\frac{a}{b}`, `\dfrac{a}{b}` (같게 처리), 대분수는 `2\frac{1}{3}`
+- 근호: `\sqrt{2}`, `\sqrt[3]{8}`
+- 연산·관계: `\times \div \pm \mp \cdot \le \ge \leq \geq \ne \neq \approx \equiv \sim \simeq \cong \propto \lt \gt`
+- 그리스 문자: `\alpha \beta \gamma \delta \theta \lambda \mu \pi \sigma \phi \omega \Delta \Sigma \Omega`
+- 기호: `\infty \angle \triangle \square \% \cdots \ldots \therefore \because \perp \parallel \prime`
+- 도(°): `90^\circ` 또는 `\degree` 또는 글자 `°` — 맨 `\circ` 는 합성함수 기호(∘)로 그린다
+- 집합·논리: `\in \notin \subset \subseteq \supset \cup \cap \emptyset \varnothing \forall \exists \neg \land \lor`
+  `\{ \}`, `\setminus`
+- 화살표: `\to \rightarrow \leftarrow \Rightarrow \Leftarrow \Leftrightarrow \leftrightarrow \iff \implies`
+- 함수 이름(곧은 글씨): `\sin \cos \tan \log \ln \lim \max \min \exp \det`
+- 큰 연산자: `\sum_{k=1}^{n}`, `\int_{a}^{b}`, `\lim_{x \to 0}` (아래·위에 붙임), `\prod`
+- 꾸밈: `\overline{AB}`(선분), `\overrightarrow{AB}`, `\vec{a}`, `\hat{p}`, `\bar{x}`, `\widehat{AB}`(호)
+- 글자: `\text{원}`, `\mathrm{cm}`, `\mathbf{v}`
+- 순열·조합: `{}_{n}\mathrm{P}_{r}`, `{}_{n}\mathrm{C}_{r}`, `\binom{n}{r}`
+- 괄호 크기: `\left( \right)`, `\left[ \right]`, `\left\{ \right\}`, `\left| \right|`, `\left. \right.` (크기만 맞춤)
+- 공백: `\,` `\;` `\quad` `\ `
+- 환경: `\begin{cases} … \\ … \end{cases}` (연립방정식·구간별 함수),
+  `\begin{pmatrix} a & b \\ c & d \end{pmatrix}`, `bmatrix`, `vmatrix`(행렬식)
+
+이 밖의 명령은 `check` 가 오류로 알린다. 학습 내용 검사가 모든 서식 글을 `check` 한다.
+
+---
+
+## 4. `js/figures.js` — `TutorFig`
+
+```
+TutorFig.render(spec) → '<svg …>'    viewBox 있음, role="img", aria-label(spec.alt 또는 자동 설명), 선·글자는 currentColor
+TutorFig.check(spec) → string[]      형식 오류 목록. 정상이면 []
+```
+
+학습 내용의 `fig` 칸에 아래 중 하나를 넣는다. 모든 그림은 `alt`(그림 설명, 선택)를 받는다.
+
+| type | 칸 | 그림 |
+|---|---|---|
+| `clock` | `h`(0~23), `m`(0~59), `showNumbers`(기본 true) | 아날로그 시계 |
+| `numberline` | `min`, `max`, `step`(눈금), `labelEvery`(기본 1칸마다), `points: [{x, label?, open?}]`, `ranges: [{from, to, fromOpen?, toOpen?}]`(부등식 범위, from/to 에 `-Infinity`/`Infinity` 허용) , `arrows: [{from, to, label?}]`(덧셈 뛰어 세기) | 수직선 |
+| `fraction` | `shape`: `'bar'`\|`'circle'`, `n`(색칠 수), `d`(전체 칸 수), `whole`(여러 개일 때 묶음 수, 기본 1) | 분수 모형 |
+| `coord` | `xmin xmax ymin ymax`(기본 -5~5), `grid`(기본 true), `points: [{x, y, label?}]`, `fns: [{expr: '2x+1', from?, to?, label?}]`, `segments: [{from:[x,y], to:[x,y], dashed?}]` | 좌표평면·그래프 |
+| `polygon` | `points: [[x,y],…]`(임의 단위, 자동 맞춤), `labels`(꼭짓점 이름), `sides`(변 옆 글: 문자열 또는 null), `angles: [{at: i, label, right?}]`, `fill?` | 다각형 |
+| `circle` | `r`(글: 반지름 표시), `showCenter`, `showRadius`, `showDiameter`, `label` | 원 |
+| `angle` | `deg`(0~360), `label?`, `showArc`(기본 true) | 각 |
+| `bars` | `labels`, `values`, `unit?`, `title?`, `horizontal?` | 막대그래프 |
+| `line` | `labels`, `values`, `unit?`, `title?` | 꺾은선그래프 |
+| `pie` | `labels`, `values`, `title?` | 원그래프 |
+| `blocks` | `hundreds`, `tens`, `ones` | 수 모형(백·십·일 모형) |
+| `cuboid` | `w`, `h`, `d`, `labels: {w, h, d}` | 직육면체 겨냥도 |
+| `svg` | `svg`: `<svg viewBox=…>…</svg>` 문자열 | 직접 그린 그림 (아래 제한) |
+
+`svg` 직접 그림 제한: `<svg` 로 시작, `viewBox` 필수, `<script>`·`on…=` 속성·`href`/`xlink:href` 외부 주소·`<foreignObject>`·`<image>` 금지,
+크기 20KB 이하. 색은 `currentColor` 또는 `var(--fig-1)`~`var(--fig-4)` (밝은/어두운 화면에서 자동).
+
+---
+
+## 5. `js/search.js` — `TutorSearch` (질문 답변의 "찾기")
+
+```
+TutorSearch.normalize(s) → string          NFKC·소문자·문장부호 제거
+TutorSearch.tokenize(s) → string[]         낱말로 나누고 조사·어미를 뗀다 (은/는/이/가/을/를/의/에/에서/로/으로/와/과/도/만/이란/란/
+                                           이에요/예요/인가요/인지/하는/하면/해요/뭐야/뭐예요 …), 묻는 말(무엇, 어떻게, 왜, 알려줘 …)은 버린다
+TutorSearch.build(entries) → index         entries: 아래 색인 항목 배열
+TutorSearch.query(index, q, opts) → [{ entry, score, why }]
+     opts: { grade, course, unit, subject, limit = 5 }
+     점수: 낱말 일치(제목·용어·키워드 가중) + 두 글자 조각(바이그램) 유사도 + 같은 학년/과정/단원 가산
+     유의어: 더하기↔덧셈, 빼기↔뺄셈, 곱하기↔곱셈, 나누기↔나눗셈, 넓이↔면적, 동사↔verb … (search.js 안의 작은 사전)
+TutorSearch.intent(q) → 'greeting' | 'thanks' | 'help' | 'bye' | null   인사·감사 같은 짧은 대화
+```
+
+색인 항목(entries) — `scripts/build-index.js` 가 단원 파일들에서 만든다:
+
+```
+{ id: 'math-m2-03#c2', kind: 'concept'|'term'|'faq'|'unit'|'mistake',
+  subject: 'math', course: 'math-m2', unit: 'math-m2-03', grade: 'm2',
+  title: '부등식의 성질', text: '평문 요약 (최대 300자)', keywords: ['부등식', …],
+  ref: { tab: 'concepts', idx: 1 } }
+```
+
+## 6. `js/solver.js` — `TutorSolver` (질문 답변의 "풀기")
+
+```
+TutorSolver.solve(text, { grade }) → null | { kind, title, steps: [서식 글…], answer: 서식 글 }
+TutorSolver.detect(text) → kind | null       풀 수 있는 꼴인지만 판단
+```
+
+풀 수 없거나 확신이 없으면 **null** 을 낸다(엉뚱한 답보다 "모르겠어요"가 낫다).
+풀이 단계는 학년에 맞는 말로: 초등(grade e*)에게는 '이항' 대신 '양쪽에서 같은 수를 빼요' 같은 말.
+
+| kind | 예 |
+|---|---|
+| `arith` | `3/4 ÷ 2/5`, `1과 1/2 + 2/3`, `2.5×4-1`, `(3+4)×2`, `2^10`, `√16`, `-3-(-5)` — 계산 순서(괄호→곱셈·나눗셈→덧셈·뺄셈), 통분·약분을 단계로 |
+| `linear` | `2x+3=7`, `3(x-1)=2x+5`, `x/2+1=4` |
+| `quad` | `x^2-5x+6=0`, `2x²=8`, `x^2+2x-1=0`(근의 공식) |
+| `system` | `x+y=5, x-y=1` / `2x+3y=12 그리고 x-y=1` (가감법) |
+| `ineq` | `2x+1>5`, `-3x≤9` (음수로 나누면 방향 바뀜을 설명) |
+| `gcd` / `lcm` | `12와 18의 최대공약수`, `4, 6, 10의 최소공배수` |
+| `factor` | `360을 소인수분해` |
+| `simplify` | `12/18 약분`, `24/36을 기약분수로` |
+| `percent` | `200의 15%`, `30은 120의 몇 %`, `0.35를 백분율로` |
+| `unit` | `3.5km는 몇 m`, `2시간 15분은 몇 분`, `1.2L는 몇 mL`, `3kg 200g은 몇 g` |
+| `expand` | `(x+2)(x-3) 전개`, `(2x-1)^2` |
+| `deriv` | `x^3-2x+1 미분` (다항함수) |
+| `integ` | `3x^2+2x 적분`, `0부터 2까지 x^2 적분` (다항함수) |
+
+---
+
+## 7. 데이터 형식
+
+### 7.1 카탈로그 `data/catalog.js`
+
+```js
+Tutor.registerCatalog({
+  version: 1,
+  curriculum: '2022 개정 교육과정',
+  levels: [
+    { id: 'elem', name: '초등학교', short: '초등', grades: [{ id: 'e1', name: '1학년' }, … { id: 'e6', name: '6학년' }] },
+    { id: 'mid',  name: '중학교',   short: '중등', grades: [{ id: 'm1', name: '1학년' }, …] },
+    { id: 'high', name: '고등학교', short: '고등', grades: [{ id: 'h1', name: '1학년' }, { id: 'h2', name: '2학년' }, { id: 'h3', name: '3학년' }] },
+    { id: 'univ', name: '대학교',   short: '대학', grades: [{ id: 'u', name: '교양·기초' }] },
+    { id: 'adult',name: '성인',     short: '성인', grades: [{ id: 'a', name: '성인' }] },
+  ],
+  subjects: [
+    { id: 'kor',  name: '국어', teacher: '국어 선생님', icon: '📖' },
+    { id: 'math', name: '수학', teacher: '수학 선생님', icon: '📐' },
+    { id: 'eng',  name: '영어', teacher: '영어 선생님', icon: '🔤' },
+    { id: 'soc',  name: '사회', teacher: '사회 선생님', icon: '🌏' },
+    { id: 'hist', name: '역사', teacher: '역사 선생님', icon: '🏛️' },
+    { id: 'sci',  name: '과학', teacher: '과학 선생님', icon: '🔬' },
+    { id: 'life', name: '통합교과', teacher: '통합교과 선생님', icon: '🌱' },
+  ],
+  courses: [
+    { id: 'math-m2', subject: 'math', level: 'mid', grades: ['m2'], title: '중학교 수학 2',
+      note: '2022 개정 교육과정 · 중학교 1~3학년군', 
+      units: [ { id: 'math-m2-01', title: '유리수와 순환소수', summary: '…', sem: 1 }, … ] },
+    …
+  ],
+});
+```
+
+- 과정 id: `<과목>-<학년 또는 이름>` (예: `math-e3`, `kor-h-lit`, `math-u-linalg`). 단원 id: `<과정id>-<두 자리 번호>`.
+- 단원 순서 = 배우는 순서. `sem`(1·2 학기)은 초·중에서 아는 경우만.
+
+### 7.2 단원 `data/units/<unitId>.js`
+
+```js
+Tutor.registerUnit({
+  id: 'math-m2-03',            // 파일 이름·카탈로그의 단원 id 와 같다
+  course: 'math-m2',
+  title: '일차부등식',
+  summary: '…',                // 한두 문장
+  goals: ['…', '…'],           // 학습 목표 2~4개 ("~할 수 있다")
+  standards: ['[9수02-07]'],   // 2022 개정 성취기준 코드. 확실할 때만, 모르면 []
+  concepts: [ { title, body, easy?, fig?, check? } ], // 개념 카드 3~6장. check = 이해 확인 문제 1개 (§7.4)
+  examples: [ { q, fig?, steps: ['…'], answer } ],    // 예제 1~3개 (풀이 단계)
+  terms:    [ { term, def } ],                        // 핵심 용어 3~10개
+  practice: [ 문제… ],                                // 기본·실력 (level 1·2) 8~12개
+  advanced: [ 문제… ],                                // 심화 (level 3) 3~6개
+  deeper:   [ { title, body } ],                      // 심화 학습 읽을거리 1~2개
+  faq:      [ { q, a } ],                             // 학생이 물을 법한 질문 2~4개
+  mistakes: ['…'],                                    // 자주 하는 실수 1~3개
+  gens:     [ { id, level, title, make: function (R) { … return 문제 } } ],   // 문제 생성기 (수학 필수, 그 밖은 선택)
+  vocab:    [ { w, m, ex?, exm? } ],                  // 영어 단원: 낱말·뜻·예문·예문 뜻 (8~20개)
+});
+```
+
+### 7.3 문제
+
+```js
+{
+  id: 'p1',                 // 단원 안에서 고유 (practice·advanced 를 통틀어). 생성기 문제는 자동
+  level: 1,                 // 1 기본, 2 실력, 3 심화
+  type: 'choice',           // 'choice' | 'short' | 'ox' | 'order'
+  q: '문제 (서식 글)',
+  fig: { … },               // 선택: 그림
+  choices: ['…', '…', '…', '…'],   // choice: 3~5개.  order: 줄 세울 항목들 (보여 줄 때 섞는다)
+  answer: 2,                // choice: 정답 보기 번호(0부터) | ox: true/false | order: 올바른 순서의 번호 배열 | short: '정답' 또는 ['정답','다른 허용 답']
+  fixed: false,             // choice: true 면 보기를 섞지 않는다 ('모두 고르기'·크기 순 보기 등)
+  check: 'number',          // short 채점: 'text'(기본) | 'number' | 'expr' | 'set'
+  unit: 'cm',               // short: 답 칸 옆에 보일 단위 (채점 때 학생이 단위를 써도 된다)
+  hint: '…',                // 선택: 힌트
+  explain: '…',             // 필수: 해설 (정답만이 아니라 왜 그런지)
+  concept: 1,               // 선택(권장): 이 문제가 연습하는 개념 카드 번호(0부터) — 틀리면 그 카드로 "추가 설명"
+  why: ['', '분모끼리도 더했어요.', …],   // choice 선택(권장): 보기마다 "이 보기를 고르면 왜 틀렸는지" (정답 칸은 '')
+  wrong: [ { a: '3/10', why: '분모끼리도 더했어요. 분모는 그대로 두어요.' } ],
+                            // short 선택(권장): 자주 나오는 틀린 답과 진단. a 는 정답 칸과 같은 꼴(문자열·배열), 채점 방식(check)으로 비교
+}
+```
+
+생성기 `make(R)` 는 `id`·`level` 없이 위 문제 객체를 돌려준다. 같은 `R.seed` 면 같은 문제여야 한다(`Math.random` 금지).
+생성기 문제도 `why`·`wrong`·`concept` 를 넣을 수 있다(오답 보기를 실수 유형에서 만들므로 이유를 붙이기 쉽다).
+
+### 7.4 가정교사 흐름에 쓰는 칸
+
+화면은 **개념 설명 → 이해 확인 → 문제 풀이 → 오답 분석 → 추가 설명** 순서로 가르친다.
+
+| 단계 | 쓰는 칸 | 화면 동작 |
+|---|---|---|
+| 개념 설명 | `concepts[].body`, `easy`, `fig` | 학생 수준이 '기초'면 `easy` 를 먼저 보여 준다 |
+| 이해 확인 | `concepts[].check` (문제 객체, `level` 없음, choice·ox·short) | 카드를 읽고 바로 푼다. 틀리면 `why`/`explain` + `easy` 로 다시 설명하고 한 번 더 |
+| 문제 풀이 | `practice`, `advanced`, `gens` | 학생 수준·연속 정답/오답에 따라 난이도를 올리고 내린다 |
+| 오답 분석 | `why`(choice), `wrong`(short), `explain` | "왜 틀렸을까"를 학생이 고른 보기·쓴 답에 맞춰 보여 준다 |
+| 추가 설명 | `concept` → 그 카드의 `easy`·`body`·`fig` | "이 개념을 다시 볼까요?" + 비슷한 문제(같은 생성기 새 seed, 또는 같은 `concept` 의 다른 문제) |
+
+`check` 는 모든 개념 카드에 넣는 것이 원칙(검사기: 없으면 경고). `check.answer` 의 형식은 §7.3 과 같다.
+
+---
+
+## 8. 화면 (`index.html`, `css/app.css`, `js/app.js`)
+
+주소 뒤 `#` 로 화면을 나눈다(file:// 에서도 뒤로 가기가 된다).
+
+| 주소 | 화면 |
+|---|---|
+| `#/` | 처음: 학생(프로필) 고르기 → 없으면 학교급·학년 고르기 |
+| `#/setup` | 학교급 → 학년 고르기 |
+| `#/home` | 그 학년의 과목들 (선생님 카드) |
+| `#/course/<courseId>` | 과정: 선생님 인사 + 단원 목록(진도) + [이어서 공부] [예상문제] [질문하기] |
+| `#/unit/<unitId>/<tab>` | 단원: 탭 `learn`(개념) · `examples`(예제) · `practice`(문제) · `advanced`(심화) · `ask`(질문) |
+| `#/quiz/<unitId 또는 courseId>` | 예상문제 풀이 (한 문제씩, 바로 채점·해설, 끝나면 점수) |
+| `#/ask/<subject>` | 과목 선생님에게 질문 (대화창) |
+| `#/notes` | 오답노트 |
+| `#/stats` | 학습 기록 |
+| `#/settings` | 글자 크기·화면 테마·학생 관리·기록 지우기 |
+
+`<html data-state="loading|ready|error">` — 첫 화면이 다 그려지면 `ready`. 테스트가 이것을 기다린다.
+화면 상태를 테스트가 읽을 수 있게 `window.TutorApp`(현재 주소·프로필 등)을 둔다.
+
+### 저장 (`Tutor.store`, 이 기기에만 — 키 전체 목록과 백업·PIN 은 §9)
+
+화면 동작 요약: 문제를 채점할 때마다 `p.<id>.attempts`·`p.<id>.stats` 를 남기고(개념 카드의 이해 확인은 `level: 0`, `pid: 'check-<카드 번호>'`),
+오답노트 항목에 그때 보여 준 진단 글(`cause`, 글자만)과 `concept` 을 둔다. 질문 대화는 `p.<id>.chat` 에 과목마다 최근 30개를 **글자만** 저장한다
+(`{ 과목: [{ who: 'me'|'t', text, t, u?(단원 질문 탭이면 단원 id) }] }` — 서식(HTML)은 저장하지 않고, 다시 열면 글자로 보여 준다).
+설정 → "학습 기록 옮기기"(백업)·"PIN 잠금"·"이 기기에서 모든 기록 지우기". 카탈로그의 `soon: true` 단원은 "준비 중"으로 보이고 열리지 않는다.
+PIN 이 걸린 학생은 이번에 PIN 을 맞혀야(메모리에만 기억, 다른 학생으로 바꾸거나 다시 열면 또 묻는다) 그 학생의 화면·기록을 보여 준다.
+
+```
+tutor.profiles   [{ id, name, avatar, level, grade, pace, created }]
+                 name 은 별명(선택), avatar 는 동물 이모지, pace 는 공부 수준 'easy'(기초 다지기)|'normal'(보통)|'hard'(도전). 기기 밖으로 나가지 않는다
+tutor.current    프로필 id
+tutor.p.<id>.progress   { [unitId]: { seen: [개념 번호…], solved, correct, best, last } }
+tutor.p.<id>.notes      [{ key, unit, problem(사본), given, at, wrongCount, rightStreak }]   오답노트
+tutor.p.<id>.recent     최근 연 단원 id 목록
+tutor.settings   { fontScale, theme }
+```
+
+---
+
+## 9. 학습 데이터 저장 계층 (`js/storage.js` — `TutorStorage`) · 학생 정보 보호
+
+**원칙 (사용자 지시 2026-10-02):** V1 은 서버 계정·클라우드 DB 없이 **학생의 학습 정보를 쓰는 기기에만** 저장한다.
+학생의 개인정보·학습정보는 **절대 다른 사람이 볼 수 없어야 한다.** 실제 학생 데이터는 GitHub 저장소에 들어가지 않는다.
+
+### 9.1 계층
+
+```
+화면(app.js) · 가정교사 엔진  ──  Tutor.store (동기: get / set / remove / keys)   ← 예전과 같은 API
+                                      │ 메모리 캐시 + 모아서 쓰기(40ms)
+                                      ▼
+                          TutorStorage.createStore({ providers })
+                                      │ Provider 약속(비동기): open · loadAll · write(changes, 원자적) · clearAll
+                ┌─────────────────────┼──────────────────────┐
+         IndexedDBProvider     LocalStorageProvider     MemoryProvider      (+ 앞으로: 클라우드 동기화 Provider)
+         (기본, DB home-tutor)   (IndexedDB 가 막히면)    (둘 다 막히면 — 이번 화면에서만)
+```
+
+- `Tutor.store.ready()` 로 처음 한 번 전부 메모리에 올린다. **화면은 ready 뒤에 그린다.**
+- 예전 localStorage `tutor.*` 값은 처음 IndexedDB 를 쓸 때 옮기고 지운다.
+- 글자 크기·테마(`settings`)만 localStorage 에 사본을 둬서 화면을 그리기 전에 동기로 적용한다. **학습 기록은 사본을 두지 않는다.**
+- 여러 탭: `BroadcastChannel('home-tutor-store')` 로 다른 탭에 바뀐 키를 알린다.
+- **클라우드 동기화를 붙일 때**: 화면·엔진은 그대로 두고, 같은 약속을 지키는 Provider(예: 로컬 Provider 를 감싸 원격과 맞추는 SyncProvider)를 `providers` 에 넣는다.
+  인증은 그 서비스의 공식 OAuth 로만 하고, 키·토큰을 프론트엔드에 두지 않는다(AGENTS.md 규칙 6).
+
+### 9.2 키 (학생 프로필별로 완전히 분리)
+
+| 키 | 내용 |
+|---|---|
+| `profiles` | `[{ id, name(별명·선택), avatar, level, grade, pace, created, lock? }]` — `lock` 은 PIN 해시(§9.4) |
+| `current` | 지금 학생 id |
+| `settings` | `{ fontScale, theme, installHint }` (기기 공통) |
+| `p.<id>.progress` | 단원별 진도 `{ [unitId]: { seen[], checked[], cards, solved, correct, best, last } }` |
+| `p.<id>.notes` | 오답노트 `[{ key, unit, problem(사본), given, cause(오답 원인), concept, at, wrongCount, rightStreak }]` |
+| `p.<id>.attempts` | 최근 풀이 기록(최대 2000개) `[{ t, unit, pid|gen, level, ok, cause? }]` |
+| `p.<id>.stats` | 학습 통계(날짜별 푼 수·맞힌 수, 과목별 합계) |
+| `p.<id>.recent` · `p.<id>.days` | 최근 단원, 공부한 날 |
+| `p.<id>.chat` | 최근 질문 대화(과목별 최대 30개) — 학습 연속성에 필요한 만큼만 |
+| `p.<id>.prefs` | 그 학생의 학습 선택(예: 마지막 문제 수·난이도) |
+| `sys.*` | 저장 계층 자체(되돌리기 지점) — 백업·내보내기에 넣지 않는다 |
+
+- 학생을 지우면 `removePrefix('p.<id>.')` 로 그 학생 키만 모두 지운다.
+- 저장하지 않는 것: 실명·생년월일·학교·연락처·위치 같은 신원 정보(받지도 않는다), 학습과 상관없는 입력.
+
+### 9.3 백업 (다른 기기로 옮기기 — 서버 없이)
+
+- **내보내기**: 학생(전부 또는 고른 학생)의 기록을 **암호(6자 이상)로 잠근** 파일로 내려받는다.
+  PBKDF2-SHA256(600,000회) → AES-GCM-256. 파일이 남의 손에 들어가도 별명·기록을 읽을 수 없고, 고친 파일은 풀리지 않는다.
+  암호 없는 내보내기는 없다.
+- **가져오기**: ① 겉봉 검사(형식·판·잠금 정보) → ② 암호로 풀기(틀린 암호·손상 파일 거절) → ③ 내용 검사(학생·기록 하나하나 모양·크기,
+  알 수 없는 항목 버림, `__proto__` 같은 위험한 키 제거) → ④ 요약을 보여 주고 학생이 고른 방식으로 복원.
+  - **더하기(기본)**: 지금 기록은 그대로, 백업의 학생을 새 학생으로 더한다.
+  - **바꾸기**: 바꾸기 전에 되돌리기 지점(`sys.restorePoint`)을 저장하고, 한 번의 원자적 쓰기로 바꾼다. **[되돌리기]** 로 원래대로.
+  - 저장소 쓰기가 실패하면 메모리도 바뀌지 않는다 — **잘못된 파일이나 실패로 기존 데이터가 손상되지 않는다.**
+- 백업 파일 이름 `가정교사-백업-YYYY-MM-DD.json` 은 `.gitignore` 에 있고, 비밀정보 검사가 저장소에 백업 파일이 들어오는 것을 막는다.
+
+### 9.4 같은 기기를 여러 학생이 쓸 때
+
+- 학생마다 **PIN(숫자 4~8자리, 선택)** 을 걸 수 있다. PIN 은 저장하지 않고 소금 친 PBKDF2 해시만 `profiles[].lock` 에 둔다.
+  PIN 이 걸린 학생으로 바꾸거나 그 학생의 기록·오답노트·대화·백업을 보려면 PIN 이 필요하다.
+- PIN 은 "옆 사람이 함부로 보지 못하게" 하는 잠금이다. 기기 자체의 잠금(화면 잠금·계정)을 대신하지는 않는다 — 설정 화면에 그렇게 알린다.
+- PIN 을 잊으면 그 학생의 기록은 백업 파일(그 백업의 암호)로만 되살릴 수 있다. 학생 삭제는 PIN 없이도 할 수 있다(기록이 함께 지워진다).
+
+### 9.5 다른 사람이 볼 수 없게 — 점검 목록
+
+- 페이지는 외부로 아무것도 보내지 않는다: CSP `connect-src 'self'`, 외부 요청 0건 테스트, 분석 도구·광고·외부 글꼴 없음.
+- 주소(#/…)·문서 제목·서비스 워커 캐시에 학생 별명·답·기록을 넣지 않는다(캐시는 앱 파일만).
+- 화면에 다른 학생의 기록을 보여 주지 않는다(학생 고르기 화면에는 별명·아바타만).
+- 공용 컴퓨터 안내: "공부를 마치면 [이 기기에서 기록 지우기]" (설정).

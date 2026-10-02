@@ -1,0 +1,381 @@
+/* 6학년 영어 · 의견 나누며 대화하기 */
+Tutor.registerUnit({
+  id: 'eng-e6-08',
+  course: 'eng-e6',
+  title: '의견 나누며 대화하기',
+  summary: 'What do you think?로 의견을 묻고 I think ~.로 생각과 이유를 말하며, 되묻기와 맞장구로 대화를 이어 가요.',
+  goals: [
+    'What do you think?로 의견을 묻고, I think ~ because ~.로 생각과 이유를 말할 수 있어요.',
+    'I agree./Me, too./I don\'t think so.로 동의하거나 반대할 수 있어요.',
+    '다시 말해 달라고 하거나 낱말의 뜻을 묻고, 맞장구치며 대화를 이어 갈 수 있어요.',
+    '묻는 말의 억양 차이를 알고, 생각이 다른 친구를 존중하며 말할 수 있어요.',
+  ],
+  standards: [],
+
+  concepts: [
+    {
+      title: '의견 묻고, 생각과 이유 말하기',
+      body: "상대의 생각(**의견**)을 물을 때는 **What do you think?**(너는 어떻게 생각해?)라고 해요.\n\n내 생각을 말할 때는 **I think ~.**(나는 ~라고 생각해.)로 시작하고, 이유는 **because ~**(왜냐하면 ~이기 때문이야) 뒤에 붙여요.\n\n- A: Let's ride bikes after school. **What do you think?**\n- B: **I think** it's a good idea **because** we can exercise.\n\n> 💡 의견만 말하는 것보다 because로 **이유**까지 말하면 상대가 내 생각을 더 잘 이해해요.",
+      easy: "의견 말하기는 \"생각 + 이유\" 두 칸 채우기예요.\n\n- 생각 칸: I think it's a good idea.\n- 이유 칸: because we can exercise.\n\n두 칸을 because로 이어 붙이면 한 문장이 돼요.",
+      check: {
+        type: 'choice',
+        q: '"~하기 때문에"처럼 이유를 말할 때 쓰는 낱말은 무엇일까요?',
+        choices: ['because', 'think', 'what'],
+        answer: 0,
+        why: ['', 'think는 "생각하다"예요. 이유를 이어 붙이는 말은 because예요.', 'what은 "무엇"이에요. 이유를 이어 붙이는 말은 because예요.'],
+        explain: 'because는 "왜냐하면 ~이기 때문에"라는 뜻이에요. 예: I think it\'s fun because we can play together.',
+      },
+    },
+    {
+      title: '동의하기와 반대하기',
+      body: "상대의 생각에 **같은 생각**이면 동의하고, **다른 생각**이면 반대할 수 있어요.\n\n| 같은 생각일 때(동의) | 다른 생각일 때(반대) |\n|---|---|\n| **I agree.** (나도 그렇게 생각해.) | **I don't think so.** (나는 그렇게 생각하지 않아.) |\n| **Me, too.** (나도 그래.) | **I disagree.** (나는 생각이 달라.) |\n| You're right. (네 말이 맞아.) | |\n\n- A: I think this book is interesting. B: **Me, too.** I love the story.\n- A: I think we should play outside. B: **I don't think so.** It's raining.\n\n> 💡 반대할 때도 because로 이유를 말해 주면 좋아요.",
+      easy: "같은 생각이면 고개를 끄덕이며 \"I agree.\" 또는 \"Me, too.\"\n\n다른 생각이면 고개를 갸웃하며 \"I don't think so.\"\n\n몸짓을 떠올리며 외우면 쉽게 기억할 수 있어요.",
+      check: {
+        type: 'ox',
+        q: '"I don\'t think so."는 상대의 생각에 동의할 때 쓰는 말이에요.',
+        answer: false,
+        explain: 'I don\'t think so.는 "나는 그렇게 생각하지 않아."라는 뜻으로, 생각이 다를 때(반대할 때) 써요. 동의할 때는 I agree. 또는 Me, too.라고 해요.',
+      },
+    },
+    {
+      title: '다시 말해 달라고 하기, 뜻 묻기',
+      body: "상대의 말을 잘 못 들었거나 모르는 낱말이 나와도 괜찮아요. 이렇게 물어보면 돼요.\n\n**잘 못 들었을 때**\n- **Pardon?** (뭐라고?)\n- **Can you say that again?** (다시 말해 줄래?)\n\n**낱말의 뜻을 모를 때**\n- **What does 'giraffe' mean?** ('giraffe'가 무슨 뜻이야?)\n- 대답: **It means** a tall animal with a long neck. (목이 긴 키 큰 동물이라는 뜻이야.)\n\n> ⚠️ does가 있으니 뒤의 mean은 원래 모양이에요: What does 'giraffe' **mean**? (means ✗)",
+      easy: "대화는 공을 주고받는 놀이 같아요. 공(말)을 놓쳤으면 \"한 번 더 던져 줄래?\"라고 하면 되지요. 그 말이 \"Pardon?\", \"Can you say that again?\"이에요.\n\n모르는 낱말은 그 낱말을 넣어 \"What does (낱말) mean?\"이라고 물어요.",
+      check: {
+        type: 'choice',
+        q: '친구의 말을 잘 못 들었을 때 할 수 있는 말은 무엇일까요?',
+        choices: ['Can you say that again?', 'Me, too.', 'I agree.'],
+        answer: 0,
+        why: ['', 'Me, too.는 "나도 그래."라는 뜻으로 같은 생각일 때 써요.', 'I agree.는 "나도 그렇게 생각해."라는 뜻으로 동의할 때 써요.'],
+        explain: 'Can you say that again?은 "다시 말해 줄래?"라는 뜻이에요. Pardon?이라고 해도 돼요.',
+      },
+    },
+    {
+      title: '맞장구치며 대화 이어 가기',
+      body: "친구의 말을 잘 듣고 있다는 것을 보여 주는 짧은 말을 **맞장구**라고 해요. 맞장구를 치면 대화가 즐겁게 이어져요.\n\n| 말 | 언제 |\n|---|---|\n| **Really?** (정말?) | 놀랍거나 더 듣고 싶을 때 |\n| **Wow!** (와!) | 감탄할 때 |\n| **That sounds fun.** (재미있겠다.) | 즐거운 계획을 들었을 때 |\n| **That's great!** (멋지다!) | 좋은 소식을 들었을 때 |\n| **That's too bad.** (안됐다.) | 안 좋은 일을 들었을 때 |\n\n- A: I'm going to go camping this weekend.\n- B: **That sounds fun!**",
+      easy: "맞장구는 친구 이야기에 \"응응, 그래서?\" 하고 눈을 반짝이는 거예요.\n\n즐거운 이야기에는 That sounds fun!, 놀라운 이야기에는 Really?, 슬픈 이야기에는 That's too bad.처럼 이야기의 기분에 맞춰 골라요.",
+      check: {
+        type: 'choice',
+        q: "대화의 빈칸에 알맞은 말은 무엇일까요?\n\nA: I'm going to visit the zoo tomorrow.\nB: [[That sounds fun!]]",
+        choices: ['That sounds fun!', "That's too bad.", "I don't think so."],
+        answer: 0,
+        why: ['', "That's too bad.는 안 좋은 일을 들었을 때 써요. 동물원에 가는 것은 즐거운 계획이에요.", "I don't think so.는 의견에 반대할 때 써요. A는 의견이 아니라 계획을 말했어요."],
+        explain: '즐거운 계획을 들었으니 "That sounds fun!"(재미있겠다!)으로 맞장구쳐요.',
+      },
+    },
+    {
+      title: '묻는 말의 억양: 올려 읽기와 내려 읽기',
+      body: "묻는 말은 종류에 따라 끝을 읽는 높이(**억양**)가 달라요.\n\n| 묻는 말 | 끝 억양 | 예 |\n|---|---|---|\n| **예/아니요**로 답하는 말 (Do, Are, Can …으로 시작) | 끝을 **올려요** ↗ | Do you agree? ↗ / Can you say that again? ↗ |\n| **의문사**로 묻는 말 (What, Who, Where, How …로 시작) | 끝을 **내려요** ↘ | What do you think? ↘ / Where do you live? ↘ |\n\n**의문사**는 What(무엇), Who(누구), Where(어디), When(언제), How(어떻게)처럼 궁금한 것을 묻는 말이에요.\n\n> 💡 Yes/No 물음은 \"맞아, 아니야?\" 하고 대답을 기다리듯 끝을 올리고, 의문사 물음은 내용을 묻고 말을 끝맺듯 내려요.",
+      easy: "물음표 끝을 미끄럼틀이라고 생각해 보세요.\n\n- Do you ~? 처럼 \"응/아니\"를 묻는 말은 미끄럼틀을 **올라가요** ↗\n- What ~? 처럼 무엇을 묻는 말은 미끄럼틀을 **내려와요** ↘\n\n첫 낱말이 What, Who, Where, How이면 내려 읽는다고 기억해요.",
+      check: {
+        type: 'choice',
+        q: '끝을 **올려** 읽는 묻는 말은 무엇일까요?',
+        choices: ['Do you agree?', 'What do you think?', 'Where is the library?'],
+        answer: 0,
+        why: ['', 'What으로 시작하는 의문사 물음이라 끝을 내려 읽어요.', 'Where로 시작하는 의문사 물음이라 끝을 내려 읽어요.'],
+        explain: 'Do you agree?는 Yes/No로 답하는 물음이라 끝을 올려 읽어요(↗).',
+      },
+    },
+    {
+      title: '생각이 다른 친구를 존중하며 말하기',
+      body: "사람마다 생각이 다를 수 있어요. 생각이 다를 때도 상대를 **존중**하며 말해요.\n\n**존중하며 반대하는 말**\n- That's a good idea, **but** I think ~. (좋은 생각이야. 그런데 나는 ~라고 생각해.)\n- I see. **But** I don't think so **because** ~. (그렇구나. 그런데 나는 그렇게 생각하지 않아. 왜냐하면 ~)\n\n**대화할 때 지킬 일**\n1. 친구의 말을 끝까지 들어요.\n2. 친구의 좋은 점을 먼저 말해요.\n3. 내 생각과 이유를 차분히 말해요.\n\n> ⚠️ \"That's a bad idea.\", \"You're wrong.\"처럼 딱 잘라 말하면 친구의 마음이 상할 수 있어요.",
+      easy: "반대할 때는 \"샌드위치 말하기\"를 해 보세요.\n\n- 빵(위): 친구 생각의 좋은 점 — That's a good idea.\n- 속(가운데): 내 생각 — but I think ~.\n- 빵(아래): 이유 — because ~.\n\n이렇게 말하면 생각이 달라도 서로 기분 좋게 이야기할 수 있어요.",
+      check: {
+        type: 'ox',
+        q: '"That\'s a good idea, but I think we should go by bus."는 친구의 생각을 존중하면서 다른 생각을 말하는 문장이에요.',
+        answer: true,
+        explain: '먼저 "That\'s a good idea"로 친구 생각을 인정하고, but 뒤에 내 생각(버스로 가자)을 말했어요. 존중하며 반대하는 좋은 방법이에요.',
+      },
+    },
+  ],
+
+  examples: [
+    {
+      q: "친구가 이렇게 물었어요. 찬성하는 생각과 이유를 영어로 말해 보세요.\n\nLet's walk to school every day. What do you think?",
+      steps: [
+        'What do you think?는 "어떻게 생각해?"라는 뜻이에요. 내 의견을 말하면 돼요.',
+        '찬성하니 "I think it\'s a good idea."로 생각을 말해요.',
+        '이유를 because 뒤에 붙여요. 걸어가면 운동이 되니까: because we can exercise.',
+        '두 부분을 이어 한 문장으로 말해요.',
+      ],
+      answer: "I think it's a good idea because we can exercise.",
+    },
+    {
+      q: "대화에서 B가 A의 말을 잘 듣지 못했어요. 그리고 모르는 낱말도 있었어요. B가 할 말을 차례대로 생각해 보세요.\n\nA: Let's recycle these bottles.\nB: [[?]]",
+      steps: [
+        '먼저 잘 못 들었으니 다시 말해 달라고 해요: "Pardon?" 또는 "Can you say that again?"',
+        "A가 다시 말해 주었는데 recycle의 뜻을 몰라요. 그러면 뜻을 물어요: \"What does 'recycle' mean?\"",
+        'A가 뜻을 알려 주면 맞장구로 대화를 이어 가요: "Really? That\'s a good idea!"',
+      ],
+      answer: "Pardon? → What does 'recycle' mean? → That's a good idea!",
+    },
+  ],
+
+  terms: [
+    { term: '의견', def: '어떤 일에 대한 나의 생각이에요. 영어로는 I think ~.로 말해요.' },
+    { term: 'because', def: '"왜냐하면 ~이기 때문에"라는 뜻으로, 생각의 이유를 이어 붙일 때 써요. 예: I like it because it\'s fun.' },
+    { term: '동의와 반대', def: '동의는 상대와 같은 생각이라고 말하는 것(I agree./Me, too.), 반대는 생각이 다르다고 말하는 것(I don\'t think so.)이에요.' },
+    { term: '맞장구', def: '친구의 말을 잘 듣고 있다는 것을 보여 주는 짧은 말이에요. 예: Really?, Wow!, That sounds fun.' },
+    { term: '의문사', def: '궁금한 것을 물을 때 쓰는 말이에요. What(무엇), Who(누구), Where(어디), When(언제), How(어떻게)' },
+    { term: '억양', def: '말할 때 목소리가 올라가고 내려가는 높낮이예요. Yes/No로 답하는 물음은 끝을 올리고, 의문사로 묻는 말은 끝을 내려요.' },
+  ],
+
+  practice: [
+    {
+      id: 'p1', level: 1, type: 'choice', concept: 0,
+      q: "대화의 빈칸에 알맞은 말은 무엇일까요?\n\nA: Let's make a class garden. [[What do you think?]]\nB: I think it's a great idea.",
+      choices: ['What do you think?', 'What do you do?', 'How often do you think?', 'Where are you?'],
+      answer: 0,
+      why: [
+        '',
+        'What do you do?는 "무슨 일을 하니?"라는 뜻이에요. B는 의견을 말했어요.',
+        'How often은 "얼마나 자주"예요. 의견을 묻는 말이 아니에요.',
+        'Where are you?는 "어디 있니?"라는 뜻이에요. B는 의견을 말했어요.',
+      ],
+      explain: 'B가 "I think ~"로 의견을 말했으니 A는 "What do you think?"(어떻게 생각해?)라고 물었어요.',
+    },
+    {
+      id: 'p2', level: 1, type: 'short', concept: 0,
+      q: '"우리는 함께 놀 수 있기 때문에 재미있다고 생각해."라는 뜻이 되게 빈칸에 알맞은 낱말 하나를 쓰세요.\n\nI think it\'s fun [[because]] we can play together.',
+      answer: ['because'],
+      wrong: [
+        { a: 'becuase', why: '철자를 확인해 보세요. b-e-c-a-u-s-e예요.' },
+        { a: 'and', why: 'and는 "그리고"예요. 이유를 이어 붙일 때는 because를 써요.' },
+      ],
+      explain: '"~하기 때문에"라는 이유를 이어 붙이는 말은 because예요.',
+    },
+    {
+      id: 'p3', level: 1, type: 'choice', concept: 1,
+      q: '친구와 **같은 생각**일 때 할 수 있는 말은 무엇일까요?',
+      choices: ['I agree.', "I don't think so.", 'Pardon?', 'What does it mean?'],
+      answer: 0,
+      why: [
+        '',
+        '"나는 그렇게 생각하지 않아."라는 뜻으로 생각이 다를 때 써요.',
+        '잘 못 들었을 때 쓰는 말이에요.',
+        '뜻을 모를 때 묻는 말이에요.',
+      ],
+      explain: 'I agree.는 "나도 그렇게 생각해."라는 뜻으로 동의할 때 써요. Me, too.라고 해도 돼요.',
+    },
+    {
+      id: 'p4', level: 1, type: 'ox', concept: 1,
+      q: '"Me, too."는 "나도 그래."라는 뜻으로, 친구와 같은 생각일 때 써요.',
+      answer: true,
+      explain: 'Me, too.는 "나도 그래."라는 뜻이에요. 예: A: I like this song. B: Me, too.',
+    },
+    {
+      id: 'p5', level: 1, type: 'choice', concept: 2,
+      q: '친구의 말을 잘 못 들었을 때 하는 말은 무엇일까요?',
+      choices: ['Pardon?', 'Me, too.', 'That sounds fun.', 'I agree.'],
+      answer: 0,
+      why: [
+        '',
+        '"나도 그래."라는 뜻으로 같은 생각일 때 써요.',
+        '"재미있겠다."라는 맞장구예요. 말을 잘 들었을 때 써요.',
+        '"나도 그렇게 생각해."라는 뜻으로 동의할 때 써요.',
+      ],
+      explain: 'Pardon?은 "뭐라고?", "다시 말해 줄래?"라는 뜻이에요. Can you say that again?이라고 해도 돼요.',
+    },
+    {
+      id: 'p6', level: 1, type: 'short', concept: 2,
+      q: "낱말의 뜻을 묻는 말이 되게 빈칸에 알맞은 낱말 하나를 쓰세요.\n\nWhat does 'giraffe' [[mean]]?",
+      answer: ['mean'],
+      wrong: [
+        { a: 'means', why: '앞에 does가 있으면 뒤의 동사는 -s 없는 원래 모양(mean)을 써요.' },
+        { a: 'meaning', why: 'does 뒤에는 -ing가 붙지 않은 원래 모양(mean)을 써요.' },
+      ],
+      explain: "What does ~ mean?은 \"~가 무슨 뜻이야?\"예요. does가 있으니 mean은 원래 모양으로 써요.",
+    },
+    {
+      id: 'p7', level: 1, type: 'choice', concept: 3,
+      q: "대화의 빈칸에 알맞은 말은 무엇일까요?\n\nA: I'm going to go camping this weekend.\nB: [[That sounds fun!]]",
+      choices: ['That sounds fun!', 'I disagree.', 'Yes, I do.', "That's too bad."],
+      answer: 0,
+      why: [
+        '',
+        'I disagree.는 의견에 반대할 때 써요. A는 계획을 말했어요.',
+        'A는 묻지 않았어요. 계획을 듣고 맞장구를 쳐요.',
+        "That's too bad.는 안 좋은 일을 들었을 때 써요. 캠핑은 즐거운 계획이에요.",
+      ],
+      explain: '즐거운 계획을 들었으니 "That sounds fun!"(재미있겠다!)으로 맞장구쳐요.',
+    },
+    {
+      id: 'p8', level: 1, type: 'choice', concept: 4,
+      q: '끝을 **올려** 읽는(↗) 묻는 말은 무엇일까요?',
+      choices: ['Do you like soccer?', 'What do you think?', 'Where do you live?', 'How often do you exercise?'],
+      answer: 0,
+      why: [
+        '',
+        'What으로 시작하는 의문사 물음이라 끝을 내려 읽어요.',
+        'Where로 시작하는 의문사 물음이라 끝을 내려 읽어요.',
+        'How로 시작하는 의문사 물음이라 끝을 내려 읽어요.',
+      ],
+      explain: 'Do you like soccer?는 Yes/No로 답하는 물음이라 끝을 올려 읽어요(↗). 나머지는 의문사(What, Where, How)로 묻는 말이라 끝을 내려요(↘).',
+    },
+    {
+      id: 'p9', level: 2, type: 'order', concept: 0,
+      q: '"우리가 물을 아낄 수 있으니 좋은 생각이라고 생각해."라는 뜻이 되게 차례대로 놓으세요.',
+      choices: ['I think', "it's a good idea", 'because', 'we can', 'save water.'],
+      answer: [0, 1, 2, 3, 4],
+      hint: '생각(I think ~)을 먼저 말하고, because 뒤에 이유를 놓아요.',
+      explain: "생각(I think it's a good idea) + because + 이유(we can save water) 차례예요.",
+    },
+    {
+      id: 'p10', level: 2, type: 'choice', concept: 2,
+      q: "대화의 빈칸에 알맞은 말은 무엇일까요?\n\nA: What does 'giraffe' mean?\nB: [[It's a tall animal with a long neck.]]",
+      choices: ["It's a tall animal with a long neck.", 'I think so.', 'Yes, it does.', 'Really?'],
+      answer: 0,
+      why: [
+        '',
+        'I think so.는 "나도 그렇게 생각해."예요. A는 낱말의 뜻을 물었어요.',
+        'What으로 묻는 말에는 Yes/No로 답하지 않아요.',
+        'Really?는 맞장구예요. A는 낱말의 뜻을 물었으니 뜻을 알려 줘요.',
+      ],
+      explain: "\"'giraffe'가 무슨 뜻이야?\"라는 물음이에요. \"목이 긴 키 큰 동물이야.\"라고 뜻을 설명해 줘요. giraffe는 기린이에요.",
+    },
+    {
+      id: 'p11', level: 2, type: 'choice', concept: 1,
+      q: "대화를 읽고 물음에 답하세요.\n\nA: I think summer is great because we can swim.\nB: I don't think so. I like winter because I can make a snowman.\n\nB가 좋아하는 계절은 무엇일까요?",
+      choices: ['겨울', '여름', '봄', '가을'],
+      answer: 0,
+      why: [
+        '',
+        '여름을 좋아하는 사람은 A예요. B는 "I don\'t think so."로 반대했어요.',
+        '대화에 봄 이야기는 나오지 않아요.',
+        '대화에 가을 이야기는 나오지 않아요.',
+      ],
+      hint: 'B가 like 뒤에 쓴 낱말을 찾아보세요.',
+      explain: 'B는 "I like winter because I can make a snowman."이라고 했어요. 눈사람을 만들 수 있어서 겨울을 좋아해요.',
+    },
+    {
+      id: 'p12', level: 2, type: 'short', concept: 1,
+      q: '"나도 그래."라는 뜻이 되게 빈칸에 알맞은 낱말 하나를 쓰세요.\n\nA: I think this pizza is delicious.\nB: Me, [[too]]. I love it.',
+      answer: ['too'],
+      wrong: [
+        { a: 'to', why: '소리는 같지만 to는 "~로"예요. "~도"라는 뜻은 too(t-o-o)예요.' },
+        { a: 'two', why: '소리는 같지만 two는 수 2예요. "~도"라는 뜻은 too(t-o-o)예요.' },
+      ],
+      hint: '소리가 같은 낱말이 세 개 있어요. 뜻을 생각해서 골라요.',
+      explain: 'Me, too.는 "나도 그래."라는 뜻이에요. too는 "~도, 또한"이에요.',
+    },
+  ],
+
+  advanced: [
+    {
+      id: 'a1', level: 3, type: 'choice', concept: 5,
+      q: '친구가 "Let\'s play soccer at lunchtime."라고 했어요. 나는 생각이 달라요. 친구의 생각을 **존중하며** 반대하는 말로 가장 알맞은 것은 무엇일까요?',
+      choices: ["That's a good idea, but I think it's too hot today.", "That's a bad idea.", "You're wrong.", "I don't care."],
+      answer: 0,
+      why: [
+        '',
+        '딱 잘라 "나쁜 생각이야."라고 하면 친구의 마음이 상할 수 있어요.',
+        '"네가 틀렸어."라고 하면 친구를 존중하는 말이 아니에요.',
+        '"상관없어."는 친구의 말에 관심이 없다는 뜻이라 대화가 끊겨요.',
+      ],
+      hint: '친구 생각의 좋은 점을 먼저 말하고, but 뒤에 내 생각과 이유를 말하는 문장을 찾아보세요.',
+      explain: '"That\'s a good idea"로 친구의 생각을 먼저 인정하고, but 뒤에 내 생각과 이유(오늘은 너무 더워)를 말했어요. 이것이 존중하며 반대하는 방법이에요.',
+    },
+    {
+      id: 'a2', level: 3, type: 'choice', concept: 4,
+      q: '두 묻는 말의 끝 억양을 바르게 짝 지은 것은 무엇일까요?\n\n① What do you think?\n② Do you agree?',
+      choices: ['① 내림 ↘, ② 올림 ↗', '① 올림 ↗, ② 내림 ↘', '① 올림 ↗, ② 올림 ↗', '① 내림 ↘, ② 내림 ↘'],
+      answer: 0,
+      fixed: true,
+      why: [
+        '',
+        '거꾸로 짝 지었어요. What으로 묻는 말은 내리고, Do로 묻는 말은 올려요.',
+        'What으로 시작하는 의문사 물음은 끝을 내려요.',
+        'Do로 시작하는 Yes/No 물음은 끝을 올려요.',
+      ],
+      hint: '첫 낱말이 의문사(What, Where …)인지, Do·Are·Can인지 보세요.',
+      explain: '①은 의문사 What으로 묻는 말이라 끝을 내리고(↘), ②는 Yes/No로 답하는 물음이라 끝을 올려요(↗).',
+    },
+    {
+      id: 'a3', level: 3, type: 'order', concept: 2,
+      q: '"다시 말해 줄래?"라는 뜻이 되게 차례대로 놓으세요.',
+      choices: ['Can', 'you', 'say', 'that', 'again?'],
+      answer: [0, 1, 2, 3, 4],
+      hint: '부탁하는 말 Can you로 시작해요.',
+      explain: 'Can you(~해 줄래?) + say that(그것을 말하다) + again(다시) 차례예요. "Can you say that again?"',
+    },
+    {
+      id: 'a4', level: 3, type: 'short', concept: 1,
+      q: "대화를 읽고, 민아의 생각에 **반대한** 사람의 이름을 영어로 쓰세요.\n\nMina: Let's plant trees in our school garden. What do you think?\nJiho: I think it's a good idea because trees give us clean air.\nSua: I agree. Trees are good for birds, too.\nDoyun: Hmm, I don't think so. We don't have much space. Let's grow flowers in pots.",
+      answer: ['Doyun'],
+      wrong: [
+        { a: 'Sua', why: 'Sua는 "I agree."라고 했어요. 민아의 생각에 동의한 거예요.' },
+        { a: 'Jiho', why: 'Jiho는 "I think it\'s a good idea"라고 했어요. 찬성한 거예요.' },
+      ],
+      hint: '동의하는 말(I agree.)과 반대하는 말(I don\'t think so.)을 찾아보세요.',
+      explain: "Doyun은 \"I don't think so.\"라고 하고, 자리가 넓지 않다는 이유를 말했어요. 대신 화분에 꽃을 기르자고 다른 생각을 말했어요.",
+    },
+    {
+      id: 'a5', level: 3, type: 'order', concept: 3,
+      q: '자연스러운 대화가 되게 차례대로 놓으세요.',
+      choices: [
+        "A: I'm going to join the drawing contest. What do you think?",
+        "B: I think it's a great idea because you draw very well.",
+        'A: Really? Thank you!',
+        "B: You're welcome. Good luck!",
+      ],
+      answer: [0, 1, 2, 3],
+      hint: '의견을 묻는 말 → 의견과 이유 → 맞장구와 고마움 → 대답 차례를 떠올려 보세요.',
+      explain: 'A가 계획을 말하며 의견을 묻고(What do you think?), B가 생각과 이유를 말해요(because ~). A가 "Really? Thank you!"로 맞장구치며 고마워하고, B가 "You\'re welcome."으로 답해요.',
+    },
+  ],
+
+  deeper: [
+    {
+      title: '좋은 대화의 비밀: 듣기가 반이에요',
+      body: '대화를 잘하는 사람은 말을 많이 하는 사람이 아니라 **잘 듣는** 사람이에요.\n\n- 친구가 말할 때 눈을 보고 끝까지 들어요.\n- Really?, Wow!처럼 맞장구로 "잘 듣고 있어"를 알려 줘요.\n- 모르는 것은 Pardon?이나 What does ~ mean?으로 솔직하게 물어요. 모르는 것을 묻는 것은 부끄러운 일이 아니에요.\n- 생각이 달라도 "That\'s a good idea, but ~"처럼 친구의 생각을 먼저 인정해요.\n\n영어뿐 아니라 우리말 대화에서도 똑같이 쓸 수 있는 방법이에요.',
+    },
+    {
+      title: '중학교에서 이어지는 의견 말하기',
+      body: '중학교에 가면 I think 뒤에 that을 넣어 "I think **that** ~."처럼 말하는 방법도 배워요. that은 빼도 뜻이 같아서, 지금처럼 I think ~.라고 해도 괜찮아요.\n\n또 의견을 더 부드럽게 말하는 표현(In my opinion, ~)과 이유를 여러 개 드는 방법(First, ~. Second, ~.)도 배워요. 앞 단원에서 배운 순서를 나타내는 말(First, Next …)이 여기서도 쓰여요.',
+    },
+  ],
+
+  faq: [
+    {
+      q: '"I don\'t think so."라고 하면 무례하지 않아요?',
+      a: 'I don\'t think so.는 "나는 그렇게 생각하지 않아."라는 뜻의 자연스러운 말이라 무례하지 않아요.\n\n그래도 이유를 함께 말하거나, "That\'s a good idea, but ~"처럼 친구의 생각을 먼저 인정하면 더 부드럽게 들려요.',
+    },
+    {
+      q: 'Me, too랑 I agree는 뭐가 달라요?',
+      a: '둘 다 같은 생각일 때 써요. Me, too.는 "나도 그래."처럼 내 마음이나 좋아하는 것이 같을 때 자주 쓰고, I agree.는 "나도 그렇게 생각해."처럼 의견에 찬성할 때 자주 써요.\n\n예: A: I like cats. B: Me, too. / A: I think we should recycle. B: I agree.',
+    },
+    {
+      q: 'Do you ~?는 왜 끝을 올려 읽어요?',
+      a: 'Yes/No로 답하는 물음은 "맞아, 아니야?" 하고 상대의 대답을 기다리는 느낌이라 끝을 올려요. What, Where처럼 의문사로 묻는 말은 묻는 내용이 이미 드러나 있어서 보통 끝을 내려요.\n\n우리말에서도 "밥 먹었어?"는 끝을 올리고, "뭐 먹었어?"는 끝을 내리는 경우가 많아요.',
+    },
+    {
+      q: '모르는 낱말이 나오면 어떻게 물어요?',
+      a: '"What does (그 낱말) mean?"이라고 물어요. 예: What does \'recycle\' mean? 상대가 "It means ~."로 뜻을 알려 줄 거예요.',
+    },
+  ],
+
+  mistakes: [
+    '"What does it means?"처럼 does 뒤의 동사에 -s를 붙이는 실수 — does가 있으면 뒤에는 원래 모양(mean)을 써요.',
+    '생각만 말하고 이유를 빠뜨리는 실수 — "I think it\'s a good idea because ~."처럼 because 뒤에 이유를 붙이면 의견이 더 잘 전해져요.',
+    '"Me, to."처럼 too를 to로 쓰는 실수 — "~도"라는 뜻은 o가 두 개인 too예요.',
+  ],
+
+  vocab: [
+    { w: 'think', m: '생각하다', ex: 'I think it is a good idea.', exm: '나는 그게 좋은 생각이라고 생각해요.' },
+    { w: 'idea', m: '생각, 아이디어', ex: 'That is a great idea!', exm: '그거 정말 좋은 생각이다!' },
+    { w: 'because', m: '왜냐하면, ~이기 때문에', ex: 'I like spring because it is warm.', exm: '나는 따뜻해서 봄을 좋아해요.' },
+    { w: 'agree', m: '동의하다', ex: 'I agree with you.', exm: '나는 네 말에 동의해.' },
+    { w: 'disagree', m: '동의하지 않다', ex: 'Sorry, but I disagree.', exm: '미안하지만 나는 생각이 달라.' },
+    { w: 'mean', m: '뜻하다', ex: "What does 'recycle' mean?", exm: "'recycle'은 무슨 뜻이에요?" },
+    { w: 'again', m: '다시, 한 번 더', ex: 'Can you say that again?', exm: '다시 말해 줄래?' },
+    { w: 'pardon', m: '뭐라고요?(다시 말해 달라고 할 때)', ex: 'Pardon? I can\'t hear you.', exm: '뭐라고? 잘 안 들려.' },
+    { w: 'really', m: '정말', ex: 'Really? That is amazing!', exm: '정말? 놀랍다!' },
+    { w: 'sound', m: '~하게 들리다', ex: 'That sounds fun.', exm: '그거 재미있겠다.' },
+    { w: 'great', m: '아주 좋은, 멋진', ex: 'Your plan sounds great.', exm: '네 계획 아주 좋다.' },
+    { w: 'reason', m: '이유', ex: 'Tell me your reason.', exm: '네 이유를 말해 줘.' },
+    { w: 'different', m: '다른', ex: 'We have different ideas.', exm: '우리는 생각이 서로 달라요.' },
+    { w: 'recycle', m: '재활용하다', ex: 'We recycle paper and bottles.', exm: '우리는 종이와 병을 재활용해요.' },
+    { w: 'giraffe', m: '기린', ex: 'A giraffe has a long neck.', exm: '기린은 목이 길어요.' },
+    { w: 'space', m: '공간, 자리', ex: 'There is not much space in my room.', exm: '내 방에는 공간이 별로 없어요.' },
+  ],
+});

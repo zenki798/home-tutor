@@ -1,0 +1,197 @@
+/* 서식 글·수식 (js/mathtext.js 가 만드는 HTML) — 계약: docs/ARCHITECTURE.md §3
+ * - 색은 currentColor 와 반투명 회색만 쓴다(밝은/어두운 화면 모두). 웹 글꼴 없이 시스템 글꼴.
+ * - 괄호·근호·화살표는 SVG 없이 CSS(테두리·그라디언트)로 그려서 내용 높이·너비에 맞춰 늘어난다.
+ * - 화면 CSS(app.css)가 덮어쓸 수 있게 선택자는 가볍게 둔다. 글꼴은 --mt-font, --mt-text-font 로 바꿀 수 있다. */
+
+/* ---------- 서식 글 ---------- */
+.rt { line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere; }
+.rt > :first-child { margin-top: 0; }
+.rt > :last-child { margin-bottom: 0; }
+.rt p { margin: 0 0 .8em; }
+.rt ul, .rt ol { margin: 0 0 .8em; padding-left: 1.4em; }
+.rt li { margin: .25em 0; }
+.rt-h { margin: 1.1em 0 .45em; font-size: 1.05em; font-weight: 700; line-height: 1.45; }
+.rt strong { font-weight: 700; }
+.rt-box {
+  margin: .9em 0; padding: .7em .9em; border-radius: 12px;
+  background: rgba(127, 127, 127, .11); border-left: 4px solid rgba(127, 127, 127, .45);
+}
+/* 국어 "밑줄 친 부분": 한글 아래 받침에 닿지 않게 조금 내린다 */
+.rt-u { text-decoration: underline; text-decoration-thickness: max(1px, .09em); text-underline-offset: .24em; }
+/* 빈칸 상자: 안 글자는 보이지 않고 칸 길이(--w)만 */
+.rt-blank {
+  display: inline-block; box-sizing: border-box; width: var(--w, 3ch); min-width: 2.2em; height: 1.4em;
+  vertical-align: -.34em; margin: 0 .2em; border: 1.5px solid currentColor; border-radius: 5px; opacity: .85;
+}
+.rt-blank.rt-q {
+  width: auto; min-width: 1.7em; padding: 0 .3em; text-align: center; font-weight: 700; font-style: normal;
+  line-height: calc(1.4em - 3px);
+}
+.rt-tablewrap { max-width: 100%; overflow-x: auto; margin: .9em 0; -webkit-overflow-scrolling: touch; }
+.rt-table { border-collapse: collapse; font-size: .95em; line-height: 1.5; }
+.rt-table th, .rt-table td {
+  border: 1px solid rgba(127, 127, 127, .45); padding: .45em .75em; text-align: center; vertical-align: middle;
+}
+.rt-table th { background: rgba(127, 127, 127, .13); font-weight: 700; }
+
+/* ---------- 수식: 글자 ---------- */
+.mt {
+  font-family: var(--mt-font, "Times New Roman", "Nimbus Roman", "Liberation Serif", "Noto Serif", "DejaVu Serif", Cambria, serif);
+  font-size: 1.12em; font-style: normal; font-weight: normal; line-height: 1;
+  font-variant-numeric: lining-nums; letter-spacing: 0; word-spacing: 0; text-indent: 0; text-transform: none;
+}
+/* 수식 안에서는 줄을 바꾸지 않는다. 긴 한 줄 수식(mt-wrap)만 관계 기호 뒤(<wbr>)에서 바꿀 수 있다 */
+.mt-in, .mt-c { white-space: nowrap; }
+.mt-in.mt-wrap { white-space: normal; }
+.mt-block {
+  display: block; margin: .7em 0; padding: .35em .15em; text-align: center;
+  overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
+}
+.mt-block > .mt { font-size: 1.2em; }
+
+.mt-v { font-style: italic; padding-right: .02em; }     /* 변수: 기울임 */
+.mt-up, .mt-ord, .mt-fn { font-style: normal; }          /* 숫자·기호·함수 이름: 곧은 글씨 */
+.mt-text {                                               /* 한글·\text: 본문 글꼴의 곧은 글씨 */
+  font-family: var(--mt-text-font, system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif);
+  font-style: normal; font-size: .89em; white-space: pre;
+}
+.mt-text.mt-rm { font-family: inherit; font-size: 1em; } /* \mathrm{cm}: 수식 글꼴의 곧은 글씨 */
+.mt-bf { font-weight: 700; }
+.mt-it { font-style: italic; }
+
+/* 간격: 연산 기호는 보통, 관계 기호는 넓게, 단항 부호(−3)는 붙인다 */
+.mt-op { margin: 0 .22em; }
+.mt-op.mt-un { margin: 0 .04em 0 0; }
+.mt-rel { margin: 0 .28em; }
+.mt-rel.mt-l0 { margin-left: 0; }
+.mt-punct { margin-right: .17em; }
+.mt-sup .mt-op, .mt-sub .mt-op, .mt-over .mt-op, .mt-under .mt-op, .mt-idx .mt-op { margin: 0 .07em; }
+.mt-sup .mt-rel, .mt-sub .mt-rel, .mt-over .mt-rel, .mt-under .mt-rel { margin: 0 .1em; }
+.mt-sp { display: inline-block; }
+.mt-sp-thin { width: .17em; }
+.mt-sp-med { width: .24em; }
+.mt-sp-quad { width: 1em; }
+.mt-sp-qquad { width: 2em; }
+.mt-sp-neg { margin-left: -.17em; }
+
+/* ---------- 위·아래 첨자 ---------- */
+.mt-sup, .mt-sub { font-size: .7em; line-height: 1; }
+.mt-sup { vertical-align: .62em; margin-left: .04em; }
+.mt-sub { vertical-align: -.3em; margin-left: .02em; }
+.mt-sup.mt-hi { vertical-align: 1.3em; }                 /* 분수·큰 괄호 위의 지수 */
+.mt-sub.mt-hi { vertical-align: -.8em; }
+/* 위아래 동시(x₁²): 세로로 쌓는다. 기준선 = 위첨자 기준선 */
+.mt-supsub {
+  display: inline-flex; flex-direction: column; align-items: flex-start;
+  font-size: .7em; line-height: 1.1; vertical-align: .62em; margin-left: .04em;
+}
+.mt-supsub.mt-hi { vertical-align: 1.3em; row-gap: .7em; }
+.mt-supsub > .mt-sup, .mt-supsub > .mt-sub { font-size: 1em; vertical-align: baseline; margin: 0; }
+
+/* ---------- 분수: 위아래로 쌓고 가운데 가로줄 ---------- */
+.mt-frac {
+  display: inline-flex; flex-direction: column; align-items: stretch; text-align: center;
+  vertical-align: middle; margin: 0 .1em; font-size: .92em; line-height: 1.15;
+}
+.mt-frac .mt-frac { font-size: .9em; }
+.mt-num, .mt-den { display: block; padding: 0 .14em; }
+.mt-num { border-bottom: max(1px, .065em) solid currentColor; padding-bottom: .1em; }
+.mt-den { padding-top: .1em; }
+.mt-nobar > .mt-num { border-bottom-color: transparent; }   /* \binom */
+
+/* ---------- 근호: √ 를 그라디언트 세 획으로 그리고 윗줄은 border-top ---------- */
+.mt-sqrt { display: inline-flex; align-items: stretch; margin: 0 .06em; }
+.mt-rsym {
+  flex: none; width: .62em; margin-right: -.01em;
+  background:
+    /* 긴 오르막 획: 아래에서 오른쪽 위 끝(윗줄과 만나는 곳)까지 */
+    linear-gradient(to bottom right, transparent calc(50% - .055em), currentColor calc(50% - .032em),
+      currentColor calc(50% + .032em), transparent calc(50% + .055em)) 100% 0 / calc(100% - .24em) 100% no-repeat,
+    /* 굵은 내리막 획 */
+    linear-gradient(to top right, transparent calc(50% - .07em), currentColor calc(50% - .048em),
+      currentColor calc(50% + .048em), transparent calc(50% + .07em)) .05em 100% / .21em .5em no-repeat,
+    /* 왼쪽 작은 삐침 */
+    linear-gradient(to bottom right, transparent calc(50% - .05em), currentColor calc(50% - .03em),
+      currentColor calc(50% + .03em), transparent calc(50% + .05em)) 0 calc(100% - .42em) / .08em .1em no-repeat;
+}
+.mt-rad { align-self: baseline; border-top: max(1px, .065em) solid currentColor; padding: .13em .08em 0 .04em; }
+.mt-idx { align-self: flex-start; position: relative; z-index: 1; font-size: .55em; margin: .12em -.55em 0 .1em; }
+
+/* ---------- 늘어나는 괄호: 빈 상자를 테두리로 그린다 (내용 높이만큼) ---------- */
+.mt-delim.mt-tall { display: inline-flex; align-items: stretch; }
+.mt-delim.mt-tall > .mt-dbody { align-self: baseline; padding: 0 .05em; }
+.mt-dl { position: relative; flex: none; width: .4em; min-height: 1.1em; }
+.mt-dl-r { transform: scaleX(-1); }
+.mt-dl-ch { width: auto; min-height: 0; align-self: center; }
+.mt-dl::before, .mt-dl::after, .mt-dl > span, .mt-dl > span::before, .mt-dl > span::after {
+  content: ''; position: absolute; box-sizing: border-box;
+}
+/* ( ) : 왼쪽 테두리만 둥글게 — 위아래 끝으로 갈수록 가늘어진다 */
+.mt-dl-p::before {
+  top: .02em; bottom: .02em; left: .1em; right: .02em;
+  border-left: max(1.2px, .08em) solid currentColor; border-radius: 100% 0 0 100% / 50% 0 0 50%;
+}
+/* [ ] */
+.mt-dl-b { width: .34em; }
+.mt-dl-b::before { top: 0; bottom: 0; left: .1em; right: .05em; border: max(1px, .07em) solid currentColor; border-right: 0; }
+/* | | 와 ‖ ‖ (행렬식·절댓값·노름) */
+.mt-dl-v { width: .26em; }
+.mt-dl-v::before { top: 0; bottom: 0; left: .1em; border-left: max(1px, .07em) solid currentColor; }
+.mt-dl-V { width: .4em; }
+.mt-dl-V::before { top: 0; bottom: 0; left: .08em; width: .2em; border: max(1px, .07em) solid currentColor; border-top: 0; border-bottom: 0; }
+/* ⌊ ⌋ ⌈ ⌉ */
+.mt-dl-f::before, .mt-dl-e::before { top: 0; bottom: 0; left: .1em; right: .06em; border-left: max(1px, .07em) solid currentColor; }
+.mt-dl-f::before { border-bottom: max(1px, .07em) solid currentColor; }
+.mt-dl-e::before { border-top: max(1px, .07em) solid currentColor; }
+/* { } : 위 갈고리 · 가운데 뾰족한 두 곡선 · 아래 갈고리 네 조각 (등뼈는 x = .22em) */
+.mt-dl-c { width: .5em; min-height: 1.3em; }
+.mt-dl-c::before, .mt-dl-c::after { left: .22em; right: .04em; height: calc(50% - .27em); border-left: max(1px, .07em) solid currentColor; }
+.mt-dl-c::before { top: .02em; border-top: max(1px, .045em) solid currentColor; border-top-left-radius: .2em .24em; }
+.mt-dl-c::after { bottom: .02em; border-bottom: max(1px, .045em) solid currentColor; border-bottom-left-radius: .2em .24em; }
+.mt-dl-c > span { left: .03em; width: calc(.19em + max(1px, .07em)); top: calc(50% - .25em); height: .5em; }
+.mt-dl-c > span::before, .mt-dl-c > span::after { left: 0; right: 0; height: 50%; border-right: max(1px, .07em) solid currentColor; }
+.mt-dl-c > span::before { top: 0; border-bottom: max(1px, .045em) solid currentColor; border-bottom-right-radius: 100% 100%; }
+.mt-dl-c > span::after { bottom: 0; border-top: max(1px, .045em) solid currentColor; border-top-right-radius: 100% 100%; }
+
+/* ---------- 행렬·연립방정식(cases) ---------- */
+.mt-mat, .mt-cases { vertical-align: middle; margin: 0 .08em; }
+.mt-grid {
+  display: inline-grid; column-gap: .9em; row-gap: .35em; padding: .15em .25em;
+  align-items: baseline; justify-items: center; align-self: center; line-height: 1.15;
+}
+.mt-grid-cases { justify-items: start; column-gap: 1.3em; padding-left: .3em; }
+.mt-cell { white-space: nowrap; }
+
+/* ---------- 큰 연산자: ∑ ∏ lim 은 위끝·아래끝을 기호 위아래에 ---------- */
+/* 표(inline-table)의 기준선 = 기호 줄의 기준선. 위아래 글은 표 제목(caption)으로 붙여 폭에도 들어간다 */
+.mt-big { display: inline-table; border-collapse: collapse; vertical-align: -.2em; margin: 0 .08em; line-height: 1.1; text-align: center; }
+.mt-big > .mt-sym { display: table-cell; vertical-align: baseline; font-size: 1.45em; line-height: 1; }
+.mt-big > .mt-over { display: table-caption; caption-side: top; font-size: .68em; }
+.mt-big > .mt-under { display: table-caption; caption-side: bottom; font-size: .68em; }
+.mt-lim { vertical-align: baseline; }
+.mt-lim > .mt-sym { font-size: 1em; }
+/* ∫ : 교과서처럼 위끝·아래끝을 기호 오른쪽 위·아래에 */
+.mt-big.mt-int { display: inline-grid; grid-template-columns: auto auto; grid-template-rows: auto auto; vertical-align: middle; text-align: left; }
+.mt-int > .mt-sym { display: block; grid-column: 1; grid-row: 1 / span 2; align-self: center; font-size: 1.6em; line-height: 1.15; }
+.mt-int > .mt-over, .mt-int > .mt-under { display: block; grid-column: 2; font-size: .68em; }
+.mt-int > .mt-over { grid-row: 1; align-self: start; margin-left: .1em; }
+.mt-int > .mt-under { grid-row: 2; align-self: end; margin-left: -.25em; }
+
+/* ---------- 꾸밈: 선분 윗줄, 벡터 화살표, 호, 모자 ---------- */
+.mt-ol { display: inline-block; border-top: max(1px, .06em) solid currentColor; padding-top: .08em; line-height: 1.05; }
+.mt-ul { display: inline-block; border-bottom: max(1px, .06em) solid currentColor; padding-bottom: .05em; line-height: 1.05; }
+.mt-acc { display: inline-block; position: relative; padding-top: .34em; line-height: 1.05; }
+.mt-acc > .mt-acc-mark { position: absolute; left: .04em; right: .04em; top: .1em; height: 0; }
+.mt-vec > .mt-acc-mark { border-top: max(1px, .06em) solid currentColor; }
+.mt-vec > .mt-acc-mark::after {
+  content: ''; position: absolute; right: .02em; top: -.13em; width: .2em; height: .2em; box-sizing: border-box;
+  border-top: max(1px, .06em) solid currentColor; border-right: max(1px, .06em) solid currentColor; transform: rotate(45deg);
+}
+.mt-arc > .mt-acc-mark {
+  top: .02em; height: .3em; border-top: max(1px, .06em) solid currentColor;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.mt-acc > .mt-acc-ch { top: -.06em; height: auto; text-align: center; font-size: .8em; line-height: 1; }
+
+/* 빈칸 선 (영어 학습지의 ___) */
+.rt-line { display: inline-block; width: var(--w, 4ch); min-width: 2.5em; height: 1em; vertical-align: -.2em; margin: 0 .2em; border-bottom: 1.5px solid currentColor; opacity: .8; }

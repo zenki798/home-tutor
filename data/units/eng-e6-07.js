@@ -1,0 +1,370 @@
+/* 6학년 영어 · 건강한 습관 말하기 */
+Tutor.registerUnit({
+  id: 'eng-e6-07',
+  course: 'eng-e6',
+  title: '건강한 습관 말하기',
+  summary: 'How often do you ~?로 얼마나 자주 하는지 묻고 once a week처럼 횟수를 넣어 건강 습관을 말해요.',
+  goals: [
+    'How often do you ~?로 얼마나 자주 하는지 물을 수 있어요.',
+    'once, twice, three times와 a day, a week를 써서 횟수를 말할 수 있어요.',
+    '건강 습관을 나타내는 낱말을 알고 문장으로 말할 수 있어요.',
+    '설문 결과 표를 읽고 필요한 정보를 찾을 수 있어요.',
+  ],
+  standards: [],
+
+  concepts: [
+    {
+      title: '얼마나 자주 하는지 묻기: How often',
+      body: "**often**은 \"자주\"라는 뜻이에요. **How often**은 \"얼마나 자주\"예요.\n\n**How often do you + 할 일?** → \"너는 얼마나 자주 ~하니?\"\n\n- **How often do you** read books? (책을 얼마나 자주 읽니?)\n- **How often do you** exercise? (운동을 얼마나 자주 하니?)\n\n대답은 **횟수**로 해요.\n\n- I read books **every day**. (매일)\n- I exercise **three times a week**. (일주일에 세 번)\n\n> 💡 What time(몇 시에), Where(어디서)와 헷갈리지 않게 해요. How often에는 \"몇 번\"으로 답해요.",
+      easy: "How often은 \"달력에 동그라미를 몇 개 치니?\" 하고 묻는 말이에요.\n\n일주일 달력에 운동한 날마다 동그라미를 친다고 해 보세요. 동그라미가 세 개면 \"three times a week\"(일주일에 세 번)라고 답해요.",
+      check: {
+        type: 'choice',
+        q: '"How often do you read books?"에 알맞은 대답은 무엇일까요?',
+        choices: ['Twice a week.', 'At seven o\'clock.', 'In the library.'],
+        answer: 0,
+        why: ['', '시각을 말했어요. 그건 What time으로 물을 때의 대답이에요.', '장소를 말했어요. 그건 Where로 물을 때의 대답이에요.'],
+        explain: 'How often은 "얼마나 자주"를 묻는 말이라 횟수로 답해요. "Twice a week."(일주일에 두 번.)',
+      },
+    },
+    {
+      title: '횟수 말하기: once, twice, three times',
+      body: "몇 번인지는 이렇게 말해요.\n\n| 영어 | 뜻 |\n|---|---|\n| **once** | 한 번 |\n| **twice** | 두 번 |\n| **three times** | 세 번 |\n| **four times** | 네 번 |\n\n한 번과 두 번은 **once, twice**라는 따로 된 낱말을 쓰고, 세 번부터는 **수 + times**로 말해요.\n\n그 뒤에 **기간**을 붙여요: **a day**(하루에), **a week**(일주일에), **a month**(한 달에)\n\n- once **a day** (하루에 한 번)\n- twice **a week** (일주일에 두 번)\n- three times **a month** (한 달에 세 번)\n\n> 💡 여기서 a는 \"~마다, ~에\"라는 뜻이에요. a week = 일주일에(일주일마다)",
+      easy: "횟수 표현은 \"몇 번 + 언제마다\" 두 조각으로 만들어요.\n\n- 몇 번: once(1번), twice(2번), three times(3번) …\n- 언제마다: a day(하루마다), a week(일주일마다)\n\n두 조각을 이어 붙이면 twice a day(하루에 두 번)처럼 돼요.",
+      check: {
+        type: 'short',
+        q: '"일주일에 두 번"이라는 뜻이 되게 빈칸에 알맞은 낱말 하나를 쓰세요.\n\n[[twice]] a week',
+        answer: ['twice'],
+        wrong: [
+          { a: 'two', why: '"두 번"은 two가 아니라 twice라는 따로 된 낱말을 써요.' },
+          { a: 'once', why: 'once는 "한 번"이에요. "두 번"은 twice예요.' },
+        ],
+        explain: '두 번은 twice예요. twice a week는 "일주일에 두 번"이에요.',
+      },
+    },
+    {
+      title: '횟수를 넣어 습관 말하기',
+      body: "횟수를 나타내는 말은 보통 **문장 맨 끝**에 써요.\n\n**I + 할 일 + 횟수.**\n\n- I exercise **three times a week**. (나는 일주일에 세 번 운동해요.)\n- I wash my hands **five times a day**. (나는 하루에 다섯 번 손을 씻어요.)\n- I eat vegetables **every day**. (나는 매일 채소를 먹어요.)\n\n5학년에서 배운 always(항상), usually(보통), sometimes(가끔), never(전혀 ~ 않는)도 얼마나 자주 하는지 나타내요. 이 말들은 할 일 **앞**에 써요: I **always** wash my hands before lunch.",
+      easy: "문장을 기차라고 생각해 보세요.\n\n맨 앞 칸에 누가(I), 가운데 칸에 할 일(exercise), 마지막 칸에 횟수(three times a week)를 태워요.\n\nI → exercise → three times a week.",
+      check: {
+        type: 'choice',
+        q: '"나는 하루에 한 번 우유를 마셔요."를 바르게 나타낸 것은 무엇일까요?',
+        choices: ['I drink milk once a day.', 'I drink milk once a week.', 'I drink milk twice a day.'],
+        answer: 0,
+        why: ['', 'a week는 "일주일에"예요. "하루에"는 a day예요.', 'twice는 "두 번"이에요. "한 번"은 once예요.'],
+        explain: '"한 번"은 once, "하루에"는 a day라서 once a day예요. 횟수는 문장 끝에 써요.',
+      },
+    },
+    {
+      title: '건강 습관을 나타내는 말',
+      body: "몸을 튼튼하게 하는 **건강 습관**을 영어로 말해 봐요.\n\n| 영어 | 뜻 |\n|---|---|\n| exercise | 운동하다 |\n| wash my hands | 손을 씻다 |\n| eat vegetables | 채소를 먹다 |\n| go to bed early | 일찍 자다 |\n| drink water | 물을 마시다 |\n| brush my teeth | 이를 닦다 |\n| eat breakfast | 아침을 먹다 |\n\n- I **go to bed early** every night.\n- I **brush my teeth** three times a day.\n\n> ⚠️ \"내 손\"은 my hands, \"내 이\"는 my teeth처럼 여러 개를 나타내는 모양으로 써요. hand는 손 하나, tooth는 이 하나예요.",
+      easy: "하루를 떠올려 보세요.\n\n아침에 일어나 **eat breakfast**, 밖에서 놀고 들어와 **wash my hands**, 밥 먹고 **brush my teeth**, 밤에는 **go to bed early**.\n\n하루 생활 순서대로 외우면 잘 잊히지 않아요.",
+      check: {
+        type: 'choice',
+        q: '"일찍 자다"를 영어로 바르게 나타낸 것은 무엇일까요?',
+        choices: ['go to bed early', 'get up early', 'go to bed late'],
+        answer: 0,
+        why: ['', 'get up early는 "일찍 일어나다"예요.', 'late는 "늦게"예요. "일찍"은 early예요.'],
+        explain: 'go to bed는 "자러 가다", early는 "일찍"이에요. 그래서 go to bed early는 "일찍 자다"예요.',
+      },
+    },
+    {
+      title: '다른 사람의 습관 묻고 답하기',
+      body: "다른 한 사람(he, she, Mina …)의 습관을 물을 때는 do 대신 **does**를 써요.\n\n- **How often does** Mina exercise? (민아는 얼마나 자주 운동하니?)\n- She **exercises** twice a week. (그녀는 일주일에 두 번 운동해요.)\n\n5학년에서 배운 것처럼, 주어가 he, she 같은 한 사람이면 대답하는 문장의 동사에 **-s(-es)**를 붙여요.\n\n| 주어 | 묻는 말 | 대답 |\n|---|---|---|\n| you | How often **do** you drink water? | I **drink** water five times a day. |\n| he, she | How often **does** he drink water? | He **drinks** water five times a day. |\n\n> ⚠️ 묻는 말에서는 does가 -s를 맡으니 뒤의 동사는 원래 모양이에요: How often does she **exercise**? (exercises ✗)",
+      easy: "-s는 한 사람 주인공(he, she)을 따라다니는 꼬리표예요.\n\n- 묻는 말에서는 꼬리표가 does에 붙어요: How often **does** she exercise?\n- 대답에서는 꼬리표가 동사에 붙어요: She **exercises** every day.\n\n꼬리표는 한 문장에 한 번만 붙어요.",
+      check: {
+        type: 'choice',
+        q: '"How often does Jiho eat vegetables?"에 알맞은 대답은 무엇일까요?',
+        choices: ['He eats vegetables every day.', 'He eat vegetables every day.', 'I eat vegetables every day.'],
+        answer: 0,
+        why: ['', '주어가 한 사람(he)이면 eat에 -s를 붙여 eats라고 해요.', '지호에 대해 물었으니 I가 아니라 He로 답해요.'],
+        explain: 'Jiho는 한 사람(he)이에요. 그래서 He eats vegetables every day.처럼 eat에 -s를 붙여요.',
+      },
+    },
+    {
+      title: '설문 결과 표 읽기',
+      body: "친구들에게 \"How often do you ~?\"라고 물어보고 결과를 표로 정리할 수 있어요.\n\n**How often do you exercise?**\n\n| 대답 | 학생 수 |\n|---|---|\n| every day | 6 |\n| three times a week | 9 |\n| once a week | 4 |\n| never | 1 |\n\n표를 읽을 때는\n1. 표 위의 **질문**을 먼저 읽어요. (무엇을 물어본 조사인지)\n2. 찾는 **대답 칸**을 찾고,\n3. 옆의 **수**를 읽어요.\n\n이 표에서 가장 많은 학생(9명)이 \"three times a week\"라고 답했어요. 한 학생은 운동을 전혀 하지 않는다(never)고 했어요.",
+      easy: "설문 결과 표는 \"손 들어 보세요!\"를 정리한 거예요.\n\n선생님이 \"매일 운동하는 사람?\" 하고 물었을 때 6명이 손을 들었다면, every day 옆에 6을 써요. 가장 많이 손을 든 줄이 가장 많은 학생의 대답이에요.",
+      check: {
+        type: 'ox',
+        q: "| 대답 | 학생 수 |\n|---|---|\n| every day | 6 |\n| three times a week | 9 |\n| once a week | 4 |\n\n표를 보면 일주일에 한 번 운동하는 학생은 9명이에요.",
+        answer: false,
+        explain: 'once a week(일주일에 한 번) 옆의 수는 4예요. 9명은 three times a week(일주일에 세 번)라고 답한 학생 수예요.',
+      },
+    },
+  ],
+
+  examples: [
+    {
+      q: "지아는 매주 월요일, 수요일, 금요일에 줄넘기를 해요. 물음에 영어로 답해 보세요.\n\nHow often do you jump rope?",
+      steps: [
+        'How often은 "얼마나 자주"예요. 횟수로 답해야 해요.',
+        '일주일에 몇 번인지 세어 봐요. 월요일, 수요일, 금요일로 세 번이에요.',
+        '세 번은 three times, 일주일에는 a week예요.',
+        '"I + 할 일 + 횟수." 틀에 넣어요.',
+      ],
+      answer: 'I jump rope three times a week.',
+    },
+    {
+      q: "표를 보고 물음에 답해 보세요.\n\n**How often do you eat vegetables?**\n\n| 대답 | 학생 수 |\n|---|---|\n| every day | 11 |\n| twice a week | 5 |\n| once a week | 3 |\n\n채소를 일주일에 두 번 먹는다고 답한 학생은 몇 명일까요?",
+      steps: [
+        '표 위의 질문을 읽어요. "채소를 얼마나 자주 먹니?"를 조사한 표예요.',
+        '"일주일에 두 번"을 영어로 바꾸면 twice a week예요. 그 줄을 찾아요.',
+        'twice a week 옆의 수를 읽어요. 5예요.',
+      ],
+      answer: '5명',
+    },
+  ],
+
+  terms: [
+    { term: 'How often', def: '"얼마나 자주"라는 뜻이에요. 횟수를 물을 때 써요. 예: How often do you exercise?' },
+    { term: 'once / twice', def: 'once는 "한 번", twice는 "두 번"이에요. 세 번부터는 three times, four times처럼 "수 + times"로 말해요.' },
+    { term: 'a day / a week / a month', def: '횟수 뒤에 붙여 "하루에", "일주일에", "한 달에"를 나타내요. 예: twice a day(하루에 두 번)' },
+    { term: '습관', def: '여러 번 되풀이해서 저절로 몸에 밴 행동이에요. 예: 밥 먹기 전에 손 씻기(wash my hands)' },
+    { term: '설문 조사', def: '여러 사람에게 같은 질문을 하고 대답을 모아 정리하는 것이에요. 결과를 표나 그래프로 나타내요.' },
+  ],
+
+  practice: [
+    {
+      id: 'p1', level: 1, type: 'choice', concept: 0,
+      q: '대화의 빈칸에 알맞은 말은 무엇일까요?\n\nA: [[How often]] do you eat vegetables?\nB: Every day.',
+      choices: ['How often', 'How old', 'What time', 'How many'],
+      answer: 0,
+      why: [
+        '',
+        'How old는 나이를 묻는 말이에요.',
+        'What time은 몇 시인지 묻는 말이에요. B는 "매일"이라고 답했어요.',
+        'How many는 개수를 묻는 말이에요. B는 얼마나 자주인지 답했어요.',
+      ],
+      explain: 'B가 "매일(Every day)"이라고 얼마나 자주인지 답했으니 A는 How often으로 물었어요.',
+    },
+    {
+      id: 'p2', level: 1, type: 'short', concept: 1,
+      q: '"일주일에 한 번"이라는 뜻이 되게 빈칸에 알맞은 낱말 하나를 쓰세요.\n\n[[once]] a week',
+      answer: ['once'],
+      wrong: [
+        { a: 'one', why: '"한 번"은 one이 아니라 once라는 따로 된 낱말을 써요.' },
+        { a: 'twice', why: 'twice는 "두 번"이에요. "한 번"은 once예요.' },
+      ],
+      explain: '"한 번"은 once예요. once a week는 "일주일에 한 번"이에요.',
+    },
+    {
+      id: 'p3', level: 1, type: 'choice', concept: 1,
+      q: 'twice의 뜻은 무엇일까요?',
+      choices: ['두 번', '한 번', '세 번', '열두 번'],
+      answer: 0,
+      why: ['', '"한 번"은 once예요.', '"세 번"은 three times예요.', 'twelve(12)와 헷갈렸어요. twice는 "두 번"이에요.'],
+      explain: 'twice는 "두 번"이에요. 예: I brush my teeth twice a day.(나는 하루에 두 번 이를 닦아요.)',
+    },
+    {
+      id: 'p4', level: 1, type: 'choice', concept: 3,
+      q: '"손을 씻다"를 영어로 바르게 나타낸 것은 무엇일까요?',
+      choices: ['wash my hands', 'brush my teeth', 'eat vegetables', 'drink water'],
+      answer: 0,
+      why: ['', 'brush my teeth는 "이를 닦다"예요.', 'eat vegetables는 "채소를 먹다"예요.', 'drink water는 "물을 마시다"예요.'],
+      explain: 'wash는 "씻다", hands는 "손(두 손)"이에요. 그래서 wash my hands는 "손을 씻다"예요.',
+    },
+    {
+      id: 'p5', level: 1, type: 'ox', concept: 1,
+      q: 'three times a day는 "하루에 세 번"이라는 뜻이에요.',
+      answer: true,
+      explain: 'three times는 "세 번", a day는 "하루에"예요. 예: I eat three times a day.(나는 하루에 세 번 먹어요.)',
+    },
+    {
+      id: 'p6', level: 1, type: 'short', concept: 3,
+      q: '"일찍 자다"라는 뜻이 되게 빈칸에 알맞은 낱말 하나를 쓰세요.\n\ngo to bed [[early]]',
+      answer: ['early'],
+      wrong: [
+        { a: 'late', why: 'late는 "늦게"예요. "일찍"은 early예요.' },
+        { a: 'erly', why: '철자를 확인해 보세요. e-a-r-l-y예요.' },
+      ],
+      explain: 'early는 "일찍"이에요. go to bed early는 "일찍 자다"예요.',
+    },
+    {
+      id: 'p7', level: 1, type: 'choice', concept: 0,
+      q: '"How often do you exercise?"에 알맞은 대답은 무엇일까요?',
+      choices: ['Three times a week.', "At seven o'clock.", 'Yes, I do.', 'In the park.'],
+      answer: 0,
+      why: [
+        '',
+        '시각을 말했어요. How often에는 횟수로 답해요.',
+        'How often으로 묻는 말에는 Yes/No로 답하지 않아요.',
+        '장소를 말했어요. How often에는 횟수로 답해요.',
+      ],
+      explain: '"운동을 얼마나 자주 하니?"라는 물음이라 "Three times a week."(일주일에 세 번.)처럼 횟수로 답해요.',
+    },
+    {
+      id: 'p8', level: 2, type: 'order', concept: 2,
+      q: '"나는 일주일에 두 번 운동해요."라는 뜻이 되게 차례대로 놓으세요.',
+      choices: ['I', 'exercise', 'twice', 'a week.'],
+      answer: [0, 1, 2, 3],
+      hint: '누가 → 무엇을 하는지 → 횟수 차례로 놓아 보세요.',
+      explain: '주어(I) + 할 일(exercise) + 횟수(twice a week) 차례예요. "I exercise twice a week."',
+    },
+    {
+      id: 'p9', level: 2, type: 'short', concept: 1,
+      q: '"일주일에 네 번"이라는 뜻이 되게 빈칸에 알맞은 낱말 하나를 **영어 낱말로** 쓰세요.\n\nI drink milk [[four]] times a week.',
+      answer: ['four'],
+      wrong: [
+        { a: 'for', why: '소리는 비슷하지만 for는 "~을 위해"예요. 수 4는 f-o-u-r예요.' },
+        { a: 'fourth', why: 'fourth는 "네 번째"예요. 횟수에는 수 four를 써요.' },
+      ],
+      hint: '세 번부터는 "수 + times"로 말해요.',
+      explain: '세 번부터는 수 + times로 말해요. 네 번은 four times, 일주일에 네 번은 four times a week예요.',
+    },
+    {
+      id: 'p10', level: 2, type: 'choice', concept: 4,
+      q: '"How often does Sua drink milk?"에 알맞은 대답은 무엇일까요?',
+      choices: ['She drinks milk every morning.', 'She drink milk every morning.', 'I drink milk every morning.', 'Yes, she does.'],
+      answer: 0,
+      why: [
+        '',
+        '주어가 한 사람(she)이면 drink에 -s를 붙여 drinks라고 해요.',
+        '수아에 대해 물었으니 I가 아니라 She로 답해요.',
+        'How often으로 묻는 말에는 Yes/No로 답하지 않아요. 얼마나 자주인지 말해요.',
+      ],
+      hint: '주어가 한 사람일 때 대답의 동사 모양을 떠올려 보세요.',
+      explain: 'Sua는 한 사람(she)이라 She drinks milk ~처럼 drink에 -s를 붙여요. every morning은 "매일 아침"이에요.',
+    },
+    {
+      id: 'p11', level: 2, type: 'choice', concept: 5,
+      q: '그래프는 반 친구들에게 "How often do you go to bed early?"라고 물어본 결과예요. 가장 많은 학생이 고른 대답은 무엇일까요?',
+      fig: { type: 'bars', labels: ['every day', 'three times a week', 'once a week', 'never'], values: [7, 5, 10, 2], unit: '명', title: 'How often do you go to bed early?', alt: '대답별 학생 수 막대그래프' },
+      choices: ['once a week', 'every day', 'three times a week', 'never'],
+      answer: 0,
+      why: [
+        '',
+        'every day는 7명이에요. 더 긴 막대가 있어요.',
+        'three times a week는 5명이에요. 더 긴 막대가 있어요.',
+        'never는 2명으로 가장 적어요.',
+      ],
+      hint: '막대가 가장 긴 것을 찾아보세요.',
+      explain: 'once a week가 10명으로 막대가 가장 길어요. 가장 많은 학생이 "일주일에 한 번 일찍 잔다"고 답했어요.',
+    },
+    {
+      id: 'p12', level: 2, type: 'short', concept: 2,
+      q: 'B는 아침, 점심, 저녁을 먹은 뒤에 이를 닦아요. 빈칸에 알맞은 낱말 하나를 쓰세요.\n\nA: How often do you brush your teeth?\nB: I brush my teeth three times a [[day]].',
+      answer: ['day'],
+      wrong: [
+        { a: 'week', why: 'B는 하루에 세 번(아침·점심·저녁) 이를 닦아요. "하루에"는 a day예요.' },
+        { a: 'days', why: 'a 뒤에는 하나를 나타내는 모양을 써요: a day' },
+      ],
+      hint: '세 번이 하루 동안인지 일주일 동안인지 생각해 보세요.',
+      explain: '아침·점심·저녁, 하루에 세 번 닦으니 three times a day예요.',
+    },
+  ],
+
+  advanced: [
+    {
+      id: 'a1', level: 3, type: 'choice', concept: 5,
+      q: '표를 보고 맞는 문장을 고르세요.\n\n| 이름 | exercise | eat vegetables |\n|---|---|---|\n| Jiho | twice a week | every day |\n| Mina | five times a week | once a week |\n| Doyun | once a week | three times a week |',
+      choices: ['Jiho eats vegetables every day.', 'Doyun exercises twice a week.', 'Mina eats vegetables three times a week.', 'Jiho exercises five times a week.'],
+      answer: 0,
+      why: [
+        '',
+        'Doyun은 운동을 일주일에 한 번(once a week) 해요. twice a week는 Jiho예요.',
+        'Mina는 채소를 일주일에 한 번(once a week) 먹어요. three times a week는 Doyun이에요.',
+        'Jiho는 운동을 일주일에 두 번(twice a week) 해요. five times a week는 Mina예요.',
+      ],
+      hint: '문장마다 이름 줄과 칸(운동/채소)을 함께 짚어 보세요.',
+      explain: 'Jiho 줄의 eat vegetables 칸은 every day예요. 그래서 "Jiho eats vegetables every day."가 맞아요. 나머지는 다른 사람의 칸을 읽었어요.',
+    },
+    {
+      id: 'a2', level: 3, type: 'short', concept: 1,
+      q: "글을 읽고 빈칸에 알맞은 낱말 하나를 쓰세요.\n\nI go swimming on Mondays and Thursdays. I don't swim on other days.\n→ I go swimming [[twice]] a week.",
+      answer: ['twice'],
+      wrong: [
+        { a: 'once', why: '월요일과 목요일, 일주일에 두 번이에요. once는 "한 번"이에요.' },
+        { a: 'two', why: '"두 번"은 two가 아니라 twice예요.' },
+      ],
+      hint: '일주일에 수영하는 요일을 세어 보세요.',
+      explain: '월요일(Mondays)과 목요일(Thursdays), 일주일에 두 번 수영해요. 두 번은 twice라서 twice a week예요.',
+    },
+    {
+      id: 'a3', level: 3, type: 'choice', concept: 3,
+      q: "민수의 글을 읽고, 건강을 위해 고치지 **않아도** 되는 습관을 고르세요.\n\nI get up at eight. I don't eat breakfast. I play computer games for three hours every day. I exercise once a month. I drink water six times a day. — Minsu",
+      choices: ['하루에 물을 여섯 번 마시는 것', '아침을 먹지 않는 것', '매일 세 시간씩 컴퓨터 게임을 하는 것', '한 달에 한 번 운동하는 것'],
+      answer: 0,
+      why: [
+        '',
+        '"I don\'t eat breakfast."는 아침을 거른다는 뜻이에요. 아침을 먹는 것이 건강에 좋아요.',
+        '매일 세 시간씩 게임을 하면 눈과 몸이 지쳐요. 시간을 줄이는 것이 좋아요.',
+        'once a month는 "한 달에 한 번"이에요. 운동은 더 자주 하는 것이 좋아요.',
+      ],
+      hint: '문장마다 횟수 표현(every day, once a month, six times a day)의 뜻을 먼저 확인해요.',
+      explain: '물을 하루에 여러 번(six times a day) 마시는 것은 좋은 습관이에요. 아침 거르기, 매일 오랜 시간 게임하기, 한 달에 한 번만 운동하기는 고치면 좋은 습관이에요.',
+    },
+    {
+      id: 'a4', level: 3, type: 'order', concept: 0,
+      q: '"너는 얼마나 자주 채소를 먹니?"라는 뜻이 되게 차례대로 놓으세요.',
+      choices: ['How often', 'do you', 'eat', 'vegetables?'],
+      answer: [0, 1, 2, 3],
+      hint: 'How often으로 시작해요.',
+      explain: 'How often + do you + 할 일(eat vegetables) 차례예요. "How often do you eat vegetables?"',
+    },
+    {
+      id: 'a5', level: 3, type: 'choice', concept: 4,
+      q: '대화의 빈칸에 알맞은 말을 고르세요.\n\nA: How often [[does]] your brother exercise?\nB: He exercises three times a week.',
+      choices: ['does', 'do', 'is', 'exercises'],
+      answer: 0,
+      why: [
+        '',
+        'your brother는 한 사람(he)이에요. 한 사람에 대해 물을 때는 does를 써요.',
+        '"How often is your brother exercise?"는 틀린 문장이에요. 할 일을 물을 때는 do/does를 써요.',
+        '빈칸 뒤에 이미 exercise가 있어요. 빈칸에는 묻는 말을 만드는 does가 들어가요.',
+      ],
+      hint: 'B의 대답 "He exercises"에서 주어가 누구인지 보세요.',
+      explain: 'your brother는 한 사람(he)이라 do 대신 does를 써요. "How often does your brother exercise?" 대답에서는 exercises처럼 동사에 -s를 붙여요.',
+    },
+  ],
+
+  deeper: [
+    {
+      title: '건강 습관, 왜 "자주"가 중요할까?',
+      body: '손 씻기, 이 닦기, 운동은 한 번 크게 하는 것보다 **조금씩 자주** 하는 것이 몸에 더 좋아요. 그래서 건강 습관을 이야기할 때 How often(얼마나 자주)을 많이 물어요.\n\n- 손은 밖에 다녀온 뒤와 밥 먹기 전에 씻어요.\n- 이는 밥을 먹은 뒤에 닦아요.\n- 운동은 하루에 조금씩이라도 꾸준히 하는 것이 좋아요.\n\n나의 습관을 영어로 적어 보고(I exercise [[횟수]] a week.), 한 달 뒤에 다시 적어 비교해 보세요.',
+    },
+    {
+      title: '횟수 말하기, 조금 더',
+      body: '횟수 표현은 수만 바꾸면 얼마든지 늘릴 수 있어요.\n\n- five times a day (하루에 다섯 번)\n- ten times a month (한 달에 열 번)\n- once a year (일 년에 한 번)\n\n"전혀 하지 않아요"는 never로 말해요: I never drink soda. 중학교에서는 always, usually, often, sometimes, never 같은 말을 문장 어디에 쓰는지 더 자세히 배워요.',
+    },
+  ],
+
+  faq: [
+    {
+      q: '두 번은 왜 two times가 아니라 twice예요?',
+      a: '한 번(once)과 두 번(twice)은 오래전부터 따로 된 낱말로 써 왔어요. 세 번부터는 three times, four times처럼 "수 + times"로 말해요.\n\n실제로 two times라고 말하는 사람도 있지만, twice가 더 흔하고 자연스러워요.',
+    },
+    {
+      q: 'a week에서 a는 무슨 뜻이에요?',
+      a: '여기서 a는 "하나"보다 "~마다, ~에"라는 뜻이에요. twice a week는 "일주일마다 두 번", 곧 "일주일에 두 번"이에요.',
+    },
+    {
+      q: 'How often 물음에 Yes나 No로 대답하면 안 돼요?',
+      a: '안 돼요. How often은 "얼마나 자주"를 묻는 말이라 every day, twice a week처럼 횟수로 답해요.\n\nYes/No로 답하는 것은 "Do you exercise every day?"(매일 운동하니?)처럼 Do로 시작하는 물음이에요.',
+    },
+  ],
+
+  mistakes: [
+    '"두 번"을 two라고 쓰는 실수 — 한 번은 once, 두 번은 twice, 세 번부터 three times예요.',
+    '"How often does she exercises?"처럼 does 뒤의 동사에도 -s를 붙이는 실수 — does가 -s를 맡으니 뒤의 동사는 원래 모양(exercise)이에요.',
+    '"I wash my hand"처럼 hands, teeth를 하나로 쓰는 실수 — 두 손은 hands, 이는 teeth로 써요.',
+  ],
+
+  vocab: [
+    { w: 'often', m: '자주', ex: 'How often do you play outside?', exm: '너는 얼마나 자주 밖에서 노니?' },
+    { w: 'once', m: '한 번', ex: 'I go to the library once a week.', exm: '나는 일주일에 한 번 도서관에 가요.' },
+    { w: 'twice', m: '두 번', ex: 'I brush my teeth twice a day.', exm: '나는 하루에 두 번 이를 닦아요.' },
+    { w: 'time', m: '(몇) 번, 시간', ex: 'I swim three times a week.', exm: '나는 일주일에 세 번 수영해요.' },
+    { w: 'exercise', m: '운동하다, 운동', ex: 'My mom exercises every morning.', exm: '우리 엄마는 매일 아침 운동하세요.' },
+    { w: 'healthy', m: '건강한, 건강에 좋은', ex: 'Vegetables are healthy food.', exm: '채소는 건강에 좋은 음식이에요.' },
+    { w: 'habit', m: '습관', ex: 'I have a good habit. I wash my hands often.', exm: '나는 좋은 습관이 있어요. 손을 자주 씻어요.' },
+    { w: 'vegetable', m: '채소', ex: 'I eat vegetables at every meal.', exm: '나는 끼니마다 채소를 먹어요.' },
+    { w: 'wash', m: '씻다', ex: 'Wash your hands before lunch.', exm: '점심 먹기 전에 손을 씻으세요.' },
+    { w: 'early', m: '일찍', ex: 'I go to bed early on school days.', exm: '나는 학교 가는 날에는 일찍 자요.' },
+    { w: 'brush', m: '(솔로) 닦다', ex: 'I brush my teeth after meals.', exm: '나는 밥을 먹은 뒤에 이를 닦아요.' },
+    { w: 'teeth', m: '이(여러 개)', ex: 'Brush your teeth before bed.', exm: '자기 전에 이를 닦으세요.' },
+    { w: 'breakfast', m: '아침 식사', ex: 'I eat breakfast every day.', exm: '나는 매일 아침을 먹어요.' },
+    { w: 'water', m: '물', ex: 'Drink water when you are thirsty.', exm: '목이 마를 때는 물을 마셔요.' },
+    { w: 'week', m: '주, 일주일', ex: 'I have art class twice a week.', exm: '나는 일주일에 두 번 미술 수업이 있어요.' },
+    { w: 'survey', m: '설문 조사', ex: 'We did a survey about our habits.', exm: '우리는 우리의 습관에 대해 설문 조사를 했어요.' },
+  ],
+});

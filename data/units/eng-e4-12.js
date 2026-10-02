@@ -1,0 +1,337 @@
+/* 4학년 영어 · 그림 이야기 읽기 */
+Tutor.registerUnit({
+  id: 'eng-e4-12',
+  course: 'eng-e4',
+  title: '그림 이야기 읽기',
+  summary: '그림을 보며 짧은 이야기를 읽고 누가 나오는지, 무슨 일이 있었는지, 인물의 기분은 어떤지 알아봐요.',
+  goals: [
+    '그림과 제목을 보고 이야기 내용을 짐작할 수 있어요.',
+    '이야기에 나오는 인물과 장소를 찾을 수 있어요.',
+    '인물의 기분(happy, sad, scared)을 알아보고 공감하는 말을 할 수 있어요.',
+    '반복되는 문장을 찾아 리듬에 맞춰 소리 내어 읽을 수 있어요.',
+  ],
+  standards: [],
+
+  concepts: [
+    {
+      title: '제목과 그림으로 짐작하기',
+      body: '이야기를 읽기 전에 먼저 **제목**과 **그림**을 살펴보세요. 무슨 이야기일지 미리 **짐작**하면 글이 훨씬 잘 읽혀요.\n\n제목이 **Where Is Coco?**(코코는 어디 있을까?)이고, 그림에 상자 위로 고양이 귀가 보여요.\n\n- 제목에서: Coco라는 누군가를 찾는 이야기 같아요.\n- 그림에서: Coco는 고양이이고, 상자 안에 있는 것 같아요.\n\n짐작은 틀려도 괜찮아요. 읽으면서 "내 짐작이 맞았나?" 확인하는 것이 재미예요.\n\n> 💡 짐작할 때 스스로 물어보세요. **누가** 나올까? **어디**일까? **무슨 일**이 생길까?',
+      easy: '영화 포스터를 보면 "아, 이건 우주 이야기구나!" 하고 미리 알 수 있지요? 그림책의 제목과 그림은 이야기의 포스터예요.\n\n제목에 Where(어디)가 있으면 무언가를 찾는 이야기, 그림에 케이크가 있으면 생일 이야기일 수 있어요.',
+      fig: { type: 'svg', alt: '상자 위로 고양이의 귀와 두 눈이 빼꼼 보이는 그림', svg: '<svg viewBox="0 0 240 200"><g transform="scale(2)"><polygon points="44,30 47,12 56,25" fill="none" stroke="currentColor" stroke-width="3"/><polygon points="76,30 73,12 64,25" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="60" cy="42" r="18" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="53" cy="39" r="2.5" fill="currentColor"/><circle cx="67" cy="39" r="2.5" fill="currentColor"/><rect x="20" y="50" width="80" height="44" fill="var(--fig-3)" stroke="currentColor" stroke-width="3"/><path d="M20 50 L8 38 M100 50 L112 38" stroke="currentColor" stroke-width="3" fill="none"/></g></svg>' },
+      check: {
+        type: 'choice',
+        q: '제목이 **Where Is Coco?**인 이야기는 어떤 내용일지 짐작해 보세요.',
+        choices: ['Coco를 찾는 이야기', 'Coco의 생일 잔치 이야기', 'Coco가 축구를 하는 이야기'],
+        answer: 0,
+        why: ['', '제목에 생일(birthday)이라는 말은 없어요. Where는 "어디"라는 뜻이에요.', '제목에 축구(soccer)라는 말은 없어요. Where는 "어디"라는 뜻이에요.'],
+        explain: 'Where는 "어디"라는 뜻이에요. "코코는 어디 있을까?"라는 제목이니 코코를 찾는 이야기라고 짐작할 수 있어요.',
+      },
+    },
+    {
+      title: '인물과 장소 찾기',
+      body: '**인물**은 이야기에 나오는 사람이나 동물이에요. **장소**는 일이 일어나는 곳이에요.\n\n- 인물 찾기: 이름은 **대문자로 시작**해요(Mina, Coco). he, she, it도 인물을 가리켜요.\n- 장소 찾기: **in the ~, at the ~, under the ~** 다음에 오는 말을 봐요.\n\n| 문장 | 인물 | 장소 |\n|---|---|---|\n| Mina looks **in the garden**. | Mina | garden(정원) |\n| Junho is **at the park**. | Junho | park(공원) |\n| Coco is **in the box**. | Coco | box(상자) 안 |\n\n> 💡 3학년 때 배운 in(안에), on(위에), under(아래에)가 장소를 찾는 열쇠예요.',
+      easy: '이야기를 연극이라고 생각해 보세요. 무대에 올라오는 배우가 **인물**, 무대 뒤의 배경이 **장소**예요.\n\n대문자로 시작하는 이름이 나오면 "배우 등장!", in the나 at the가 나오면 "배경이 나왔다!" 하고 표시하며 읽어 보세요.',
+      check: {
+        type: 'choice',
+        q: '문장에서 **장소**를 나타내는 말은 무엇일까요?\n\nJunho is at the park.',
+        choices: ['the park', 'Junho', 'is'],
+        answer: 0,
+        why: ['', 'Junho는 인물(사람)이에요. 장소는 at the 다음에 와요.', 'is는 "~에 있다"라는 뜻이에요. 장소는 at the 다음에 와요.'],
+        explain: 'at the 다음에 오는 **the park**(공원)가 장소예요. Junho는 인물이에요.',
+      },
+    },
+    {
+      title: '인물의 기분 알아보기',
+      body: '인물의 기분은 **얼굴 그림**과 **일어난 일**, 그리고 **기분 낱말**로 알 수 있어요.\n\n| 기분 낱말 | 뜻 | 이럴 때 |\n|---|---|---|\n| **happy** | 기쁜, 행복한 | 잃어버린 고양이를 찾았을 때 |\n| **sad** | 슬픈 | 아이스크림을 떨어뜨렸을 때 |\n| **scared** | 무서운, 겁먹은 | 커다란 개가 짖을 때 |\n\n글에 **Mina is sad.**처럼 기분이 바로 나오기도 하지만, 일어난 일만 나올 때도 있어요. 그럴 때는 "내가 그 인물이라면 어떤 기분일까?" 하고 생각해 봐요.\n\n**공감**은 다른 사람의 기분을 함께 느끼는 거예요. 슬픈 인물에게는 It\'s okay.(괜찮아.)라고 말해 줄 수 있어요.',
+      easy: '얼굴을 보면 기분이 보여요.\n\n- 입꼬리가 올라가 웃고 있으면 → happy\n- 입꼬리가 내려가고 눈물이 나면 → sad\n- 눈이 동그랗고 몸이 움츠러들면 → scared\n\n그림이 없으면 "나라면?" 하고 그 인물이 되어 보세요.',
+      fig: { type: 'svg', alt: '웃는 얼굴, 우는 얼굴, 놀라서 눈이 커진 얼굴 세 개', svg: '<svg viewBox="0 0 300 100"><circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="36" cy="42" r="5" fill="currentColor"/><circle cx="64" cy="42" r="5" fill="currentColor"/><path d="M30 60 Q50 80 70 60" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="150" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="136" cy="42" r="5" fill="currentColor"/><circle cx="164" cy="42" r="5" fill="currentColor"/><path d="M130 75 Q150 58 170 75" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M136 52 Q132 60 136 64 Q140 60 136 52 Z" fill="var(--fig-1)"/><circle cx="250" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="236" cy="42" r="9" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="264" cy="42" r="9" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="236" cy="42" r="3" fill="currentColor"/><circle cx="264" cy="42" r="3" fill="currentColor"/><ellipse cx="250" cy="70" rx="7" ry="9" fill="none" stroke="currentColor" stroke-width="4"/><path d="M226 26 L244 22 M256 22 L274 26" stroke="currentColor" stroke-width="3" fill="none"/></svg>' },
+      check: {
+        type: 'choice',
+        q: '글을 읽고, 서연이의 기분을 나타내는 낱말을 고르세요.\n\nSeoyeon has an ice cream. Oh no! It falls on the ground.',
+        choices: ['sad', 'happy', 'scared'],
+        answer: 0,
+        why: ['', '아이스크림을 땅에 떨어뜨렸으니 기쁘지 않아요.', '무서운 일이 아니에요. 아끼던 것을 잃었을 때의 기분을 생각해 보세요.'],
+        explain: '아이스크림이 땅에 떨어졌어요(falls on the ground). 이럴 때는 슬프지요. 그래서 **sad**예요.',
+      },
+    },
+    {
+      title: '반복되는 문장을 리듬에 맞춰 읽기',
+      body: '그림 이야기에는 **같은 문장이 여러 번 나오는** 경우가 많아요. 반복되는 문장을 찾으면 이야기가 쉬워지고, 노래처럼 리듬을 타며 읽을 수 있어요.\n\nMina looks in the garden.\n**"Coco, Coco, where are you?"**\nMina looks under the table.\n**"Coco, Coco, where are you?"**\n\n읽는 방법\n1. 반복되는 문장을 찾아 표시해요.\n2. 손뼉을 치며 같은 빠르기로 읽어요. 두 번째부터는 책을 보지 않고 말해 보세요.\n3. 물음표(?)로 끝나는 문장은 끝을 올려 묻듯이 읽어요.\n\n반복되는 문장 사이에 바뀌는 부분(in the garden → under the table)을 보면 이야기가 어떻게 흘러가는지도 알 수 있어요.',
+      easy: '노래의 후렴을 떠올려 보세요. 같은 부분이 여러 번 나오면 금방 따라 부를 수 있지요?\n\n이야기 속 반복되는 문장도 후렴이에요. 처음 한 번 잘 읽어 두면, 다음부터는 친구와 함께 노래하듯 신나게 읽을 수 있어요.',
+      check: {
+        type: 'choice',
+        q: '이야기에서 **반복되는** 문장은 무엇일까요?\n\nThe bear looks in the box. "Is it here?" The bear looks on the bed. "Is it here?" The bear looks under the chair. "Is it here?"',
+        choices: ['Is it here?', 'The bear looks in the box.', 'The bear looks on the bed.'],
+        answer: 0,
+        why: ['', '이 문장은 한 번만 나와요. 곰이 찾는 곳은 계속 바뀌어요.', '이 문장은 한 번만 나와요. 곰이 찾는 곳은 계속 바뀌어요.'],
+        explain: '**Is it here?**(여기 있을까?)가 세 번 반복돼요. 곰이 찾는 곳(in the box, on the bed, under the chair)은 바뀌지만 이 물음은 그대로예요.',
+      },
+    },
+  ],
+
+  examples: [
+    {
+      q: '이야기를 읽고, 인물·장소·기분을 찾아보세요.\n\n**Where Is Coco?**\n\nMina has a little cat. Its name is Coco. Mina and Coco are happy.\n\nOne morning, Coco is not on the bed.\n"Coco, Coco, where are you?"\nMina looks in the garden. No Coco.\n"Coco, Coco, where are you?"\nMina looks under the table. No Coco. Mina is sad.\n\n"Meow!" Coco is in the big box! Mina is happy again.',
+      steps: [
+        '인물: 대문자로 시작하는 이름을 찾아요. Mina(미나)와 Coco(고양이 코코)예요.',
+        '장소: in the, under the 다음 말을 찾아요. garden(정원), table(탁자) 아래, big box(큰 상자) 안이 나와요.',
+        '기분: 코코를 못 찾았을 때 Mina is sad.(슬퍼요), 코코를 찾은 뒤 Mina is happy again.(다시 기뻐요)이라고 했어요.',
+        '반복되는 문장: "Coco, Coco, where are you?"가 두 번 나와요. 리듬을 타며 읽어 보세요.',
+      ],
+      answer: '인물: Mina, Coco / 장소: garden, table 아래, box 안 / 기분: 슬펐다가(sad) 다시 기뻐요(happy)',
+    },
+    {
+      q: '제목이 **My Birthday Party**이고 그림에 촛불이 켜진 케이크가 있어요. 무슨 이야기일지 짐작해 보세요.',
+      steps: [
+        '제목의 birthday는 "생일", party는 "잔치"예요.',
+        '그림의 케이크와 촛불도 생일과 어울려요.',
+        '그래서 생일 잔치에서 있었던 일을 담은 이야기라고 짐작할 수 있어요.',
+      ],
+      answer: '생일 잔치 이야기',
+    },
+  ],
+
+  terms: [
+    { term: '제목', def: '이야기의 이름이에요. 무슨 이야기인지 짐작하는 첫 번째 단서예요. 예: Where Is Coco?' },
+    { term: '짐작하기', def: '제목과 그림을 보고 이야기 내용을 미리 생각해 보는 것이에요. 틀려도 괜찮고, 읽으면서 확인해요.' },
+    { term: '인물', def: '이야기에 나오는 사람이나 동물이에요. 이름은 대문자로 시작해요. 예: Mina, Coco' },
+    { term: '장소', def: '이야기에서 일이 일어나는 곳이에요. in the ~, at the ~ 다음에 자주 나와요. 예: in the garden' },
+    { term: '기분 낱말', def: '마음 상태를 나타내는 낱말이에요. 예: happy(기쁜), sad(슬픈), scared(무서운)' },
+    { term: '공감', def: '다른 사람의 기분을 함께 느끼고 알아주는 거예요. 예: 슬픈 친구에게 It\'s okay.라고 말해 주기' },
+    { term: '반복되는 문장', def: '이야기 속에서 여러 번 되풀이되는 문장이에요. 리듬을 타며 읽으면 쉽게 익힐 수 있어요.' },
+  ],
+
+  practice: [
+    {
+      id: 'p1', level: 1, type: 'choice', concept: 2,
+      q: '그림 속 얼굴의 기분을 나타내는 낱말을 고르세요.',
+      fig: { type: 'svg', alt: '입꼬리가 아래로 내려가고 눈물이 한 방울 맺힌 얼굴', svg: '<svg viewBox="0 0 200 200"><g transform="scale(2)"><circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="36" cy="42" r="5" fill="currentColor"/><circle cx="64" cy="42" r="5" fill="currentColor"/><path d="M30 75 Q50 58 70 75" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M36 52 Q32 60 36 64 Q40 60 36 52 Z" fill="var(--fig-1)"/></g></svg>' },
+      choices: ['sad', 'happy', 'scared', 'hungry'],
+      answer: 0,
+      why: [
+        '',
+        'happy는 웃는 얼굴이에요. 이 얼굴은 입꼬리가 내려가고 눈물이 있어요.',
+        'scared는 눈이 동그랗게 커진 겁먹은 얼굴이에요. 눈물이 나는 얼굴은 sad예요.',
+        'hungry는 "배고픈"이에요. 얼굴의 눈물과 내려간 입꼬리를 보세요.',
+      ],
+      explain: '입꼬리가 내려가고 눈물이 나는 얼굴은 슬픈 얼굴이에요. **sad**(슬픈)예요.',
+    },
+    {
+      id: 'p2', level: 1, type: 'choice', concept: 2,
+      q: '그림 속 얼굴의 기분을 나타내는 낱말을 고르세요.',
+      fig: { type: 'svg', alt: '입꼬리가 올라가 활짝 웃는 얼굴', svg: '<svg viewBox="0 0 200 200"><g transform="scale(2)"><circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="36" cy="42" r="5" fill="currentColor"/><circle cx="64" cy="42" r="5" fill="currentColor"/><path d="M30 60 Q50 80 70 60" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></g></svg>' },
+      choices: ['happy', 'sad', 'scared', 'tired'],
+      answer: 0,
+      why: [
+        '',
+        'sad는 입꼬리가 내려간 슬픈 얼굴이에요. 이 얼굴은 웃고 있어요.',
+        'scared는 겁먹은 얼굴이에요. 이 얼굴은 웃고 있어요.',
+        'tired는 "피곤한"이에요. 이 얼굴은 활짝 웃고 있어요.',
+      ],
+      explain: '입꼬리가 올라가 웃는 얼굴은 기쁜 얼굴이에요. **happy**(기쁜)예요.',
+    },
+    {
+      id: 'p3', level: 1, type: 'choice', concept: 2,
+      q: '그림 속 얼굴의 기분을 나타내는 낱말을 고르세요.',
+      fig: { type: 'svg', alt: '눈이 동그랗게 커지고 눈썹이 올라가고 입을 동그랗게 벌린 얼굴', svg: '<svg viewBox="0 0 200 200"><g transform="scale(2)"><circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="36" cy="42" r="9" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="64" cy="42" r="9" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="36" cy="42" r="3" fill="currentColor"/><circle cx="64" cy="42" r="3" fill="currentColor"/><ellipse cx="50" cy="70" rx="7" ry="9" fill="none" stroke="currentColor" stroke-width="4"/><path d="M26 26 L44 22 M56 22 L74 26" stroke="currentColor" stroke-width="3" fill="none"/></g></svg>' },
+      choices: ['scared', 'happy', 'sad', 'sleepy'],
+      answer: 0,
+      why: [
+        '',
+        'happy는 입꼬리가 올라간 웃는 얼굴이에요. 이 얼굴은 눈이 커지고 입을 벌리고 있어요.',
+        'sad는 입꼬리가 내려가고 눈물이 나는 얼굴이에요. 이 얼굴은 깜짝 놀라 겁먹었어요.',
+        'sleepy는 "졸린"이에요. 졸리면 눈이 감기지요. 이 얼굴은 눈이 커다래요.',
+      ],
+      explain: '눈이 동그랗게 커지고 눈썹이 올라가고 입을 벌린 얼굴은 겁먹은 얼굴이에요. **scared**(무서운, 겁먹은)예요.',
+    },
+    {
+      id: 'p4', level: 1, type: 'choice', concept: 1,
+      q: '글을 읽고, 이야기의 **장소**를 고르세요.\n\nJunho is at the park. He sees a big dog. The dog has a ball.',
+      choices: ['공원', '학교', '집', '도서관'],
+      answer: 0,
+      why: [
+        '',
+        '학교(school)는 글에 나오지 않아요. at the 다음 말을 보세요.',
+        '집(home, house)은 글에 나오지 않아요. at the 다음 말을 보세요.',
+        '도서관(library)은 글에 나오지 않아요. at the 다음 말을 보세요.',
+      ],
+      explain: 'at the park(공원에)라고 했으니 장소는 **공원**이에요.',
+    },
+    {
+      id: 'p5', level: 1, type: 'choice', concept: 1,
+      q: '글을 읽고, 이야기에 나오는 **동물**을 고르세요.\n\nJunho is at the park. He sees a big dog. The dog has a ball.',
+      choices: ['dog', 'cat', 'bird', 'rabbit'],
+      answer: 0,
+      why: [
+        '',
+        'cat(고양이)은 이 글에 나오지 않아요.',
+        'bird(새)는 이 글에 나오지 않아요.',
+        'rabbit(토끼)은 이 글에 나오지 않아요.',
+      ],
+      explain: 'He sees a big dog.(그는 큰 개를 봐요.)라고 했어요. 이야기에 나오는 동물은 **dog**(개)예요.',
+    },
+    {
+      id: 'p6', level: 1, type: 'ox', concept: 0,
+      q: '이야기를 읽기 전에 제목과 그림을 보면 무슨 이야기일지 짐작할 수 있어요.',
+      answer: true,
+      explain: '제목과 그림은 이야기의 단서예요. 누가 나오는지, 어디인지, 무슨 일이 생길지 미리 짐작하고 읽으면 내용이 더 잘 들어와요.',
+    },
+    {
+      id: 'p7', level: 2, type: 'choice', concept: 3,
+      q: '이야기에서 **세 번** 반복되는 문장은 무엇일까요?\n\nThe bear looks in the box. "Is it here? No, no, no!" The bear looks under the bed. "Is it here? No, no, no!" The bear looks on the table. "Is it here? Yes, yes, yes!"',
+      choices: ['Is it here?', 'No, no, no!', 'Yes, yes, yes!', 'The bear looks in the box.'],
+      answer: 0,
+      why: [
+        '',
+        'No, no, no!는 두 번 나와요. 마지막에는 Yes, yes, yes!로 바뀌어요.',
+        'Yes, yes, yes!는 마지막에 한 번만 나와요.',
+        '이 문장은 한 번만 나와요. 곰이 찾는 곳은 계속 바뀌어요.',
+      ],
+      hint: '문장마다 몇 번 나오는지 손가락으로 세어 보세요.',
+      explain: '**Is it here?**(여기 있을까?)는 세 번 모두 나와요. No, no, no!는 두 번, Yes, yes, yes!는 한 번이에요.',
+    },
+    {
+      id: 'p8', level: 2, type: 'choice', concept: 0,
+      q: '제목이 **My Birthday Party**이고, 그림에 촛불이 켜진 케이크가 있어요. 어떤 이야기일까요?',
+      fig: { type: 'svg', alt: '촛불 세 개가 켜진 케이크 그림', svg: '<svg viewBox="0 0 240 200"><g transform="scale(2)"><rect x="25" y="50" width="70" height="40" rx="4" fill="var(--fig-2)" stroke="currentColor" stroke-width="3"/><path d="M25 64 Q37 72 48 64 Q60 72 72 64 Q84 72 95 64" fill="none" stroke="currentColor" stroke-width="3"/><line x1="45" y1="50" x2="45" y2="34" stroke="currentColor" stroke-width="3"/><line x1="60" y1="50" x2="60" y2="34" stroke="currentColor" stroke-width="3"/><line x1="75" y1="50" x2="75" y2="34" stroke="currentColor" stroke-width="3"/><ellipse cx="45" cy="27" rx="3" ry="5" fill="var(--fig-1)"/><ellipse cx="60" cy="27" rx="3" ry="5" fill="var(--fig-1)"/><ellipse cx="75" cy="27" rx="3" ry="5" fill="var(--fig-1)"/></g></svg>' },
+      choices: ['생일 잔치 이야기', '비 오는 날 이야기', '잃어버린 고양이를 찾는 이야기', '바닷가에서 수영하는 이야기'],
+      answer: 0,
+      why: [
+        '',
+        '제목과 그림에 비(rain)와 관련된 것이 없어요.',
+        '제목과 그림에 고양이(cat)가 없어요.',
+        '제목과 그림에 바다(sea)나 수영(swim)이 없어요.',
+      ],
+      hint: '제목의 Birthday와 그림의 케이크를 함께 생각해요.',
+      explain: 'Birthday는 "생일", Party는 "잔치"예요. 그림의 케이크와 촛불도 생일과 어울리지요. 그래서 **생일 잔치 이야기**라고 짐작할 수 있어요.',
+    },
+    {
+      id: 'p9', level: 2, type: 'choice', concept: 2,
+      q: '글을 읽고, 준호에게 해 줄 말로 가장 알맞은 것을 고르세요.\n\nJunho is at the park. A big dog runs to him. "Woof! Woof!" Junho is scared.',
+      choices: ['It\'s okay. Don\'t worry.', 'Happy birthday!', 'Good job!', 'Me, too. I\'m happy.'],
+      answer: 0,
+      why: [
+        '',
+        '생일을 축하하는 말이에요. 준호는 지금 무서워하고 있어요.',
+        '잘했다고 칭찬하는 말이에요. 준호는 지금 무서워하고 있어요.',
+        '준호는 기쁜(happy) 것이 아니라 무서워(scared)하고 있어요.',
+      ],
+      hint: 'Junho is scared.에서 준호의 기분을 먼저 찾아요.',
+      explain: '준호는 큰 개가 짖으며 달려와서 무서워해요(scared). 무서워하는 친구에게는 **It\'s okay. Don\'t worry.**(괜찮아. 걱정하지 마.)라고 기분을 알아주는 말이 알맞아요.',
+    },
+    {
+      id: 'p10', level: 2, type: 'short', check: 'text', concept: 1,
+      q: '글을 읽고, 고양이의 이름을 영어로 써 보세요.\n\nMina has a little cat. Its name is Coco. Coco likes boxes.',
+      answer: ['Coco'],
+      hint: '대문자로 시작하는 이름을 찾아요. Its name is 다음을 보세요.',
+      wrong: [{ a: 'Mina', why: 'Mina는 고양이를 키우는 아이예요. Its name is(그것의 이름은) 다음에 고양이 이름이 나와요.' }],
+      explain: 'Its name is Coco.(그것의 이름은 코코예요.)라고 했어요. 고양이 이름은 **Coco**예요.',
+    },
+  ],
+
+  advanced: [
+    {
+      id: 'a1', level: 3, type: 'choice', concept: 2,
+      q: '이야기를 읽고, 마지막 장면에서 미나의 기분과 그 까닭으로 알맞은 것을 고르세요.\n\nMina has a little cat. Its name is Coco. One morning, Coco is not on the bed. Mina looks in the garden. No Coco. Mina is sad. "Meow!" Coco is in the big box! Mina is happy again.',
+      choices: [
+        '기뻐요. 코코를 찾았기 때문이에요.',
+        '슬퍼요. 코코를 찾지 못했기 때문이에요.',
+        '무서워요. 큰 상자가 있기 때문이에요.',
+        '기뻐요. 정원에서 놀았기 때문이에요.',
+      ],
+      answer: 0,
+      why: [
+        '',
+        '슬펐던 것은 중간이에요. 마지막에는 코코를 찾아서 Mina is happy again.이라고 했어요.',
+        '상자 때문에 무서워한 장면은 없어요. 마지막 문장의 기분 낱말을 보세요.',
+        '기쁜 것은 맞지만, 정원에서 논 것이 아니라 코코를 찾아서 기뻐요.',
+      ],
+      hint: '마지막 두 문장을 잘 읽어 보세요. 기분이 바뀐 까닭이 있어요.',
+      explain: '코코를 못 찾았을 때는 sad(슬픈)였지만, 상자 안에서 코코를 찾은 뒤 **Mina is happy again.**(미나는 다시 기뻐요.)이라고 했어요. 코코를 찾았기 때문에 기뻐요.',
+    },
+    {
+      id: 'a2', level: 3, type: 'short', check: 'text', concept: 1,
+      q: '글을 읽고, 코코가 숨어 있던 곳을 영어 낱말 하나로 써 보세요.\n\nMina looks in the garden. No Coco. Mina looks under the table. No Coco. "Meow!" Coco is in the big box!',
+      answer: ['box', 'the box', 'the big box', 'big box', 'in the box', 'in the big box'],
+      hint: 'Coco is 다음에 나오는 장소를 찾아요.',
+      wrong: [
+        { a: 'garden', why: '미나가 정원(garden)을 찾아보았지만 No Coco.(코코가 없어요.)라고 했어요.' },
+        { a: 'table', why: '미나가 탁자(table) 아래를 찾아보았지만 No Coco.(코코가 없어요.)라고 했어요.' },
+      ],
+      explain: 'Coco is in the big box!(코코는 큰 상자 안에 있어요!)라고 했어요. 코코가 있던 곳은 **box**(상자)예요. garden과 table은 미나가 찾아보았지만 코코가 없던 곳이에요.',
+    },
+    {
+      id: 'a3', level: 3, type: 'choice', concept: 3,
+      q: '반복되는 문장을 생각하며 빈칸에 알맞은 문장을 고르세요.\n\nLittle Rabbit is hungry.\nHe goes to the farm. "Carrot, carrot, where is my carrot?"\nHe goes to the garden. "[[?]]"\nHe looks under the tree. "Here is my carrot!"\nLittle Rabbit is happy.',
+      choices: [
+        'Carrot, carrot, where is my carrot?',
+        'Here is my carrot!',
+        'Little Rabbit is happy.',
+        'Apple, apple, where is my apple?',
+      ],
+      answer: 0,
+      why: [
+        '',
+        '이 문장은 당근을 찾은 마지막에 나와요. 정원에서는 아직 찾는 중이에요.',
+        '토끼가 기뻐지는 것은 당근을 찾은 뒤예요. 정원에서는 아직 찾는 중이에요.',
+        '토끼가 찾는 것은 사과(apple)가 아니라 당근(carrot)이에요.',
+      ],
+      hint: '토끼가 다른 곳에 갈 때마다 같은 말을 하고 있어요.',
+      explain: '토끼는 장소를 옮길 때마다 **"Carrot, carrot, where is my carrot?"**(당근아, 당근아, 내 당근은 어디 있니?)이라고 말해요. 정원에서도 아직 못 찾았으니 같은 문장이 들어가요.',
+    },
+    {
+      id: 'a4', level: 3, type: 'short', check: 'text', concept: 2,
+      q: '글을 읽고, 빈칸에 알맞은 기분 낱말(happy, sad, scared 중 하나)을 써 보세요.\n\nMinsu has a red balloon. Oh no! The balloon flies away. Minsu is [[?]].',
+      answer: ['sad'],
+      hint: '아끼던 풍선이 날아가 버리면 어떤 기분일지 생각해 보세요.',
+      wrong: [
+        { a: 'happy', why: '풍선이 날아가 버렸어요(flies away). 기쁜 일이 아니에요.' },
+        { a: 'scared', why: '무서운 일이 생긴 것은 아니에요. 아끼던 것을 잃었을 때의 기분을 생각해 보세요.' },
+      ],
+      explain: '빨간 풍선이 날아가 버렸으니(flies away) 민수는 슬퍼요. 답은 **sad**예요.',
+    },
+  ],
+
+  deeper: [
+    {
+      title: '그림 산책: 읽기 전에 책 한 바퀴 돌기',
+      body: '영어 그림책을 처음 펼칠 때 **그림 산책**을 해 보세요. 글을 읽기 전에 그림만 보며 처음부터 끝까지 책장을 넘기는 거예요.\n\n1. 표지의 제목과 그림을 봐요.\n2. 책장을 넘기며 누가 나오는지, 어디인지, 인물의 얼굴이 어떻게 바뀌는지 살펴봐요.\n3. 그다음 글을 읽으며 짐작이 맞았는지 확인해요.\n\n모르는 낱말이 나와도 그림이 뜻을 알려 줄 때가 많아요. 5학년이 되면 이야기를 읽고 **일이 일어난 순서**를 정리하는 공부도 해요. 그림 산책에서 장면이 어떻게 바뀌는지 눈여겨보는 연습이 그때 큰 도움이 돼요.',
+    },
+  ],
+
+  faq: [
+    {
+      q: '이야기에 모르는 낱말이 나오면 어떻게 해요?',
+      a: '먼저 그림을 보세요. 그림이 뜻을 알려 줄 때가 많아요. 그다음 앞뒤 문장을 읽고 뜻을 짐작해요. 그래도 모르겠으면 이야기를 끝까지 읽은 뒤 사전에서 찾아보세요.',
+    },
+    {
+      q: '글에 기분 낱말이 안 나오면 기분을 어떻게 알아요?',
+      a: '일어난 일을 보고 "내가 그 인물이라면?" 하고 생각해 봐요. 아이스크림을 떨어뜨렸다면 sad, 큰 개가 짖으며 달려온다면 scared, 잃어버린 고양이를 찾았다면 happy일 거예요. 얼굴 그림이 있으면 함께 살펴봐요.',
+    },
+    {
+      q: '그림책에는 왜 같은 문장이 자꾸 나와요?',
+      a: '같은 문장이 반복되면 읽는 사람이 다음 말을 짐작하며 따라 읽을 수 있어요. 노래의 후렴처럼 리듬이 생겨 재미있고, 영어 문장도 저절로 익혀져요.',
+    },
+  ],
+
+  mistakes: [
+    '그림만 보고 글을 읽지 않는 실수 — 그림은 짐작을 돕는 단서예요. 짐작이 맞았는지 글을 읽으며 꼭 확인해요.',
+    'sad와 scared를 헷갈리는 실수 — sad는 슬픈, scared는 무서운(겁먹은)이에요. 무엇을 잃었는지, 무엇이 무서운지 일어난 일을 살펴봐요.',
+    '인물이 찾아본 곳과 실제로 있던 곳을 헷갈리는 실수 — No Coco.처럼 "없었다"는 문장이 뒤에 오는지 끝까지 읽어요.',
+  ],
+
+  vocab: [
+    { w: 'happy', m: '기쁜, 행복한', ex: 'Mina is **happy** with her cat.', exm: '미나는 고양이와 함께 있어서 기뻐요.' },
+    { w: 'sad', m: '슬픈', ex: 'Minsu is **sad**. His balloon flies away.', exm: '민수는 슬퍼요. 풍선이 날아가 버려요.' },
+    { w: 'scared', m: '무서운, 겁먹은', ex: 'I\'m **scared** of the dark.', exm: '나는 어둠이 무서워요.' },
+    { w: 'story', m: '이야기', ex: 'This **story** is about a cat.', exm: '이 이야기는 고양이에 관한 거예요.' },
+    { w: 'title', m: '제목', ex: 'The **title** is Where Is Coco?', exm: '제목은 "코코는 어디 있을까?"예요.' },
+    { w: 'picture', m: '그림, 사진', ex: 'Look at the **picture**.', exm: '그림을 보세요.' },
+    { w: 'garden', m: '정원, 뜰', ex: 'There are many flowers in the **garden**.', exm: '정원에 꽃이 많아요.' },
+    { w: 'box', m: '상자', ex: 'The cat is in the **box**.', exm: '고양이가 상자 안에 있어요.' },
+    { w: 'look', m: '보다, 찾아보다', ex: 'Mina **looks** under the table.', exm: '미나가 탁자 아래를 찾아봐요.' },
+    { w: 'where', m: '어디', ex: '**Where** are you?', exm: '너는 어디 있니?' },
+    { w: 'park', m: '공원', ex: 'Junho is at the **park**.', exm: '준호는 공원에 있어요.' },
+    { w: 'hungry', m: '배고픈', ex: 'The rabbit is **hungry**.', exm: '토끼는 배가 고파요.' },
+  ],
+});
