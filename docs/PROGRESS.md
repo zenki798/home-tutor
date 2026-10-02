@@ -1,20 +1,20 @@
 # 진행 상황 · 이어서 할 일 (가정교사)
 
 > 새 세션은 이 파일부터 읽는다. 끝난 일은 다시 하지 않는다. 작업 단위가 끝날 때마다 갱신한다.
-> 마지막 갱신: 2026-10-02 10:15
+> 마지막 갱신: 2026-10-02 10:25
 
 ## 지금 하는 일 (현재 작업)
 
-- 물결 A 끝(78/78, 실패 0). 단원 540개 lint 오류 0, catalog(준비 중 509)·index 다시 만듦. 첫 커밋 024093d(661파일, noreply, 훅 검사 통과) push 함. **GitHub Actions(테스트 → Pages 배포) 기다리는 중** — gh run list --repo zenki798/home-tutor
+- **물결 B1(고1 공통과목 20작업·76단원)** 작성 중 (10:20 시작). 물결 B 를 20작업씩 나눠 돈다: B1 → B2 → B3 → B4(나머지). 목록 tmp/wave-B.json
+  - 끊기면: data/units 의 끊긴 파일(lint 의 "파일을 실행하지 못했어요")을 tmp/partial-units/ 로 옮기고 build-catalog → soon 단원으로 다시 묶어 이어 쓴다.
 
 ## 다음 작업 (순서대로)
 
 1. [x] (10:00) `node scripts/build-catalog.js && node scripts/build-index.js` → 모든 단원 lint 오류 0 확인. 끊긴 파일은 tmp/partial-units/ 로 옮기고 다시 build
 2. [x] (10:10) 전체 테스트 `npx playwright test` — **693 passed** (logic·desktop·mobile·edge-file, 2.3m)
 3. [x] (10:14) 첫 커밋 024093d. 커밋 직전 검사를 git cat-file --batch 로 빠르게(2분+ → 3.5초): 경로를 적어 `git add` → `git diff --staged --stat` 확인 → 커밋(pre-commit 훅이 비밀정보 검사, 작성자 noreply)
-4. [ ] 공개 저장소: (✅ 09:50 저장소 만듦·Pages 켬(build_type=workflow)·origin 연결) →
-   (`gh api -X POST repos/zenki798/home-tutor/pages -f build_type=workflow`) → push → Actions(비밀정보·내용 검사·테스트·배포) 성공 확인 →
-   https://zenki798.github.io/home-tutor/ 확인
+4. [x] (10:25) 공개 저장소 zenki798/home-tutor + Pages(build_type=workflow). push → Actions 36949937848 성공(비밀정보·내용 검사·테스트·배포, 2분 50초).
+   https://zenki798.github.io/home-tutor/ 확인: HTTP 200, CSP 있음, 카탈로그 93과정·1,049단원(준비 540), IndexedDB, 외부 요청 0, 콘솔 오류 0 (tmp/live-check.js)
 5. [ ] 물결 B(고등 316단원) → 물결 C(대학·성인 193단원). 물결이 끝날 때마다 1~3 반복 후 push(자동 배포)
 6. [ ] (예산 되면) 수학·과학 단원 독립 검토(정답 가리고 풀기), Edge·휴대폰 실제 확인
 
@@ -30,7 +30,7 @@
 | 검사·생성 도구 | ✅ | lint-unit / validate-content / build-catalog(soon) / build-index / print-unit / job-context / particles |
 | 교육과정 지도 | ✅ | curriculum/*.json, 93과정 1,049단원 |
 | 단원 내용 | 🟡 | 540 완성(초·중 거의 전부 + 고등·대학 일부). 남은 509 = 물결 B(고등) 316 + 물결 C(대학·성인) 193 |
-| 배포 | ⬜ | 다음 작업 3~4 |
+| 배포 | ✅ | push 하면 Actions 가 검사·테스트 후 Pages 배포. 첫 배포 10:25 확인 |
 
 ## 끝난 일 (완료 기록)
 
