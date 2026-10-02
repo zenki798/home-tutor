@@ -36,6 +36,7 @@ js/mathlib.js → js/mathtext.js → js/figures.js → js/search.js → js/solve
 
 단원 내용(`data/units/<id>.js`)과 검색 색인(`data/index/<과목>-<학교급>.js`)은 필요할 때 `Tutor.loadScript` 로 싣는다.
 화면은 색인을 `Tutor.loadIndex('<과목>-<학교급>')`(과정의 학교급, 없으면 학생의 학교급)으로 싣고, 실패하면 `Tutor.loadIndex('<과목>')` 으로 한 번 더 찾는다.
+내 학교급 색인에서 답을 못 찾으면 가까운 학교급 색인에서 한 번 더 찾는다(초→중, 중→고·초, 고→대학·중, 대학→고·성인, 성인→고·중). 그 과목·학교급에 내용 있는 과정이 있을 때만 싣고, 답 앞에 "이건 중학교에서 배우는 내용이에요"처럼 어느 학교급 내용인지 밝힌다.
 
 `index.html` 머리의 CSP(`<meta http-equiv="Content-Security-Policy">`)가 자기 파일(`'self' file:`)만 허용한다 — 인라인 스크립트·`onclick=` 같은
 인라인 이벤트를 쓰지 않는다(이벤트는 코드로 단다). 스타일 속성(`style="width:…"`)은 `'unsafe-inline'` 으로 허용한다.

@@ -53,3 +53,20 @@ test('카탈로그: 준비 중이 아닌 단원은 모두 파일이 있고, 준�
   }
   expect(bad).toEqual([]);
 });
+
+test('같은 문제 검사: 글·보기가 같으면 경고하고, 그림이 다르면 다른 문제로 본다', () => {
+  const fs = require('fs');
+  const { validateUnitFile } = require(path.join(ROOT, 'scripts', 'validate-content.js'));
+  const file = path.join(ROOT, 'tests', 'fixtures', 'units', 'math-m2-01.js');
+  const svg = (n) => ({ type: 'svg', svg: '<svg viewBox="0 0 40 20"><text x="20" y="15" text-anchor="middle" fill="currentColor">' + n + '</text></svg>' });
+  // 단원을 등록하기 직전에 문제를 덧붙인다: 그림만 다른 두 문제 + 그림까지 같은 한 문제
+  const add = (extra) => 'var __reg = Tutor.registerUnit; Tutor.registerUnit = function (u) { u.practice = u.practice.concat(' +
+    JSON.stringify(extra) + '); __reg(u); };\n' + fs.readFileSync(file, 'utf8');
+  const p = (id, n) => ({ id, level: 1, type: 'short', check: 'number', q: '그림의 수를 읽어 보세요.', answer: String(n), fig: svg(n), explain: '그림에 쓰인 수를 그대로 읽어요. 그래서 답이에요.', concept: 0 });
+  const dupWarnings = (extra) => validateUnitFile(file, { source: add(extra), seeds: 3, catalog: null })
+    .warnings.filter((w) => /같은 문제가 이미 있어요/.test(w.msg));
+  expect(dupWarnings([p('z1', 5), p('z2', 7)])).toEqual([]);
+  const dup = dupWarnings([p('z1', 5), p('z2', 5)]);
+  expect(dup).toHaveLength(1);
+  expect(dup[0].msg).toContain('practice[');
+});

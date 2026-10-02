@@ -29,8 +29,11 @@
 }
 .rt-tablewrap { max-width: 100%; overflow-x: auto; margin: .9em 0; -webkit-overflow-scrolling: touch; }
 .rt-table { border-collapse: collapse; font-size: .95em; line-height: 1.5; }
+/* 칸 안에서는 낱말 중간에서 끊지 않는다: overflow-wrap:anywhere 는 최소 폭 계산에 들어가서 좁은 화면에서
+   짧은 칸이 한 글자 폭으로 줄어든다('교/환/법/칙'). 표가 화면보다 넓으면 .rt-tablewrap 이 가로로 민다 */
 .rt-table th, .rt-table td {
   border: 1px solid rgba(127, 127, 127, .45); padding: .45em .75em; text-align: center; vertical-align: middle;
+  overflow-wrap: normal;
 }
 .rt-table th { background: rgba(127, 127, 127, .13); font-weight: 700; }
 

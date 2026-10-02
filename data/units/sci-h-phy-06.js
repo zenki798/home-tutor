@@ -556,7 +556,7 @@
               type: 'short', check: 'number', unit: 'W', concept: 3,
               q: '저항이 ' + Rv + ' Ω인 전열선에 ' + V2 + ' V의 전압을 걸었습니다. 이 전열선의 소비 전력은 몇 W입니까?',
               answer: String(P2),
-              hint: '$P=VI$와 $I=\\dfrac{V}{R}$을 함께 쓰면 $P=\\dfrac{V^2}{R}$입니다.',
+              hint: '$P=VI$와 $I=\\dfrac{V}{R}$를 함께 쓰면 $P=\\dfrac{V^2}{R}$입니다.',
               wrong: w,
               explain: '$P=\\dfrac{V^2}{R}=\\dfrac{' + V2 + '^2}{' + Rv + '}=\\dfrac{' + (V2 * V2) + '}{' + Rv + '}=' + R.fmt.frac(P2) + '$ W입니다.',
             };

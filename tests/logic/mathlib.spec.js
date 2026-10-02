@@ -375,6 +375,13 @@ test.describe('식 읽기와 계산 parseExpr·evalExpr', () => {
     expect(E('π')).toBe(Math.PI);
     expect(E('pi')).toBe(Math.PI);
     expect(E('2πr', { r: 3 })).toBeCloseTo(6 * Math.PI, 12);
+    // 아이들이 자판에서 치는 말: 루트·root → √, 파이 → π
+    expect(E('2루트5')).toBeCloseTo(2 * Math.sqrt(5), 15);
+    expect(E('루트(x+1)', { x: 8 })).toBe(3);
+    expect(E('root16')).toBe(4);
+    expect(E('3파이')).toBeCloseTo(3 * Math.PI, 15);
+    expect(M.checkAnswer({ type: 'short', check: 'expr', answer: '2sqrt(5)' }, '2 루트 5').correct).toBe(true);
+    expect(M.checkAnswer({ type: 'short', check: 'expr', answer: '2sqrt(5)' }, '2루트6').correct).toBe(false);
     expect(E('3.14')).toBe(3.14);
     expect(E('[1+2]*{3}')).toBe(9);
     expect(E('(x+1)(x-1)', { x: 3 })).toBe(8);

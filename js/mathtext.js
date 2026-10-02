@@ -654,19 +654,44 @@
     return '<span class="mt' + (display ? ' mt-disp' : '') + '" role="math" aria-label="' + esc(label) + '">' + body + '</span>';
   }
 
-  // 긴 한 줄 수식은 맨 바깥 관계 기호(=, <, ≤ …) 뒤에서만 줄을 바꿀 수 있게 덩어리로 나눈다 (좁은 화면)
+  // 긴 한 줄 수식은 맨 바깥 관계 기호(=, <, ≤ …) 뒤에서 줄을 바꿀 수 있게 덩어리로 나눈다 (좁은 화면).
+  // 관계 기호 사이 덩어리도 길면(평문 BIN_SPLIT 글자 넘게) 괄호 밖의 덧셈·뺄셈 기호 뒤에서 한 번 더 나눈다.
+  // 곱(2·x·y)·괄호 안·부호(단항 −)에서는 나누지 않는다 — 아이들이 읽기에 한 항은 한 덩어리가 낫다
+  var BIN_SPLIT = 16;
+  var BIN_BREAK = { '+': 1, '−': 1, '-': 1, '±': 1, '∓': 1 };
   function splitAtRel(items) {
     var chunks = [];
     var cur = [];
     for (var i = 0; i < items.length; i++) {
       cur.push(items[i]);
       if (items[i].type === 'rel' && items[i].v !== ':' && nextSolid(items, i)) {
-        chunks.push(cur);
+        splitAtBin(cur, chunks);
         cur = [];
       }
     }
-    if (cur.length && !isBlank(cur)) chunks.push(cur);
+    if (cur.length && !isBlank(cur)) splitAtBin(cur, chunks);
     return chunks;
+  }
+  function isCloser(n) {
+    return (n.type === 'punct' && !!n.close) || (n.type === 'scripts' && !!n.base && n.base.type === 'punct' && !!n.base.close);
+  }
+  function splitAtBin(list, chunks) {
+    if (tidy(plainList(list)).replace(/\s+/g, '').length <= BIN_SPLIT) { chunks.push(list); return; }
+    var cur = [], depth = 0, prev = null;
+    for (var i = 0; i < list.length; i++) {
+      var n = list[i];
+      cur.push(n);
+      if (n.type === 'punct' && n.open) depth++;
+      else if (isCloser(n)) depth = Math.max(0, depth - 1);
+      else if (depth === 0 && n.type === 'op' && hasOwn(BIN_BREAK, n.v) && prev &&
+        prev.type !== 'op' && prev.type !== 'rel' && prev.type !== 'big' && !(prev.type === 'punct' && !isCloser(prev)) &&
+        nextSolid(list, i)) {
+        chunks.push(cur);
+        cur = [];
+      }
+      if (n.type !== 'ws') prev = n;
+    }
+    if (cur.length && !isBlank(cur)) chunks.push(cur);
   }
 
   /* ================================================================

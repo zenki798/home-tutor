@@ -2619,17 +2619,20 @@
 
   /* 질문 검색 색인: data/index/<과목>-<학교급>.js (과정의 학교급, 없으면 학생의 학교급).
      그 파일이 없으면 data/index/<과목>.js 로 한 번 더 (예전 이름·시험용 가짜 데이터) */
-  function indexNames(ctx) {
+  function ctxLevel(ctx) {
     var c = ctx.course ? Tutor.course(ctx.course) : null;
-    var lv = c && c.level ? c.level : '';
-    if (!lv) {
-      var gi = gradeInfo(ctx.grade);
-      if (gi) lv = gi.level.id;
-    }
+    if (c && c.level) return c.level;
+    var gi = gradeInfo(ctx.grade);
+    return gi ? gi.level.id : '';
+  }
+  function indexNames(ctx) {
+    var lv = ctxLevel(ctx);
     return lv ? [ctx.subject + '-' + lv, ctx.subject] : [ctx.subject];
   }
   function loadSearch(ctx) {
-    var names = indexNames(ctx);
+    return loadSearchNames(indexNames(ctx));
+  }
+  function loadSearchNames(names) {
     var key = names[0];
     if (S.search[key]) return S.search[key];
     var p = Tutor.loadIndex(names[0]).then(null, function (err) {
@@ -2766,6 +2769,35 @@
       '<p class="muted">' + esc(ask) + '</p></div>';
   }
 
+  /* 내 학교급 색인에 없으면 가까운 학교급에서 찾아 본다: 앞서 궁금해진 것(위 학교급)부터, 그다음 지난 학교급.
+     그 과목·학교급에 내용이 있는 과정이 있을 때만 색인을 싣는다(없는 파일을 부르지 않는다). 못 찾으면 null */
+  var LEVEL_ORDER = ['elem', 'mid', 'high', 'univ', 'adult'];
+  var NEAR_LEVELS = { elem: ['mid'], mid: ['high', 'elem'], high: ['univ', 'mid'], univ: ['high', 'adult'], adult: ['high', 'mid'] };
+  function hasReadyCourse(subject, level) {
+    return (cat().courses || []).some(function (c) { return c.subject === subject && c.level === level && !courseSoon(c); });
+  }
+  function nearLevelReply(text, ctx) {
+    var mine = ctxLevel(ctx);
+    var order = (NEAR_LEVELS[mine] || []).filter(function (lv) { return hasReadyCourse(ctx.subject, lv); });
+    var i = 0;
+    function next() {
+      if (i >= order.length) return null;
+      var lv = order[i++];
+      return loadSearchNames([ctx.subject + '-' + lv]).then(function (index) {
+        var res = E.query(index, text, { subject: ctx.subject, limit: 5 });
+        if (!res.length) return next();
+        var L = (cat().levels || []).filter(function (x) { return x.id === lv; })[0];
+        var name = L ? L.name : lv;
+        var ahead = LEVEL_ORDER.indexOf(lv) > LEVEL_ORDER.indexOf(mine);
+        var lead = lv === 'adult' ? say({ m: '이건 성인 과정에서 다루는 내용이에요. 함께 살펴볼까요?', h: '이 내용은 성인 과정에서 다룹니다. 함께 살펴봅시다.' }) : ahead ?
+          say({ e: '이건 ' + name + '에서 배우는 내용이에요. 조금 어려울 수 있지만 미리 살펴볼까요?', m: '이건 ' + name + '에서 배우는 내용이에요. 미리 살펴볼까요?', h: '이 내용은 ' + name + ' 과정에서 다룹니다. 미리 살펴봅시다.' }) :
+          say({ m: '이건 ' + name + '에서 배운 내용이에요. 다시 살펴볼까요?', h: '이 내용은 ' + name + ' 과정에서 다룹니다. 다시 살펴봅시다.' });
+        return para(lead) + searchReply(res, ctx);
+      }, next);
+    }
+    return Promise.resolve(next());
+  }
+
   function answerFor(text, ctx) {
     var intent = E.intent(text);
     if (intent) {
@@ -2776,7 +2808,8 @@
     if (sol) return Promise.resolve(solverReply(sol));
     return loadSearch(ctx).then(function (index) {
       var res = E.query(index, text, { grade: ctx.grade, course: ctx.course, unit: ctx.unit, subject: ctx.subject, limit: 5 });
-      return res.length ? searchReply(res, ctx) : unknownReply(text, ctx);
+      if (res.length) return searchReply(res, ctx);
+      return nearLevelReply(text, ctx).then(function (html) { return html || unknownReply(text, ctx); });
     }, function () {
       return unknownReply(text, ctx, para(say({ m: '색인을 불러오지 못해서 지금은 배운 내용에서 찾아볼 수 없어요. 계산 문제는 풀 수 있어요.', h: '색인을 불러오지 못해 지금은 배운 내용에서 찾을 수 없습니다. 계산 문제는 풀 수 있습니다.' })));
     });

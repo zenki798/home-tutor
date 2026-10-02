@@ -91,7 +91,7 @@ test('개념 질문 → 배운 내용에서 찾아 요약하고, [자세히 보�
 });
 
 test('모르는 질문에는 지어내지 않고 정직하게 안내한다', async ({ page }) => {
-  await open(page, { student: true, url: '/#/ask/math' });
+  const calls = await open(page, { student: true, url: '/#/ask/math' });
   const msg = await ask(page, '블랙홀은 왜 검게 보여요?');
   await expect(msg).toContainText('그 질문은 아직 제가 잘 몰라요. 이런 단원을 살펴보면 도움이 될 거예요.');
   await expect(msg).toContainText('학교 선생님이나 부모님께도 여쭤 보세요.');
@@ -99,6 +99,8 @@ test('모르는 질문에는 지어내지 않고 정직하게 안내한다', asy
   expect(await links.count()).toBeGreaterThanOrEqual(1);
   await expect(links.first()).toHaveAttribute('href', /^#\/unit\/math-m2-0\d\/learn$/);
   await expect(msg.locator('.found')).toHaveCount(0);
+  // 가까운 학교급(고등·초등)에 수학 과정이 없으니 다른 색인은 싣지 않는다(없는 파일을 부르지 않는다)
+  expect(calls.index).toEqual(['math-mid']);
 });
 
 test('인사에는 인사로 답한다', async ({ page }) => {
@@ -188,4 +190,44 @@ test('질문 색인: 과정이 없으면 학생의 학교급 색인, 그 파일�
   await expect(msg.locator('.found-title')).toHaveText('부등식의 성질');
   expect(calls.index).toEqual(['math-high', 'math']);
   await expect(page.locator('.index-note')).toBeHidden();
+});
+
+/* 가까운 학교급 과정 (카탈로그에 덧붙여 쓴다) */
+const SCI_MID = {
+  id: 'sci-m1', subject: 'sci', level: 'mid', grades: ['m1'], title: '중학교 과학 1',
+  units: [{ id: 'sci-m1-01', title: '기체의 성질', summary: '기체의 압력과 부피, 온도와 부피의 관계를 알아봐요.', sem: 1 }],
+};
+
+test('내 학교급에서 못 찾으면 위 학교급에서 찾아 "중학교에서 배우는 내용"이라고 알려 준다', async ({ page }) => {
+  const errors = collectErrors(page);
+  const e5 = { id: 'p-e5', name: '', avatar: '🐰', level: 'elem', grade: 'e5', pace: 'normal', created: 1 };
+  const calls = await open(page, { student: e5, url: '/#/ask/sci', catalogPatch: { courses: [SCI_MID] } });
+  const msg = await ask(page, '보일 법칙이 뭐예요?');
+  await expect(msg).toContainText('이건 중학교에서 배우는 내용이에요.');
+  await expect(msg.locator('.found-title')).toHaveText('보일 법칙');
+  await expect(msg.locator('.found-go a')).toHaveAttribute('href', /^#\/unit\/sci-m1-01\//);
+  await expect(msg).not.toContainText('잘 몰라요');
+  expect(calls.index).toEqual(['sci-elem', 'sci-mid']);
+  // 내 학교급에 있는 질문은 그대로 내 학교급에서 답한다(다른 색인을 더 싣지 않는다)
+  const own = await ask(page, '용매가 뭐예요?');
+  await expect(own.locator('.found-title')).toHaveText('용매');
+  await expect(own).not.toContainText('중학교에서');
+  expect(calls.index).toEqual(['sci-elem', 'sci-mid']);
+  expect(errors).toEqual([]);
+  expect(calls.external).toEqual([]);
+});
+
+test('아래 학교급에서 찾으면 "초등학교에서 배운 내용"이라고 복습을 권한다', async ({ page }) => {
+  const errors = collectErrors(page);
+  const m1 = { id: 'p-m1', name: '', avatar: '🐶', level: 'mid', grade: 'm1', pace: 'normal', created: 1 };
+  const calls = await open(page, { student: m1, url: '/#/ask/sci', catalogPatch: { courses: [SCI_MID] } });
+  const msg = await ask(page, '용매가 뭐예요?');
+  await expect(msg).toContainText('이건 초등학교에서 배운 내용이에요. 다시 살펴볼까요?');
+  await expect(msg.locator('.found-title')).toHaveText('용매');
+  expect(calls.index).toEqual(['sci-mid', 'sci-elem']); // 고등 과학 과정은 없으니 건너뛴다
+  // 어느 학교급에도 없으면 정직하게 모른다고 한다
+  const none = await ask(page, '블랙홀은 왜 검게 보여요?');
+  await expect(none).toContainText('그 질문은 아직 제가 잘 몰라요.');
+  expect(calls.index).toEqual(['sci-mid', 'sci-elem']);
+  expect(errors).toEqual([]);
 });

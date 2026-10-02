@@ -724,7 +724,9 @@
         return '(' + (w ? w + '+' : '') + p[0] + '/' + p[1] + ')';
       });
     // 대문자도 받는다(휴대폰 자동 대문자): 2X+1 = 2x+1. ÷ 는 남겨 둔다(토큰에서 / 와 구별)
+    // 자판에 √·π 가 없어 아이들이 치는 말: 2루트5 · root16 → √, 3파이 → π
     return s.normalize('NFKC').toLowerCase()
+      .replace(/\s*(?:루트|root)\s*/g, '√').replace(/\s*파이\s*/g, 'π')
       .replace(MINUS_RE, '-')
       .replace(/[\u00D7\u2715\u2716\u2217\u22C5\u00B7\u2219]/g, '*')   // × ✕ ✖ ∗ ⋅ · ∙
       .replace(/[\u2215\u2044]/g, '/');                                 // ∕ ⁄

@@ -310,6 +310,24 @@ test.describe('TeX → 교과서 모양 (구조)', () => {
     expect(count(T.render('답: $x^2+2x+1=(x+1)^2=0$'), /<wbr>/g)).toBe(2);
     expect(T.render('$x^2+2x+1=(x+1)^2=0$')).not.toContain('<wbr>');
   });
+  test('관계 기호 사이가 길면 괄호 밖의 + − 뒤에서도 줄을 바꿀 수 있다 (곱·괄호 안·부호는 나누지 않는다)', () => {
+    // 휴대폰(360px)에서 '=' 사이 한 덩어리가 화면보다 넓어 가로로 넘치던 수식
+    const h = tex('x^{2}+y^{2}+4+2xy+4y+4x=x^{2}+y^{2}+2^{2}+2~cdot x~cdot y+2~cdot y~cdot2+2~cdot2~cdot x=(x+y+2)^{2}');
+    const parts = h.split('<wbr>');
+    expect(parts).toHaveLength(13); // 덩어리마다 + 다섯 번 뒤 + '=' 두 번 뒤
+    expect(parts[0]).toMatch(/<span class="mt-op">\+<\/span><\/span>$/);   // + 는 앞 덩어리 끝에 남는다
+    expect(parts[5]).toMatch(/<span class="mt-rel">=<\/span><\/span>$/);
+    expect(h).not.toMatch(/·<\/span><\/span><wbr>/);                     // 2·x·y 같은 곱은 붙어 있다
+    expect(count(parts[12], /class="mt-op"/g)).toBe(2);                     // (x+y+2)^2 는 통째로
+    expect(h).toContain('aria-label="x²+y²+4+2xy+4y+4x = ');                // 화면 읽기용 평문은 그대로
+    // 짧은 덩어리는 + 뒤에서 나누지 않는다
+    expect(count(tex('x^2-5x+6=(x-2)(x-3)'), /<wbr>/g)).toBe(1);
+    // 관계 기호 없이 긴 식도 + − 뒤에서 나누고, 괄호 안은 그대로
+    expect(count(tex('3x^{2}y-6xy^{2}+9xy+12x^{2}y^{2}-15xy^{3}'), /<wbr>/g)).toBe(4);
+    expect(count(tex('2(a+b+c+d+e+f+g+h+i+j)'), /<wbr>/g)).toBe(0);
+    // 부호(단항 −) 뒤에서는 나누지 않는다
+    expect(count(tex('-3x^{2}+-4y^{2}+5z^{2}+6w^{2}+7v^{2}'), /<wbr>/g)).toBe(4);
+  });
   test('비의 쌍점(3 : 4)은 관계 기호처럼 띄운다', () => {
     expect(tex('3:4')).toContain('3<span class="mt-rel">:</span>4');
     expect(T.plain('$3:4$')).toBe('3 : 4');

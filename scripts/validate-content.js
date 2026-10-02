@@ -535,7 +535,10 @@ function validateStatic(unit, fileId, meta, cat, E, W) {
       if (p.id === undefined || p.id === null || p.id === '') E(base + '.id', "문제 id 가 없어요 — 단원 안에서 겹치지 않게 'p1', 'a1' 처럼 넣어요(오답노트·기록이 id 로 문제를 기억해요)");
       else if (!isStr(p.id) && !Number.isInteger(p.id)) E(base + '.id', '문제 id 는 글자예요: ' + show(p.id));
       if (isStr(p.q) && p.q.trim()) {
-        const k = memoText.plain(p.q).replace(/\s+/g, '') + '|' + show(p.choices || '', 400);
+        // 글이 같아도 그림이 다르면 다른 문제다("계산해 보세요." + 세로셈 그림)
+        let fig = '';
+        try { fig = p.fig === undefined ? '' : JSON.stringify(p.fig) || ''; } catch (e) { fig = String(p.fig); }
+        const k = memoText.plain(p.q).replace(/\s+/g, '') + '|' + show(p.choices || '', 400) + '|' + fig;
         if (seenQ.has(k)) W(base + '.q', '같은 문제가 이미 있어요: ' + seenQ.get(k));
         else seenQ.set(k, base);
       }

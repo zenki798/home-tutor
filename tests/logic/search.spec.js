@@ -322,6 +322,33 @@ test.describe('TutorSearch — 질문 찾기', () => {
     for (const [q, id, opts] of STUDENT_QUESTIONS) expectFound(q, id, opts);
   });
 
+  test('곱셈구구의 "7단"은 수와 함께 찾는다 (한 자리 수는 버려도 N단은 남긴다)', () => {
+    const idx = TS.build([
+      E('math-e2-07#c2', 'concept', 'e2', '2단, 5단 곱셈구구', ['2단', '5단'], '2단은 2씩, 5단은 5씩 커져요.'),
+      E('math-e2-07#c3', 'concept', 'e2', '3단, 6단 곱셈구구', ['3단', '6단'], '3단은 3씩, 6단은 6씩 커져요.'),
+      E('math-e2-07#c5', 'concept', 'e2', '7단, 9단 곱셈구구', ['7단', '9단'], '7단은 7씩, 9단은 9씩 커져요.'),
+      E('math-e2-08#c1', 'concept', 'e2', '문제 해결 1단계', ['단계'], '1단계에서는 문제를 꼼꼼히 읽어요.'),
+    ]);
+    const top = (q) => ((TS.query(idx, q, { grade: 'e2' })[0] || {}).entry || {}).id;
+    expect(top('구구단 7단')).toBe('math-e2-07#c5');
+    expect(top('9단 외우는 법')).toBe('math-e2-07#c5');
+    expect(top('6단이 헷갈려요')).toBe('math-e2-07#c3');
+    expect(TS.tokenize('7단이')).toEqual(['7단']);
+    expect(TS.tokenize('1단계')).not.toContain('1단');   // 단계는 다른 말
+  });
+
+  test('"시계 보는 법"처럼 물어도 시각 읽기를 찾는다 (시계 ↔ 시각)', () => {
+    const idx = TS.build([
+      E('math-e1-08#c3', 'concept', 'e1', '몇 시 읽기', ['시각', '짧은바늘', '긴바늘'],
+        '짧은바늘이 가리키는 수가 몇 시예요. 긴바늘이 12를 가리키면 정각이에요.'),
+      E('math-e1-08#c1', 'concept', 'e1', '여러 가지 모양 찾기', ['모양'], '네모, 세모, 동그라미 모양을 찾아요.'),
+      E('math-e1-03#c1', 'concept', 'e1', '덧셈하기', ['덧셈'], '두 수를 모아서 더해요.'),
+    ]);
+    const r = TS.query(idx, '시계 보는 법', { grade: 'e1' });
+    expect(r.length).toBeGreaterThan(0);
+    expect(r[0].entry.id).toBe('math-e1-08#c3');
+  });
+
   test('엉뚱한 질문은 빈 결과 (억지로 아무거나 내지 않는다)', () => {
     const offTopic = ['오늘 점심 뭐 먹지', 'ㅋㅋㅋ', 'ㅎㅎㅎㅎ 심심해', '배고파', '게임 하고 싶다', 'asdfgh qwerty',
       '아이돌 노래 추천해줘', '축구 좋아해?', '너 몇 살이야', '', '   ', '?!?!'];

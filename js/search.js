@@ -111,7 +111,7 @@
   var LIGHT = setOf(
     '방법 법 차이 차이점 종류 순서 쓰임 예시 예 예제 문제 원리 특징 성질 공식 의미 정의 개념 이유 원인 까닭 ' +
     '과정 역할 구조 비교 정리 관계 외우 외워 외울 외우기 푸는 풀어 풀면 풀까 찾아 찾는 찾기 찾으면 ' +
-    '만들어 만드는 만들기 만들면 만든 만드 알아 아는 알기 알면 배우 배워 배우는 배울 읽어 읽는 읽기 ' +
+    '만들어 만드는 만들기 만들면 만든 만드 알아 아는 알기 알면 배우 배워 배우는 배울 읽어 읽는 읽기 보는 보면 볼 ' +
     '달라 다른 다르 같은 같아 비슷 구별 구분 일어나 일어난 생기 생겨 생기는 변하 변해 변하는 ' +
     '바뀌 바뀌어 바뀌는 바꿔 바꾸 바꾸는 세워 세운 짜여 이루어 나타내 뜻하 말하 부르 불러 써야'
   );
@@ -138,7 +138,7 @@
     '피타고라스 정리|피타고라스의 정리|피타고라스|pythagoras', '합동|congruence', '닮음|similarity',
     '대칭|symmetry', '확률|probability', '평균|average|mean', '정수|integer', '자연수|natural number',
     '음수|negative number', '양수|positive number', '집합|set', '수열|sequence',
-    '미분|미분법|differentiation', '적분|적분법|integral|integration', '무게|weight', '구구단|곱셈구구',
+    '미분|미분법|differentiation', '적분|적분법|integral|integration', '무게|weight', '구구단|곱셈구구', '시계|시각',
     // 영어 문법
     '동사|움직씨|verb', '명사|이름씨|noun', '형용사|그림씨|adjective', '부사|어찌씨|adverb', '대명사|pronoun',
     '전치사|preposition', '접속사|conjunction', '관사|article', '조동사|modal|auxiliary verb',
@@ -347,11 +347,16 @@
     return p;
   }
   var CACHE = new Map();   // 낱말 → 토큰 (색인 2만 항목을 빨리 만들려고 같은 낱말은 한 번만 다룬다)
+  // 곱셈구구의 'N단'(7단이·9단을)은 수와 붙여 한 낱말로 둔다 — 한 자리 수를 버리면 '단'만 남아 어느 단인지 모른다.
+  // 뒤에 조사만 붙은 꼴만 ('1단계'·'2단원' 은 다른 말)
+  var DAN_RE = /^(\d{1,2})단(?:이|은|는|을|를|의|도|만|부터|까지|과|와|에|에서|으로|로|처럼|보다|이랑|랑|하고|이에요|이야)?$/;
   function wordTokens(w, keepStop) {
     var key = keepStop ? '\u0001' + w : w, hit = CACHE.get(key);
     if (hit) return hit;
     var out = [];
-    if (keepStop || !STOP.has(w)) {
+    var dan = DAN_RE.exec(w);
+    if (dan) out.push(dan[1] + '단');
+    else if (keepStop || !STOP.has(w)) {
       var parts = splitScript(w);
       for (var i = 0; i < parts.length; i++) {
         var t = stemPart(parts[i], keepStop);

@@ -155,3 +155,29 @@ test('움직임 줄이기 설정을 존중하고, 끝없이 도는 애니메이�
   });
   expect(infinite).toEqual([]);
 });
+
+test('표: 좁은 화면에서도 칸 안의 낱말을 한 글자씩 끊지 않는다 (넓으면 표만 가로로 민다)', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await open(page, { student: true, url: '/#/unit/math-m2-01/learn' });
+  const res = await page.evaluate(() => {
+    const host = document.createElement('div');
+    host.className = 'rich cc-body';
+    host.innerHTML = TutorText.render(
+      '| 법칙 | 합집합 | 교집합 |\n|---|---|---|\n' +
+      '| 교환법칙 | $A \cup B = B \cup A$ | $A \cap B = B \cap A$ |\n' +
+      '| 결합법칙 | $(A \cup B) \cup C = A \cup (B \cup C)$ | $(A \cap B) \cap C = A \cap (B \cap C)$ |\n' +
+      '| 분배법칙 | $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$ | $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ |');
+    document.querySelector('.concept-card:not([hidden])').appendChild(host);
+    const lines = (el) => { const r = document.createRange(); r.selectNodeContents(el); return Array.from(r.getClientRects()).filter((x) => x.width > 0).length; };
+    const wrap = host.querySelector('.rt-tablewrap');
+    return {
+      firstCol: Array.from(host.querySelectorAll('tbody tr > :first-child')).map(lines),
+      head: lines(host.querySelector('thead th')),
+      wrapScrolls: wrap.scrollWidth > wrap.clientWidth,
+      pageOver: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    };
+  });
+  expect(res.firstCol).toEqual([1, 1, 1]); // '교환법칙' 이 '교/환/법/칙' 으로 쪼개지지 않는다
+  expect(res.head).toBe(1);
+  expect(res.pageOver).toBeLessThanOrEqual(0); // 화면 전체는 가로로 밀리지 않는다(표 상자만 민다)
+});
