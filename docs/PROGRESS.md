@@ -1,17 +1,17 @@
 # 진행 상황 · 이어서 할 일 (가정교사)
 
 > 새 세션은 이 파일부터 읽는다. 끝난 일은 다시 하지 않는다. 작업 단위가 끝날 때마다 갱신한다.
-> 마지막 갱신: 2026-10-02 10:00
+> 마지막 갱신: 2026-10-02 10:15
 
 ## 지금 하는 일 (현재 작업)
 
-- 물결 A 끝(78/78, 실패 0). 단원 540개 lint 오류 0, catalog(준비 중 509)·index 다시 만듦. 전체 테스트 693 passed. **첫 커밋·push 하는 중**.
+- 물결 A 끝(78/78, 실패 0). 단원 540개 lint 오류 0, catalog(준비 중 509)·index 다시 만듦. 첫 커밋 024093d(661파일, noreply, 훅 검사 통과) push 함. **GitHub Actions(테스트 → Pages 배포) 기다리는 중** — gh run list --repo zenki798/home-tutor
 
 ## 다음 작업 (순서대로)
 
 1. [x] (10:00) `node scripts/build-catalog.js && node scripts/build-index.js` → 모든 단원 lint 오류 0 확인. 끊긴 파일은 tmp/partial-units/ 로 옮기고 다시 build
 2. [x] (10:10) 전체 테스트 `npx playwright test` — **693 passed** (logic·desktop·mobile·edge-file, 2.3m)
-3. [ ] 첫 커밋: 경로를 적어 `git add` → `git diff --staged --stat` 확인 → 커밋(pre-commit 훅이 비밀정보 검사, 작성자 noreply)
+3. [x] (10:14) 첫 커밋 024093d. 커밋 직전 검사를 git cat-file --batch 로 빠르게(2분+ → 3.5초): 경로를 적어 `git add` → `git diff --staged --stat` 확인 → 커밋(pre-commit 훅이 비밀정보 검사, 작성자 noreply)
 4. [ ] 공개 저장소: (✅ 09:50 저장소 만듦·Pages 켬(build_type=workflow)·origin 연결) →
    (`gh api -X POST repos/zenki798/home-tutor/pages -f build_type=workflow`) → push → Actions(비밀정보·내용 검사·테스트·배포) 성공 확인 →
    https://zenki798.github.io/home-tutor/ 확인
