@@ -70,3 +70,20 @@ test('같은 문제 검사: 글·보기가 같으면 경고하고, 그림이 다
   expect(dup).toHaveLength(1);
   expect(dup[0].msg).toContain('practice[');
 });
+
+test('그림 지시 검사: "다음 그림을 보고"인데 그림이 없으면 경고, 인용 지문 속 이야기·그림 편지·줄기와 잎 그림은 그림 지시가 아니다', () => {
+  const fs = require('fs');
+  const { validateUnitFile } = require(path.join(ROOT, 'scripts', 'validate-content.js'));
+  const file = path.join(ROOT, 'tests', 'fixtures', 'units', 'math-m2-01.js');
+  const add = (extra) => 'var __reg = Tutor.registerUnit; Tutor.registerUnit = function (u) { u.practice = u.practice.concat(' +
+    JSON.stringify(extra) + '); __reg(u); };\n' + fs.readFileSync(file, 'utf8');
+  const p = (id, q) => ({ id, level: 1, type: 'ox', q, answer: true, explain: '글을 읽고 판단해요. 그래서 맞아요.', concept: 0 });
+  const figWarn = (extra) => validateUnitFile(file, { source: add(extra), seeds: 3, catalog: null })
+    .warnings.filter((w) => /그림을 가리키는데/.test(w.msg)).map((w) => w.path);
+  expect(figWarn([p('z1', '다음 그림을 보고 알맞은 것을 고르세요.')])).toHaveLength(1);
+  expect(figWarn([
+    p('z1', '다음 글을 읽고 답하세요.\n\n> 나는 친구의 그림을 보고 "멋지다."라고 말했다.'),
+    p('z2', '다음 그림 편지에 빠진 것은 쓴 사람이다.'),
+    p('z3', '줄기와 잎 그림에서 같은 값은 한 번만 쓴다.'),
+  ])).toEqual([]);
+});

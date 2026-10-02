@@ -10,7 +10,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
+const { loadUnitFile } = require('./validate-content.js');
 
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'data', 'catalog.js');
@@ -41,21 +41,14 @@ function fail(msg) {
   process.exit(1);
 }
 
-// 단원 파일이 실제로 실행되고 같은 id 의 단원을 등록하는가 (쓰다 끊긴 파일은 준비 중으로)
+// 단원 파일이 실제로 실행되고 같은 id 의 단원을 등록하는가 (쓰다 끊긴 파일은 준비 중으로).
+// 화면처럼 엔진 전역(TutorMath·TutorText·TutorFig)이 있는 상태에서 실행한다 — 검사기(validate-content)와 같은 방식.
+// (엔진 없이 돌리면 맨 위에서 var F = TutorMath.F 를 쓰는 멀쩡한 단원이 준비 중이 된다)
 function unitReady(id) {
   const file = path.join(UNITS, id + '.js');
   if (!fs.existsSync(file)) return false;
-  let got = null;
-  let n = 0;
-  try {
-    vm.runInNewContext(fs.readFileSync(file, 'utf8'), {
-      Tutor: { registerUnit(u) { got = u; n++; } },
-      console: { log() {}, warn() {}, error() {} },
-    }, { timeout: 3000 });
-  } catch (e) {
-    return false;
-  }
-  return n === 1 && got && got.id === id;
+  const r = loadUnitFile(file);
+  return !r.error && r.count === 1 && !!r.unit && r.unit.id === id;
 }
 
 function build() {

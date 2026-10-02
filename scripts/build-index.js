@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { loadUnitFile } = require('./validate-content.js');
 
 const ROOT = path.join(__dirname, '..');
 const TutorText = require(path.join(ROOT, 'js', 'mathtext.js'));
@@ -24,11 +25,11 @@ function plain(s, max) {
   return max && t.length > max ? t.slice(0, max - 1) + '…' : t;
 }
 
+// 화면처럼 엔진 전역(TutorMath·TutorText·TutorFig)이 있는 상태에서 실행한다(검사기·build-catalog 와 같은 방식)
 function loadUnit(id) {
-  const file = path.join(ROOT, 'data', 'units', id + '.js');
-  let got = null;
-  vm.runInNewContext(fs.readFileSync(file, 'utf8'), { Tutor: { registerUnit(u) { got = u; } }, console: { log() {}, warn() {}, error() {} } }, { timeout: 3000 });
-  return got;
+  const r = loadUnitFile(path.join(ROOT, 'data', 'units', id + '.js'));
+  if (r.error) throw new Error(id + ': ' + r.error.msg);
+  return r.unit;
 }
 
 function entriesFor(course, meta) {

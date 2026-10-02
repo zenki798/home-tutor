@@ -397,6 +397,11 @@ const PART_KEYS = {
 const LIST_KEYS = Object.keys(RANGES).concat(['goals', 'standards', 'gens', 'vocab']);
 // 문제 글이 그림을 가리키는데 그 문제에 fig 가 없는 경우 (화면은 문제마다 따로 보여 준다)
 const FIG_REF_RE = /(위|아래|다음|오른쪽|왼쪽)의?\s*그림|그림(과 같이|과 같은|에서|을 보고|를 보고|처럼)/;
+// 인용 지문(> 로 시작하는 줄) 안의 이야기, '그림 편지·그림일기·그림책', '줄기와 잎 그림'(그래프 이름)은 그림을 가리키는 말이 아니다
+const FIG_WORDS_RE = /그림\s*(편지|일기|책|카드)|줄기와\s*잎\s*그림/g;
+function figRefText(q) {
+  return q.split('\n').filter((l) => !/^\s*>/.test(l)).join('\n').replace(FIG_WORDS_RE, '');
+}
 
 function guessSubject(id) { return String(id).split('-')[0]; }
 function guessCourse(id) { return String(id).replace(/-\d+$/, ''); }
@@ -461,8 +466,8 @@ function extraProblemChecks(p, base, where, report) {
       }
     }
   }
-  if (isStr(p.q) && p.fig === undefined && FIG_REF_RE.test(p.q) && where !== 'check-with-fig') {
-    const m = FIG_REF_RE.exec(p.q);
+  if (isStr(p.q) && p.fig === undefined && FIG_REF_RE.test(figRefText(p.q)) && where !== 'check-with-fig') {
+    const m = FIG_REF_RE.exec(figRefText(p.q));
     report(base + '.fig', "문제 글이 그림을 가리키는데('" + m[0] + "') 이 문제에 fig 가 없어요 — 그림이 필요하면 그 문제의 fig 칸에 넣어요(화면은 문제를 하나씩 따로 보여 줘요)", 'warning', 'fig-ref');
   }
 }
