@@ -244,7 +244,7 @@ Tutor.registerUnit({
       explain: '$456\\div6=76$이고 4.56은 456의 $\\frac{1}{100}$배이므로 몫은 0.76이에요. 하루에 0.76 kg씩 먹였어요.',
     },
     {
-      id: 'p9', level: 2, type: 'short', check: 'number', unit: 'kg', concept: 2,
+      id: 'p9', level: 2, type: 'short', check: 'number', unit: 'kg', concept: 0,
       q: '세 친구가 모은 빈 병의 무게가 각각 1.2 kg, 1.7 kg, 2.2 kg이에요. 세 친구가 모은 빈 병의 무게의 평균은 몇 kg일까요?',
       answer: '1.7',
       hint: '평균은 자료의 값을 모두 더해 자료의 수로 나누어요.',
@@ -252,7 +252,7 @@ Tutor.registerUnit({
         { a: '5.1', why: '무게를 모두 더한 값이에요. 평균은 이것을 자료의 수 3으로 나누어요.' },
         { a: '17', why: '소수점의 위치가 틀렸어요. 5.1을 약 6으로 어림하면 몫은 2쯤이에요.' },
       ],
-      explain: '무게의 합은 $1.2+1.7+2.2=5.1$ (kg)이에요. 평균은 $5.1\\div3=1.7$ (kg)예요.',
+      explain: '무게의 합은 $1.2+1.7+2.2=5.1$ (kg)이에요. 평균은 $5.1\\div3=1.7$ (kg)이에요. ($51\\div3=17$이고 5.1은 51의 $\\frac{1}{10}$배이므로 몫도 $\\frac{1}{10}$배예요.)',
     },
     {
       id: 'p10', level: 2, type: 'short', check: 'number', unit: 'cm', concept: 3,
@@ -485,7 +485,7 @@ Tutor.registerUnit({
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === qTxt ? '' : reason[c] || ''; }),
           explain: ones + R.josa(ones, '을/를') + ' ' + k + R.josa(k, '으로/로') + ' 나누면 ' + a + (r1 ? ' … 나머지 ' + r1 : '') + ', 몫의 일의 자리에 ' + a + R.josa(a, '을/를') + ' 써요. ' +
-            '소수 첫째 자리까지 내린 ' + t + R.josa(t, '은/는') + ' ' + k + R.josa(k, '으로/로') + ' 나눌 수 없으니 몫의 소수 첫째 자리에 0을 써요. ' +
+            '소수 첫째 자리까지 내린 ' + t + R.josa(t, '은/는') + ' ' + k + '보다 작으니 몫의 소수 첫째 자리에 0을 써요. ' +
             '다음 자리까지 내린 ' + (b * k) + R.josa(b * k, '을/를') + ' ' + k + R.josa(k, '으로/로') + ' 나누면 ' + b + R.josa(b, '이에요/예요') + '. 몫은 ' + qTxt + R.josa(qTxt, '이에요/예요') + '. (확인: $' + qTxt + '\\times' + k + '=' + dTxt + '$)',
         };
       },

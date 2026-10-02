@@ -437,7 +437,12 @@ Tutor.registerUnit({
           [s(est * 10), '0을 하나 더 붙였어요. $' + (h * 100) + '\\times' + (t * 10) + '=' + est + '$' + R.josa(est, '이에요/예요') + '.'],
           [s((h - 1) * t * 1000), a + R.josa(a, '을/를') + ' ' + ((h - 1) * 100) + R.josa((h - 1) * 100, '으로/로') + ' 어림했어요. ' + a + R.josa(a, '은/는') + ' ' + (h * 100) + '에 더 가까워요.'],
           [s(h * (t + 1) * 1000), b + R.josa(b, '을/를') + ' ' + ((t + 1) * 10) + R.josa((t + 1) * 10, '으로/로') + ' 어림했어요. ' + b + R.josa(b, '은/는') + ' ' + (t * 10) + '에 더 가까워요.'],
+          [s((h + 1) * t * 1000), a + R.josa(a, '을/를') + ' ' + ((h + 1) * 100) + R.josa((h + 1) * 100, '으로/로') + ' 어림했어요. ' + a + R.josa(a, '은/는') + ' ' + (h * 100) + '에 더 가까워요.'],
+          [s(h * (t - 1) * 1000), b + R.josa(b, '을/를') + ' ' + ((t - 1) * 10) + R.josa((t - 1) * 10, '으로/로') + ' 어림했어요. ' + b + R.josa(b, '은/는') + ' ' + (t * 10) + '에 더 가까워요.'],
         ];
+        // 실제 값에 정답 어림보다 더 가까운 오답은 빼요(정답이 둘로 읽히지 않게): 예) 897×28=25116 은 27000보다 24000에 가까워요.
+        var actual = a * b, gap = Math.abs(est - actual);
+        cands = cands.filter(function (c) { return Math.abs(Number(c[0].slice(2)) - actual) > gap + 1000; });
         var reason = {};
         cands.forEach(function (c) { if (!(c[0] in reason)) reason[c[0]] = c[1]; });
         var pick = R.choices(correct, R.shuffle(cands.map(function (c) { return c[0]; })));

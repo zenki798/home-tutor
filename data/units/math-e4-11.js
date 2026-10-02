@@ -344,7 +344,7 @@
       {
         id: 'a5', level: 3, type: 'choice', concept: 2,
         q: '1시간마다 잰 기온을 나타낸 꺾은선그래프만 보고 알 수 **없는** 것은 무엇일까요?',
-        choices: ['10시 30분의 정확한 기온', '기온이 가장 높았던 시각', '기온이 가장 많이 오른 때', '기온이 내려가기 시작한 때'],
+        choices: ['10시 30분의 정확한 기온', '기온을 잰 시각 가운데 기온이 가장 높았던 시각', '기온이 가장 많이 오른 때(몇 시와 몇 시 사이)', '기온이 처음으로 내려간 때(몇 시와 몇 시 사이)'],
         answer: 0,
         why: [
           '',
@@ -441,8 +441,10 @@
           }
           var i = R.int(0, n - 1);
           var v = values[i];
-          var wrong = [{ a: String(cells[i]), why: '물결선 위의 첫 눈금에서 몇 칸 위인지만 셌어요. 첫 눈금 ' + b + ' ' + t.unit + '부터 한 칸에 ' + k + ' ' + t.unit + '씩 커져요.' }];
-          if (k !== 1) wrong.push({ a: String(cells[i] * k), why: '물결선 위의 첫 눈금을 0으로 읽었어요. 첫 눈금은 ' + b + ' ' + t.unit + R.josa(t.unit, '이에요/예요') + '.' });
+          var wrong = [];
+          // 첫 눈금 위의 점(0칸)이면 "칸 수만 센" 답이 0 이 되어 진단이 어색하므로 넣지 않는다
+          if (cells[i] > 0) wrong.push({ a: String(cells[i]), why: '물결선 위의 첫 눈금에서 몇 칸 위인지만 셌어요. 첫 눈금 ' + b + ' ' + t.unit + '부터 한 칸에 ' + k + ' ' + t.unit + '씩 커져요.' });
+          if (k !== 1 && cells[i] > 0) wrong.push({ a: String(cells[i] * k), why: '물결선 위의 첫 눈금을 0으로 읽었어요. 첫 눈금은 ' + b + ' ' + t.unit + R.josa(t.unit, '이에요/예요') + '.' });
           return {
             type: 'short', check: 'number', unit: t.unit, concept: 0,
             q: '꺾은선그래프를 보고 답하세요. ' + when(labels[i]) + '에 잰 ' + t.thing + R.josa(t.thing, '은/는') + ' 몇 ' + t.unit + '일까요?',

@@ -565,7 +565,7 @@ Tutor.registerUnit({
             var r = rel(byLab[c]);
             if (r && r === dir) return c + R.josa(c, '은/는') + ' ' + t.label + '의 ' + r + '에 있지만 딱 붙어 있지 않아요. 바로 ' + dir + '에 딱 붙은 쌓기나무를 찾아요.';
             if (r) return c + R.josa(c, '은/는') + ' ' + t.label + '의 ' + r + '에 있어요. 바로 ' + dir + '에 딱 붙은 쌓기나무를 찾아요.';
-            return c + R.josa(c, '은/는') + ' ' + t.label + '와 딱 붙어 있지 않아요. 바로 ' + dir + '에 딱 붙은 쌓기나무를 찾아요.';
+            return c + R.josa(c, '은/는') + ' ' + t.label + '의 바로 위, 아래, 오른쪽, 왼쪽 어디에도 있지 않아요. 바로 ' + dir + '에 딱 붙은 쌓기나무를 찾아요.';
           }),
           explain: t.label + '의 바로 ' + dir + '에 딱 붙어 있는 쌓기나무는 ' + nb.label + '예요.',
         };

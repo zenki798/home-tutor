@@ -522,7 +522,7 @@ Tutor.registerUnit({
         });
         return {
           type: 'short', check: 'number', concept: /겨냥도/.test(A[0] + B[0]) ? 3 : (/수직/.test(A[0] + B[0]) ? 2 : 0),
-          q: shape + '을 생각해 보세요.\n\n' + A[0] + '의 수와 ' + B[0] + '의 수의 ' + (diff ? '차는' : '합은') + ' 얼마일까요?',
+          q: shape + R.josa(shape, '을/를') + ' 생각해 보세요.\n\n' + A[0] + '의 수와 ' + B[0] + '의 수의 ' + (diff ? '차는' : '합은') + ' 얼마일까요?',
           answer: String(ans),
           wrong: wrong,
           explain: shape + '에서 ' + A[0] + R.josa(A[0], '은/는') + ' ' + A[1] + '개, ' + B[0] + R.josa(B[0], '은/는') + ' ' + B[1] + '개예요. 그래서 $' + A[1] + sym + B[1] + '=' + ans + '$' + R.josa(ans, '이에요/예요') + '.' +

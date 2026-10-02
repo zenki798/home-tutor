@@ -228,7 +228,7 @@ Tutor.registerUnit({
     },
     {
       id: 'a2', level: 3, type: 'short', check: 'number', unit: '시', concept: 4,
-      q: '어떤 가상의 도시 가의 시각은 언제나 우리나라 시각보다 5시간 늦어요. 가 도시가 오후 1시일 때 우리나라는 오후 몇 시일까요?',
+      q: '어떤 가상의 도시 가의 시각은 언제나 우리나라 시각보다 5시간 늦어요. 가 도시가 오후 1시일 때 우리나라는 오후 몇 시일까요? (오후 □시의 □에 들어갈 수를 쓰세요.)',
       answer: '6',
       hint: '가 도시가 5시간 늦으니, 우리나라는 가 도시보다 5시간 빨라요.',
       wrong: [{ a: '8', why: '5시간을 뺐어요. 가 도시가 늦으니 우리나라 시각은 가 도시 시각에 5시간을 더해야 해요.' }],
@@ -462,7 +462,7 @@ Tutor.registerUnit({
         }
         return {
           type: 'short', check: 'number', unit: thing[1], concept: 3,
-          q: thing[0] + ' 한 ' + thing[1] + R.josa(thing[1], '이/가') + ' ' + R.fmt.num(price) + '원이에요. ' + thing[0] + '값으로 ' + R.fmt.num(total) + '원을 냈다면 ' + thing[0] + R.josa(thing[0], '을/를') + ' 몇 ' + thing[1] + ' 산 것일까요?',
+          q: thing[0] + ' 한 ' + thing[1] + R.josa(thing[1], '이/가') + ' ' + R.fmt.num(price) + '원이에요. ' + thing[0] + '값이 모두 ' + R.fmt.num(total) + '원이라면 ' + thing[0] + R.josa(thing[0], '을/를') + ' 몇 ' + thing[1] + ' 산 것일까요?',
           answer: String(cnt),
           wrong: [{ a: String(total - price), why: '뺄셈을 했어요. 전체 값을 한 ' + thing[1] + '의 값으로 나누어야 해요.' }],
           explain: thing[0] + ' 수를 $\\square$, 값을 $\\triangle$라고 하면 $\\triangle=\\square\\times' + price + '$, 곧 $\\square=\\triangle\\div' + price + '$' + R.josa(price, '이에요/예요') + '. $' + total + '\\div' + price + '=' + cnt + '$이므로 ' + cnt + thing[1] + R.josa(thing[1], '이에요/예요') + '.',

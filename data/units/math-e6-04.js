@@ -520,7 +520,7 @@ Tutor.registerUnit({
         do { pct = R.int(5, 75); votes = N * pct / 100; } while (votes !== Math.floor(votes) || votes === 0);
         return {
           type: 'short', check: 'number', unit: '%', concept: 5,
-          q: '학급 대표 선거에서 ' + N + '명이 투표했고, ' + name + R.josa(name, '이/가') + ' ' + votes + '표를 받았어요. ' + name + '의 득표율은 몇 %일까요?',
+          q: (N <= 50 ? '학급 대표 선거' : '전교 학생 대표 선거') + '에서 ' + N + '명이 투표했고, ' + name + R.josa(name, '이/가') + ' ' + votes + '표를 받았어요. ' + name + '의 득표율은 몇 %일까요?',
           answer: String(pct),
           hint: '전체 투표수가 기준량이에요.',
           wrong: [{ a: R.F(pct, 100).toDecimal(), why: '비율까지만 구했어요. 백분율은 100을 곱해요.' }],

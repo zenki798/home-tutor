@@ -14,7 +14,7 @@
     ['참새가 우는 소리', 1], ['빗방울이 떨어지는 소리', 1], ['매미가 우는 소리', 1],
     ['바람에 나뭇잎이 흔들리는 소리', 1], ['시냇물이 흐르는 소리', 1], ['개구리가 우는 소리', 1],
     ['돌이 매끈한지 거친지', 2], ['나무껍질의 느낌', 2], ['솜이 얼마나 부드러운지', 2],
-    ['모래가 까슬까슬한지', 2], ['시냇물이 차가운지', 2],
+    ['모래가 까슬까슬한지', 2], ['얼음이 얼마나 차가운지', 2],
   ];
 
   // 탐험 약속 고르기 생성기
@@ -321,7 +321,7 @@ Tutor.registerUnit({
           answer: pick.answer,
           why: pick.choices.map(function (c) {
             if (c === right) return '';
-            return WAY_WHY[WAYS.indexOf(c)] + ' 이것을 알아보려면 ' + right + R.josa(right, '이/가') + ' 알맞아요.';
+            return WAY_WHY[WAYS.indexOf(c)] + ' ' + t[0] + R.josa(t[0], '을/를') + ' 알아보려면 ' + right + R.josa(right, '이/가') + ' 알맞아요.';
           }),
           explain: WAY_WHY[t[1]] + ' 그래서 ' + right + R.josa(right, '이/가') + ' 알맞아요.',
         };

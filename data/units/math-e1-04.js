@@ -124,11 +124,12 @@ Tutor.registerUnit({
       fig: kids([['서준', 140], ['하윤', 110]], '바닥에 나란히 선 서준이와 하윤이. 서준이의 머리가 더 위에 있어요'),
       check: {
         type: 'choice',
-        q: '두 건물을 비교하는 말로 알맞은 것은 무엇일까요?\n\n"학교는 우체국보다 더 ( )."',
+        q: '그림을 보고 두 건물을 비교했어요. 알맞은 말은 무엇일까요?\n\n"학교는 우체국보다 더 ( )."',
+        fig: buildings([['학교', 140], ['우체국', 90]], '바닥에 나란히 선 학교와 우체국. 학교의 위쪽 끝이 더 위에 있어요'),
         choices: ['높아요', '길어요', '무거워요'],
         answer: 0,
-        why: ['', '"길어요"는 리본, 연필처럼 옆으로 긴 것을 비교할 때 써요. 건물은 높이를 비교해요.', '건물의 크기를 위아래로 비교하는 말이 필요해요. 건물은 높이를 비교해요.'],
-        explain: '건물은 땅에서 위로 얼마나 올라갔는지, 곧 높이를 비교해요. "더 높아요"라고 말해요.',
+        why: ['', '"길어요"는 리본, 연필처럼 옆으로 긴 것을 비교할 때 써요. 건물은 높이를 비교해요.', '그림으로는 무게를 알 수 없어요. 건물이 위로 얼마나 올라갔는지는 높이로 비교해요.'],
+        explain: '건물은 땅에서 위로 얼마나 올라갔는지, 곧 높이를 비교해요. 학교의 위쪽 끝이 더 위에 있으니 "더 높아요"라고 말해요.',
       },
     },
     {
@@ -272,7 +273,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p7', level: 1, type: 'choice', concept: 3,
-      q: '더 넓은 것은 무엇일까요?',
+      q: '가장 넓은 것은 무엇일까요?',
       choices: ['책상 윗면', '우표', '지우개 윗면'],
       answer: 0,
       why: ['', '우표는 손톱보다 조금 큰 종이예요. 책상 윗면에 쏙 올라가요.', '지우개는 손바닥에 올라갈 만큼 작아요. 책상 윗면이 훨씬 넓어요.'],
@@ -280,7 +281,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p8', level: 1, type: 'choice', concept: 4,
-      q: '물을 더 많이 담을 수 있는 것은 무엇일까요?',
+      q: '물을 가장 많이 담을 수 있는 것은 무엇일까요?',
       choices: ['양동이', '컵', '숟가락'],
       answer: 0,
       why: ['', '컵에 담긴 물은 양동이에 다 들어가고도 남아요. 양동이가 더 많이 담아요.', '숟가락에는 물을 아주 조금만 담을 수 있어요.'],
@@ -308,10 +309,10 @@ Tutor.registerUnit({
     {
       id: 'p11', level: 2, type: 'choice', concept: 3,
       q: '겹쳐 보았더니 가 종이가 나 종이를 다 덮고도 남았어요. 알맞은 말은 무엇일까요?',
-      choices: ['가가 나보다 더 넓어요.', '나가 가보다 더 넓어요.', '가와 나의 넓이는 같아요.'],
+      choices: ['가 종이가 나 종이보다 더 넓어요.', '나 종이가 가 종이보다 더 넓어요.', '가 종이와 나 종이의 넓이는 같아요.'],
       answer: 0,
-      why: ['', '다 덮이는 쪽은 더 좁아요. 나는 가에 다 덮였어요.', '한쪽이 남았으니 넓이가 같지 않아요.'],
-      explain: '겹쳤을 때 남는 쪽이 더 넓어요. 가가 남았으니 가가 나보다 더 넓어요.',
+      why: ['', '다 덮이는 쪽은 더 좁아요. 나 종이는 가 종이에 다 덮였어요.', '한쪽이 남았으니 넓이가 같지 않아요.'],
+      explain: '겹쳤을 때 남는 쪽이 더 넓어요. 가 종이가 남았으니 가 종이가 나 종이보다 더 넓어요.',
     },
   ],
 
@@ -397,11 +398,13 @@ Tutor.registerUnit({
         var vals = R.sample(mode === 0 ? [70, 110, 150, 190, 230] : [70, 95, 120, 145], k);
         var big = R.bool();
         var most = k === 2 ? '더 ' : '가장 ';
-        var names, fig, adj, oppAdj, rule, card, same, label, q;
+        var names, fig, adj, oppAdj, rule, card, same, label, q, noun, tail;
         if (mode === 0) {
           var thing = R.pick(['리본', '끈', '색 테이프', '줄', '막대']);
           names = R.sample(NAMES, k);
           adj = big ? '긴' : '짧은'; oppAdj = big ? '짧은' : '긴';
+          noun = thing;
+          tail = function (n) { return most + adj + ' ' + thing + R.josa(thing, '은/는') + ' ' + n + '의 ' + thing + R.josa(thing, '이에요/예요') + '.'; };
           fig = bars(names.map(function (n, i) { return [n, vals[i]]; }), '왼쪽 끝을 맞춘 ' + thing + ' ' + k + '개');
           label = function (n) { return n + '의 ' + thing; };
           q = most + adj + ' ' + thing + R.josa(thing, '은/는') + ' 누구의 ' + thing + '일까요?';
@@ -411,6 +414,8 @@ Tutor.registerUnit({
         } else if (mode === 1) {
           names = R.sample(NAMES, k);
           adj = big ? '큰' : '작은'; oppAdj = big ? '작은' : '큰';
+          noun = '어린이';
+          tail = function (n) { return '키가 ' + most + adj + ' 어린이는 ' + n + R.josa(n, '이에요/예요') + '.'; };
           fig = kids(names.map(function (n, i) { return [n, vals[i]]; }), '바닥에 나란히 선 어린이 ' + k + '명');
           label = function (n) { return n; };
           q = '키가 ' + most + adj + ' 어린이는 누구일까요?';
@@ -420,6 +425,8 @@ Tutor.registerUnit({
         } else {
           names = R.sample(['학교', '병원', '도서관', '우체국', '소방서', '경찰서'], k);
           adj = big ? '높은' : '낮은'; oppAdj = big ? '낮은' : '높은';
+          noun = '건물';
+          tail = function (n) { return most + adj + ' 건물은 ' + n + R.josa(n, '이에요/예요') + '.'; };
           fig = buildings(names.map(function (n, i) { return [n, vals[i]]; }), '바닥에 나란히 선 건물 ' + k + '개');
           label = function (n) { return n; };
           q = most + adj + ' 건물은 무엇일까요?';
@@ -430,7 +437,6 @@ Tutor.registerUnit({
         var target = big ? Math.max.apply(null, vals) : Math.min.apply(null, vals);
         var opp = big ? Math.min.apply(null, vals) : Math.max.apply(null, vals);
         var ti = vals.indexOf(target);
-        var who = mode === 1 ? (k === 2 ? '' : ' 어린이') : '';
         var p = {
           type: 'choice', concept: card, fixed: true,
           q: q,
@@ -441,9 +447,9 @@ Tutor.registerUnit({
             if (i === ti) return '';
             var L = label(n);
             if (vals[i] === opp) return '반대로 골랐어요. ' + L + R.josa(L, '은/는') + ' ' + most + oppAdj + ' 쪽이에요.';
-            return L + '보다 더 ' + adj + ' 것이 있어요. ' + rule;
+            return L + '보다 더 ' + adj + ' ' + noun + R.josa(noun, '이/가') + ' 있어요. ' + rule;
           }),
-          explain: rule + ' ' + most + adj + ' 것은 ' + label(names[ti]) + who + R.josa(label(names[ti]) + who, '이에요/예요') + '.',
+          explain: rule + ' ' + tail(names[ti]),
         };
         if (k === 2) { p.choices.push(same); p.why.push('끝이 서로 맞지 않아요. 같다면 끝이 나란히 맞아요. ' + rule); }
         return p;
@@ -600,7 +606,10 @@ Tutor.registerUnit({
             if (n === B) return B + R.josa(B, '은/는') + ' 가운데예요. 두 문장에 모두 나오는 ' + B + R.josa(B, '을/를') + ' 기준으로 순서를 세워 보세요.';
             return '반대로 골랐어요. ' + n + R.josa(n, '은/는') + ' 가장 ' + (askBig ? K.smallAdj : K.bigAdj) + ' 쪽이에요.';
           }),
-          explain: '두 문장을 이으면 ' + (useRope ? '긴' : K.bigAdj) + ' 순서는 ' + A + ', ' + B + ', ' + C + R.josa(C, '이에요/예요') + '. 그래서 가장 ' + (askBig ? K.bigAdj : K.smallAdj) + ' 쪽은 ' + ans + R.josa(ans, '이에요/예요') + '.',
+          explain: '두 문장을 이으면 ' + pre + K.bigAdj + ' 순서는 ' + A + ', ' + B + ', ' + C + R.josa(C, '이에요/예요') + '. 그래서 ' +
+            (useRope
+              ? '가장 ' + (askBig ? K.bigAdj : K.smallAdj) + ' 줄넘기는 ' + ans + '의 것이에요.'
+              : pre + '가장 ' + (askBig ? K.bigAdj : K.smallAdj) + ' 어린이는 ' + ans + R.josa(ans, '이에요/예요') + '.'),
         };
       },
     },

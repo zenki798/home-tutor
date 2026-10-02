@@ -418,11 +418,11 @@ Tutor.registerUnit({
         var wrong = [];
         if (!zero && Math.abs(a - b) !== s) wrong.push({ a: String(Math.abs(a - b)), why: '빼기를 했어요. ' + (mode === 1 ? '"합"은 두 수를 더한 수예요.' : '+ 는 "더하기"예요.') });
         if (!zero && s - 1 !== Math.abs(a - b)) wrong.push({ a: String(s - 1), why: '이어 셀 때 처음 수를 한 번 더 센 것 같아요. 처음 수 다음부터 세어요.' });
-        if (zero) wrong.push({ a: '0', why: '0을 더하면 0이 되는 것이 아니에요. 아무것도 더하지 않았으니 그대로예요.' });
+        if (zero) wrong.push({ a: '0', why: b === 0 ? '0을 더하면 0이 되는 것이 아니에요. 아무것도 더하지 않았으니 그대로예요.' : '0에 어떤 수를 더하면 0이 되는 것이 아니에요. 더한 그 수가 돼요.' });
         p.wrong = wrong;
         var big = Math.max(a, b), small = Math.min(a, b);
         p.explain = zero
-          ? '0은 아무것도 없다는 뜻이에요. 0을 더해도 그대로라서 $' + a + '+' + b + '=' + s + '$' + R.josa(s, '이에요/예요') + '.'
+          ? '0은 아무것도 없다는 뜻이에요. ' + (b === 0 ? '어떤 수에 0을 더하면 그대로라서' : '0에 어떤 수를 더하면 그 수가 되어서') + ' $' + a + '+' + b + '=' + s + '$' + R.josa(s, '이에요/예요') + '.'
           : big + R.josa(big, '을/를') + ' 기억하고 ' + small + '만큼 이어서 "' + NAT.slice(big + 1, s + 1).join(', ') + '" 하고 세어요. $' + a + '+' + b + '=' + s + '$' + R.josa(s, '이에요/예요') + '.';
         return p;
       },
@@ -464,7 +464,9 @@ Tutor.registerUnit({
       title: '덧셈·뺄셈 상황을 식으로 나타내고 풀기',
       make: function (R) {
         var kind = R.pick(['join', 'add', 'take', 'compare']);
-        var who = R.sample(NAMES, 2), A = who[0], B = who[1];
+        // 받침 있는 이름은 "하윤이는", "도윤이가"처럼 불러요 ("도윤이 구슬"이 "도윤이의 구슬"로 읽히지 않게)
+        var call = function (nm) { return R.josa(nm, '이/가') === '이' ? nm + '이' : nm; };
+        var who = R.sample(NAMES, 2), A = call(who[0]), B = call(who[1]);
         var a, b, ans, isAdd = kind === 'join' || kind === 'add', q, t, u;
         if (isAdd) { a = R.int(1, 8); b = R.int(1, 9 - a); ans = a + b; }
         else { a = R.int(3, 9); b = R.int(1, a - 1); ans = a - b; }

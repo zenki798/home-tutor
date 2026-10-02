@@ -46,7 +46,7 @@
       o += txt(cx, y0 + max * ch + 21, labels[j], 13);
       for (var k = 1; k <= values[j]; k++) o += mark(kind, cx, y0 + (max - k) * ch + ch / 2);
     }
-    return { type: 'svg', svg: '<svg viewBox="0 0 ' + W + ' ' + H + '">' + o + '</svg>', alt: (title || '조사한 자료') + '를 ' + kind + '로 나타낸 그래프' };
+    return { type: 'svg', svg: '<svg viewBox="0 0 ' + W + ' ' + H + '">' + o + '</svg>', alt: (title ? title + ' — ' : '') + '학생 수를 ' + kind + '로 나타낸 그래프' };
   }
 
   // 조사한 자료: 학생 한 명이 낱말 카드 하나 (4개씩 줄지어)
@@ -446,7 +446,7 @@ Tutor.registerUnit({
         });
         return {
           type: 'choice', concept: 3,
-          q: '그래프를 보고, 가장 ' + (most ? '많은' : '적은') + ' 학생이 ' + t.verb.replace(/은$/, '') + (t.verb === '좋아하는' ? '' : '') + '는 ' + t.what + R.josa(t.what, '을/를') + ' 골라 보세요.',
+          q: '그래프를 보고, 가장 ' + (most ? '많은' : '적은') + ' 학생이 ' + t.verb + ' ' + t.what + R.josa(t.what, '을/를') + ' 골라 보세요.',
           fig: fig,
           choices: items.slice(),
           answer: ans,

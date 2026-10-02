@@ -95,7 +95,7 @@ Tutor.registerUnit({
     },
     {
       title: '(분수)÷(분수)를 (분수)×(분수)로',
-      body: '통분해서 나누는 과정을 살펴보면 규칙이 보여요.\n\n$\\frac{2}{3} \\div \\frac{4}{5}=\\frac{2 \\times 5}{3 \\times 5} \\div \\frac{4 \\times 3}{5 \\times 3}=(2 \\times 5) \\div (4 \\times 3)=\\frac{2 \\times 5}{3 \\times 4}=\\frac{2}{3} \\times \\frac{5}{4}$\n\n그래서 **나누는 분수의 분모와 분자를 바꾸어 곱하면** 돼요.\n\n$\\frac{a}{b} \\div \\frac{c}{d}=\\frac{a}{b} \\times \\frac{d}{c}$\n\n예: $\\frac{2}{3} \\div \\frac{4}{5}=\\frac{2}{3} \\times \\frac{5}{4}=\\frac{10}{12}=\\frac{5}{6}$\n\n> ⚠️ 바꾸는 것은 **나누는 수(÷ 뒤의 분수)**뿐이에요. 앞의 분수는 그대로 두어요. (자연수)÷(분수)도 같아요: $6 \\div \\frac{2}{3}=6 \\times \\frac{3}{2}=9$',
+      body: '통분해서 나누는 과정을 살펴보면 규칙이 보여요.\n\n$\\frac{2}{3} \\div \\frac{4}{5}=\\frac{2 \\times 5}{3 \\times 5} \\div \\frac{4 \\times 3}{5 \\times 3}=(2 \\times 5) \\div (4 \\times 3)=\\frac{2 \\times 5}{3 \\times 4}=\\frac{2}{3} \\times \\frac{5}{4}$\n\n그래서 **나누는 분수의 분모와 분자를 바꾸어 곱하면** 돼요.\n\n(분수) ÷ $\\frac{4}{5}$ → (분수) × $\\frac{5}{4}$\n\n예: $\\frac{2}{3} \\div \\frac{4}{5}=\\frac{2}{3} \\times \\frac{5}{4}=\\frac{10}{12}=\\frac{5}{6}$\n\n> ⚠️ 바꾸는 것은 **나누는 수(÷ 뒤의 분수)**뿐이에요. 앞의 분수는 그대로 두어요. (자연수)÷(분수)도 같아요: $6 \\div \\frac{2}{3}=6 \\times \\frac{3}{2}=9$',
       easy: '"÷ 분수"를 만나면 두 가지만 바꿔요.\n\n1. ÷ 를 × 로\n2. 뒤의 분수를 거꾸로(분모와 분자를 바꿔서)\n\n$\\frac{2}{3} \\div \\frac{4}{5}$ → $\\frac{2}{3} \\times \\frac{5}{4}$. 그다음은 5학년 때 배운 분수의 곱셈이에요.',
       check: {
         type: 'ox',
@@ -283,7 +283,7 @@ Tutor.registerUnit({
       answer: '4',
       hint: '$\\div \\frac{1}{\\square}$은 $\\times \\square$와 같아요.',
       wrong: [{ a: '5', why: '$\\square=5$이면 $\\frac{5}{6} \\times 5=\\frac{25}{6}=4\\frac{1}{6}$로 4보다 커요.' }],
-      explain: '$\\frac{5}{6} \\div \\frac{1}{\\square}=\\frac{5}{6} \\times \\square$예요. $\\square=4$이면 $\\frac{20}{6}=3\\frac{2}{6}$로 4보다 작고, $\\square=5$이면 $\\frac{25}{6}=4\\frac{1}{6}$로 4보다 커요. 그래서 가장 큰 수는 4예요.',
+      explain: '$\\frac{5}{6} \\div \\frac{1}{\\square}=\\frac{5}{6} \\times \\square$예요. $\\square=4$이면 $\\frac{20}{6}=3\\frac{1}{3}$로 4보다 작고, $\\square=5$이면 $\\frac{25}{6}=4\\frac{1}{6}$로 4보다 커요. 그래서 가장 큰 수는 4예요.',
     },
     {
       id: 'a2', level: 3, type: 'short', check: 'number', concept: 0,
@@ -458,6 +458,8 @@ Tutor.registerUnit({
         var w2 = R.int(0, 2), Bn = w2 * e + c, Bd = e, B = R.F(Bn, Bd);
         var Atex = w1 + fr(n1, d1), Btex = w2 ? w2 + fr(c, e) : fr(c, e);
         var ans = A.div(B);
+        // 몫이 자연수나 진분수일 때는 "가분수나 대분수로 써요"라고 하지 않는다
+        var note = (!ans.isInt() && ans.num > ans.den) ? ' 답은 가분수나 대분수로 써요.' : '';
         var list = [
           { v: A.mul(B), why: '나누는 분수의 분모와 분자를 바꾸지 않고 곱했어요.' },
           { v: B.div(A), why: '거꾸로 나누었어요. ÷ 앞의 수를 뒤의 수로 나누어요.' },
@@ -467,7 +469,7 @@ Tutor.registerUnit({
         var change = '$' + Atex + '=' + fr(An, Ad) + '$' + (w2 ? ', $' + Btex + '=' + fr(Bn, Bd) + '$' : '');
         return {
           type: 'short', check: 'number', concept: 4,
-          q: '계산해 보세요. 답은 가분수나 대분수로 써요.\n\n$' + Atex + ' \\div ' + Btex + '$',
+          q: '계산해 보세요.' + note + '\n\n$' + Atex + ' \\div ' + Btex + '$',
           answer: ans.toString(),
           hint: '대분수를 먼저 가분수로 바꾸어요.',
           wrong: keepWrong(R, ans, list),
@@ -509,7 +511,7 @@ Tutor.registerUnit({
           ];
         }
         return {
-          type: 'short', check: 'number', concept: mulFirst ? 3 : 2,
+          type: 'short', check: 'number', concept: 3,
           q: q,
           answer: ans.toString(),
           hint: '먼저 잘못 계산한 과정을 거꾸로 하여 어떤 수를 구해요.',

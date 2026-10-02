@@ -79,7 +79,7 @@ Tutor.registerUnit({
     {
       title: '반올림',
       body: '**반올림**: 구하려는 자리 **바로 아래 자리 숫자**가 0, 1, 2, 3, 4이면 버리고, 5, 6, 7, 8, 9이면 올리는 방법이에요.\n\n- 3465를 반올림하여 백의 자리까지 → 바로 아래 십의 자리 숫자가 6이므로 올려서 3500\n- 3465를 반올림하여 천의 자리까지 → 바로 아래 백의 자리 숫자가 4이므로 버려서 3000\n\n> ⚠️ 바로 아래 **한 자리**만 봐요. 4449를 반올림하여 백의 자리까지 나타내면, 십의 자리 숫자가 4이므로 4400이에요. 일의 자리 9를 먼저 반올림해서 4450 → 4500으로 하면 안 돼요.\n\n소수도 같아요. 2.346을 반올림하여 소수 둘째 자리까지 나타내면 셋째 자리 숫자가 6이므로 2.35예요.',
-      easy: '반올림은 "어느 쪽에 더 가까운가"를 보는 거예요.\n\n3465는 3400과 3500 가운데 3500에 더 가까워요. 바로 아래 숫자가 5 이상이면 위쪽(올림), 4 이하이면 아래쪽(버림)에 더 가깝거나 가운데라고 정해 둔 거예요.',
+      easy: '반올림은 "어느 쪽에 더 가까운가"를 보는 거예요.\n\n3465는 3400과 3500 가운데 3500에 더 가까워요. 바로 아래 숫자가 0~4이면 아래쪽에 더 가까우니 버리고, 5~9이면 위쪽에 더 가깝거나 딱 가운데라서 올리기로 정해 둔 거예요.',
       fig: { type: 'numberline', min: 3400, max: 3500, step: 10, labelEvery: 5, points: [{ x: 3465, label: '3465' }], alt: '3400부터 3500까지의 수직선에 3465를 표시한 그림 — 3500에 더 가깝다' },
       check: {
         type: 'choice',
@@ -362,7 +362,7 @@ Tutor.registerUnit({
         return {
           type: 'choice', concept: 2,
           q: '수직선에 나타낸 수의 범위로 알맞은 것은 무엇일까요?',
-          fig: { type: 'numberline', min: a - 2, max: b + 2, step: 1, ranges: [{ from: a, to: b, fromOpen: lowOpen, toOpen: highOpen }], alt: '수직선에 ' + a + '부터 ' + b + '까지의 범위를 나타낸 그림' },
+          fig: { type: 'numberline', min: Math.max(0, a - 2), max: b + 2, step: 1, ranges: [{ from: a, to: b, fromOpen: lowOpen, toOpen: highOpen }], alt: '수직선에 ' + a + '부터 ' + b + '까지의 범위를 나타낸 그림' },
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : reason[c]; }),
@@ -419,12 +419,14 @@ Tutor.registerUnit({
         }[method];
         // 다른 자리까지 나타낸 실수
         var q2 = p * 10, alt = method === '올림' ? Math.ceil(n / q2) * q2 : method === '버림' ? Math.floor(n / q2) * q2 : Math.round(n / q2) * q2;
-        other.push([alt, '한 자리 위까지 나타냈어요. ' + pl[1] + '의 자리까지 나타내요.']);
+        if (alt > 0) other.push([alt, '한 자리 위까지 나타냈어요. ' + pl[1] + '의 자리까지 나타내요.']);
+        var cur = Math.floor(n / p) % 10; // 구하려는 자리의 숫자 (9 이면 올릴 때 받아올림)
         var wrong = [], seen = {};
         seen[ans] = true;
         other.forEach(function (w) { if (seen[w[0]]) return; seen[w[0]] = true; wrong.push({ a: String(w[0]), why: w[1] }); });
         var exp = method === '올림'
-          ? pl[1] + '의 자리 아래에 0이 아닌 수가 있으므로 ' + pl[1] + '의 자리 숫자를 1 크게 하고 아래 자리를 모두 0으로 해요.'
+          ? pl[1] + '의 자리 아래에 0이 아닌 수가 있으므로 ' + pl[1] + '의 자리 숫자를 1 크게 하고 아래 자리를 모두 0으로 해요.' +
+            (cur === 9 ? ' ' + pl[1] + '의 자리 숫자가 9라서 1 크게 하면 10이 되므로, 바로 윗자리로 1을 받아올림해요.' : '')
           : method === '버림'
             ? pl[1] + '의 자리 아래 수를 모두 0으로 해요.'
             : pl[1] + '의 자리 바로 아래인 ' + pl[2] + '의 자리 숫자는 ' + below + R.josa(below, '이에요/예요') + '. ' + (below >= 5 ? '5 이상이므로 올려요.' : '4 이하이므로 버려요.');
@@ -458,9 +460,8 @@ Tutor.registerUnit({
           };
         }
         if (kind === 1) {
-          var m = R.int(1100, 98900);
-          if (m % 1000 === 0) m += 100 * R.int(1, 9);
-          m = Math.round(m / 10) * 10;
+          var m = Math.round(R.int(1100, 98900) / 10) * 10;
+          if (m % 1000 === 0) m += 100 * R.int(1, 9); // 10원 단위로 맞춘 뒤 확인: 1000원이 안 되는 돈이 꼭 남게
           var down = Math.floor(m / 1000) * 1000;
           return {
             type: 'short', check: 'number', unit: '장', concept: 5,

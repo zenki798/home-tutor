@@ -149,7 +149,7 @@ Tutor.registerUnit({
     {
       id: 'p6', level: 1, type: 'short', check: 'text', concept: 3,
       q: '과자 봉지 안에 넣어 과자의 맛이 변하거나 부서지지 않게 하는 기체는 무엇일까요?',
-      answer: ['질소'],
+      answer: ['질소', '질소 기체'],
       wrong: [{ a: '산소', why: '산소는 다른 물질과 잘 반응해서 음식의 맛을 변하게 할 수 있어요. 다른 물질과 잘 반응하지 않는 기체를 넣어요.' }],
       explain: '**질소**는 다른 물질과 잘 반응하지 않아서, 과자 봉지에 넣으면 과자의 맛이 쉽게 변하지 않고 부서지는 것도 막아 줘요.',
     },
@@ -322,7 +322,7 @@ Tutor.registerUnit({
         var ball = b[0];
         var name = R.pick(['민수', '지아', '서준', '하윤', '도윤', '수아']);
         var before = R.int(b[1], b[2]);
-        var air = R.int(2, 9);
+        var air = R.int(2, 7); // 저울에 나타나는 늘어난 무게는 몇 g 정도
         var after = before + air;
         return {
           type: 'short', check: 'number', unit: 'g', concept: 0,

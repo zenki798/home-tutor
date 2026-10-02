@@ -254,7 +254,7 @@
         id: 'p7', level: 1, type: 'short', check: 'number', concept: 4,
         q: '비례식에서 $\\square$ 안에 알맞은 수를 구하세요.\n\n$\\square:6=10:15$',
         answer: '4',
-        wrong: [{ a: '1', why: '후항이 6에서 15로 9만큼 커졌다고 전항에서 9를 뺐어요. 외항의 곱과 내항의 곱이 같음을 이용해요: $\\square\\times15=6\\times10$' }],
+        wrong: [{ a: '1', why: '6이 15로 9만큼 커졌다고 $\\square$도 10보다 9만큼 작은 수로 생각했어요. 비율이 같으려면 같은 수를 곱하거나 나누어야 해요. 외항의 곱과 내항의 곱이 같음을 이용해요: $\\square\\times15=6\\times10$' }],
         explain: '외항의 곱 $\\square\\times15$와 내항의 곱 $6\\times10=60$이 같으므로 $\\square=60\\div15=4$예요.',
       },
       {
@@ -405,7 +405,7 @@
             [ratio(a, q), '후항만 나누었어요. 전항 ' + a + '도 똑같이 ' + g + R.josa(g, '으로/로') + ' 나누어요.'],
           ];
           for (var d = 2; d < g; d++) {
-            if (g % d === 0) { cands.push([ratio(a / d, b / d), '더 나눌 수 있어요. ' + a + '와 ' + b + '의 최대공약수 ' + g + R.josa(g, '으로/로') + ' 나누어요.']); break; }
+            if (g % d === 0) { cands.push([ratio(a / d, b / d), '더 나눌 수 있어요. ' + a + R.josa(a, '과/와') + ' ' + b + '의 최대공약수 ' + g + R.josa(g, '으로/로') + ' 나누어요.']); break; }
           }
           var reason = {};
           cands.forEach(function (c) { if (!(c[0] in reason)) reason[c[0]] = c[1]; });
@@ -441,8 +441,8 @@
             cands.push([ratio(qq, p), '전항과 후항의 순서를 바꾸었어요.']);
             if (k > 1) cands.push([ratio(p, qq * k), '전항만 나누었어요. 후항도 똑같이 나누어요.']);
             if (k > 1) cands.push([ratio(p * k, qq), '후항만 나누었어요. 전항도 똑같이 나누어요.']);
-            cands.push([ratio(p * 10, qq), '전항에만 10을 곱했어요. 전항과 후항에 똑같이 곱해요.']);
-            cands.push([ratio(p, qq * 10), '후항에만 10을 곱했어요. 전항과 후항에 똑같이 곱해요.']);
+            cands.push([ratio(p * 10, qq), '전항에만 10을 더 곱한 비예요. 전항과 후항에는 똑같은 수를 곱해야 비율이 그대로예요.']);
+            cands.push([ratio(p, qq * 10), '후항에만 10을 더 곱한 비예요. 전항과 후항에는 똑같은 수를 곱해야 비율이 그대로예요.']);
             explain = '전항과 후항에 10을 곱하면 ' + ratio(p * k, qq * k) + R.josa(qq * k, '이에요/예요') + '. ' +
               (k > 1 ? '최대공약수 ' + k + R.josa(k, '으로/로') + ' 나누면 ' + correct + R.josa(qq, '이에요/예요') + '.' : '더 나눌 수 없으니 이것이 가장 간단한 자연수의 비예요.');
           } else {
@@ -542,7 +542,7 @@
           var ans = part * k, rest = other * k;
           var wrong = [{ a: String(rest), why: names[1 - who] + '의 몫을 구했어요. ' + names[who] + R.josa(names[who], '은/는') + ' 비의 ' + (who === 0 ? '전항' : '후항') + ' ' + part + '에 해당해요.' }];
           if (T % 2 === 0 && T / 2 !== ans) wrong.push({ a: String(T / 2), why: '똑같이 반으로 나누었어요. 주어진 비로 나누어야 해요.' });
-          if ((T * part) % other === 0 && (T * part) / other !== ans) wrong.push({ a: String((T * part) / other), why: '분모에 전항과 후항의 합 대신 다른 항을 썼어요. 분모는 $' + p + '+' + q + '=' + (p + q) + '$' + R.josa(p + q, '이에요/예요') + '.' });
+          if ((T * part) % other === 0 && (T * part) / other !== ans && (T * part) / other !== T / 2) wrong.push({ a: String((T * part) / other), why: '분모에 전항과 후항의 합 대신 다른 항을 썼어요. 분모는 $' + p + '+' + q + '=' + (p + q) + '$' + R.josa(p + q, '이에요/예요') + '.' });
           return {
             type: 'short', check: 'number', unit: thing[1], concept: 5,
             q: thing[0] + ' ' + T + thing[1] + R.josa(thing[1], '을/를') + ' ' + names[0] + R.josa(names[0], '과/와') + ' ' + names[1] + R.josa(names[1], '이/가') + ' $' + p + ':' + q + '$' + R.josa(q, '으로/로') + ' 나누어 가지려고 해요. ' + names[who] + R.josa(names[who], '은/는') + ' 몇 ' + thing[1] + R.josa(thing[1], '을/를') + ' 가질까요?',

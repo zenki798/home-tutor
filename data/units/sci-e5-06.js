@@ -382,7 +382,7 @@ Tutor.registerUnit({
         var askSalt = R.bool();
         var known = askSalt ? sand : salt;
         var ans = askSalt ? salt : sand;
-        var q = name + R.josa(name, '이/가') + ' 소금과 모래가 섞인 혼합물 ' + total + ' g을 물에 녹인 뒤 거름 장치로 걸렀어요. ' +
+        var q = name + R.josa(name, '이/가') + ' 소금과 모래가 섞인 혼합물 ' + total + ' g에 물을 붓고 저어 소금을 녹인 뒤 거름 장치로 걸렀어요. ' +
           (askSalt
             ? '거름종이 위에 남은 모래를 말려 무게를 재었더니 ' + sand + ' g이었어요. 거른 소금물의 물을 모두 증발시키면 소금을 몇 g 얻을 수 있을까요?'
             : '거른 소금물의 물을 모두 증발시켜 소금을 얻었더니 ' + salt + ' g이었어요. 거름종이 위에 남은 모래를 말리면 몇 g일까요?') +

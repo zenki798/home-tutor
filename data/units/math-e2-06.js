@@ -265,7 +265,7 @@ Tutor.registerUnit({
       explain: '4의 3배는 $4+4+4=12$예요. 6씩 뛰어 세면 6, 12로 2번이니 12는 6의 2배예요.',
     },
     {
-      id: 'a2', level: 3, type: 'short', check: 'number', concept: 2,
+      id: 'a2', level: 3, type: 'short', check: 'number', concept: 1,
       q: '[[?]]의 5배는 20이에요. [[?]]에 알맞은 수를 쓰세요.',
       answer: '4',
       hint: '어떤 수를 5번 더해 20이 되는지 수를 넣어 보세요.',

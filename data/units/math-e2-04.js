@@ -451,13 +451,13 @@ Tutor.registerUnit({
         var far = dlt < 0 ? k - 1 : k + 1; // 먼 쪽 눈금으로 읽은 길이
         function A(v) { return '약 ' + v + ' cm'; }
         var correct = A(k);
-        var cands = [
-          [A(far), '끝이 ' + lo + R.josa(lo, '과/와') + ' ' + hi + ' 사이에 있지만 ' + endTick + '에 더 가까워요.'],
-        ];
+        // 같은 값이 두 실수에서 나오면 먼저 넣은 진단을 쓴다 → 0이 아닌 곳에서 시작하면 "끝 눈금 그대로 읽기"를 먼저
+        var cands = [];
         if (s > 0) {
           cands.push([A(endTick), '오른쪽 끝 눈금을 그대로 읽었어요. 막대가 ' + s + '에서 시작해요.']);
           cands.push([A(dlt < 0 ? endTick - 1 : endTick + 1), '끝 눈금을 그대로 읽고, 먼 쪽 눈금을 골랐어요.']);
         }
+        cands.push([A(far), '끝이 ' + lo + R.josa(lo, '과/와') + ' ' + hi + ' 사이에 있지만 ' + endTick + '에 더 가까워요.']);
         cands.push([A(dlt < 0 ? k + 1 : k - 1), '1 cm가 몇 번인지 다시 세어 보세요.']);
         cands.push([A(k + 2), '1 cm가 몇 번인지 다시 세어 보세요.']);
         var reason = {};

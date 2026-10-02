@@ -455,7 +455,7 @@ Tutor.registerUnit({
         var i = R.int(0, 3);
         var v = cells[i] * k;
         var wrong = [{ a: String(cells[i]), why: '칸 수를 그대로 썼어요. 먼저 눈금 한 칸이 몇 명인지 구해요.' }];
-        if (k !== v) wrong.push({ a: String(k), why: '눈금 한 칸의 크기(' + k + '명)까지 구했어요. ' + names[i] + R.josa(names[i], '은/는') + ' ' + cells[i] + '칸이므로 곱해요.' });
+        if (k !== v && k !== cells[i]) wrong.push({ a: String(k), why: '눈금 한 칸의 크기(' + k + '명)까지 구했어요. ' + names[i] + R.josa(names[i], '은/는') + ' ' + cells[i] + '칸이므로 곱해요.' });
         return {
           type: 'short', check: 'number', unit: '명', concept: 1,
           q: '학생 ' + tot + '명이 좋아하는 색깔을 하나씩 골라 막대그래프로 나타냈는데, 세로 눈금에 수를 적지 않았어요. 막대의 칸 수는 ' + names.map(function (x, j) { return x + ' ' + cells[j] + '칸'; }).join(', ') + '이에요. ' + names[i] + R.josa(names[i], '을/를') + ' 좋아하는 학생은 몇 명일까요?',

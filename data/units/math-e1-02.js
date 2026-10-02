@@ -253,7 +253,10 @@ Tutor.registerUnit({
       q: '모양을 쌓아 만든 것이에요. 공 모양은 몇 개 쓰였을까요?',
       fig: tower([['box', 'box', 'box', 'box'], ['cyl', 'box', 'cyl'], ['ball', 'ball']], '여러 가지 모양을 쌓아 만든 그림'),
       answer: '2',
-      wrong: [{ a: '3', why: '둥근 기둥 모양까지 센 것 같아요. 공 모양은 평평한 곳이 없이 동그란 모양이에요.' }],
+      wrong: [
+        { a: '4', why: '둥근 기둥 모양까지 셌어요. 공 모양은 평평한 곳이 없이 동그란 모양이에요.' },
+        { a: '3', why: '하나를 두 번 셌어요. 맨 위 줄의 공 모양만 하나씩 짚으며 세어 보세요.' },
+      ],
       hint: '맨 위 줄을 잘 보세요.',
       explain: '공 모양은 맨 위 줄에 있어요. 하나, 둘 — 공 모양은 2개예요.',
     },
@@ -420,7 +423,7 @@ Tutor.registerUnit({
         var DESC = [
           ['box', '둥근 부분이 없어요.'],
           ['box', '뾰족한 부분이 있어요.'],
-          ['box', '잘 굴러가지 않고, 쌓기 쉬워요.'],
+          ['box', '어느 쪽으로 놓아도 쌓을 수 있고, 잘 굴러가지 않아요.'],
           ['cyl', '평평한 부분과 둥근 부분이 모두 있어요.'],
           ['cyl', '눕히면 잘 굴러가고, 세우면 쌓을 수 있어요.'],
           ['ball', '둥근 부분만 있어요.'],
@@ -450,7 +453,8 @@ Tutor.registerUnit({
       make: function (R) {
         var n = { box: R.int(1, 5), cyl: R.int(1, 5), ball: R.int(1, 5) };
         var who = R.pick(['민수', '지아', '서준', '하윤', '도윤', '수아']);
-        var lead = who + R.josa(who, '이/가') + ' 모양을 늘어놓았어요. ';
+        // 받침 있는 이름은 "하윤이가"처럼 (그냥 "하윤이 모양을"이면 "하윤이의 모양"으로 읽힐 수 있어요)
+        var lead = who + (R.josa(who, '이/가') === '이' ? '이가' : '가') + ' 모양을 늘어놓았어요. ';
         var list = [];
         KINDS.forEach(function (k) { for (var i = 0; i < n[k]; i++) list.push(k); });
         list = R.shuffle(list);

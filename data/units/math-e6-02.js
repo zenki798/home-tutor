@@ -26,8 +26,10 @@
   }
 
   // 밑면(정n각형)을 비스듬히 본 모양. 반환: 꼭짓점 좌표·각 꼭짓점이 가려졌는지·각 밑면 모서리가 뒤쪽인지
+  // 돌린 각도는 n마다 골랐다: 두 꼭짓점이 거의 같은 세로줄에 겹쳐 세로 모서리가 포개져 보이지 않게
+  var TURN = { 3: 0.35, 4: 0.35, 5: 0.65, 6: 0.2, 7: 0.45, 8: 0.25, 9: 0.35, 10: 0.5 };
   function base(n, cx, cy, A, B) {
-    var t0 = Math.PI / 2 + Math.PI / n - 0.35, pts = [], ang = [];
+    var t0 = Math.PI / 2 + Math.PI / n - (TURN[n] || 0.35), pts = [], ang = [];
     for (var i = 0; i < n; i++) {
       var t = t0 + 2 * Math.PI * i / n;
       ang.push(t);
@@ -43,7 +45,7 @@
   // 각기둥 겨냥도. o.shade: 'base'(두 밑면 색칠) | 'side'(옆면 하나 색칠); o.hLabel, o.aLabel: 높이·밑면 모서리 옆 글
   function prism(n, o) {
     o = o || {};
-    var W = 240, H = o.aLabel ? 226 : 210, cx = 120, by = 170, h = 115, A = 78, B = 26;
+    var W = o.hLabel ? 262 : 240, H = o.aLabel ? 226 : 210, cx = 120, by = 170, h = 115, A = 78, B = 26;
     var bot = base(n, cx, by, A, B), top = base(n, cx, by - h, A, B), out = '';
     if (o.shade === 'base') { out += face(bot.pts, 1) + face(top.pts, 1); }
     if (o.shade === 'side') {
@@ -109,8 +111,18 @@
     var y0 = ext + 14, W = x0 * 2 + s * n, H = y0 * 2 + h, out = '';
     var topB = poly1.map(function (q) { return [q[0], q[1] + y0]; });
     var botB = poly1.map(function (q) { return [q[0], y0 + h - (q[1])]; });
-    out += poly(topB, 1) + poly(botB, 1);
-    for (var k = 0; k < n; k++) out += poly([[x0 + s * k, y0], [x0 + s * (k + 1), y0], [x0 + s * (k + 1), y0 + h], [x0 + s * k, y0 + h]], o.shadeSide ? 2 : 0);
+    // 색칠(선 없음) → 선: 잘린 모서리는 실선, 접는 선(옆면끼리·옆면과 밑면이 맞닿은 선)은 점선
+    out += face(topB, 1) + face(botB, 1);
+    if (o.shadeSide) for (var k0 = 0; k0 < n; k0++) out += face([[x0 + s * k0, y0], [x0 + s * (k0 + 1), y0], [x0 + s * (k0 + 1), y0 + h], [x0 + s * k0, y0 + h]], 2);
+    [topB, botB].forEach(function (B) {
+      for (var e = 0; e < n; e++) out += seg(B[e], B[(e + 1) % n], e === 0);   // 0번 변은 둘째 옆면에 붙은 접는 선
+    });
+    for (var k = 0; k < n; k++) {
+      if (k === 1) continue;                                                        // 둘째 옆면의 위·아래 변은 밑면과 맞닿은 접는 선(위에서 그림)
+      out += seg([x0 + s * k, y0], [x0 + s * (k + 1), y0], false);
+      out += seg([x0 + s * k, y0 + h], [x0 + s * (k + 1), y0 + h], false);
+    }
+    for (var v = 0; v <= n; v++) out += seg([x0 + s * v, y0], [x0 + s * v, y0 + h], v > 0 && v < n);
     if (o.aLabel) out += txt(x0 + s * (n - 0.5), y0 + h + 13, o.aLabel, 13);
     if (o.hLabel) out += txt(x0 + s * n + 26, y0 + h / 2, o.hLabel, 13);
     if (o.hLabel) W += 40;
@@ -195,7 +207,7 @@ Tutor.registerUnit({
         '- **밑면**: 각뿔에서 밑에 놓인 다각형인 면이에요. 각뿔의 밑면은 **1개**예요.\n' +
         '- **옆면**: 밑면과 만나는 면이에요. 각뿔의 옆면은 모두 **삼각형**이에요.\n\n' +
         '| | 각기둥 | 각뿔 |\n|---|---|---|\n| 밑면의 수 | 2개 | 1개 |\n| 옆면의 모양 | 직사각형 | 삼각형 |',
-      easy: '이집트 피라미드나 고깔 모양 지붕을 떠올려 보세요. 바닥은 다각형 한 개이고, 옆의 벽들은 위로 갈수록 좁아져 한 점에서 만나요.\n\n그래서 각뿔의 옆면은 모두 뾰족한 삼각형이고, 밑면은 바닥 한 개뿐이에요.',
+      easy: '이집트 피라미드를 떠올려 보세요. 바닥은 다각형 한 개이고, 옆의 벽들은 위로 갈수록 좁아져 한 점에서 만나요.\n\n그래서 각뿔의 옆면은 모두 뾰족한 삼각형이고, 밑면은 바닥 한 개뿐이에요.',
       fig: pyramid(4, { shade: 'base', alt: '밑면을 색칠한 사각뿔' }),
       check: {
         type: 'ox',

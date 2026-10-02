@@ -312,7 +312,7 @@ Tutor.registerUnit({
         { a: '7', why: '7은 어떤 수예요. 어떤 수에 8을 곱한 값까지 구해야 해요.' },
         { a: '48', why: '$6 \\times 8$을 했어요. 어떤 수(7)에 8을 곱해요.' },
       ],
-      explain: '6단에서 $7 \\times 6 = 42$이므로 어떤 수는 7이에요. $7 \\times 8 = 56$이에요.',
+      explain: '6단에서 $6 \\times 7 = 42$예요. 두 수의 순서를 바꾸어 곱해도 곱이 같으니 $7 \\times 6 = 42$, 어떤 수는 7이에요. 그래서 $7 \\times 8 = 56$이에요.',
     },
     {
       id: 'a2', level: 3, type: 'short', check: 'number', concept: 1,
@@ -469,7 +469,7 @@ Tutor.registerUnit({
             [p + known, p + R.josa(p, '과/와') + ' ' + known + R.josa(known, '을/를') + ' 더했어요. ' + known + '단에서 곱이 ' + p + '인 것을 찾아요.'],
             [p, '곱을 그대로 썼어요. □에는 곱하는 수가 들어가요.'],
           ]),
-          explain: known + '단을 외우면 ' + skipList(known, ans) + R.josa(p, '이에요/예요') + '. ' + (front
+          explain: known + '단을 외우면 ' + skipList(known, ans) + R.josa(p, '이에요/예요') + '. ' + (front || ans === b
             ? '$' + T(a, ans) + ' = ' + p + '$이므로'
             : '$' + T(b, ans) + ' = ' + p + '$이고, 두 수의 순서를 바꾸어 곱해도 곱이 같으니 $' + T(ans, b) + ' = ' + p + '$' + R.josa(p, '이에요/예요') + '. 그래서') + ' □는 ' + ans + R.josa(ans, '이에요/예요') + '.',
         };
