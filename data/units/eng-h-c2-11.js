@@ -23,7 +23,7 @@
   var CAT_CONCEPT = { invite: 0, accept: 0, decline: 0, thank: 1, apologize: 1, congrats: 2, sympathy: 2, complain: 3 };
   var SITU = [
     ['이번 토요일 내 생일 파티에 친구를 부르고 싶습니다.', 'Would you like to come to my birthday party this Saturday?', 'invite'],
-    ['우리 공부 모임에 새로 전학 온 친구를 끌어들이고 싶습니다.', 'Would you like to join our study group?', 'invite'],
+    ['우리 공부 모임에 새로 전학 온 친구를 초대하고 싶습니다.', 'Would you like to join our study group?', 'invite'],
     ['친구가 생일 파티에 오라고 했고, 기꺼이 가려고 합니다.', "Sure, I'd love to. What time should I come?", 'accept'],
     ['친구가 공부 모임에 들어오라고 했고, 좋다고 답하려 합니다.', "I'd be happy to join. Thanks for asking.", 'accept'],
     ['친구가 영화를 보자고 했지만, 그날 동생을 돌봐야 합니다.', "I'd love to, but I have to take care of my little brother.", 'decline'],

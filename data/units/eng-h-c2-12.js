@@ -255,7 +255,7 @@ Tutor.registerUnit({
   practice: [
     {
       id: 'p1', level: 1, type: 'choice', concept: 0,
-      q: '빈칸에 알맞은 것은 무엇입니까?\n\nA: We have too much trash in our classroom.\nB: [[빈칸]] put a recycling box by the door?',
+      q: 'B가 해결책을 **제안하는** 말이 되도록 빈칸에 알맞은 것은 무엇입니까?\n\nA: We have too much trash in our classroom.\nB: [[빈칸]] put a recycling box by the door?',
       choices: ["Why don't we", 'Why did we', 'How about', 'What about'],
       answer: 0,
       why: [

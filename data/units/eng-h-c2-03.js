@@ -45,8 +45,8 @@ Tutor.registerUnit({
       title: '혼합 가정법: 과거의 일이 지금에 미치는 결과',
       body: '과거에 일어난(또는 일어나지 않은) 일 때문에 **지금** 어떤 결과가 있을 때는, if절과 주절의 때가 서로 다릅니다. 이것을 **혼합 가정법**이라고 합니다.\n\n' +
         '**If + 주어 + had p.p.(과거 사실 반대), 주어 + would(could) + 동사원형(현재 사실 반대) + now(today)**\n\n' +
-        '- If I **had taken** your advice then, I **would be** happier **now**. (그때 네 충고를 따랐다면 지금 더 행복할 텐데.)\n' +
-        '  = As I didn\'t take your advice then, I am not happier now.\n' +
+        '- If I **had taken** your advice then, I **wouldn\'t be** in trouble **now**. (그때 네 충고를 따랐다면 지금 곤란하지 않을 텐데.)\n' +
+        '  = As I didn\'t take your advice then, I am in trouble now.\n' +
         '- If she **hadn\'t missed** the flight, she **would be** in Jeju **now**.\n\n' +
         '| 부분 | 때 | 형태 |\n|---|---|---|\n| if절 | 과거 | had p.p. |\n| 주절 | 현재 | would + 동사원형 |\n\n' +
         '> 💡 주절의 **now, today, still** 같은 말이 혼합 가정법의 단서입니다. 그래서 주절에 would have p.p.가 아니라 would + 동사원형을 씁니다.',
@@ -138,7 +138,7 @@ Tutor.registerUnit({
         '| If + 주어 + **were to** + 동사원형 | **만약** ~한다면 (거의 일어나지 않거나 순전한 상상) | would(could, might) + 동사원형 |\n\n' +
         '- If it **should rain** tomorrow, the festival **will be** held indoors. (혹시라도 내일 비가 오면 축제는 실내에서 열린다.)\n' +
         '- If you **should have** any questions, please **ask** me. (혹시라도 질문이 있으면 물어보십시오.)\n' +
-        '- If the sun **were to rise** in the west, I **would** never **change** my mind. (해가 서쪽에서 뜬다 해도 내 마음은 바뀌지 않을 것이다.)\n' +
+        '- Even if the sun **were to rise** in the west, I **would** never **change** my mind. (해가 서쪽에서 뜬다 해도 내 마음은 바뀌지 않을 것이다.)\n' +
         '- If you **were to win** the lottery, what **would** you **do**?\n\n' +
         '> 💡 should는 "혹시라도"라는 조심스러운 가능성이라 안내문·공지에 자주 나옵니다. were to는 "말도 안 되지만 만약"이라는 상상에 어울립니다.',
       easy: '일기 예보에서 비 올 확률이 10%라면 "**혹시** 비가 오면 실내에서 해요"(should)라고 말합니다. 그럴 수도 있으니 대비하는 말이지요.\n\n' +
@@ -240,7 +240,7 @@ Tutor.registerUnit({
     {
       id: 'p6', level: 1, type: 'short', concept: 3,
       q: '우리말 뜻에 맞게 빈칸에 알맞은 말을 쓰십시오.\n\n[[빈칸]] your help, I would have failed the test. (너의 도움이 없었다면 나는 시험에 떨어졌을 것이다.)',
-      answer: ['Without', 'But for'],
+      answer: ['Without', 'But for', 'If it had not been for', "If it hadn't been for", 'Had it not been for'],
       wrong: [
         { a: 'With', why: 'With는 "~이 있다면"이라는 반대 뜻입니다. "~이 없었다면"은 Without(But for)입니다.' },
         { a: 'If', why: 'If 뒤에는 주어와 동사가 와야 합니다. 명사(your help)만 쓰려면 Without이나 But for를 씁니다.' },

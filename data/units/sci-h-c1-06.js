@@ -351,7 +351,7 @@ Tutor.registerUnit({
     },
     {
       title: '규산염 광물과 우리 생활',
-      body: '바닷가의 흰 모래는 대부분 **석영** 알갱이입니다. 석영은 망상 구조라 단단하고 풍화에 강해서, 다른 광물이 부서져 사라진 뒤에도 모래로 남습니다. 이 모래를 높은 온도로 녹여 만든 것이 **유리**입니다.\n\n도자기와 벽돌의 원료인 점토도 판상 구조의 규산염 광물이 풍화되어 생긴 것입니다. 또 석영에서 산소를 떼어 내고 얻은 순수한 **규소**는 반도체의 재료가 됩니다. 규소 반도체는 다음 단원 "물질의 전기적 성질"에서 자세히 배웁니다.',
+      body: '바닷가의 흰 모래는 대부분 **석영** 알갱이입니다. 석영은 망상 구조라 단단하고 풍화에 강해서, 다른 광물이 부서져 사라진 뒤에도 모래로 남습니다. 이 모래를 높은 온도로 녹여 만든 것이 **유리**입니다.\n\n도자기와 벽돌의 원료인 점토는 장석 같은 규산염 광물이 풍화되어 생긴 것으로, 판상 구조의 규산염 광물(점토 광물)로 이루어져 있습니다. 또 석영에서 산소를 떼어 내고 얻은 순수한 **규소**는 반도체의 재료가 됩니다. 규소 반도체는 다음 단원 "물질의 전기적 성질"에서 자세히 배웁니다.',
     },
   ],
 
@@ -470,16 +470,16 @@ Tutor.registerUnit({
         var ans = askMate ? kVal : oVal;
         var cand = askMate
           ? [[oVal, '짝이 아닌 염기의 비율을 구했습니다. ' + kName + '의 짝은 ' + mate + '이고, 짝끼리는 비율이 같습니다.'],
-             [100 - kVal, '100에서 ' + kName + '만 뺐습니다. 짝인 ' + mate + '는 ' + kName + '와 비율이 같습니다.']]
-          : [[kVal, kName + '와 ' + tName + '의 비율이 같다고 생각했습니다. 비율이 같은 것은 짝(A와 T, G와 C)끼리입니다.'],
+             [100 - kVal, '100에서 ' + kName + '만 뺐습니다. 짝인 ' + mate + '은 ' + kName + '과 비율이 같습니다.']]
+          : [[kVal, kName + '과 ' + tName + '의 비율이 같다고 생각했습니다. 비율이 같은 것은 짝(A와 T, G와 C)끼리입니다.'],
              [100 - kVal, '100에서 ' + kName + '만 뺐습니다. 짝인 ' + mate + '도 같은 양만큼 빼야 합니다.'],
              [100 - 2 * kVal, '나머지 두 염기를 합한 비율입니다. 두 염기는 짝이라 같으므로 반으로 나누어야 합니다.']];
         var wrong = cand.filter(function (c) { return c[0] !== ans && c[0] > 0; }).map(function (c) { return { a: String(c[0]), why: c[1] }; });
-        var explain = '이중 가닥 DNA에서는 A와 T, G와 C가 짝을 지으므로 A = T, G = C입니다. ' + kName + '가 ' + kVal + ' %이면 짝인 ' + mate + '도 ' + kVal + ' %입니다.';
-        if (!askMate) explain += ' 나머지 두 염기의 합은 $100-2\\times' + kVal + '=' + (100 - 2 * kVal) + '$ %이고, 이 둘은 짝이라 같으므로 ' + tName + '는 $' + (100 - 2 * kVal) + '\\div2=' + oVal + '$ %입니다.';
+        var explain = '이중 가닥 DNA에서는 A와 T, G와 C가 짝을 지으므로 A = T, G = C입니다. ' + kName + '이 ' + kVal + ' %이면 짝인 ' + mate + '도 ' + kVal + ' %입니다.';
+        if (!askMate) explain += ' 나머지 두 염기의 합은 $100-2\\times' + kVal + '=' + (100 - 2 * kVal) + '$ %이고, 이 둘은 짝이라 같으므로 ' + tName + '은 $' + (100 - 2 * kVal) + '\\div2=' + oVal + '$ %입니다.';
         return {
           type: 'short', check: 'number', unit: '%', concept: 4,
-          q: '이중 가닥 DNA에서 ' + kName + '가 전체 염기의 ' + kVal + ' %를 차지합니다. ' + tName + '는 전체 염기의 몇 %입니까?',
+          q: '이중 가닥 DNA에서 ' + kName + '이 전체 염기의 ' + kVal + ' %를 차지합니다. ' + tName + '은 전체 염기의 몇 %입니까?',
           answer: String(ans),
           wrong: wrong,
           explain: explain,
@@ -506,7 +506,7 @@ Tutor.registerUnit({
           correct = t[0];
           wrongs = rest.map(function (x) { reason[x[0]] = x[0] + '는 ' + x[1] + '의 결합 구조입니다.'; return x[0]; });
           q = t[1] + '의 규산염 사면체 결합 구조로 옳은 것은?';
-          explain = t[1] + '은(는) 사면체 1개가 이웃한 사면체와 산소를 ' + t[2] + ' 공유하는 ' + t[0] + '입니다.';
+          explain = t[1] + R.josa(t[1], '은/는') + ' 사면체 1개가 이웃한 사면체와 산소를 ' + t[2] + ' 공유하는 ' + t[0] + '입니다.';
         } else {
           correct = t[2];
           wrongs = rest.map(function (x) { reason[x[2]] = '산소를 ' + x[2] + ' 공유하는 것은 ' + x[0] + '(' + x[1] + ')입니다.'; return x[2]; });

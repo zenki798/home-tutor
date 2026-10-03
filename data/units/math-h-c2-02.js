@@ -525,7 +525,7 @@
           var N = R.F(y0, 1).sub(Mt.mul(x0));
           var wrong = [];
           if (perp) {
-            wrong.push({ a: thru(m.inv()), why: '기울기를 뒤집기만 하고 부호를 바꾸지 않았습니다. 수직이면 기울기의 곱이 $-1$입니다.' });
+            if (!m.inv().eq(m)) wrong.push({ a: thru(m.inv()), why: '기울기를 뒤집기만 하고 부호를 바꾸지 않았습니다. 수직이면 기울기의 곱이 $-1$입니다.' });
             if (!m.neg().eq(Mt)) wrong.push({ a: thru(m.neg()), why: '기울기의 부호만 바꾸었습니다. 수직이면 기울기를 뒤집고 부호도 바꿉니다.' });
             wrong.push({ a: thru(m), why: '평행한 직선을 구했습니다. 수직이면 기울기의 곱이 $-1$입니다.' });
           } else {

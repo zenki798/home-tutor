@@ -403,7 +403,7 @@
         make: function (R) {
           var n = R.int(5, 12);
           var small = R.int(2, 3);
-          var big = R.bool(0.4);
+          var big = R.bool(0.4) && n - small > small; // 큰 r 을 작은 쪽으로 바꾸는 문제는 n-r 이 정말 더 작을 때만
           var r = big ? n - small : small;
           var ans = C(n, r);
           var kind = big ? 0 : R.int(0, 2);

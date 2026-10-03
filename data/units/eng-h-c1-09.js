@@ -53,7 +53,7 @@ Tutor.registerUnit({
     },
     {
       title: '수동 분사구문: Being·Having been의 생략',
-      body: '부사절이 **수동태**이면 분사구문은 **Being p.p.**(같은 때) 또는 **Having been p.p.**(앞선 때)가 됩니다. 이때 **Being과 Having been은 보통 생략**하여 **과거분사(p.p.)로 시작**합니다.\n\nBecause it is written in easy English, this book is good for beginners.\n→ (Being) **Written** in easy English, this book is good for beginners.\n\nAs the bridge was built long ago, it needs repairs now.\n→ (Having been) **Built** long ago, the bridge needs repairs now.\n\nBeing 뒤에 형용사나 명사가 와도 Being은 흔히 생략합니다. (Being) **Tired** from work, my father fell asleep early.\n\n**-ing로 쓸까, p.p.로 쓸까?** 주절의 주어를 기준으로 판단합니다.\n\n| 주절의 주어가 | 분사 | 예 |\n|---|---|---|\n| 그 동작을 **하면** (능동) | -ing | **Seeing** the village, we stopped. (우리가 본다) |\n| 그 동작을 **당하면** (수동) | p.p. | **Seen** from the hill, the village looks small. (마을이 보인다) |',
+      body: '부사절이 **수동태**이면 분사구문은 **Being p.p.**(같은 때) 또는 **Having been p.p.**(앞선 때)가 됩니다. 이때 **Being과 Having been은 보통 생략**하여 **과거분사(p.p.)로 시작**합니다.\n\nBecause it is written in easy English, this book is good for beginners.\n→ (Being) **Written** in easy English, this book is good for beginners.\n\nAs the bridge was built long ago, it needs repairs now.\n→ (Having been) **Built** long ago, the bridge needs repairs now.\n\nBeing 뒤에 형용사가 와도 Being은 흔히 생략합니다. (Being) **Tired** from work, my father fell asleep early.\n\n**-ing로 쓸까, p.p.로 쓸까?** 주절의 주어를 기준으로 판단합니다.\n\n| 주절의 주어가 | 분사 | 예 |\n|---|---|---|\n| 그 동작을 **하면** (능동) | -ing | **Seeing** the village, we stopped. (우리가 본다) |\n| 그 동작을 **당하면** (수동) | p.p. | **Seen** from the hill, the village looks small. (마을이 보인다) |',
       easy: '분사구문 앞에 주절의 주어를 붙여서 말이 되는지 확인해 보십시오.\n\n[[blank]] from the hill, **the village** looks small.\n\n- the village **seeing** from the hill → 마을이 언덕에서 무언가를 본다? (이상합니다)\n- the village **(is) seen** from the hill → 마을이 언덕에서 보인다 (자연스럽습니다)\n\n그래서 정답은 **Seen**입니다. 주어가 "하는 쪽"이면 -ing, "당하는 쪽"이면 p.p.입니다.',
       check: {
         type: 'choice',
@@ -229,7 +229,7 @@ Tutor.registerUnit({
     {
       id: 'p12', level: 2, type: 'choice', concept: 4,
       hint: '날씨가 좋은 것의 주어와 소풍을 간 것의 주어가 같은지 보십시오.',
-      q: '빈칸에 들어갈 말로 알맞은 것은 무엇입니까?\n\n[[blank]], we went on a picnic by the river.',
+      q: '"날씨가 좋아서 우리는 강가로 소풍을 갔다"라는 뜻이 되도록 빈칸에 들어갈 말로 알맞은 것은 무엇입니까?\n\n[[blank]], we went on a picnic by the river.',
       choices: ['The weather being fine', 'Being fine', 'The weather was fine', 'Fine being'],
       answer: 0,
       why: ['', '주어를 빼면 we가 "좋았다"는 뜻이 됩니다. 날씨(the weather)와 우리(we)는 주어가 다르므로 주어를 남깁니다.', '두 문장을 쉼표만으로 이을 수 없습니다. 접속사(As the weather was fine)를 쓰거나 분사구문으로 바꿉니다.', '주어 the weather가 없고 어순도 맞지 않습니다.'],
@@ -271,7 +271,7 @@ Tutor.registerUnit({
         '길에서 지갑을 찾으면 경찰서가 그것을 가져가야 한다.',
       ],
       answer: 0,
-      why: ['', 'found를 문장의 동사(찾았다)로 읽었습니다. 문장의 동사는 should be taken이고, found는 Wallets를 꾸미는 과거분사입니다.', '쉼표가 없는 found on the street는 분사구문(이유)이 아니라 명사를 꾸미는 말이고, should be taken은 "가져갔다"가 아니라 "가져가야 한다"입니다.', '경찰서가 가져가는 것이 아니라, 지갑이 경찰서로 가져가져야(should be taken to) 하는 것입니다.'],
+      why: ['', 'found를 문장의 동사(찾았다)로 읽었습니다. 문장의 동사는 should be taken이고, found는 Wallets를 꾸미는 과거분사입니다.', '쉼표가 없는 found on the street는 분사구문(이유)이 아니라 명사를 꾸미는 말이고, should be taken은 "가져갔다"가 아니라 "가져가야 한다"입니다.', '경찰서가 지갑을 가져가는 것이 아니라, 지갑이 경찰서로 옮겨져야(should be taken to) 한다는 뜻입니다. 곧 지갑을 주운 사람이 경찰서에 가져가야 합니다.'],
       explain: 'found on the street는 쉼표 없이 명사 Wallets 바로 뒤에서 꾸미는 분사구입니다(= Wallets which are found on the street). 문장의 동사는 **should be taken**이므로 "길에서 발견된 지갑은 경찰서로 가져가야 한다"입니다.',
     },
     {

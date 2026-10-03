@@ -60,7 +60,7 @@ Tutor.registerUnit({
     },
     {
       title: '첨가와 강조: moreover, in addition, in fact',
-      body: '앞 문장과 **같은 방향의 내용을 더하거나**, 더 강하게 **강조**할 때 쓰는 연결어입니다.\n\n| 연결어 | 뜻 | 쓰임 |\n|---|---|---|\n| **Moreover**, / **Furthermore**, | 게다가, 더욱이 | 같은 방향의 근거·정보를 하나 더 |\n| **In addition**, / **Besides**, | 덧붙여, 그 밖에 | 같은 방향의 정보를 하나 더 |\n| **In fact**, | 사실은, 실제로 | 앞 말을 **더 강하게** 뒷받침하거나, 앞의 생각을 **바로잡을 때** |\n\nThis bike is very light. **Moreover**, it is cheaper than the others. (장점 + 장점)\nWalking is good for your heart. **In addition**, it helps reduce stress.\nKoalas sleep a lot. **In fact**, they sleep up to 20 hours a day. (더 강한 사실로 뒷받침)\n\n> 💡 In fact는 "그렇게 생각하겠지만 사실은"처럼 **앞 내용을 바로잡는** 데도 씁니다. People think the desert is always hot. **In fact**, it can be very cold at night.',
+      body: '앞 문장과 **같은 방향의 내용을 더하거나**, 더 강하게 **강조**할 때 쓰는 연결어입니다.\n\n| 연결어 | 뜻 | 쓰임 |\n|---|---|---|\n| **Moreover**, / **Furthermore**, | 게다가, 더욱이 | 같은 방향의 근거·정보를 하나 더 |\n| **In addition**, / **Besides**, | 덧붙여, 그 밖에 | 같은 방향의 정보를 하나 더 |\n| **In fact**, | 사실은, 실제로 | 앞 말을 **더 강하게** 뒷받침하거나, 앞의 생각을 **바로잡을 때** |\n\nThis bike is very light. **Moreover**, it is cheaper than the others. (장점 + 장점)\nWalking is good for your heart. **In addition**, it helps reduce stress.\nKoalas sleep a lot. **In fact**, they can sleep more than 18 hours a day. (더 강한 사실로 뒷받침)\n\n> 💡 In fact는 "그렇게 생각하겠지만 사실은"처럼 **앞 내용을 바로잡는** 데도 씁니다. People think the desert is always hot. **In fact**, it can be very cold at night.',
       easy: '첨가 연결어는 **장바구니에 하나 더 담기**입니다. 앞 문장에서 장점 하나를 담았는데 뒤에 장점이 하나 더 나오면 Moreover, In addition입니다.\n\n**In fact**는 "놀라지 마세요, 진짜로는 이 정도예요"라고 숫자나 사실로 앞 말에 힘을 실어 줄 때 씁니다.',
       check: {
         type: 'ox',
@@ -108,7 +108,7 @@ Tutor.registerUnit({
       answer: '(A) However – (B) Therefore',
     },
     {
-      q: '다음 두 문장을 unless를 써서 한 문장으로 바꾸어 보십시오.\n\nIf you don\'t water the plant, it will die.',
+      q: '다음 문장을 unless를 써서 같은 뜻으로 바꾸어 보십시오.\n\nIf you don\'t water the plant, it will die.',
       steps: [
         'unless는 **if ~ not**과 같은 뜻입니다.',
         'If you don\'t water ~ 에서 If와 don\'t를 함께 unless로 바꿉니다. not은 다시 쓰지 않습니다.',
@@ -339,13 +339,13 @@ Tutor.registerUnit({
           { c: 'result', a: 'Jiwoo practiced the piano every day for a year.', b: 'she won first prize at the school contest.', why: '1년 동안 매일 연습한 것(원인) 덕분에 대회에서 1등을 했습니다(결과).' },
           { c: 'result', a: 'The road was covered with ice.', b: 'many cars moved very slowly.', why: '길이 얼었기(원인) 때문에 차들이 천천히 움직였습니다(결과).' },
           { c: 'result', a: 'Hayun forgot to set her alarm.', b: 'she was late for school.', why: '알람을 맞추지 않아서(원인) 지각했습니다(결과).' },
-          { c: 'result', a: 'The bakery uses only fresh ingredients.', b: 'its bread is always popular with customers.', why: '신선한 재료만 쓰기(원인) 때문에 빵이 늘 인기가 있습니다(결과).' },
+          { c: 'result', a: 'The bakery ran out of flour in the morning.', b: 'it could not make any more bread that day.', why: '아침에 밀가루가 다 떨어졌기(원인) 때문에 그날은 빵을 더 만들 수 없었습니다(결과).' },
           { c: 'contrast', a: 'Many people think that cats hate water.', b: 'some cats actually enjoy swimming.', why: '고양이는 물을 싫어한다는 생각과 반대로, 수영을 즐기는 고양이도 있습니다.' },
           { c: 'contrast', a: 'The food at the new restaurant was delicious.', b: 'the service was very slow.', why: '음식은 맛있었다(좋은 점)와 서비스가 느렸다(나쁜 점)가 반대됩니다.' },
           { c: 'contrast', a: 'Seojun lives far from school.', b: 'he is never late.', why: '학교에서 멀리 사니 늦을 것 같지만, 반대로 한 번도 늦지 않습니다.' },
           { c: 'contrast', a: 'The old phone had a small screen.', b: 'the new model has a much bigger one.', why: '옛 휴대 전화(작은 화면)와 새 모델(큰 화면)을 반대로 맞대었습니다.' },
           { c: 'example', a: 'There are many ways to save energy at home.', b: 'you can turn off the lights when you leave a room.', why: '"집에서 에너지를 아끼는 많은 방법" 가운데 하나를 구체적으로 들었습니다.' },
-          { c: 'example', a: 'Some animals sleep through the winter.', b: 'bears sleep in caves for several months.', why: '"겨울잠을 자는 동물"의 구체적인 사례로 곰을 들었습니다.' },
+          { c: 'example', a: 'Some animals sleep through the winter.', b: 'bears can sleep for several months without eating.', why: '"겨울잠을 자는 동물"의 구체적인 사례로 곰을 들었습니다.' },
           { c: 'example', a: 'Our town has many places for families to enjoy.', b: 'there is a large park with a lake near the station.', why: '"가족이 즐길 만한 곳"의 구체적인 사례로 호수 공원을 들었습니다.' },
           { c: 'example', a: 'Many words in English come from other languages.', b: 'the word "piano" comes from Italian.', why: '"다른 언어에서 온 영어 낱말"의 구체적인 사례로 piano를 들었습니다.' },
           { c: 'addition', a: 'Walking is good for your heart.', b: 'it helps you reduce stress.', why: '심장에 좋다(장점)에 스트레스를 줄여 준다(장점)를 더했습니다.' },

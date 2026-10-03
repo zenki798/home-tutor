@@ -403,11 +403,11 @@ Tutor.registerUnit({
         var pick = R.choices(correct, wrongs, 4);
         return {
           type: 'choice', concept: it[2],
-          q: '다음 단체·기관이 활동했거나 세워진 지역은 어디일까요?\n\n**' + it[0] + '**',
+          q: '다음 단체·기관이 처음 세워진 지역은 어디일까요?\n\n**' + it[0] + '**',
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) {
-            return c === correct ? '' : it[0] + R.josa(it[0], '은/는') + ' ' + c + R.josa(c, '이/가') + ' 아니라 ' + correct + R.josa(correct, '과/와') + ' 관련이 있습니다. ' + it[3];
+            return c === correct ? '' : it[0] + R.josa(it[0], '은/는') + ' ' + c + R.josa(c, '이/가') + ' 아니라 ' + correct + '에서 세워졌습니다. ' + it[3];
           }),
           explain: it[3] + ' 그래서 답은 ' + correct + '입니다.',
         };

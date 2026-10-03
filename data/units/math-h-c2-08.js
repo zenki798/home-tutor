@@ -479,7 +479,7 @@
           var wrong = [];
           [[half * half, '$' + lin(p, 'a') + ' \\cdot ' + lin(q, 'b') + '$의 최댓값 $' + half + '^{2}$에서 멈추었습니다. $ab$를 구하려면 계수의 곱 ' + (p * q) + R.josa(p * q, '으로/로') + ' 나누어야 합니다.'],
             [S, '조건의 합 ' + S + R.josa(S, '을/를') + ' 그대로 답으로 썼습니다.'],
-            [half, '$\\dfrac{' + S + '}{2}$에서 멈추었습니다. 그 값을 제곱한 뒤 계수로 나누어야 합니다.']]
+            [half, '$\\dfrac{' + S + '}{2}$에서 멈추었습니다. ' + (p * q === 1 ? '그 값을 제곱해야 합니다.' : '그 값을 제곱한 뒤 계수의 곱으로 나누어야 합니다.')]]
             .forEach(function (c) { if (c[0] !== ans && !wrong.some(function (w) { return Number(w.a) === c[0]; })) wrong.push({ a: String(c[0]), why: c[1] }); });
           var pa = lin(p, 'a'), qb = lin(q, 'b');
           var prodText = p * q === 1 ? '$ab \\le ' + (half * half) + '$' : '$' + (p * q) + 'ab \\le ' + (half * half) + '$이므로 $ab \\le ' + ans + '$';
@@ -491,7 +491,7 @@
             hint: p * q === 1 ? '$ab \\le \\left(\\dfrac{a+b}{2}\\right)^{2}$을 이용해 보세요.' : '$' + pa + '$와 $' + qb + '$를 한 덩어리로 보고 산술평균과 기하평균의 관계를 써 보세요.',
             explain: '$' + pa + '>0$, $' + qb + '>0$이므로 $' + pa + ' \\cdot ' + qb + ' \\le \\left(\\dfrac{' + lhs + '}{2}\\right)^{2}=' + half + '^{2}=' + (half * half) + '$입니다. ' +
               '그래서 ' + prodText + '입니다. ' +
-              '등호는 $' + pa + '=' + qb + '=' + half + '$, 곧 $a=' + A + '$, $b=' + B + '$일 때 성립하므로 최댓값은 ' + ans + '입니다.',
+              '등호는 ' + (p === 1 && q === 1 ? '$a=b=' + half + '$' : '$' + pa + '=' + qb + '=' + half + '$, 곧 $a=' + A + '$, $b=' + B + '$') + '일 때 성립하므로 최댓값은 ' + ans + '입니다.',
           };
         },
       },

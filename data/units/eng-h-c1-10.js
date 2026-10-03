@@ -300,7 +300,7 @@ Tutor.registerUnit({
   deeper: [
     {
       title: '관용 표현은 어디서 왔을까',
-      body: '관용 표현 가운데에는 유래가 전해 오는 것이 있습니다. 다만 유래에 관한 이야기는 여러 설이 있는 경우가 많아, 뜻을 익히는 실마리 정도로 보면 좋습니다.\n\n- **break the ice**: 겨울에 얼어붙은 강의 얼음을 깨 배가 지나갈 길을 연다는 데서, "처음 만나는 사람들 사이의 굳은 분위기를 풀다"는 뜻이 되었다고 합니다.\n- **bury one\'s head in the sand**: 타조가 위험을 만나면 모래에 머리를 묻는다는 옛이야기에서 나왔습니다. 실제 타조는 그렇게 하지 않는다고 알려져 있지만, 표현은 "문제를 외면하다"는 뜻으로 굳어졌습니다.\n- **once in a blue moon**: 한 달에 보름달이 두 번 뜨는 드문 일을 blue moon이라고 부르는 데서 "아주 드물게"라는 뜻으로 씁니다.\n\n이처럼 표현의 유래가 사실과 다르더라도, 언어에서는 **사람들이 그 표현을 어떤 뜻으로 쓰는가**가 뜻을 정합니다.',
+      body: '관용 표현 가운데에는 유래가 전해 오는 것이 있습니다. 다만 유래에 관한 이야기는 여러 설이 있는 경우가 많아, 뜻을 익히는 실마리 정도로 보면 좋습니다.\n\n- **break the ice**: 겨울에 얼어붙은 강의 얼음을 깨 배가 지나갈 길을 연다는 데서, "처음 만나는 사람들 사이의 굳은 분위기를 풀다"는 뜻이 되었다고 합니다.\n- **bury one\'s head in the sand**: 타조가 위험을 만나면 모래에 머리를 묻는다는 옛이야기에서 나왔습니다. 실제 타조는 그렇게 하지 않는다고 알려져 있지만, 표현은 "문제를 외면하다"는 뜻으로 굳어졌습니다.\n- **once in a blue moon**: 오늘날 blue moon은 한 달에 보름달이 두 번 뜨는 드문 일을 가리키기도 합니다. 그만큼 드물다는 느낌으로 "아주 드물게"라는 뜻으로 씁니다. (표현의 정확한 유래는 여러 설이 있습니다.)\n\n이처럼 표현의 유래가 사실과 다르더라도, 언어에서는 **사람들이 그 표현을 어떤 뜻으로 쓰는가**가 뜻을 정합니다.',
     },
     {
       title: '같은 동물, 다른 이미지',
@@ -338,7 +338,7 @@ Tutor.registerUnit({
         var items = [
           { id: 'ice', p: 'break the ice', m: '어색한 분위기를 깨다', s: 'On the first day of class, our teacher played a name game to __break the ice__.' },
           { id: 'cake', p: 'a piece of cake', m: '아주 쉬운 일', s: 'Don\'t worry about the vocabulary test. It will be __a piece of cake__ for you.' },
-          { id: 'weather', p: 'under the weather', m: '몸이 좀 안 좋은', s: 'Minji felt __under the weather__, so she went to bed early.' },
+          { id: 'weather', p: 'under the weather', m: '몸이 좀 안 좋은', s: 'Minji felt __under the weather__, so she stayed home from school.' },
           { id: 'books', p: 'hit the books', m: '열심히 공부하다', s: 'Final exams start next Monday, so I need to __hit the books__ this weekend.' },
           { id: 'arm', p: 'cost an arm and a leg', m: '엄청나게 비싸다', s: 'I wanted that camera, but it __costs an arm and a leg__.' },
           { id: 'cat', p: 'let the cat out of the bag', m: '비밀을 무심코 말해 버리다', s: 'We planned a surprise party for Mom, but my little brother __let the cat out of the bag__.' },

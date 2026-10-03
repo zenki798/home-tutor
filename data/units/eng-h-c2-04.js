@@ -157,11 +157,11 @@ Tutor.registerUnit({
       steps: [
         '인물: 주인공 Sua, 응원해 주는 남동생(her little brother), 웃은 학생들(some students).',
         '배경: 학교 말하기 대회 날, 무대가 있는 강당(backstage, the stage, the hall).',
-        '갈등: 계단에서 넘어져 원고 카드가 흩어진 사건(외적) + 도망치고 싶은 마음과 끝까지 말하고 싶은 마음(내적).',
+        '갈등: 계단에서 넘어져 원고 카드가 흩어지고 몇몇 학생이 웃자, 도망치고 싶은 마음과 끝까지 말하고 싶은 마음이 수아의 마음속에서 부딪칩니다(내적 갈등).',
         '심경의 처음: hands were cold, heart was pounding → nervous.',
         '전환점: Then she saw her little brother … thumbs-up. 끝: she was smiling → satisfied(만족한).',
       ],
-      answer: '인물: Sua와 남동생 / 배경: 학교 말하기 대회 날의 강당 / 갈등: 넘어져 원고를 잃은 사건과 두려움 / 심경: nervous → (embarrassed) → satisfied',
+      answer: '인물: Sua와 남동생 / 배경: 학교 말하기 대회 날의 강당 / 갈등: 넘어진 뒤 도망치고 싶은 두려움과 끝까지 말하고 싶은 마음(내적 갈등) / 심경: nervous → (embarrassed) → satisfied',
     },
     {
       q: '다음 이야기를 읽고 감상을 세 문장으로 써 보십시오.\n\n' + BORI,
@@ -292,7 +292,7 @@ Tutor.registerUnit({
     {
       id: 'p12', level: 2, type: 'short', concept: 4,
       q: '빈칸에 call을 알맞은 꼴로 쓰십시오. (would를 써서)\n\nIf I had been Doyun that afternoon, I [[빈칸]] Mr. Han right away.',
-      answer: ['would have called'],
+      answer: ['would have called', "would've called"],
       hint: 'if절이 had been(과거 사실 반대)입니다. 주절도 과거의 결과로 씁니다.',
       wrong: [
         { a: 'would call', why: 'if절이 had been(그날 오후, 과거)이므로 주절은 would have + p.p.입니다.' },
@@ -365,7 +365,7 @@ Tutor.registerUnit({
         '',
         'If I had been as brave as Sua, I would have kept playing은 가정법 과거완료입니다. 실제로는 연주를 계속하지 못했습니다.',
         'I was moved by her courage — 수아의 이야기에 감동받았다고 했습니다.',
-        '연주 도중 악보를 잊고 무대에서 뛰어 내려왔다고 했을 뿐, 상을 받았다는 말은 없습니다.',
+        '연주 도중 음을 잊어 연주를 멈추고 무대에서 뛰어 내려왔다고 했을 뿐, 상을 받았다는 말은 없습니다.',
       ],
       explain: 'I forgot the notes, stopped playing, and ran off the stage에서 글쓴이가 작년 연주회에서 **연주를 멈췄음**을 알 수 있습니다. 가정법 문장(If I had been as brave as Sua, I would have kept playing)도 실제로는 용기를 내지 못하고 멈췄다는 뜻입니다.',
     },
@@ -452,7 +452,7 @@ Tutor.registerUnit({
           ['Minsu found a wallet with a lot of money and took it straight to the police station.', 'honest', ['greedy', 'careless', 'cowardly'], '돈이 많이 든 지갑을 곧장 경찰서에 가져다줌'],
           ['Doyun practiced the same piano piece every day for three months until he got it right.', 'patient', ['lazy', 'careless', 'impatient'], '같은 곡을 석 달 동안 매일, 제대로 칠 때까지 연습함'],
           ['Hayun always asks "Why?" and loves taking things apart to see how they work.', 'curious', ['selfish', 'rude', 'cowardly'], '늘 "왜?"라고 묻고 물건이 어떻게 움직이는지 분해해 봄'],
-          ['Seojun jumped into the cold river to save a drowning puppy.', 'brave', ['cowardly', 'lazy', 'selfish'], '물에 빠진 강아지를 구하려고 차가운 강에 뛰어듦'],
+          ['While everyone else stayed silent, Seojun stood up and told the older students to stop teasing a new classmate.', 'brave', ['cowardly', 'lazy', 'selfish'], '다른 사람들이 모두 가만히 있을 때 혼자 나서서 새 친구를 놀리는 선배들에게 그만하라고 말함'],
           ['Jia ate all the snacks by herself and did not share any with her little brother.', 'selfish', ['generous', 'kind', 'polite'], '과자를 혼자 다 먹고 동생에게 하나도 나눠 주지 않음'],
           ['Taeho left his bag on the bus again. It was the third time this month.', 'careless', ['careful', 'brave', 'generous'], '이번 달에만 세 번째로 버스에 가방을 두고 내림'],
           ['Yuna gave half of her lunch to a classmate who had forgotten his.', 'generous', ['selfish', 'rude', 'greedy'], '도시락을 잊은 반 친구에게 자기 점심의 절반을 나눠 줌'],

@@ -223,7 +223,7 @@
         id: 'p7', level: 1, type: 'ox', concept: 2,
         q: '$y=\\frac{k}{x}$의 그래프는 $|k|$의 값이 클수록 원점에서 멀어집니다.',
         answer: true,
-        explain: '예를 들어 $x=1$일 때 $y=k$이므로 $|k|$가 크면 곡선 위의 점이 원점에서 멀리 있습니다. $y=\\frac{1}{x}$은 점 $(1, 1)$을, $y=\\frac{4}{x}$는 점 $(2, 2)$를 지나 원점에서 더 멉니다.',
+        explain: '곡선 $y=\\frac{k}{x}$에서 원점에 가장 가까운 점은 대칭축인 직선 $y=x$($k<0$이면 $y=-x$)와 만나는 점입니다. $y=\\frac{1}{x}$은 점 $(1, 1)$, $y=\\frac{4}{x}$는 점 $(2, 2)$가 그 점이므로, $|k|$가 클수록 곡선이 원점에서 더 멀리 떨어져 있습니다.',
       },
       {
         id: 'p8', level: 2, type: 'short', check: 'number', concept: 5,
@@ -322,7 +322,7 @@
         q: '함수 $y=\\frac{ax+b}{x+c}$의 그래프가 점 $(2, 3)$에 대하여 대칭이고 점 $(1, 1)$을 지날 때, 상수 $a$, $b$, $c$에 대하여 $a+b+c$의 값을 구하십시오.',
         answer: '-3',
         hint: '대칭의 중심은 두 점근선의 교점입니다. 세로 점근선은 $x=-c$, 가로 점근선은 $y=a$입니다.',
-        wrong: [{ a: '1', why: '$c=2$로 놓았습니다. 세로 점근선 $x=2$이면 분모 $x+c$에서 $c=-2$입니다.' }],
+        wrong: [{ a: '5', why: '$c=2$로 놓았습니다. 그러면 $y=\\frac{3x+b}{x+2}$에서 $b=0$이 되지만, 세로 점근선이 $x=-2$가 되어 조건에 맞지 않습니다. 세로 점근선 $x=2$이면 분모 $x+c$에서 $c=-2$입니다.' }],
         explain: '점근선이 $x=2$, $y=3$이므로 $c=-2$, $a=3$입니다. $y=\\frac{3x+b}{x-2}$가 점 $(1, 1)$을 지나므로 $1=\\frac{3+b}{-1}$, $b=-4$입니다. (확인: $y=\\frac{3x-4}{x-2}=\\frac{2}{x-2}+3$) 따라서 $a+b+c=3-4-2=-3$입니다.',
       },
     ],
@@ -415,14 +415,14 @@
           var num = R.fmt.poly([a, b]);
           var correct = '$y=' + std(R, k, p, a) + '$';
           var cands = [
-            ['$y=' + std(R, b, p, a) + '$', '분자의 상수항 $' + b + '$' + R.josa(Math.abs(b), '을/를') + ' 그대로 남겼습니다. 분자에서 분모의 ' + a + '배를 빼고 남은 수가 $k$입니다.'],
+            ['$y=' + std(R, b, p, a) + '$', '분자의 상수항 $' + b + '$' + R.josa(Math.abs(b), '을/를') + ' 그대로 남겼습니다. 분자에서 분모의 $' + a + '$배를 빼고 남은 수가 $k$입니다.'],
             ['$y=' + std(R, k, -p, a) + '$', '세로 점근선의 부호가 바뀌었습니다. 분모는 그대로 $' + xm(R, p) + '$입니다.'],
             ['$y=' + std(R, k, p, b) + '$', '몫을 분자의 상수항으로 썼습니다. 몫은 $x$의 계수 $' + a + '$입니다.'],
             ['$y=' + std(R, -k, p, a) + '$', '나머지의 부호가 바뀌었습니다. 분자 $' + num + '$에서 $' + co(a) + '(' + xm(R, p) + ')$' + R.josa(Math.abs(p), '을/를') + ' 빼 보십시오.'],
             ['$y=' + std(R, b - a * p, p, a) + '$', '$' + co(a) + '(' + xm(R, p) + ')$' + R.josa(Math.abs(p), '을/를') + ' 전개할 때 상수항의 부호를 잘못 처리했습니다.'],
           ];
           var reason = {};
-          cands = cands.filter(function (c) { return c[0].indexOf('\frac{0}') < 0; });
+          cands = cands.filter(function (c) { return c[0].indexOf('\\frac{0}') < 0; });
           cands.forEach(function (c) { if (!(c[0] in reason)) reason[c[0]] = c[1]; });
           var pick = R.choices(correct, cands.map(function (c) { return c[0]; }));
           return {

@@ -131,6 +131,7 @@ Tutor.registerUnit({
         '| 문장 | It is·that을 지우면 | 판단 |\n|---|---|---|\n' +
         '| It was **Minsu** that found the key. | Minsu found the key. (완전한 문장) | 강조 구문 |\n' +
         '| It is **important** that we save water. | important we save water (문장이 안 됨) | 가주어 구문 |\n\n' +
+        '목적어나 부사(구)를 강조한 문장은 지운 뒤 남은 말을 원래 자리로 돌려 보면 됩니다. It was **the key** that Minsu found. → Minsu found the key. (완전한 문장) → 강조 구문\n\n' +
         '> 💡 가주어 구문에서는 It is 뒤에 주로 **형용사**(important, clear, true, necessary)가 오고, that절이 진짜 주어입니다. "~하는 것은 중요하다"로 해석합니다.',
       easy: '강조 구문은 문장에 **형광펜**을 칠하는 틀입니다. 강조하고 싶은 부분을 "It was"와 "that" 사이에 끼워 넣고, 나머지는 that 뒤에 그대로 둡니다.\n\n' +
         '형광펜 틀(It was, that)을 걷어 내면 원래 문장이 그대로 남아야 합니다. 걷어 냈는데 문장이 망가지면, 그것은 형광펜이 아니라 다른 구문(가주어)입니다.',
@@ -185,7 +186,7 @@ Tutor.registerUnit({
         '과거의 일이므로 It is가 아니라 It was를 씁니다.',
         '강조할 말 the apple tree를 It was와 that 사이에 넣습니다: It was the apple tree that …',
         'that 뒤에 나머지 부분을 원래 순서대로 씁니다: Jia planted ten years ago.',
-        '확인: It was와 that을 지우면 "the apple tree Jia planted ten years ago"로 원래 문장의 낱말이 모두 남습니다.',
+        '확인: It was와 that을 지우고 the apple tree를 원래 자리로 돌려 놓으면 Jia planted the apple tree ten years ago.로 원래 문장이 그대로 남습니다.',
       ],
       answer: 'It was the apple tree that(which) Jia planted ten years ago. (지아가 10년 전에 심은 것은 바로 그 사과나무였다.)',
     },
@@ -204,7 +205,7 @@ Tutor.registerUnit({
     { term: '도치', def: '강조나 문장의 흐름을 위해 주어와 동사의 순서를 바꾸는 것입니다. 예: Never have I seen such a crowd.' },
     { term: '부정어', def: 'never, little, seldom, rarely, hardly처럼 부정의 뜻을 가진 낱말입니다. 문장 앞에 오면 뒤의 어순이 의문문처럼 바뀝니다.' },
     { term: '주절', def: '문장에서 중심이 되는 절입니다. Only after the game ended did we leave.에서는 did we leave가 들어 있는 부분이 주절입니다.' },
-    { term: '강조 구문 (It is ~ that)', def: 'It is(was)와 that 사이에 강조할 말을 넣어 "바로 그것이 ~이다"라고 강조하는 구문입니다. It is·that을 지우면 완전한 문장이 남습니다.' },
+    { term: '강조 구문 (It is ~ that)', def: 'It is(was)와 that 사이에 강조할 말을 넣어 "바로 그것이 ~이다"라고 강조하는 구문입니다. It is·that을 지우고 남은 말을 원래 자리로 돌려 놓으면 완전한 문장이 됩니다.' },
     { term: '가주어 구문', def: '긴 that절 주어 대신 It을 주어 자리에 두는 구문입니다. 예: It is important that we save water. It은 해석하지 않습니다.' },
     { term: '동사 강조 do', def: '동사 앞에 do·does·did를 써서 "정말 ~한다"고 강조하는 것입니다. 뒤의 동사는 원형입니다. 예: I did lock the door.' },
     { term: 'What 강조 구문', def: 'What + 주어 + 동사 + is ~의 꼴로 말하고 싶은 내용을 문장 끝에 두어 강조합니다. 예: What we need is more time.' },
@@ -397,7 +398,7 @@ Tutor.registerUnit({
         '',
         'Only on the final day did the judges announce ~는 "마지막 날이 되어서야 발표했다"는 뜻입니다. 첫날이 아닙니다.',
         "It was Doyun's team that won first prize — 1등을 한 것이 바로 도윤이네 팀이라고 강조한 문장입니다.",
-        "What surprised everyone was the robot's speed — 모두를 놀라게 한 것은 로봇의 속도였습니다. 느리지 않았습니다.",
+        "What surprised everyone was the robot's speed — 모두를 놀라게 한 것은 로봇의 속도였다는 말뿐, 로봇이 느렸다거나 정확했다는 내용은 글에 없습니다.",
       ],
       explain: 'Only on the final day **did the judges announce** the winners는 "마지막 날이 되어서야 심사위원들이 수상자를 발표했다"는 뜻이므로 1번이 일치합니다. 글의 둘째 문장 Never had so many students worked ~도 부정어 도치(이렇게 많은 학생이 열심히 한 적은 없었다)입니다.',
     },
@@ -498,7 +499,7 @@ Tutor.registerUnit({
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : reason[c] || ''; }),
-          explain: 'A의 말이 ' + (neg ? '부정문이므로 Neither' : '긍정문이므로 So') + '로 시작합니다. A가 쓴 동사는 ' + KIND[kind] + '이므로 ' + aux + '를 쓰고, 마지막에 주어 ' + s + '를 둡니다. → **' + correct + '**',
+          explain: 'A의 말이 ' + (neg ? '부정문이므로 Neither' : '긍정문이므로 So') + '로 시작합니다. A가 쓴 동사는 ' + KIND[kind] + '이므로 ' + aux + R.josa(aux, '을/를') + ' 쓰고, 마지막에 주어 ' + s + '를 둡니다. → **' + correct + '**',
         };
       },
     },
@@ -565,12 +566,13 @@ Tutor.registerUnit({
             ['Not until midnight went ' + S + ' to bed.', '일반동사는 그 자체를 주어 앞으로 옮기지 않고 did를 씁니다.'],
           ];
         }
+        base = base.charAt(0).toUpperCase() + base.slice(1);
         var reason = {};
         cands.forEach(function (c) { if (!(c[0] in reason)) reason[c[0]] = c[1]; });
         var pick = R.choices(correct, cands.map(function (c) { return c[0]; }));
         return {
           type: 'choice', concept: t >= 3 ? 1 : 0,
-          q: '다음 문장을 ' + startWord + '(으)로 시작하도록 바르게 바꾼 것은 무엇입니까?\n\n' + base,
+          q: '다음 문장을 도치 문장으로 바르게 바꾼 것은 무엇입니까? (맨 앞에 올 말: ' + startWord + ')\n\n' + base,
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : reason[c] || ''; }),

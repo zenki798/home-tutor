@@ -15,7 +15,7 @@
   // 목적 글 (직접 쓴 글, 가상의 상점·기관)
   var REFUND = "Dear Customer Service Manager,\n\nI bought a desk lamp from your online store on March 3. When it arrived, the base was cracked and the switch did not work. I called your service center twice, but no one answered. I am writing to ask for a full refund. Please let me know how I should send the lamp back.\n\nSincerely,\nJiwoo Han";
   var THANKS = "Dear Mr. Park,\n\nLast Friday, I left my backpack on the number 15 bus. It had my laptop and all my notes for my final exams. You kept it safe and even called the school to find me. I would like to express my sincere thanks for your kindness. Because of you, I was able to prepare for my exams without worry.\n\nBest regards,\nDoyun Lee";
-  var NOTICE = "Dear students,\n\nThe school library will be closed from May 8 to May 12 for repairs. During this period, you can return books at the main office on the first floor. Books that are due during the closing will not get late fees. The library will open again on May 13 with new desks and better lights.";
+  var NOTICE = "Dear students,\n\nThe school library will be closed from May 8 to May 12 for repairs. During this period, you can return books at the main office on the first floor. No late fees will be charged for books that are due while the library is closed. The library will open again on May 13 with new desks and better lights.";
   var CLUB = "Are you looking for a meaningful way to spend your Saturday mornings? Join the Green Hands Club! Every week, our members plant trees, clean up the riverside, and grow vegetables in the community garden. No experience is needed. Sign up at the student council room by this Friday and become part of a greener school!";
   var LIGHTS = "Dear Park Manager,\n\nI live near Riverside Park and walk there almost every evening. Recently, many of the lights along the walking path have stopped working. The path is so dark now that some people have tripped over tree roots. I would like to ask you to repair the lights as soon as possible. I am sure many other walkers would appreciate it, too.\n\nSincerely,\nHayun Choi";
   var SEAT = "Dear Mr. Kang,\n\nThank you for organizing last month's science camp. My daughter, Sua, enjoyed every program, especially the night sky observation. However, I am writing to ask whether the camp schedule for next year could be shared earlier. Many parents, including me, need time to plan family events. I would really appreciate it if you could post the dates by March.\n\nBest wishes,\nJimin Seo";
@@ -36,7 +36,7 @@ Tutor.registerUnit({
   concepts: [
     {
       title: '심정을 나타내는 형용사',
-      body: '인물의 **심정(feeling)**은 형용사로 나타냅니다. 비슷해 보이는 낱말도 감정의 원인과 세기가 다르므로 뜻을 정확히 구별해야 합니다.\n\n| 형용사 | 뜻 | 이런 상황에서 |\n|---|---|---|\n| **relieved** | 안도한 | 걱정하던 일이 무사히 끝났을 때 |\n| **anxious** | 불안한, 걱정하는 | 결과를 모르는 일을 기다릴 때 |\n| **frustrated** | 좌절한, 답답한 | 노력해도 일이 뜻대로 되지 않을 때 |\n| **delighted** | 매우 기뻐하는 | 바라던 좋은 일이 생겼을 때 |\n| **disappointed** | 실망한 | 기대한 일이 이루어지지 않았을 때 |\n| **grateful** | 고마워하는 | 남의 도움을 받았을 때 |\n| **indifferent** | 무관심한 | 일에 아무 관심이 없을 때 |\n\n시험 문제는 한 인물의 **심정 변화**를 묻는 경우가 많습니다. 예를 들어 잃어버린 강아지를 찾아다니다 다시 만났다면 anxious → relieved 입니다.\n\n> 💡 -ed 형용사(frustrated, delighted)는 "사람이 그렇게 느끼는" 것이고, -ing 형용사(frustrating, delightful)는 "그런 느낌을 주는" 것입니다. 인물의 심정을 고르는 문제는 대부분 -ed 쪽입니다.',
+      body: '인물의 **심정(feeling)**은 형용사로 나타냅니다. 비슷해 보이는 낱말도 감정의 원인과 세기가 다르므로 뜻을 정확히 구별해야 합니다.\n\n| 형용사 | 뜻 | 이런 상황에서 |\n|---|---|---|\n| **relieved** | 안도한 | 걱정하던 일이 무사히 끝났을 때 |\n| **anxious** | 불안한, 걱정하는 | 결과를 모르는 일을 기다릴 때 |\n| **frustrated** | 좌절한, 답답한 | 노력해도 일이 뜻대로 되지 않을 때 |\n| **delighted** | 매우 기뻐하는 | 바라던 좋은 일이 생겼을 때 |\n| **disappointed** | 실망한 | 기대한 일이 이루어지지 않았을 때 |\n| **grateful** | 고마워하는 | 남의 도움을 받았을 때 |\n| **indifferent** | 무관심한 | 일에 아무 관심이 없을 때 |\n\n시험 문제는 한 인물의 **심정 변화**를 묻는 경우가 많습니다. 예를 들어 잃어버린 강아지를 찾아다니다 다시 만났다면 anxious → relieved 입니다.\n\n> 💡 -ed 형용사(frustrated, excited)는 "사람이 그렇게 느끼는" 것이고, -ing 형용사(frustrating, exciting)는 "그런 느낌을 주는" 것입니다. 인물의 심정을 고르는 문제는 대부분 -ed 쪽입니다.',
       easy: '감정 형용사를 "날씨"처럼 생각해 보십시오. anxious는 먹구름이 낀 하늘(무슨 일이 생길지 몰라 마음이 무겁다), relieved는 비가 그치고 해가 나온 하늘(휴, 다행이다), frustrated는 우산이 자꾸 뒤집히는 바람 부는 날(애써도 안 된다), delighted는 맑게 갠 소풍날(신난다)입니다.\n\n심정 변화 문제는 "처음 날씨 → 나중 날씨"를 고르는 것과 같습니다.',
       check: {
         type: 'choice',
@@ -240,7 +240,7 @@ Tutor.registerUnit({
       q: '다음 글의 목적으로 가장 알맞은 것은 무엇입니까?\n\n' + SEAT,
       choices: ['내년 캠프 일정을 일찍 알려 달라고 요청하려고', '과학 캠프를 열어 준 것에 감사하려고', '과학 캠프 프로그램에 대해 항의하려고', '가족 행사 일정을 안내하려고'],
       answer: 0,
-      why: ['', '첫 문장은 감사 인사이지만 However 뒤에 진짜 목적(일정 공지 요청)이 나옵니다.', '프로그램은 딸이 모두 즐겼다고 칭찬했습니다. 불만은 프로그램이 아니라 일정 공지 시기에 대한 부탁입니다.', '가족 행사는 글쓴이가 일정을 미리 알아야 하는 이유일 뿐입니다.'],
+      why: ['', '첫 문장은 감사 인사이지만 However 뒤에 진짜 목적(일정 공지 요청)이 나옵니다.', '프로그램은 딸이 모두 즐겼다고 칭찬했습니다. 항의가 아니라 일정 공지 시기에 대한 정중한 부탁입니다.', '가족 행사는 글쓴이가 일정을 미리 알아야 하는 이유일 뿐입니다.'],
       explain: '감사 인사 뒤 **However, I am writing to ask whether ~** 에서 목적이 드러납니다. 마지막 문장 I would really appreciate it if you could post the dates by March 도 요청입니다. 그래서 목적은 **일정 공지 요청**입니다.',
     },
     {
@@ -302,7 +302,7 @@ Tutor.registerUnit({
     },
     {
       q: 'frustrated랑 disappointed는 어떻게 구별해요?',
-      a: 'disappointed는 **기대한 결과가 오지 않아 실망한** 마음이고, frustrated는 **애써도 일이 뜻대로 되지 않아 답답하고 짜증 나는** 마음입니다. 오래 노력한 과정, 주먹을 쥐거나 물건을 차는 행동이 있으면 frustrated에 가깝고, 한숨을 쉬고 고개를 숙이는 모습이면 disappointed에 가깝습니다. 두 낱말이 함께 선택지에 나오는 경우는 드물지만, 단서를 꼼꼼히 보는 습관이 중요합니다.',
+      a: 'disappointed는 **기대한 결과가 오지 않아 실망한** 마음이고, frustrated는 **애써도 일이 뜻대로 되지 않아 답답하고 짜증 나는** 마음입니다. 오래 노력한 과정, 주먹을 쥐거나 물건을 차는 행동이 있으면 frustrated에 가깝고, 한숨을 쉬고 고개를 숙이는 모습이면 disappointed에 가깝습니다. 두 낱말이 함께 선택지에 나오면 이런 단서를 꼼꼼히 비교하십시오.',
     },
   ],
 

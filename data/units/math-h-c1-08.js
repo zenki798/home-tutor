@@ -340,7 +340,7 @@ Tutor.registerUnit({
       hint: '$|x-a|<3$의 해는 $a-3<x<a+3$입니다.',
       wrong: [
         { a: '3', why: '$|x-a|$의 중심은 $-a$가 아니라 $a$입니다. 해는 $a-3<x<a+3$입니다.' },
-        { a: '4', why: '$b=a+3=5$입니다. $b$를 구한 뒤 $a$와 더해야 합니다.' },
+        { a: '4', why: '해의 양 끝 $-1$과 $b=5$를 더했습니다. 구하는 것은 $a+b$이고, $a-3=-1$에서 $a=2$입니다.' },
       ],
       explain: '$|x-a|<3$의 해는 $a-3<x<a+3$입니다. $a-3=-1$이므로 $a=2$이고, $b=a+3=5$입니다. 따라서 $a+b=7$입니다.',
     },
@@ -539,7 +539,7 @@ Tutor.registerUnit({
           : 'a=' + lo + '$이면 $' + lo + '<x\\le ' + b + '$' + R.josa(b, '으로/로') + ' ' + cnt + '개, $a=' + hi + '$이면 ' + (cnt - 1) + '개';
         return {
           type: 'choice', concept: 1,
-          q: '연립부등식 $\\begin{cases} ' + first + ' \\\\ ' + second + ' \\end{cases}$' + '을 만족시키는 정수 $x$가 ' + cnt + '개뿐일 때, 실수 $a$의 값의 범위는 무엇입니까?',
+          q: '연립부등식 $\\begin{cases} ' + first + ' \\\\ ' + second + ' \\end{cases}$' + '를 만족시키는 정수 $x$가 ' + cnt + '개뿐일 때, 실수 $a$의 값의 범위는 무엇입니까?',
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : why; }),

@@ -238,7 +238,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p7', level: 1, type: 'short', check: 'text', concept: 0,
-      q: '빈칸에 알맞은 대명사 한 개를 쓰십시오.\n\nJiho bought two notebooks yesterday. [[빈칸]] were blue and very thin.',
+      q: '빈칸에 two notebooks를 가리키는 인칭대명사 한 개를 쓰십시오.\n\nJiho bought two notebooks yesterday. [[빈칸]] were blue and very thin.',
       answer: ['they'],
       wrong: [
         { a: 'it', why: '가리키는 대상 two notebooks는 복수입니다. 또 동사가 were이므로 복수 대명사 They를 씁니다.' },
@@ -374,7 +374,7 @@ Tutor.registerUnit({
     {
       id: 'a4', level: 3, type: 'short', check: 'text', concept: 0,
       q: '밑줄 친 두 개의 __it__이 공통으로 가리키는 것을 글에서 찾아 영어 낱말 한 개로 쓰십시오.\n\nThe museum has a famous painting of a ship. Visitors often stand in front of __it__ for a long time because __it__ shows the stormy sea in great detail.',
-      answer: ['painting'],
+      answer: ['painting', 'the painting', 'a painting'],
       wrong: [
         { a: 'ship', why: '사람들이 오래 서서 보는 것, 그리고 폭풍 치는 바다를 자세히 보여 주는 것은 배가 아니라 배를 그린 그림입니다.' },
         { a: 'museum', why: '박물관 "앞에" 서서 본다거나 박물관이 바다를 자세히 보여 준다는 것은 뜻이 맞지 않습니다.' },

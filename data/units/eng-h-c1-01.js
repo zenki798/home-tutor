@@ -50,7 +50,7 @@ Tutor.registerUnit({
     },
     {
       title: '같은 뜻을 다르게 쓴 표현 알아보기 (바꿔 쓰기)',
-      body: '선택지는 글의 문장을 그대로 옮기지 않고 **같은 뜻을 다른 말로** 쓰는 경우가 많습니다. 이것을 **바꿔 쓰기(paraphrase)**라고 합니다. 자주 쓰이는 방법은 다음과 같습니다.\n\n| 방법 | 글 | 선택지 |\n|---|---|---|\n| 비슷한 낱말 | The event was **postponed**. | The event was **moved to a later date**. |\n| 부정 + 반대말 | It is **not expensive**. | It is **cheap**. |\n| 품사 바꾸기 | **Registration** is free. | You can **register** for free. |\n| 능동↔수동 | Volunteers **will check** your bike. | Your bike **will be checked** by volunteers. |\n| 풀어 쓰기 | It **costs nothing**. | It is **free**. |\n\n그래서 글과 **똑같은 낱말**이 있는 선택지가 꼭 정답인 것은 아닙니다. 똑같은 낱말을 쓰면서 내용 한 군데를 바꾼 선택지가 오히려 함정인 경우가 많습니다. 낱말이 아니라 **뜻**을 맞춰 봅니다.',
+      body: '선택지는 글의 문장을 그대로 옮기지 않고 **같은 뜻을 다른 말로** 쓰는 경우가 많습니다. 이것을 **바꿔 쓰기(paraphrase)**라고 합니다. 자주 쓰이는 방법은 다음과 같습니다.\n\n| 방법 | 글 | 선택지 |\n|---|---|---|\n| 비슷한 낱말 | The event was **postponed**. | The event was **moved to a later date**. |\n| 부정 + 반대말 | The shop is **not open** on Sundays. | The shop is **closed** on Sundays. |\n| 품사 바꾸기 | **Registration** is free. | You can **register** for free. |\n| 능동↔수동 | Volunteers **will check** your bike. | Your bike **will be checked** by volunteers. |\n| 풀어 쓰기 | It **costs nothing**. | It is **free**. |\n\n그래서 글과 **똑같은 낱말**이 있는 선택지가 꼭 정답인 것은 아닙니다. 똑같은 낱말을 쓰면서 내용 한 군데를 바꾼 선택지가 오히려 함정인 경우가 많습니다. 낱말이 아니라 **뜻**을 맞춰 봅니다.',
       easy: '친구가 "나 내일 못 가."라고 한 말을 다른 친구에게 전할 때 "걔 내일 안 온대."라고 바꿔 말해도 뜻은 같습니다. 낱말은 달라도 내용이 같지요.\n\n영어 문제의 선택지도 이렇게 글의 말을 "전해 주는" 문장입니다. 낱말이 같은지보다 **뜻이 같은지**를 보십시오.',
       check: {
         type: 'choice',
@@ -401,7 +401,7 @@ Tutor.registerUnit({
     { w: 'postpone', m: '미루다, 연기하다', ex: 'The game was postponed because of the heavy rain.', exm: '폭우 때문에 경기가 연기되었다.' },
     { w: 'at least', m: '적어도, 최소한', ex: 'Drink at least six glasses of water a day.', exm: '하루에 적어도 물 여섯 잔을 마시세요.' },
     { w: 'up to', m: '(최대) ~까지', ex: 'Each student can borrow up to three books.', exm: '학생마다 책을 세 권까지 빌릴 수 있다.' },
-    { w: 'every other', m: '하나 걸러, ~마다 한 번씩 건너', ex: 'We clean the classroom every other day.', exm: '우리는 하루걸러 교실을 청소한다.' },
+    { w: 'every other', m: '하나 걸러(하나씩 건너뛰어)', ex: 'We clean the classroom every other day.', exm: '우리는 하루걸러 교실을 청소한다.' },
     { w: 'except', m: '~을 제외하고', ex: 'The shop is open every day except Sunday.', exm: '그 가게는 일요일을 빼고 매일 문을 연다.' },
     { w: 'unless', m: '~하지 않으면', ex: 'The picnic will be held outside unless it rains.', exm: '비가 오지 않으면 소풍은 밖에서 열린다.' },
     { w: 'include', m: '포함하다', ex: 'The price includes lunch and a T-shirt.', exm: '그 가격에는 점심과 티셔츠가 포함되어 있다.' },

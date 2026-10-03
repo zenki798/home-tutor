@@ -49,7 +49,7 @@ Tutor.registerUnit({
     },
     {
       title: '배수 비교: twice as ~ as, three times + 비교급 + than',
-      body: '두 값을 "몇 배"로 견줄 때는 두 가지 틀을 씁니다.\n\n**① 배수 + as + 원급 + as**\n\nClub A has **twice as many** members **as** Club B. (A는 B의 2배)\nThis box is **three times as heavy as** that one. (3배 무거운)\n\n**② 배수 + 비교급 + than**\n\nThis tower is **three times taller than** that building.\nThe new bridge is **four times longer than** the old one.\n\n| 배수 | 영어 |\n|---|---|\n| 2배 | **twice** |\n| 3배, 4배 … | **three times**, **four times** … |\n| 절반 | **half** as ~ as |\n\n- 배수는 언제나 **as나 비교급 앞**에 둡니다. 바른 꼴: **twice as many as** / 틀린 꼴: as twice many as\n- 셀 수 있는 명사의 수는 as **many** ~ as, 셀 수 없는 명사의 양은 as **much** ~ as를 씁니다.\n- 2배는 보통 twice라고 합니다. half는 원급 틀(**half as ~ as**)로만 씁니다.\n\nMy brother reads **half as many** books **as** I do. (내 동생은 나의 절반만큼 읽는다)',
+      body: '두 값을 "몇 배"로 견줄 때는 두 가지 틀을 씁니다.\n\n**① 배수 + as + 원급 + as**\n\nClub A has **twice as many** members **as** Club B. (A는 B의 2배)\nThis box is **three times as heavy as** that one. (3배 무거운)\n\n**② 배수 + 비교급 + than**\n\nThis tower is **three times taller than** that building.\nThe new bridge is **four times longer than** the old one.\n\n| 배수 | 영어 |\n|---|---|\n| 2배 | **twice** |\n| 3배, 4배 … | **three times**, **four times** … |\n| 절반 | **half** as ~ as |\n\n- 배수는 언제나 **as나 비교급 앞**에 둡니다. 바른 꼴: **twice as many as** / 틀린 꼴: as twice many as\n- 셀 수 있는 명사의 수는 as **many** ~ as, 셀 수 없는 명사의 양은 as **much** ~ as를 씁니다.\n- 2배는 보통 twice라고 합니다. 절반을 견줄 때 half는 비교급 틀에 쓰지 않고(half taller than X) 원급 틀(**half as ~ as**)로 씁니다.\n\nMy brother reads **half as many** books **as** I do. (내 동생은 나의 절반만큼 읽는다)',
       easy: '배수는 **곱하기 버튼**이라고 생각하십시오. as ~ as(같은 만큼)나 비교급(~보다 더) 앞에 "×2(twice)", "×3(three times)" 버튼을 하나 붙이면 끝입니다.\n\n- 같은 만큼: as tall as\n- 그것의 3배만큼: **three times** as tall as\n\n버튼은 항상 맨 앞에 붙입니다. 가운데에 끼우면(as three times tall as) 고장 납니다.',
       check: {
         type: 'choice',
@@ -149,12 +149,12 @@ Tutor.registerUnit({
       id: 'p2', level: 1, type: 'short', check: 'text', concept: 0,
       q: '그래프를 보고 빈칸에 알맞은 한 낱말을 쓰십시오. (s로 시작하는 형용사)\n\nThe price of milk remained [[blank]] from January to April.',
       fig: { type: 'line', labels: ['Jan', 'Feb', 'Mar', 'Apr'], values: [2500, 2500, 2500, 2500], unit: '원', title: 'Price of Milk (가상의 자료)' },
-      answer: ['steady', 'stable'],
+      answer: ['steady', 'stable', 'static'],
       wrong: [
         { a: 'steadily', why: 'remain 뒤에는 상태를 나타내는 형용사가 옵니다. 부사 steadily가 아니라 형용사 steady를 씁니다.' },
         { a: 'same', why: '"그대로였다"를 same으로 쓰려면 remained the same처럼 the가 필요합니다. 여기서는 s로 시작하는 한 낱말 steady(또는 stable)를 씁니다.' },
       ],
-      explain: '네 달 내내 2,500원으로 변하지 않았으므로 **remained steady**(또는 remained stable)입니다. remain 뒤에는 형용사가 옵니다.',
+      explain: '네 달 내내 2,500원으로 변하지 않았으므로 **remained steady**(또는 remained stable, remained static)입니다. remain 뒤에는 형용사가 옵니다.',
     },
     {
       id: 'p3', level: 1, type: 'choice', concept: 1,

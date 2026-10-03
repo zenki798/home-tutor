@@ -54,7 +54,7 @@ Tutor.registerUnit({
     },
     {
       title: '핵심 문장과 덜 중요한 세부 내용',
-      body: '뒷받침 문장에도 무게가 다릅니다.\n\n- **주요 뒷받침 문장**: 주제문을 직접 받쳐 주는 이유·단계. (First, bees help plants produce fruit.)\n- **덜 중요한 세부 내용**: 주요 뒷받침 문장을 다시 받쳐 주는 예·숫자·이름. (Without bees, we would have fewer apples, strawberries, and pumpkins.)\n\n요약할 때는 **주제문과 주요 뒷받침 문장**을 남기고, 세부 내용은 줄이거나 뺍니다. 다음과 같은 것은 대개 덜 중요한 세부 내용입니다.\n\n| 덜 중요한 세부 내용의 신호 | 예 |\n|---|---|\n| For example, For instance, such as 뒤의 구체적 예 | apples, strawberries, and pumpkins |\n| 정확한 숫자·날짜·이름 | for thousands of years |\n| 앞 문장을 덧붙여 설명하는 말 | which ~, that is ~ |\n\n> 💡 어떤 문장을 지웠을 때 글의 중심 생각이 그대로 전달되면 그 문장은 세부 내용입니다. 지웠더니 이유 하나가 통째로 사라진다면 주요 뒷받침 문장입니다.',
+      body: '뒷받침 문장에도 무게가 다릅니다.\n\n- **주요 뒷받침 문장**: 주제문을 직접 받쳐 주는 이유·단계. (First, bees help plants produce fruit.)\n- **덜 중요한 세부 내용**: 주요 뒷받침 문장을 다시 받쳐 주는 예·숫자·이름. (Without bees, we would have fewer apples, strawberries, and pumpkins.)\n\n요약할 때는 **주제문과 주요 뒷받침 문장**을 남기고, 세부 내용은 줄이거나 뺍니다. 다음과 같은 것은 대개 덜 중요한 세부 내용입니다.\n\n| 덜 중요한 세부 내용의 신호 | 예 |\n|---|---|\n| For example, For instance, such as 뒤의 구체적 예 | apples, strawberries, and pumpkins |\n| 숫자·기간·날짜·이름 | for thousands of years |\n| 앞 문장을 덧붙여 설명하는 말 | which ~, that is ~ |\n\n> 💡 어떤 문장을 지웠을 때 글의 중심 생각이 그대로 전달되면 그 문장은 세부 내용입니다. 지웠더니 이유 하나가 통째로 사라진다면 주요 뒷받침 문장입니다.',
       easy: '친구에게 영화 줄거리를 1분 안에 알려 준다고 생각해 보십시오. 주인공이 무엇을 했는지(핵심)는 말하지만, 주인공의 옷 색깔이나 식당 이름(세부 내용)은 빼겠지요.\n\n글을 요약할 때도 똑같습니다. "이게 빠지면 이야기가 안 통하나?"라고 물어보고, 통한다면 빼도 되는 세부 내용입니다.',
       check: {
         type: 'choice',

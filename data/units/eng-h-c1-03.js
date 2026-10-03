@@ -172,9 +172,9 @@ Tutor.registerUnit({
     {
       id: 'p7', level: 1, type: 'short', check: 'text', concept: 5,
       q: '빈칸에 알맞은 낱말 하나를 쓰십시오.\n\nTo be [[blank]], I didn\'t enjoy the movie very much.\n(솔직히 말하면, 나는 그 영화가 별로 재미있지 않았다.)',
-      answer: ['honest', 'frank'],
+      answer: ['honest', 'frank', 'truthful'],
       wrong: [{ a: 'honestly', why: 'honestly는 부사입니다. to be 뒤에는 보어로 형용사 honest를 씁니다. Honestly, I didn\'t ~ 처럼 혼자 쓸 때만 honestly입니다.' }],
-      explain: '**To be honest**는 "솔직히 말하면"이라는 독립부정사입니다. 문장 앞에 콤마와 함께 씁니다.',
+      explain: '**To be honest**는 "솔직히 말하면"이라는 독립부정사입니다. 문장 앞에 콤마와 함께 씁니다. To be frank, To be truthful도 같은 뜻으로 씁니다.',
     },
     {
       id: 'p8', level: 2, type: 'choice', concept: 4,
@@ -238,7 +238,7 @@ Tutor.registerUnit({
       q: '두 문장에서 to부정사(to come home early)의 행위자를 바르게 짝지은 것은 무엇입니까?\n\n(A) Doyun promised his mother to come home early.\n(B) Doyun\'s mother told him to come home early.',
       choices: ['(A) Doyun — (B) Doyun', '(A) 어머니 — (B) 어머니', '(A) 어머니 — (B) Doyun', '(A) Doyun — (B) 어머니'],
       answer: 0,
-      why: ['', 'promise에서는 주어(Doyun)가, tell에서는 목적어(him = Doyun)가 행동합니다. 어머니는 어느 쪽에서도 일찍 오는 사람이 아닙니다.', '두 동사의 규칙을 거꾸로 적용했습니다. promise는 주어, tell은 목적어가 행동합니다.', '(B)에서 told의 목적어 him이 Doyun입니다. tell은 목적어가 행동합니다.'],
+      why: ['', '두 동사의 규칙을 거꾸로 적용했습니다. promise에서는 주어(Doyun)가, tell에서는 목적어(him = Doyun)가 행동합니다. 어머니는 어느 쪽에서도 일찍 오는 사람이 아닙니다.', '(A)의 promise는 목적어가 아니라 주어가 행동합니다. 약속한 Doyun이 일찍 옵니다. (B)는 맞습니다.', '(B)에서 told의 목적어 him이 Doyun입니다. tell은 목적어가 행동합니다.'],
       explain: '(A) promise는 **주어**가 행동하므로 Doyun이 일찍 옵니다. (B) tell은 **목적어**가 행동하므로 him, 곧 Doyun이 일찍 옵니다. 두 문장 모두 일찍 오는 사람은 Doyun입니다.',
     },
     {

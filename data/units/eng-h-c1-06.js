@@ -246,9 +246,9 @@ Tutor.registerUnit({
       id: 'a3', level: 3, type: 'short', check: 'text', concept: 4,
       hint: '"~하는 곳은 어디든"이라는 뜻의 복합관계부사입니다.',
       q: '빈칸에 알맞은 낱말 하나를 쓰십시오.\n\nThis little speaker is so light that you can take it [[blank]] you go.\n(이 작은 스피커는 아주 가벼워서 네가 가는 곳은 어디든 가지고 갈 수 있다.)',
-      answer: ['wherever'],
+      answer: ['wherever', 'anywhere', 'everywhere'],
       wrong: [{ a: 'where', why: 'where만 쓰면 "네가 가는 곳"이라는 특정한 장소가 됩니다. "가는 곳은 어디든"이라는 뜻은 -ever를 붙인 wherever입니다.' }, { a: 'whenever', why: 'whenever는 "~할 때마다, 언제든"이라는 시간의 뜻입니다. 이 문장은 장소("어디든")를 말합니다.' }],
-      explain: '**wherever** you go는 "네가 가는 곳은 어디든"(= to any place you go)이라는 뜻입니다.',
+      explain: '**wherever** you go는 "네가 가는 곳은 어디든"(= to any place you go)이라는 뜻의 복합관계부사입니다. anywhere(everywhere) you go라고 써도 같은 뜻이 됩니다.',
     },
     {
       id: 'a4', level: 3, type: 'choice', concept: 0,
@@ -328,7 +328,7 @@ Tutor.registerUnit({
         var bank = [
           { c: 0, s: 'I called ' + name + ', [[blank]] lives next door.', a: 'who', o: [['that', W.that], ['which', W.which_person], ['what', W.what], ['where', W.where_gap]], ex: '선행사가 사람(' + name + ')이고 콤마 뒤 계속적 용법이며 주어가 빠져 있으므로 who를 씁니다.' },
           { c: 0, s: name + ' lent me a novel, [[blank]] I finished in one night.', a: 'which', o: [['that', W.that], ['who', W.who_thing], ['what', W.what], ['where', W.where_gap]], ex: '선행사가 사물(a novel)이고 콤마 뒤 계속적 용법이며 finished의 목적어가 빠져 있으므로 which를 씁니다.' },
-          { c: 0, s: name + ' won first prize, [[blank]] made the whole class proud.', a: 'which', o: [['that', W.that], ['who', W.who_thing], ['what', W.what], ['when', W.where_gap]], ex: '콤마 뒤 which가 앞 문장 전체(1등을 한 일)를 받습니다. 사람이 아니라 일어난 일을 받으므로 who가 아니라 which입니다.' },
+          { c: 0, s: name + ' won first prize, [[blank]] made the whole class proud.', a: 'which', o: [['that', W.that], ['who', 'who는 사람을 받습니다. 여기서는 사람이 아니라 앞 문장 전체(1등을 한 일)를 받아야 합니다.'], ['what', W.what], ['when', W.where_gap]], ex: '콤마 뒤 which가 앞 문장 전체(1등을 한 일)를 받습니다. 사람이 아니라 일어난 일을 받으므로 who가 아니라 which입니다.' },
           { c: 1, s: 'The teacher with [[blank]] ' + name + ' talked is from Jeonju.', a: 'whom', o: [['who', W.who_prep], ['that', W.that], ['which', W.which_person], ['what', W.what]], ex: name + ' talked with the teacher에서 the teacher가 전치사 with의 목적어이고 사람이므로 with whom을 씁니다.' },
           { c: 1, s: 'The box in [[blank]] ' + name + ' keeps old letters is under the bed.', a: 'which', o: [['that', W.that], ['who', W.who_thing], ['where', 'where는 이미 "in which"의 뜻을 품고 있어 앞에 in을 또 쓰지 않습니다.'], ['what', W.what]], ex: 'keeps old letters in the box에서 the box가 전치사 in의 목적어이고 사물이므로 in which를 씁니다.' },
           { c: 2, s: 'This is the park [[blank]] ' + name + ' learned to ride a bike.', a: 'where', o: [['which', W.which_full], ['when', W.when_place], ['who', W.who_thing], ['what', W.what]], ex: '선행사 the park가 장소이고 뒤 문장이 완전하므로 관계부사 where를 씁니다(= in which).' },
@@ -336,8 +336,8 @@ Tutor.registerUnit({
           { c: 2, s: 'Nobody knows the reason [[blank]] ' + name + ' left the party early.', a: 'why', o: [['where', 'where는 장소를 나타내는 선행사 뒤에 씁니다. the reason은 이유입니다.'], ['which', W.which_full], ['when', 'when은 시간을 나타내는 선행사 뒤에 씁니다. the reason은 이유입니다.'], ['what', W.what]], ex: '선행사 the reason이 이유이고 뒤 문장이 완전하므로 관계부사 why를 씁니다(= for which).' },
           { c: 3, s: '[[blank]] finishes the quiz first will get a free notebook.', a: 'Whoever', o: [['Whatever', W.ever_person], ['Whenever', W.ever_person], ['However', W.ever_person], ['Wherever', W.ever_person]], ex: '퀴즈를 먼저 끝내는 "사람은 누구든"이므로 Whoever(= Anyone who)를 씁니다.' },
           { c: 3, s: name + ' always listens to [[blank]] the coach says.', a: 'whatever', o: [['whoever', W.ever_thing], ['however', W.ever_thing], ['whenever', W.ever_thing], ['which', '빈칸 앞에 선행사가 없습니다. 선행사를 품은 말이 필요합니다.']], ex: '코치가 말하는 "것은 무엇이든"이므로 whatever(= anything that)를 씁니다.' },
-          { c: 4, s: '[[blank]] I hear this song, I think of summer camp.', a: 'Whenever', o: [['Whichever', W.ever_time], ['Whoever', W.ever_time], ['Whatever', W.ever_time], ['However', W.ever_time]], ex: '이 노래를 "들을 때마다"이므로 Whenever(= Every time)를 씁니다.' },
-          { c: 4, s: 'My puppy follows me [[blank]] I go.', a: 'wherever', o: [['which', W.ever_place], ['whoever', W.ever_place], ['whatever', W.ever_place], ['however', W.ever_place]], ex: '가는 "곳은 어디든"이므로 wherever를 씁니다.' },
+          { c: 4, s: '[[blank]] I hear this song, I think of summer camp.', a: 'Whenever', o: [['Whichever', W.ever_time], ['Whoever', W.ever_time], ['Whatever', W.ever_time], ['What', W.ever_time]], ex: '이 노래를 "들을 때마다"이므로 Whenever(= Every time)를 씁니다.' },
+          { c: 4, s: 'My puppy follows me [[blank]] I go.', a: 'wherever', o: [['which', W.ever_place], ['whoever', W.ever_place], ['whatever', W.ever_place], ['whichever', W.ever_place]], ex: '가는 "곳은 어디든"이므로 wherever를 씁니다.' },
           { c: 4, s: '[[blank]] hard ' + name + ' tries, the puzzle seems impossible to solve.', a: 'However', o: [['Whatever', W.ever_how], ['Whenever', W.ever_how], ['Wherever', W.ever_how], ['Whoever', W.ever_how]], ex: 'hard(부사) 앞에서 "아무리 열심히 해도"라는 양보의 뜻이므로 However를 씁니다(= No matter how).' },
         ];
         var it = R.pick(bank);

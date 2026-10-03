@@ -47,7 +47,7 @@ Tutor.registerUnit({
     },
     {
       title: '주제문의 자리: 처음·중간·끝',
-      body: '**주제문(topic sentence)**은 글의 요지를 직접 드러내는 문장입니다. 영어 글에서는 주제문이 **처음**에 오는 경우가 가장 많지만, 항상 그런 것은 아닙니다.\n\n| 자리 | 짜임 | 읽는 법 |\n|---|---|---|\n| 처음 | 주제문 → 예시·설명 | 첫 문장이 뒤 문장들을 모두 아우르는지 확인 |\n| 끝 | 예시·사례 → 주제문 | 사례들을 모아 정리하는 마지막 문장을 찾기 (So, In short, These ~ show that …) |\n| 중간 | 도입(이야기·통념) → 주제문 → 예시 | But·However 같은 전환 뒤를 주목 |\n| 처음과 끝 | 주제문 → 예시 → 주제문 다시 | 끝 문장이 처음 문장을 다른 말로 되풀이 |\n\n예를 들어 가게·마트·학교의 구체적 사례를 차례로 든 뒤 마지막에 "These small changes show that people are finding ways to use less plastic."이라고 정리한다면, 주제문은 **끝**에 있습니다.\n\n> ⚠️ 첫 문장이 늘 주제문이라고 단정하지 마십시오. 첫 문장이 일화(이야기)나 사람들의 통념이면, 주제문은 그 뒤에 나옵니다.',
+      body: '**주제문(topic sentence)**은 글의 요지를 직접 드러내는 문장입니다. 영어 글에서는 주제문이 **처음**에 오는 경우가 가장 많지만, 항상 그런 것은 아닙니다.\n\n| 자리 | 짜임 | 읽는 법 |\n|---|---|---|\n| 처음 | 주제문 → 예시·설명 | 첫 문장이 뒤 문장들을 모두 아우르는지 확인 |\n| 끝 | 예시·사례 → 주제문 | 사례들을 모아 정리하는 마지막 문장을 찾기 (So, In short, These ~ show that …) |\n| 중간 | 도입(이야기·통념) → 주제문 → 예시 | But·However 같은 전환 뒤를 주목 |\n| 처음과 끝 | 주제문 → 예시 → 주제문 다시 | 끝 문장이 처음 문장을 다른 말로 되풀이 |\n\n예를 들어 가게·마트·학교의 구체적 사례를 차례로 든 뒤 마지막에 "These small changes show that people are finding everyday ways to use less plastic."이라고 정리한다면, 주제문은 **끝**에 있습니다.\n\n> ⚠️ 첫 문장이 늘 주제문이라고 단정하지 마십시오. 첫 문장이 일화(이야기)나 사람들의 통념이면, 주제문은 그 뒤에 나옵니다.',
       easy: '주제문은 글의 "우산"이라고 생각해 보십시오. 우산 아래에 다른 문장(예시·설명)들이 모두 들어갑니다.\n\n우산을 먼저 펴고 예시를 넣을 수도 있고(처음), 예시를 다 늘어놓은 뒤 마지막에 우산을 씌울 수도 있습니다(끝). 어디에 있든, 다른 문장들을 **모두 덮을 수 있는 문장**이 주제문입니다.',
       check: {
         type: 'ox',
@@ -251,7 +251,7 @@ Tutor.registerUnit({
       q: '다음 글의 요지로 가장 알맞은 것은 무엇입니까?\n\n' + HANDWRITE,
       choices: ['손으로 필기하면 핵심을 골라 생각하게 되어 학습에 도움이 된다.', '노트북으로 필기하면 수정하고 나누기 쉽다.', '타자는 손으로 쓰는 것보다 빠르다.', '강의 내용은 한 낱말도 빠짐없이 받아 적어야 한다.'],
       answer: 0,
-      why: ['', '"It is true that ~" 뒤의 양보 부분입니다. 글쓴이가 인정은 하지만 강조하려는 내용은 아닙니다.', '양보 부분의 첫 문장입니다. Yet 뒤에서 글의 방향이 바뀝니다.', '글은 오히려 모든 말을 적을 수 없어서 핵심을 고르게 되는 것이 좋다고 말합니다.'],
+      why: ['', '"It is true that ~"에 이어 also로 덧붙인 양보 부분(둘째 문장)입니다. 글쓴이가 인정은 하지만 강조하려는 내용은 아닙니다.', '양보 부분의 첫 문장입니다. Yet 뒤에서 글의 방향이 바뀝니다.', '글은 오히려 모든 말을 적을 수 없어서 핵심을 고르게 되는 것이 좋다고 말합니다.'],
       explain: '"It is true that ~"와 "also ~"는 타자의 장점을 인정하는 **양보**입니다. **Yet** 뒤에 "students who take notes by hand often understand lectures more deeply"가 나오고, 이유(핵심을 골라 자기 말로 바꿈 → 추가로 생각함)가 이어집니다. 요지는 손 필기가 학습에 도움이 된다는 것입니다.',
     },
     {
@@ -280,7 +280,7 @@ Tutor.registerUnit({
       body: '요지를 정리할 때는 **주제(핵심어) + 글쓴이의 관점**을 한 문장으로 이으면 됩니다.\n\n1. 반복되는 핵심어와 바꿔 쓴 말을 묶어 주제를 정합니다. (sleep, rest, a good night\'s sleep → sleep)\n2. 글쓴이가 그 주제를 어떻게 보는지 찾습니다. 역접 연결어 뒤, 맺음 문장(So, In short, Therefore)이 좋은 단서입니다. (plays a key role in learning)\n3. 둘을 이어 한 문장으로 씁니다: **Getting enough sleep helps students learn better.**\n\n이렇게 만든 요지 문장이 글의 모든 문장을 덮는지 마지막으로 확인합니다. 어떤 예시 한 문장만 덮는다면 너무 좁고, 글에 없는 내용까지 덮는다면 너무 넓습니다.',
     },
     {
-      title: '영어 글과 우리말 글의 주제문 위치',
+      title: '영어 글의 주제문 위치',
       body: '영어의 설명문·논설문은 보통 주제문을 **먼저** 말하고 근거를 뒤에 두는 방식(두괄식)을 기본으로 가르칩니다. 읽는 사람이 무엇에 관한 글인지 먼저 알면 뒤의 내용을 빠르게 이해할 수 있기 때문입니다.\n\n그래도 실제 글은 다양합니다. 이야기로 관심을 끈 뒤 주제를 꺼내는 글, 통념을 먼저 소개하고 뒤집는 글, 사례를 쌓은 뒤 결론을 내리는 글도 많습니다. 그래서 "첫 문장 = 주제문"이라는 공식에 기대기보다 **모든 문장을 아우르는 문장이 무엇인가**를 기준으로 판단하는 습관이 중요합니다. 공통영어2에서는 글의 전개 방식(비교·대조, 원인·결과 등)을 더 자세히 배웁니다.',
     },
   ],
@@ -313,7 +313,7 @@ Tutor.registerUnit({
       title: '일반적 진술 고르기',
       make: function (R) {
         var sets = [
-          { g: 'Recycling helps protect the environment.', s: ['Recycled paper saves many trees.', 'Glass bottles can be melted and used again.', 'Reusing cans means less mining for metal.', 'Old clothes can be made into bags and blankets.'] },
+          { g: 'Recycling helps protect the environment.', s: ['Recycled paper saves many trees.', 'Glass bottles can be melted and used again.', 'Recycling cans means less mining for metal.', 'Old clothes can be made into bags and blankets.'] },
           { g: 'Smartphones have changed how people shop.', s: ['Many people now compare prices on an app before buying.', 'Some shoppers pay for groceries with their phones.', 'Online stores send messages about sales to customers.', 'People can read reviews of a product in seconds.'] },
           { g: 'Pets can make people\'s lives better.', s: ['Walking a dog gets its owner outside every day.', 'Playing with a cat can calm a person down.', 'Caring for a fish teaches children responsibility.', 'Many people feel less lonely when they live with a pet.'] },
           { g: 'Learning a foreign language has many advantages.', s: ['Speaking Spanish makes travel in Mexico easier.', 'Knowing English helps people read more websites.', 'Some companies pay more to workers who speak Chinese.', 'Learning Japanese lets you enjoy stories in their original language.'] },

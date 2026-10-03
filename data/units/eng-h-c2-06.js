@@ -128,7 +128,7 @@ Tutor.registerUnit({
       fig: { type: 'svg', svg: FLOW_SVG, alt: '녹차를 만드는 과정 흐름도: Step 1 pick leaves → Step 2 heat (steam/pan) → Step 3 roll into thin shapes → Step 4 dry and store' },
       check: {
         type: 'ox',
-        q: '흐름도에서 두 상자 사이의 화살표는 보통 "그다음 단계"를 뜻한다.',
+        q: '이 카드에서 설명한 흐름도에서, 두 상자 사이의 화살표는 "그다음 단계로 넘어감"을 뜻한다.',
         answer: true,
         explain: '흐름도에서 상자 하나는 한 단계, **화살표는 다음 단계로 넘어감**을 뜻합니다. 글로 옮길 때 화살표 자리에 Next, Then, Once ~ 같은 순서 표현을 넣습니다.',
       },

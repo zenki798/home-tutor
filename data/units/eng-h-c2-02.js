@@ -247,7 +247,7 @@ Tutor.registerUnit({
       q: '빈칸에 알맞은 것은 무엇입니까?\n\nSujin [[빈칸]] for two hours when her friends finally showed up.',
       choices: ['had been waiting', 'has been waiting', 'will have been waiting', 'is waiting'],
       answer: 0,
-      why: ['', '친구들이 나타난 때(showed up)는 과거입니다. 과거의 어느 때까지 이어진 동작은 had been waiting입니다.', '미래를 기준으로 한 형태입니다. 이 문장은 과거의 일입니다.', '현재진행형은 for two hours와 함께 과거의 상황을 말할 수 없습니다.'],
+      why: ['', '친구들이 나타난 때(showed up)는 과거입니다. 과거의 어느 때까지 이어진 동작은 had been waiting입니다.', '미래를 기준으로 한 형태입니다. 이 문장은 과거의 일입니다.', 'is waiting은 지금 진행 중인 일을 말하는 현재진행형입니다. 친구들이 나타난 때(showed up)는 과거이므로 had been waiting을 씁니다.'],
       explain: '친구들이 마침내 나타난 **과거의 때**까지 두 시간 동안 계속 기다리고 있었으므로 과거완료진행형 **had been waiting**입니다.',
     },
     {
@@ -499,7 +499,7 @@ Tutor.registerUnit({
             ['will have met', '미래완료는 미래의 기준 시점에 씁니다.'],
             ['have been meeting', '기준이 과거이고, 한 번 만난 경험을 말하므로 진행형이 아니라 had met입니다.'],
           ], 0],
-          ['Before I moved to Seoul, I [[빈칸]] a subway.', 'had never taken', [
+          ['Before I moved to Seoul, I [[빈칸]] the subway.', 'had never taken', [
             ['have never taken', '서울로 이사한 때(moved)가 과거의 기준 시점이므로 그때까지의 경험은 had never taken입니다.'],
             ['will never have taken', '미래완료는 미래의 기준 시점에 씁니다.'],
             ['never take', '과거의 일이므로 현재시제는 맞지 않습니다.'],

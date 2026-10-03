@@ -85,9 +85,9 @@ Tutor.registerUnit({
       easy: '수동태는 "누가 무엇을 했다"에서 **"무엇"(목적어)을 앞으로 꺼내는** 문장입니다. happen(일어나다), appear(나타나다)는 "무엇을"이 없는 동사라서 꺼낼 것이 없습니다.\n\nresemble(닮다)이나 have(가지고 있다)는 "무엇을"이 있기는 하지만 누가 어떤 행동을 **하는** 것이 아니라 그냥 그런 **상태**입니다. "엄마가 지아에게 닮아졌다"가 이상한 것처럼 영어에서도 수동태로 쓰지 않습니다.',
       check: {
         type: 'ox',
-        q: '다음 문장은 어법상 바릅니다.\n\nThe concert was happened in the park last Saturday.',
+        q: '다음 문장은 어법상 바릅니다.\n\nA funny thing was happened in the park last Saturday.',
         answer: false,
-        explain: 'happen은 목적어가 없는 자동사라서 수동태로 쓰지 않습니다. 바른 문장은 The concert **happened** in the park last Saturday.입니다. (또는 took place)',
+        explain: 'happen은 목적어가 없는 자동사라서 수동태로 쓰지 않습니다. 바른 문장은 A funny thing **happened** in the park last Saturday.입니다.',
       },
     },
   ],

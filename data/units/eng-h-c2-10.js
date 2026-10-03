@@ -335,7 +335,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p11', level: 2, type: 'choice', concept: 0,
-      q: '글 B에서 **의견이 아닌** 문장은 무엇입니까?\n\n' + BLOG,
+      q: '글 B에서 글쓴이의 생각이 아니라 **확인할 수 있는 사실**을 전하는 문장은 무엇입니까?\n\n' + BLOG,
       choices: [
         'The company admits that only 30 students tested the app.',
         'I would like to see much more evidence before I believe such a big promise.',
@@ -347,7 +347,7 @@ Tutor.registerUnit({
         '',
         'I would like to ~ 는 글쓴이의 바람과 판단을 나타내는 의견입니다.',
         '새 학습 도구에 반대하지 않는다는 것은 글쓴이의 생각(입장)입니다.',
-        '되물음으로 글쓴이의 의심을 드러낸 표현입니다.',
+        '되물음으로 글쓴이의 의심을 드러낸 표현입니다. 무언가를 확인해 알려 주는 문장이 아닙니다.',
       ],
       explain: '시험한 학생이 **30명**이라는 것은 확인할 수 있는 **사실**입니다. 다만 admits를 골라 써서 "회사에 불리한 점"이라는 글쓴이의 시각이 함께 담겼습니다. 나머지는 글쓴이의 생각과 태도를 드러내는 문장입니다.',
     },

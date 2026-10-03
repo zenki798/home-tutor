@@ -42,7 +42,7 @@ Tutor.registerUnit({
     {
       title: '근거의 종류: 통계·사례·전문가 의견',
       body: '**근거(evidence, support)**는 주장이 옳다고 믿게 하는 자료입니다. 주장하는 글에 자주 쓰이는 근거는 세 가지입니다.\n\n| 종류 | 무엇인가 | 자주 나오는 표지 |\n|---|---|---|\n| **통계** | 조사·실험에서 나온 수치 | According to a survey, …percent, … out of …, The number of … doubled |\n| **사례** | 실제로 있었던 일이나 구체적인 예 | For example, For instance, Last year, … tried this |\n| **전문가 의견** | 그 분야를 잘 아는 사람의 말 | Dr. ~, a scientist, says / explains / points out that … |\n\n근거의 종류를 알면 그 근거를 어떻게 따져 볼지도 알 수 있습니다. 통계는 **누구를 몇 명** 조사했는지, 사례는 **한 번의 일**을 모두에게 넓혀도 되는지, 전문가 의견은 **그 사람이 정말 그 분야의 전문가**인지를 봅니다.\n\n> 💡 According to 뒤에 **사람**이 오면 전문가 의견, **조사·보고서**가 오면 통계일 때가 많습니다.',
-      easy: '재판에서 변호사가 "제 의뢰인은 무죄입니다"라고 주장할 때 내놓는 것을 떠올려 보십시오. "그날 그 시각 CCTV 기록"(통계·자료), "옆집 사람이 함께 있었다는 이야기"(사례), "과학 수사 전문가의 의견"(전문가 의견). 모두 주장을 받치는 근거지만 종류가 다릅니다.\n\n글에서도 숫자가 보이면 통계, For example 이 보이면 사례, Dr. 나 expert 가 보이면 전문가 의견일 가능성이 큽니다.',
+      easy: '친구들에게 "체육 시간 전에 꼭 준비 운동을 하자"고 설득한다고 해 봅시다. "지난해 체육 시간에 다친 학생 40명 가운데 30명이 준비 운동을 하지 않았대"(통계), "옆 반은 준비 운동을 시작한 뒤 한 학기 동안 다친 사람이 한 명도 없었대"(사례), "체육 선생님도 준비 운동이 부상을 막아 준다고 하셨어"(전문가 의견). 모두 주장을 받치는 근거지만 종류가 다릅니다.\n\n글에서도 숫자가 보이면 통계, For example 이 보이면 사례, Dr. 나 expert 가 보이면 전문가 의견일 가능성이 큽니다.',
       check: {
         type: 'choice',
         q: '다음 문장은 어떤 종류의 근거입니까?\n\nProfessor Jenny Moore, who has studied food waste for 15 years, says that most food is thrown away at home, not in restaurants.',
