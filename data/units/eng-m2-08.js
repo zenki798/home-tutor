@@ -400,10 +400,10 @@ Tutor.registerUnit({
         var reason = {
           of: '형용사 ' + it[1] + ': 사람의 성격이 아니라 일의 성질(쉽다·어렵다·중요하다 등)을 나타내요. 이럴 때는 for + 목적격을 써요.',
           for: '형용사 ' + it[1] + ': 사람의 성격·태도를 나타내요. 이럴 때는 of + 목적격을 써요.',
-          to: '의미상 주어는 to가 아니라 for나 of로 나타내요.',
+          by: 'by는 "~에 의해, ~ 옆에"예요. 의미상 주어는 for나 of로 나타내요.',
           with: 'with는 "~와 함께"예요. 의미상 주어는 for나 of로 나타내요.',
         };
-        var wrongs = ['of', 'for', 'to', 'with'].filter(function (w) { return w !== correct; });
+        var wrongs = ['of', 'for', 'by', 'with'].filter(function (w) { return w !== correct; });
         var pick = R.choices(correct, wrongs, 4);
         return {
           type: 'choice', concept: it[2] ? 2 : 1,

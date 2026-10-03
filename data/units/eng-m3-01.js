@@ -349,7 +349,7 @@ Tutor.registerUnit({
     },
     {
       q: '계속적 용법에서는 왜 that을 못 써요?',
-      a: '영어에서 오래전부터 그렇게 쓰는 약속이에요. that은 주로 "어떤 것인지 골라내는" 한정적 용법에 써요. 쉼표 뒤에서 정보를 덧붙일 때는 사람이면 who, 사물이면 which를 써요.',
+      a: '오늘날 표준 영어에서 정해진 쓰임이에요. that은 주로 "어떤 것인지 골라내는" 한정적 용법에 써요. 쉼표 뒤에서 정보를 덧붙일 때는 사람이면 who, 사물이면 which를 써요.',
     },
     {
       q: 'whose는 사람한테만 쓰는 거 아니에요?',
@@ -372,7 +372,7 @@ Tutor.registerUnit({
         // [문장(빈칸 포함), 정답, 뜻]
         var items = [
           ['This is [[빈칸]] I want for Christmas.', 'what', '이것이 내가 크리스마스에 원하는 것이에요.'],
-          ['[[빈칸]] she told me was true.', 'what', '그녀가 나에게 말한 것은 사실이었어요.'],
+          ['[[빈칸]] she said was true.', 'what', '그녀가 말한 것은 사실이었어요.'],
           ['I don\'t understand [[빈칸]] the teacher said.', 'what', '나는 선생님이 말씀하신 것을 이해하지 못해요.'],
           ['Show me [[빈칸]] you made in art class.', 'what', '미술 시간에 네가 만든 것을 보여 줘.'],
           ['[[빈칸]] I need now is a glass of water.', 'what', '내가 지금 필요한 것은 물 한 잔이에요.'],
@@ -401,7 +401,7 @@ Tutor.registerUnit({
           that: ans === 'what'
             ? '빈칸 앞에 꾸밀 명사가 없어요. 선행사 없이 "~하는 것"을 나타낼 때는 what을 써요.'
             : '빈칸 뒤 명사와 이어져 "그것의 ~"라는 뜻이에요. that이 아니라 소유격 whose를 써요.',
-          whose: 'whose 뒤에는 명사가 바로 와야 해요. 빈칸 뒤 낱말을 다시 보세요.',
+          whose: 'whose는 "그 사람(것)의 ~"라는 뜻으로 뒤의 명사와 묶여요. 이 문장의 빈칸 뒤는 "그것의 ~"가 아니라 주어와 동사로 이어지는 문장이에요.',
         };
         var rule = {
           what: '빈칸 앞에 꾸밀 명사가 없고 "~하는 것"이라는 뜻이므로 **what**이에요.',
@@ -414,7 +414,8 @@ Tutor.registerUnit({
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === ans ? '' : reason[c]; }),
-          explain: rule + '\n\n' + it[0].replace('[[빈칸]]', '**' + ans + '**') + '\n(' + it[2] + ')',
+          // 문장 맨 앞의 빈칸은 대문자로 채운다(What she said ~)
+          explain: rule + '\n\n' + it[0].replace('[[빈칸]]', '**' + (it[0].indexOf('[[빈칸]]') === 0 ? ans.charAt(0).toUpperCase() + ans.slice(1) : ans) + '**') + '\n(' + it[2] + ')',
         };
       },
     },

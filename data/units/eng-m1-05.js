@@ -360,7 +360,7 @@ Tutor.registerUnit({
     },
     {
       q: '조동사 뒤에는 왜 늘 동사원형을 써요?',
-      a: '시제나 주어에 따른 표시(-s 등)를 조동사가 맡기 때문이에요. 그래서 He will plays가 아니라 He will play예요. 부정문·의문문도 조동사가 맡아서 do/does를 쓰지 않아요.',
+      a: '한 문장에서 시제를 나타내는 동사 자리는 하나뿐인데, 조동사가 그 자리를 차지하기 때문이에요. 그래서 뒤의 동사는 아무것도 붙이지 않은 원형으로 써요: He will plays가 아니라 He will play예요. 조동사 자신도 주어에 따라 모양이 바뀌지 않아요(wills ✕). 부정문·의문문도 조동사가 맡아서 do/does를 쓰지 않아요.',
     },
     {
       q: 'should와 must 중에 어느 쪽이 더 강해요?',
@@ -380,7 +380,7 @@ Tutor.registerUnit({
       level: 1,
       title: '조동사 뒤의 동사원형 고르기',
       make: function (R) {
-        var subjects = ['She', 'He', 'Minsu', 'My sister', 'Our teacher', 'Jia'];
+        var subjects = ['She', 'He', 'Minsu', 'My sister', 'My brother', 'Jia'];
         var modals = [['will', '~할 것이다'], ['can', '~할 수 있다'], ['must', '~해야 한다'], ['should', '~하는 게 좋겠다']];
         // [원형, 3인칭 단수형, -ing, 뒷말]
         var verbs = [

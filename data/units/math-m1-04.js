@@ -373,7 +373,8 @@ Tutor.registerUnit({
         var r = R.int(-9, 9);
         var expr = R.fmt.poly([p, q, r]);
         var ans = p * x * x + q * x + r;
-        var qLine = R.fmt.term(q, 'x', true) + '=' + (q === 1 ? '' : q === -1 ? '-' : q + '\\times') + '(' + x + ')=' + (q * x);
+        var qLine = q === 1 ? 'x=' + x // 'x=(-4)=-4' 처럼 같은 수를 두 번 쓰지 않는다
+          : R.fmt.term(q, 'x', true) + '=' + (q === -1 ? '-' : q + '\\times') + '(' + x + ')=' + (q * x);
         var cands = [
           [p * (-(x * x)) + q * x + r, '음수를 대입할 때 괄호를 씌우지 않았어요. $(' + x + ')^{2}=' + (x * x) + '$' + R.josa(x * x, '이에요/예요') + '.'],
           [p * x * x - q * x + r, '$' + R.fmt.term(q, 'x', true) + '$에 대입할 때 부호를 다시 확인해 보세요. $' + qLine + '$' + R.josa(q * x, '이에요/예요') + '.'],
@@ -463,7 +464,7 @@ Tutor.registerUnit({
           q = '$(' + R.fmt.poly([A, B]) + ')\\div ' + kTex + '$';
           correct = poly(a, b);
           cands = [
-            [poly(a, B), '상수항 $' + B + '$도 ' + k + R.josa(k, '으로/로') + ' 나누어야 해요.'],
+            [poly(a, B), '상수항 $' + B + '$도 $' + k + '$' + R.josa(k, '으로/로') + ' 나누어야 해요.'],
             [poly(A * k, B * k), '나누는 대신 곱했어요. 나누는 수의 역수를 곱해요.'],
             [poly(-a, -b), '부호를 다시 확인해 보세요. ' + (k < 0 ? '음수로 나누면 각 항의 부호가 바뀌어요.' : '양수로 나누면 부호는 그대로예요.')],
             [poly(a, -b), '상수항의 부호를 다시 확인해 보세요.'],
@@ -474,13 +475,14 @@ Tutor.registerUnit({
           q = '$' + (k === -1 ? '-' : k) + '(' + R.fmt.poly([a, b]) + ')$';
           correct = poly(k * a, k * b);
           cands = [
-            [poly(k * a, b), '상수항 $' + b + '$에도 ' + k + R.josa(k, '을/를') + ' 곱해야 해요.'],
+            [poly(k * a, b), '상수항 $' + b + '$에도 $' + k + '$' + R.josa(k, '을/를') + ' 곱해야 해요.'],
             [poly(k * a, -k * b), '상수항의 부호를 다시 확인해 보세요. $' + kTex + '\\times' + (b < 0 ? '(' + b + ')' : b) + '=' + (k * b) + '$' + R.josa(k * b, '이에요/예요') + '.'],
             [poly(-k * a, -k * b), '곱하는 수의 부호를 빠뜨렸어요.'],
             [poly(-k * a, k * b), '$x$의 계수의 부호를 다시 확인해 보세요.'],
             [poly(a + k, b + k), '곱하는 대신 더했어요. 분배법칙으로 각 항에 곱해요.'],
           ];
-          expl = '분배법칙으로 각 항에 ' + k + R.josa(k, '을/를') + ' 곱해요. $' + kTex + '\\times' + (a < 0 ? '(' + a + 'x)' : a + 'x') + '+' + kTex + '\\times' + (b < 0 ? '(' + b + ')' : b) + '=' + R.fmt.poly([k * a, k * b]) + '$';
+          var aTerm = R.fmt.term(a, 'x', true); // 계수 1·-1 은 생략 (1x → x)
+          expl = '분배법칙으로 각 항에 $' + k + '$' + R.josa(k, '을/를') + ' 곱해요. $' + kTex + '\\times ' + (a < 0 ? '(' + aTerm + ')' : aTerm) + '+' + kTex + '\\times' + (b < 0 ? '(' + b + ')' : b) + '=' + R.fmt.poly([k * a, k * b]) + '$';
         }
         var reason = {};
         cands.forEach(function (c) { if (!(c[0] in reason)) reason[c[0]] = c[1]; });
@@ -522,7 +524,7 @@ Tutor.registerUnit({
           [poly(C, p * b - s * q * d), minus ? '괄호 앞의 −를 상수항에도 적용해야 해요. 두 번째 괄호의 모든 항의 부호가 바뀌어요.' : '상수항끼리 다시 계산해 보세요.'],
           [poly(p * a - s * q * c, D), minus ? '괄호 앞의 −를 $x$항에도 적용해야 해요.' : '$x$항끼리 다시 계산해 보세요.'],
           [poly(p * a + s * c, p * b + s * d), '두 번째 괄호 앞의 수 ' + q + R.josa(q, '을/를') + ' 괄호 안의 모든 항에 곱해야 해요.'],
-          [poly(p * a + s * q * c, b + s * q * d), '첫 번째 괄호 앞의 수 ' + p + R.josa(p, '을/를') + ' 상수항에도 곱해야 해요.'],
+          [poly(p * a + s * q * c, b + s * q * d), '첫 번째 괄호 앞의 수 $' + p + '$' + R.josa(p, '을/를') + ' 상수항에도 곱해야 해요.'],
           [poly(C, -D), '상수항의 부호를 다시 확인해 보세요.'],
           [poly(-C, D), '$x$의 계수의 부호를 다시 확인해 보세요.'],
         ];

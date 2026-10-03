@@ -385,6 +385,7 @@ Tutor.registerUnit({
           BE: 'be동사가 빠졌어요. 의문사 + 주어 + be동사 순서로 써요.',
           BEPOS: 'be동사 자리가 틀렸어요. be동사는 주어 바로 뒤에 와요.',
           NOTDO: '원래 질문의 동사는 be동사예요. do/does로 바꾸지 않고 be동사를 주어 뒤에 써요.',
+          SPLIT: 'how old는 "몇 살"을 묻는 한 덩어리 의문사예요. 떼지 말고 함께 맨 앞에 둔 뒤 주어 + 동사를 써요.',
         };
         // [직접의문문, 정답, [[오답, 이유]…], 우리말]
         var items = [
@@ -392,7 +393,7 @@ Tutor.registerUnit({
           ['What time is it?', 'what time it is', [['what time is it', 'Q'], ['it is what time', 'ORD'], ['what time it does', 'NOTDO']], '지금 몇 시인지'],
           ['Where did she go?', 'where she went', [['where did she go', 'Q'], ['where she go', 'PAST'], ['where she goes', 'PAST']], '그녀가 어디에 갔는지'],
           ['Why is Minsu angry?', 'why Minsu is angry', [['why is Minsu angry', 'Q'], ['why Minsu angry is', 'BEPOS'], ['why does Minsu angry', 'NOTDO']], '민수가 왜 화가 났는지'],
-          ['How old is your brother?', 'how old your brother is', [['how old is your brother', 'Q'], ['how your brother is old', 'ORD'], ['how old your brother', 'BE']], '너의 형이 몇 살인지'],
+          ['How old is your brother?', 'how old your brother is', [['how old is your brother', 'Q'], ['how your brother is old', 'SPLIT'], ['how old your brother', 'BE']], '너의 형이 몇 살인지'],
           ['What does Jia want for her birthday?', 'what Jia wants for her birthday', [['what does Jia want for her birthday', 'Q'], ['what Jia want for her birthday', 'S'], ['what wants Jia for her birthday', 'ORD']], '지아가 생일에 무엇을 원하는지'],
           ['When does the movie start?', 'when the movie starts', [['when does the movie start', 'Q'], ['when the movie start', 'S'], ['when starts the movie', 'ORD']], '영화가 언제 시작하는지'],
           ['How did you solve this problem?', 'how you solved this problem', [['how did you solve this problem', 'Q'], ['how you solve this problem', 'PAST'], ['how you did solve this problem', 'DO']], '네가 이 문제를 어떻게 풀었는지'],

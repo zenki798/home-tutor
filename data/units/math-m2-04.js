@@ -516,16 +516,18 @@ Tutor.registerUnit({
           var askAdult = R.bool();
           var ans = askAdult ? x : y;
           var other = askAdult ? y : x;
-          var wrong = other !== ans ? [{ a: String(other), why: (askAdult ? '어린이' : '어른') + '의 수를 구했어요. ' + (askAdult ? '어른' : '어린이') + '은 $' + n + '-' + other + '=' + ans + '$명이에요.' }] : [];
+          var askName = askAdult ? '어른' : '어린이', otherName = askAdult ? '어린이' : '어른';
+          var askNameJ = askName + R.josa(askName, '은/는');
+          var wrong = other !== ans ? [{ a: String(other), why: otherName + '의 수를 구했어요. ' + askNameJ + ' $' + n + '-' + other + '=' + ans + '$명이에요.' }] : [];
           return {
             type: 'short', check: 'number', unit: '명', concept: 5,
-            q: place + ' 입장료는 어른 ' + R.fmt.num(pA) + '원, 어린이 ' + R.fmt.num(pC) + '원이에요. 어른과 어린이 모두 ' + n + '명이 입장하고 ' + R.fmt.num(total) + '원을 냈어요. ' + (askAdult ? '어른' : '어린이') + '은 몇 명일까요?',
+            q: place + ' 입장료는 어른 ' + R.fmt.num(pA) + '원, 어린이 ' + R.fmt.num(pC) + '원이에요. 어른과 어린이 모두 ' + n + '명이 입장하고 ' + R.fmt.num(total) + '원을 냈어요. ' + askNameJ + ' 몇 명일까요?',
             answer: String(ans),
             wrong: wrong,
             hint: '어른을 $x$명, 어린이를 $y$명으로 놓고 사람 수와 금액으로 식을 두 개 세워 보세요.',
             explain: '어른을 $x$명, 어린이를 $y$명이라 하면 $\\begin{cases} x+y=' + n + ' \\\\ ' + pA + 'x+' + pC + 'y=' + total + ' \\end{cases}$' + R.josa(total, '이에요/예요') + '.\n\n' +
               '첫째 식에서 $y=' + n + '-x$' + R.josa('x', '을/를') + ' 둘째 식에 대입하면 $' + pA + 'x+' + pC + '(' + n + '-x)=' + total + '$, $' + (pA - pC) + 'x=' + (total - pC * n) + '$, $x=' + x + '$' + R.josa(x, '이에요/예요') + '. 따라서 $y=' + y + '$' + R.josa(y, '이에요/예요') + '.\n\n' +
-              (askAdult ? '어른' : '어린이') + '은 ' + ans + '명이에요.',
+              askNameJ + ' ' + ans + '명이에요.',
           };
         }
         var t, o;

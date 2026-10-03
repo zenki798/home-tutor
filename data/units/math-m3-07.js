@@ -239,7 +239,7 @@ Tutor.registerUnit({
         '',
         '$a=-3<0$이라 위로 볼록해요. 꼭대기가 있으니 최댓값이 있어요.',
         '1은 최댓값을 갖는 $x$의 값이에요(또는 상수항). 꼭짓점의 $y$좌표를 구해요.',
-        '괄호 안에서 뺀 1을 꺼낼 때 $-3$을 곱하지 않았어요. $-3\\times(-1)=3$이에요.',
+        '괄호 안에서 뺀 1을 꺼낼 때 부호만 바꾸고 3을 곱하지 않았어요. 꺼내는 수는 $-3\\times(-1)=3$이에요.',
       ],
       explain: '$y=-3(x^2-2x)+1=-3(x^2-2x+1-1)+1=-3(x-1)^2+3+1$이므로 $y=-3(x-1)^2+4$ 꼴이에요. 위로 볼록하므로 $x=1$일 때 최댓값 4를 갖고, 최솟값은 없어요.',
     },
@@ -508,7 +508,7 @@ Tutor.registerUnit({
           var m = R.int(1, 5), h0 = R.pick([0, 5, 10, 15, 20]), v = 10 * m, top = 5 * m * m + h0;
           var wrongB = [{ a: String(m), why: m + R.josa(m, '은/는') + ' 가장 높이 올라갈 때까지 걸린 시간(초)이에요. 그때의 높이를 구해요.' }];
           if (h0 > 0) wrongB.push({ a: String(5 * m * m), why: '처음 높이 ' + h0 + ' m를 더하지 않았어요. 완전제곱식 밖의 상수항을 모두 더해야 최고 높이가 돼요.' });
-          wrongB.push({ a: String(m * m + h0), why: '괄호 안에서 뺀 $' + (m * m) + '$' + R.josa(m * m, '을/를') + ' 꺼낼 때 $-5$를 곱하지 않았어요.' });
+          wrongB.push({ a: String(m * m + h0), why: '괄호 안에서 뺀 $' + (m * m) + '$' + R.josa(m * m, '을/를') + ' 꺼낼 때 부호만 바꾸고 5를 곱하지 않았어요. 꺼내는 수는 $-5\\times(-' + (m * m) + ')=' + (5 * m * m) + '$' + R.josa(5 * m * m, '이에요/예요') + '.' });
           var seen = {};
           seen[String(top)] = true;
           wrongB = wrongB.filter(function (w) { if (seen[w.a]) return false; seen[w.a] = true; return true; });

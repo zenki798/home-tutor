@@ -118,7 +118,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p2', level: 1, type: 'choice', concept: 1,
-      q: '빈칸에 알맞은 말을 고르세요.\n\nSeojun sent an email [[빈칸]] his teacher.',
+      q: '우리말에 맞게 빈칸에 알맞은 말을 고르세요.\n\n서준이는 선생님께 이메일을 보냈어요.\nSeojun sent an email [[빈칸]] his teacher.',
       choices: ['to', 'for', 'of', 'at'],
       answer: 0,
       why: ['', 'send는 물건이 상대에게 가는 동사라서 for가 아니라 to를 써요.', 'of는 수여동사 send와 함께 쓰지 않아요.', 'at은 장소나 시간을 나타낼 때 써요.'],
@@ -227,7 +227,7 @@ Tutor.registerUnit({
     },
     {
       id: 'a3', level: 3, type: 'short', check: 'text', concept: 1,
-      q: '빈칸에 알맞은 한 낱말을 쓰세요. (두 빈칸에 같은 낱말이 들어가요.)\n\n- I got a ticket [[빈칸]] my brother.\n- Mom made sandwiches [[빈칸]] the whole family.',
+      q: '두 문장의 뜻이 같도록 빈칸에 알맞은 한 낱말을 쓰세요. (두 빈칸에 같은 낱말이 들어가요.)\n\n- I got my brother a ticket. → I got a ticket [[빈칸]] my brother.\n- Mom made the whole family sandwiches. → Mom made sandwiches [[빈칸]] the whole family.',
       answer: ['for'],
       wrong: [{ a: 'to', why: 'get, make는 상대를 위해 해 주는 동사라서 for를 써요.' }],
       hint: 'get과 make는 상대에게 건네는 일인가요, 상대를 위해 하는 일인가요?',
@@ -292,7 +292,7 @@ Tutor.registerUnit({
           ['got', 'get', 'for', ['a ticket', 'a glass of water', 'a chair']],
         ];
         var subjects = ['Jia', 'Minsu', 'My dad', 'Seojun', 'Grandma', 'Hayun'];
-        var people = ['me', 'us', 'her', 'him', 'my brother', 'the kids'];
+        var people = ['me', 'us', 'her', 'him', 'my brother', 'my sister'];
         var v = R.pick(verbs);
         var thing = R.pick(v[3]);
         var s = R.pick(subjects);

@@ -129,7 +129,7 @@ Tutor.registerUnit({
     {
       id: 'p3', level: 1, type: 'short', check: 'text', concept: 3,
       q: '빈칸에 알맞은 한 낱말을 쓰세요.\n\nI drank a lot of water [[빈칸]] I was very thirsty.',
-      answer: ['because'],
+      answer: ['because', 'since', 'as'],
       wrong: [{ a: 'so', why: '빈칸 뒤 "몹시 목이 말랐다"는 결과가 아니라 이유예요. 이유 앞에는 because를 써요.' }],
       explain: '빈칸 뒤 "몹시 목이 말랐다"가 물을 많이 마신 **이유**이므로 **because**를 써요.',
     },
@@ -182,10 +182,10 @@ Tutor.registerUnit({
     {
       id: 'p10', level: 2, type: 'short', check: 'text', concept: 3,
       q: '빈칸에 알맞은 두 낱말을 쓰세요.\n\nThe game was canceled [[빈칸]] the heavy rain.',
-      answer: ['because of'],
+      answer: ['because of', 'due to'],
       wrong: [{ a: 'because', why: 'the heavy rain은 주어와 동사가 없는 명사예요. 명사 앞에는 because of를 써요.' }],
       hint: '빈칸 뒤에 동사가 있나요?',
-      explain: 'the heavy rain(폭우)은 명사이므로 **because of**를 써요. "폭우 때문에 경기가 취소되었어요."',
+      explain: 'the heavy rain(폭우)은 명사이므로 **because of**를 써요. "폭우 때문에 경기가 취소되었어요." (같은 뜻으로 due to도 써요.)',
     },
     {
       id: 'p11', level: 2, type: 'choice', concept: 4,
@@ -244,10 +244,10 @@ Tutor.registerUnit({
     },
     {
       id: 'a5', level: 3, type: 'choice', concept: 4,
-      q: '다음 글을 읽고, 글의 내용과 맞지 **않는** 것을 고르세요.\n\nBees are very important to us. Bees carry pollen from flower to flower, so plants can make fruit. Many fruits, like apples and strawberries, need bees. But the number of bees is getting smaller because of pollution. So some people plant flowers in their gardens to help bees.',
-      choices: ['벌이 늘어나서 사람들이 꽃을 심어요.', '벌은 꽃가루를 옮겨서 식물이 열매를 맺게 해요.', '오염 때문에 벌의 수가 줄고 있어요.', '사과와 딸기 같은 과일에는 벌이 필요해요.'],
+      q: '다음 글을 읽고, 글의 내용과 맞지 **않는** 것을 고르세요.\n\nBees are very important to us. Bees carry pollen from flower to flower, so plants can make fruit. Many fruits, like apples and cherries, need bees. But in many places, the number of bees is getting smaller because of pollution and other problems. So some people plant flowers in their gardens to help bees.',
+      choices: ['벌이 늘어나서 사람들이 꽃을 심어요.', '벌은 꽃가루를 옮겨서 식물이 열매를 맺게 해요.', '오염 때문에 벌의 수가 줄고 있어요.', '사과와 체리 같은 과일에는 벌이 필요해요.'],
       answer: 0,
-      why: ['', '글에서 "carry pollen …, so plants can make fruit"라고 했어요. 맞는 내용이에요.', '"because of pollution"으로 벌이 줄어드는 원인을 밝혔어요. 맞는 내용이에요.', '"Many fruits, like apples and strawberries, need bees."와 맞는 내용이에요.'],
+      why: ['', '글에서 "carry pollen …, so plants can make fruit"라고 했어요. 맞는 내용이에요.', '"because of pollution and other problems"로 벌이 줄어드는 원인 가운데 하나로 오염을 들었어요. 맞는 내용이에요.', '"Many fruits, like apples and cherries, need bees."와 맞는 내용이에요.'],
       hint: '마지막 문장의 to help bees는 꽃을 심는 목적이에요.',
       explain: '사람들이 꽃을 심는 것은 벌이 **줄어들고 있어서**, 벌을 **도우려고**(to help bees)예요. "벌이 늘어나서"는 글과 맞지 않아요.',
     },
@@ -291,16 +291,16 @@ Tutor.registerUnit({
         var pairs = [
           ['I was very tired, [[빈칸]] I went to bed early.', 'I went to bed early [[빈칸]] I was very tired.', '몹시 피곤했다', '일찍 잤다'],
           ['It rained a lot, [[빈칸]] we stayed home.', 'We stayed home [[빈칸]] it rained a lot.', '비가 많이 왔다', '집에 있었다'],
-          ['Minsu was hungry, [[빈칸]] he ate two sandwiches.', 'Minsu ate two sandwiches [[빈칸]] he was hungry.', '민수가 배고팠다', '샌드위치를 두 개 먹었다'],
+          ['Minsu got up late, [[빈칸]] he missed the bus.', 'Minsu missed the bus [[빈칸]] he got up late.', '민수가 늦게 일어났다', '버스를 놓쳤다'],
           ['The bus was late, [[빈칸]] Jia was late for school.', 'Jia was late for school [[빈칸]] the bus was late.', '버스가 늦게 왔다', '지아가 학교에 늦었다'],
-          ['The soup was too hot, [[빈칸]] I waited a few minutes.', 'I waited a few minutes [[빈칸]] the soup was too hot.', '수프가 너무 뜨거웠다', '몇 분 기다렸다'],
+          ['The soup was too hot, [[빈칸]] I couldn\'t eat it.', 'I couldn\'t eat the soup [[빈칸]] it was too hot.', '수프가 너무 뜨거웠다', '수프를 먹을 수 없었다'],
           ['Seojun studied hard, [[빈칸]] he passed the test.', 'Seojun passed the test [[빈칸]] he studied hard.', '서준이가 열심히 공부했다', '시험에 합격했다'],
           ['It was very cold, [[빈칸]] I wore a thick coat.', 'I wore a thick coat [[빈칸]] it was very cold.', '몹시 추웠다', '두꺼운 코트를 입었다'],
-          ['The store was closed, [[빈칸]] we went to another store.', 'We went to another store [[빈칸]] the store was closed.', '가게가 문을 닫았다', '다른 가게에 갔다'],
+          ['It was sunny, [[빈칸]] we played outside.', 'We played outside [[빈칸]] it was sunny.', '날씨가 화창했다', '밖에서 놀았다'],
           ['Hayun had a bad cold, [[빈칸]] she stayed in bed.', 'Hayun stayed in bed [[빈칸]] she had a bad cold.', '하윤이가 심한 감기에 걸렸다', '침대에 누워 있었다'],
           ['The movie was boring, [[빈칸]] I fell asleep.', 'I fell asleep [[빈칸]] the movie was boring.', '영화가 지루했다', '잠이 들었다'],
-          ['We missed the train, [[빈칸]] we took a taxi.', 'We took a taxi [[빈칸]] we missed the train.', '기차를 놓쳤다', '택시를 탔다'],
-          ['My room was dirty, [[빈칸]] I cleaned it.', 'I cleaned my room [[빈칸]] it was dirty.', '방이 지저분했다', '방을 청소했다'],
+          ['I lost my umbrella, [[빈칸]] I got wet in the rain.', 'I got wet in the rain [[빈칸]] I lost my umbrella.', '우산을 잃어버렸다', '비에 젖었다'],
+          ['The movie was very funny, [[빈칸]] we laughed a lot.', 'We laughed a lot [[빈칸]] the movie was very funny.', '영화가 아주 재미있었다', '많이 웃었다'],
         ];
         var p = R.pick(pairs);
         var useSo = R.bool();

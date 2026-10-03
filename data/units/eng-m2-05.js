@@ -119,13 +119,13 @@ Tutor.registerUnit({
     },
     {
       id: 'p2', level: 1, type: 'short', check: 'text', concept: 0,
-      q: '괄호 안의 동사를 알맞은 꼴로 바꿔 빈칸에 쓰세요. (두 낱말)\n\nThe doctor advised him [[빈칸]] some rest. (take)',
-      answer: ['to take'],
+      q: '괄호 안의 동사를 알맞은 꼴로 바꿔 빈칸에 쓰세요. (두 낱말)\n\nThe doctor advised him [[빈칸]] some rest. (get)',
+      answer: ['to get'],
       wrong: [
-        { a: 'take', why: 'advise + 목적어 뒤에는 to부정사를 써요. take 앞에 to를 붙여요.' },
-        { a: 'taking', why: 'advise + 목적어 뒤에는 -ing 꼴이 아니라 to부정사를 써요.' },
+        { a: 'get', why: 'advise + 목적어 뒤에는 to부정사를 써요. get 앞에 to를 붙여요.' },
+        { a: 'getting', why: 'advise + 목적어 뒤에는 -ing 꼴이 아니라 to부정사를 써요.' },
       ],
-      explain: 'advise + 목적어 + **to부정사**예요. The doctor advised him **to take** some rest.(의사는 그에게 좀 쉬라고 충고했어요.)',
+      explain: 'advise + 목적어 + **to부정사**예요. The doctor advised him **to get** some rest.(의사는 그에게 좀 쉬라고 충고했어요.) get some rest는 "좀 쉬다"라는 뜻이에요.',
     },
     {
       id: 'p3', level: 1, type: 'choice', concept: 1,
@@ -187,13 +187,13 @@ Tutor.registerUnit({
     {
       id: 'p10', level: 2, type: 'short', check: 'text', concept: 0,
       q: '두 문장의 뜻이 같도록 빈칸에 알맞은 두 낱말을 쓰세요.\n\nThe teacher said to us, "Be quiet."\n= The teacher told us [[빈칸]] quiet.',
-      answer: ['to be'],
+      answer: ['to be', 'to keep', 'to stay'],
       wrong: [
         { a: 'be', why: 'tell + 목적어 뒤에는 to부정사를 써요. be 앞에 to를 붙여요.' },
         { a: 'are', why: '목적어 뒤에서 할 일을 나타낼 때는 to + 동사원형을 써요. are가 아니라 to be예요.' },
       ],
       hint: '"~하라고 말하다"는 tell + 목적어 + to부정사예요.',
-      explain: '"조용히 해."라고 말한 것은 "우리에게 조용히 하라고 말했다"는 뜻이니 told us **to be** quiet예요.',
+      explain: '"조용히 해."라고 말한 것은 "우리에게 조용히 하라고 말했다"는 뜻이니 told us **to be** quiet예요. 명령문의 동사 Be를 to부정사 to be로 바꾼 거예요. (to keep quiet, to stay quiet도 같은 뜻이라 맞아요.)',
     },
     {
       id: 'p11', level: 2, type: 'choice', concept: 2,

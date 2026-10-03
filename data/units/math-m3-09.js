@@ -514,7 +514,7 @@
             q = pre + '현 AB의 길이가 ' + (2 * h) + ' cm이고 $\\overline{OM}=' + d + '$ cm일 때, 원 O의 반지름은 몇 cm일까요?';
             ws = wrongs(ans, [
               [h + d, '피타고라스 정리 대신 길이를 그냥 더했어요. $\\overline{OA}^2=\\overline{AM}^2+\\overline{OM}^2$이에요.'],
-              [2 * h + d, '현의 절반이 아니라 현 전체 길이를 썼어요. 수선은 현을 이등분해요.'],
+              [2 * h + d, '현 전체 길이에 거리를 그냥 더했어요. 수선은 현을 이등분하므로 $\\overline{AM}$은 현의 절반이고, 반지름은 $\\overline{OA}^2=\\overline{AM}^2+\\overline{OM}^2$으로 구해요.'],
               [h, '현의 절반을 반지름으로 보았어요. 반지름은 빗변 $\\overline{OA}$예요.'],
             ]);
             ex = '수선은 현을 이등분하므로 $\\overline{AM}=' + h + '$ cm예요. 직각삼각형 OAM에서 $\\overline{OA}^2=' + h + '^2+' + d + '^2=' + (r * r) + '$이므로 반지름은 ' + r + ' cm예요.';
@@ -579,8 +579,11 @@
               [side[1] / 2, '변 ' + side[0] + '를 반으로 나누었어요. 접점은 변의 중점이 아니에요.'],
               [other[1], '$\\overline{' + other[0] + '}$의 길이를 구했어요. 묻는 것은 $\\overline{' + name + '}$예요.'],
             ]);
-            ex = '꼭짓점마다 두 접선의 길이가 같으므로 $\\overline{AD}=\\overline{AF}$, $\\overline{BD}=\\overline{BE}$, $\\overline{CE}=\\overline{CF}$예요. 그래서 $2\\overline{' + name + '}=' + f + '=' + fv + '$이고, $\\overline{' + name + '}=' + ans + '$ cm예요.';
-            return { type: 'short', check: 'number', unit: 'cm', concept: 4, fig: FIG_INCIRCLE, q: q, answer: String(ans), wrong: ws, explain: ex,
+            var dec = [
+              '\\overline{AB}+\\overline{CA}-\\overline{BC}=(\\overline{AD}+\\overline{BD})+(\\overline{AF}+\\overline{CF})-(\\overline{BE}+\\overline{CE})',
+              '\\overline{AB}+\\overline{BC}-\\overline{CA}=(\\overline{AD}+\\overline{BD})+(\\overline{BE}+\\overline{CE})-(\\overline{AF}+\\overline{CF})',
+              '\\overline{BC}+\\overline{CA}-\\overline{AB}=(\\overline{BE}+\\overline{CE})+(\\overline{AF}+\\overline{CF})-(\\overline{AD}+\\overline{BD})'][kind];
+            ex = '꼭짓점마다 두 접선의 길이가 같으므로 $\\overline{AD}=\\overline{AF}$, $\\overline{BD}=\\overline{BE}$, $\\overline{CE}=\\overline{CF}$예요.\n\n$' + dec + '$에서 길이가 같은 것끼리 지우면 $' + ['\\overline{AD}+\\overline{AF}', '\\overline{BD}+\\overline{BE}', '\\overline{CE}+\\overline{CF}'][kind] + '=2\\overline{' + name + '}$만 남아요. 그래서 $2\\overline{' + name + '}=' + [AB, AB, BC][kind] + '+' + [CA, BC, CA][kind] + '-' + [BC, CA, AB][kind] + '=' + fv + '$이고, $\\overline{' + name + '}=' + ans + '$ cm예요.';            return { type: 'short', check: 'number', unit: 'cm', concept: 4, fig: FIG_INCIRCLE, q: q, answer: String(ans), wrong: ws, explain: ex,
               hint: '$\\overline{' + name + '}$와 길이가 같은 접선의 길이를 찾아 세 변의 식을 세워 보세요.' };
           }
           var p = R.int(1, 7), s2 = R.int(1, 7), rr = R.int(1, 7), t = R.int(1, 7);

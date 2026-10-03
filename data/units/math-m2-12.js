@@ -430,7 +430,7 @@
         title: '사건이 일어나는 경우의 수 세기',
         make: function (R) {
           if (R.bool()) {
-            var k = R.int(2, 6);
+            var k = R.int(2, 6), kg = Math.min(k, 5);   // "kg보다 큰 눈": 6보다 큰 눈(경우의 수 0)은 내지 않는다
             var CONDS = [
               ['짝수의 눈', [2, 4, 6], null],
               ['홀수의 눈', [1, 3, 5], null],
@@ -440,13 +440,13 @@
               ['4의 약수의 눈', [1, 2, 4], [2, '1을 빠뜨렸어요. 1은 모든 수의 약수예요.']],
               [k + ' 이상의 눈', [], [6 - k, k + R.josa(k, '을/를') + ' 빠뜨렸어요. "' + k + ' 이상"은 ' + k + R.josa(k, '을/를') + ' 포함해요.']],
               [k + ' 이하의 눈', [], [k - 1, k + R.josa(k, '을/를') + ' 빠뜨렸어요. "' + k + ' 이하"는 ' + k + R.josa(k, '을/를') + ' 포함해요.']],
-              [k + '보다 큰 눈', [], [7 - k, k + R.josa(k, '을/를') + ' 넣었어요. "' + k + '보다 큰"은 ' + k + R.josa(k, '을/를') + ' 포함하지 않아요.']],
+              [kg + '보다 큰 눈', [], [7 - kg, kg + R.josa(kg, '을/를') + ' 넣었어요. "' + kg + '보다 큰"은 ' + kg + R.josa(kg, '을/를') + ' 포함하지 않아요.']],
             ];
             var c = R.pick(CONDS), set = c[1];
             if (!set.length) {
               set = [];
               for (var v = 1; v <= 6; v++) {
-                if ((c[0].indexOf('이상') >= 0 && v >= k) || (c[0].indexOf('이하') >= 0 && v <= k) || (c[0].indexOf('보다 큰') >= 0 && v > k)) set.push(v);
+                if ((c[0].indexOf('이상') >= 0 && v >= k) || (c[0].indexOf('이하') >= 0 && v <= k) || (c[0].indexOf('보다 큰') >= 0 && v > kg)) set.push(v);
               }
             }
             var n = set.length;

@@ -531,7 +531,7 @@ Tutor.registerUnit({
             wrong: wrong,
             hint: item + R.josa(item, '을/를') + ' $x$개 산다고 하고 전체 금액을 식으로 나타내 보세요.',
             explain: item + R.josa(item, '을/를') + ' $x$개 산다고 하면 $' + p + 'x+' + qv + '\\le ' + M + '$, $' + p + 'x\\le ' + (M - qv) + '$, $x\\le' + R.F(M - qv, p).toTex() + '$' + R.josa(R.F(M - qv, p), '이에요/예요') + '.\n\n' +
-              '$' + R.F(M - qv, p).toTex() + '=' + (R.F(M - qv, p).toDecimal(6) || R.fmt.dec((M - qv) / p, 2) + '\\cdots') + '$이고 $x$는 자연수이므로 최대 ' + n + '개예요.',
+              '$' + R.F(M - qv, p).toTex() + '=' + (R.F(M - qv, p).toDecimal(6) || R.fmt.dec(Math.floor((M - qv) * 100 / p) / 100, 2) + '\\cdots') + '$이고 $x$는 자연수이므로 최대 ' + n + '개예요.',
           };
         }
         var names = R.sample(['민수', '지아', '서준', '하윤', '도윤', '수아'], 2);

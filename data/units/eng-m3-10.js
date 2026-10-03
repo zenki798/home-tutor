@@ -200,9 +200,10 @@ Tutor.registerUnit({
     },
     {
       id: 'p7', level: 1, type: 'short', concept: 3,
-      q: '빈칸에 알맞은 한 낱말을 써서 동사를 강조하세요.\n\nI [[빈칸]] like this song. I listen to it every day!\n(나는 이 노래를 정말 좋아해요.)',
+      q: '빈칸에 강조의 do를 알맞은 꼴로 써서 동사를 강조하세요.\n\nI [[빈칸]] like this song. I listen to it every day!\n(나는 이 노래를 정말 좋아해요.)',
       answer: ['do'],
       wrong: [
+        { a: 'really', why: 'really도 뜻은 통하지만, 이 문제는 동사 앞에 do / does / did를 넣는 강조의 do를 연습하는 문제예요.' },
         { a: 'am', why: 'like는 동사예요. 일반동사를 강조할 때는 be동사가 아니라 do를 써요.' },
         { a: 'does', why: '주어가 I이므로 does가 아니라 do를 써요.' },
       ],
@@ -210,7 +211,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p8', level: 1, type: 'ox', concept: 2,
-      q: 'would는 과거에 되풀이한 행동뿐 아니라 과거의 상태에도 쓸 수 있어요.',
+      q: '과거의 습관을 나타내는 would는 되풀이한 행동뿐 아니라 과거의 상태에도 쓸 수 있어요.',
       answer: false,
       explain: 'would는 과거의 반복된 **행동**에만 써요. 과거의 **상태**(live, be, have, like …)에는 **used to**만 써요. There used to be a park here.(○) / There would be a park here.(✗ — 이 뜻으로는)',
     },
@@ -303,7 +304,7 @@ Tutor.registerUnit({
     },
     {
       id: 'a2', level: 3, type: 'choice', concept: 2,
-      q: '어법상 **틀린** 문장을 고르세요.',
+      q: '모두 과거의 일을 말하는 문장이에요. 어법상 **틀린** 것을 고르세요.',
       choices: [
         'There would be a big tree in front of my house.',
         'There used to be a big tree in front of my house.',
@@ -341,9 +342,10 @@ Tutor.registerUnit({
     },
     {
       id: 'a4', level: 3, type: 'short', concept: 3,
-      q: '밑줄 친 부분을 강조하는 문장이 되도록 빈칸에 알맞은 두 낱말을 쓰세요.\n\nShe __called__ me last night.\n→ She [[빈칸]] me last night.',
+      q: '강조의 do를 이용하여 밑줄 친 부분을 강조하는 문장이 되도록 빈칸에 알맞은 두 낱말을 쓰세요.\n\nShe __called__ me last night.\n→ She [[빈칸]] me last night.',
       answer: ['did call'],
       wrong: [
+        { a: 'really called', why: 'really도 뜻은 통하지만, 이 문제는 강조의 do를 쓰는 문제예요. 과거이니 did + 동사원형으로 써요.' },
         { a: 'did called', why: 'did 뒤에는 동사원형을 써요. called가 아니라 call이에요.' },
         { a: 'does call', why: 'last night은 과거이므로 does가 아니라 did를 써요.' },
         { a: 'do call', why: '과거의 일이에요. 주어와 상관없이 과거는 did를 써요.' },
@@ -356,7 +358,7 @@ Tutor.registerUnit({
   deeper: [
     {
       title: 'used to + 동사원형과 be used to + -ing',
-      body: '모양은 비슷하지만 뜻이 전혀 달라요.\n\n| 표현 | 뜻 | 예 |\n|---|---|---|\n| **used to** + 동사원형 | (예전에) ~하곤 했다 | I **used to get** up late. (예전엔 늦게 일어났어요.) |\n| **be used to** + -ing/명사 | ~에 익숙하다 | I **am used to getting** up early. (일찍 일어나는 데 익숙해요.) |\n\nbe used to의 to는 전치사라서 뒤에 동명사(-ing)나 명사가 와요. be동사가 있는지, to 뒤가 동사원형인지 -ing인지를 보면 구별할 수 있어요.\n\n또 하나, 추측의 말은 확신이 강한 순서로 이렇게 늘어놓을 수 있어요.\n\nmust(틀림없다) > should(아마 ~일 것이다) > may / might(~일지도 모른다) > can\'t(~일 리가 없다)\n\n고등학교에서는 과거의 일을 추측하는 must have + 과거분사(~했음에 틀림없다)도 배워요.',
+      body: '모양은 비슷하지만 뜻이 전혀 달라요.\n\n| 표현 | 뜻 | 예 |\n|---|---|---|\n| **used to** + 동사원형 | (예전에) ~하곤 했다 | I **used to get** up late. (예전엔 늦게 일어났어요.) |\n| **be used to** + -ing/명사 | ~에 익숙하다 | I **am used to getting** up early. (일찍 일어나는 데 익숙해요.) |\n\nbe used to의 to는 전치사라서 뒤에 동명사(-ing)나 명사가 와요. be동사가 있는지, to 뒤가 동사원형인지 -ing인지를 보면 구별할 수 있어요.\n\n또 하나, 추측의 말은 "그렇다"고 보는 정도가 강한 것부터 약한 것 순서로 이렇게 늘어놓을 수 있어요. (can\'t는 "아니다"라고 강하게 확신하는 말이라 맨 끝에 와요.)\n\nmust(틀림없다) > should(아마 ~일 것이다) > may / might(~일지도 모른다) > can\'t(~일 리가 없다)\n\n고등학교에서는 과거의 일을 추측하는 must have + 과거분사(~했음에 틀림없다)도 배워요.',
     },
   ],
 
@@ -425,7 +427,7 @@ Tutor.registerUnit({
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : WHY[c]; }),
-          explain: it[3] + '. "' + MEAN[correct] + '"의 뜻이므로 **' + correct + '**\n\n' + it[0].replace('[[빈칸]]', '**' + correct + '**'),
+          explain: it[3] + '. "' + MEAN[correct] + '"의 뜻이므로 **' + correct + '**를 써요.\n\n' + it[0].replace('[[빈칸]]', '**' + correct + '**'),
         };
       },
     },

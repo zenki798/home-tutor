@@ -563,11 +563,14 @@ Tutor.registerUnit({
           var c = R.int(1, k - 1), cut = start + c * w, below = sum(f.slice(0, c)), pct = below / T * 100;
           return {
             type: 'short', check: 'number', unit: '%', concept: 4,
-            q: '다음 도수분포표에서 ' + ctx[0].replace(/ \(.*\)$/, '') + R.josa(ctx[0].replace(/ \(.*\)$/, ''), '이/가') + ' ' + cut + ctx[4] + ' 미만인 ' + ctx[6] + '은 전체의 몇 %일까요? (가상의 자료)\n\n' + table,
+            q: '다음 도수분포표에서 ' + ctx[0].replace(/ \(.*\)$/, '') + R.josa(ctx[0].replace(/ \(.*\)$/, ''), '이/가') + ' ' + cut + usp + ctx[4] + ' 미만인 ' + ctx[6] + '은 전체의 몇 %일까요? (가상의 자료)\n\n' + table,
             answer: dec(pct),
-            hint: '먼저 ' + cut + ctx[4] + ' 미만인 계급의 도수를 모두 더해요.',
-            wrong: wrongList(pct, [[below, '사람 수를 구했어요. 전체에 대한 비율을 백분율로 나타내요.'], [(below + f[c]) / T * 100, cut + ctx[4] + ' 이상인 계급까지 더했어요. "미만"은 ' + cut + ctx[4] + R.josa(ctx[4], '을/를') + ' 포함하지 않아요.']]),
-            explain: cut + ctx[4] + ' 미만인 ' + ctx[6] + '은 $' + f.slice(0, c).join('+') + '=' + below + '$ (명)이에요. 전체의 $\\dfrac{' + below + '}{' + T + '}\\times100=' + dec(pct) + '$ (%)예요.',
+            hint: '먼저 ' + cut + usp + ctx[4] + ' 미만인 계급의 도수를 모두 더해요.',
+            wrong: wrongList(pct, [[below, '사람 수를 구했어요. 전체에 대한 비율을 백분율로 나타내요.'], [(below + f[c]) / T * 100, cut + usp + ctx[4] + ' 이상 ' + (cut + w) + usp + ctx[4] + ' 미만인 계급까지 더했어요. "미만"은 ' + cut + usp + ctx[4] + R.josa(ctx[4], '을/를') + ' 포함하지 않아요.']]),
+            explain: (c === 1
+              ? cut + usp + ctx[4] + ' 미만인 계급은 첫 계급 하나이고, 그 도수는 ' + below + '명이에요. '
+              : cut + usp + ctx[4] + ' 미만인 ' + ctx[6] + '은 $' + f.slice(0, c).join('+') + '=' + below + '$ (명)이에요. ') +
+              '전체의 $\\dfrac{' + below + '}{' + T + '}\\times100=' + dec(pct) + '$ (%)예요.',
           };
         }
         var big = f.indexOf(Math.max.apply(null, f));
@@ -662,12 +665,17 @@ Tutor.registerUnit({
           };
         }
         var c = R.int(1, k - 1), cut = start + c * w, cntv = sum(f.slice(c)), sp = ctx[3] === 'kg' ? ' ' : '';
+        var one = c === k - 1;   // 마지막 계급 하나뿐이면 "모두 더하면 1=1" 같은 글과 0 오답을 만들지 않는다
+        var wl = [[sum(f.slice(0, c)), cut + sp + ctx[3] + ' 미만인 학생을 셌어요. "이상"은 ' + cut + sp + ctx[3] + '부터 그보다 큰 쪽이에요.']];
+        if (!one) wl.push([cntv - f[c], cut + sp + ctx[3] + ' 이상 ' + (cut + w) + sp + ctx[3] + ' 미만인 계급을 빠뜨렸어요.']);
         return {
           type: 'short', check: 'number', unit: '명', concept: 3,
           q: '그림은 어느 반 학생들의 ' + name + '이에요. (가상의 자료) ' + ctx[0] + R.josa(ctx[0], '이/가') + ' ' + cut + sp + ctx[3] + ' 이상인 학생은 몇 명일까요?', fig: fig,
           answer: String(cntv),
-          wrong: wrongList(cntv, [[sum(f.slice(0, c)), cut + sp + ctx[3] + ' 미만인 학생을 셌어요. "이상"은 ' + cut + sp + ctx[3] + '부터 그보다 큰 쪽이에요.'], [cntv - f[c], cut + sp + ctx[3] + ' 이상 ' + (cut + w) + sp + ctx[3] + ' 미만인 계급을 빠뜨렸어요.']]),
-          explain: cut + sp + ctx[3] + ' 이상인 계급의 도수는 ' + f.slice(c).join(', ') + '명이에요. 모두 더하면 $' + f.slice(c).join('+') + '=' + cntv + '$ (명)이에요.',
+          wrong: wrongList(cntv, wl),
+          explain: one
+            ? cut + sp + ctx[3] + ' 이상인 계급은 ' + cut + sp + ctx[3] + ' 이상 ' + (cut + w) + sp + ctx[3] + ' 미만인 마지막 계급 하나예요. 그 도수를 읽으면 ' + cntv + '명이에요.'
+            : cut + sp + ctx[3] + ' 이상인 계급의 도수는 ' + f.slice(c).join(', ') + '명이에요. 모두 더하면 $' + f.slice(c).join('+') + '=' + cntv + '$ (명)이에요.',
         };
       },
     },

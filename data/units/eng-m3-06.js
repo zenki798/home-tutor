@@ -187,7 +187,7 @@ Tutor.registerUnit({
       why: [
         '',
         '일주일 뒤에 전하면 지아가 말한 "내일"은 이미 지난날이에요. tomorrow는 the next day로 바꿔요.',
-        '지아가 말한 날의 "내일"이니 앞날이 아니라 그다음 날이에요.',
+        'yesterday는 "어제", 곧 그 전날이에요. 지아가 말한 "내일"은 말한 날의 그다음 날(the next day)이에요.',
         'the day before는 yesterday를 바꿀 때 써요. tomorrow는 the next day로 바꿔요.',
       ],
       explain: '말한 날을 기준으로 한 "내일"은 전할 때 **the next day**(그다음 날)로 바꿔요.',

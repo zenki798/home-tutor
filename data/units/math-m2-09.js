@@ -576,7 +576,7 @@
           var wl = [[frs(G * n, m), '닮음비 $' + m + ':' + n + '$' + R.josa(n, '을/를') + ' ' + what + '에 그대로 썼어요. ' + what + '의 비는 $' + m + '^' + p + ':' + n + '^' + p + '$이에요.']];
           if (vol) wl.push([frs(G * n * n, m * m), '넓이의 비 $' + m * m + ':' + n * n + '$' + R.josa(n * n, '을/를') + ' 썼어요. 부피의 비는 닮음비를 세제곱해요.']);
           else wl.push([frs(G * n * n * n, m * m * m), '부피의 비를 썼어요. 넓이의 비는 닮음비를 제곱해요.']);
-          wl.push([frs(G * m * m, n * n), '비를 거꾸로 썼어요. (가)와 (나)의 순서를 확인해요.']);
+          wl.push([frs(G * Math.pow(m, p), Math.pow(n, p)), '비를 거꾸로 썼어요. (가)와 (나)의 순서를 확인해요.']);
           var ratio = Math.pow(m, p) + ':' + Math.pow(n, p);
           return {
             type: 'short', check: 'number', unit: u, concept: 5,

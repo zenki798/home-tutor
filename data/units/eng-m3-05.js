@@ -197,7 +197,7 @@ Tutor.registerUnit({
         { a: 'have', why: 'I wish 뒤에는 과거형을 써요. have → had' },
         { a: 'has', why: 'I wish 뒤에는 과거형을 써요. 주어가 I이니 has도 맞지 않아요. 과거형은 had예요.' },
       ],
-      explain: '지금 형(남동생)이 없어서 아쉬우니 I wish + 과거형이에요. → I wish I **had** a brother.(나에게 형제가 있으면 좋을 텐데.)',
+      explain: '지금 남자 형제(형·오빠·남동생)가 없어서 아쉬우니 I wish + 과거형이에요. → I wish I **had** a brother.(나에게 남자 형제가 있으면 좋을 텐데.)',
     },
     {
       id: 'p7', level: 1, type: 'choice', concept: 2,
@@ -257,7 +257,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p11', level: 2, type: 'choice', concept: 4,
-      q: '글을 읽고 물음에 답하세요.\n\nIf I had a magic lamp, I would make three wishes. First, I would ask for a big park in my town. There is no place for kids to play here. Second, I would wish for my grandma\'s knees to get better. Then she could walk with me again. Last, I would ask for a time machine. I would love to see my town 100 years ago.\n\n글쓴이가 바라는 일이 **아닌** 것을 고르세요.',
+      q: '글을 읽고 물음에 답하세요.\n\nIf I had a magic lamp, I would make three wishes. First, I would ask for a big park in my town. There is no place for kids to play here. Second, I would wish for my grandma\'s knees to get better. Then she could walk with me again. Last, I would ask for a time machine. I would love to see what my town looked like 100 years ago.\n\n글쓴이가 바라는 일이 **아닌** 것을 고르세요.',
       choices: [
         '요술 램프를 팔아 돈을 버는 것',
         '동네에 큰 공원이 생기는 것',

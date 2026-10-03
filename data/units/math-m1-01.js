@@ -520,6 +520,8 @@ Tutor.registerUnit({
           }
           return parts.join('\\times ');
         }
+        // 소수는 '2=2' 처럼 쓰지 않는다
+        function showFactor(n) { var f = factorTex(n); return f === String(n) ? '$' + n + '$(소수)' : '$' + n + '=' + f + '$'; }
         var g, x, y, tries = 0;
         do {
           g = R.pick([2, 3, 4, 5, 6, 8, 9, 10, 12, 14, 15, 18]);
@@ -545,9 +547,9 @@ Tutor.registerUnit({
           answer: String(ans),
           hint: '두 수를 각각 소인수분해해 보세요.',
           wrong: wrong,
-          explain: '두 수를 소인수분해하면 $' + A + '=' + factorTex(A) + '$, $' + B + '=' + factorTex(B) + '$\n\n' +
+          explain: '두 수를 소인수분해하면 ' + showFactor(A) + ', ' + showFactor(B) + '\n\n' +
             (askGcd
-              ? '공통인 소인수만 골라 지수가 작은 것을 곱하면 최대공약수는 $' + factorTex(g) + '=' + g + '$' + R.josa(g, '이에요/예요') + '.'
+              ? '공통인 소인수만 골라 지수가 작은 것을 곱하면 최대공약수는 $' + (factorTex(g) === String(g) ? g : factorTex(g) + '=' + g) + '$' + R.josa(g, '이에요/예요') + '.'
               : '소인수를 모두 골라 지수가 큰 것을 곱하면 최소공배수는 $' + factorTex(L) + '=' + L + '$' + R.josa(L, '이에요/예요') + '.'),
         };
       },

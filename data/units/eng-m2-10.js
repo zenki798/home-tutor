@@ -52,7 +52,7 @@ Tutor.registerUnit({
     },
     {
       title: '반복을 피하는 one · that of · those of',
-      body: '영어는 같은 명사를 되풀이하는 것을 싫어해서, 앞에 나온 명사를 대신하는 말을 써요.\n\n**one / ones**: 앞에 나온 것과 **같은 종류**의 셀 수 있는 명사 (정해지지 않은 것)\n- This cap is too small. Can I see a bigger **one**? (one = cap)\n- I like the red shoes more than the black **ones**. (ones = shoes)\n\n**that of / those of**: 비교하는 문장에서 앞의 명사를 다시 가리킬 때\n- The population of Seoul is larger than **that of** Busan. (that = the population)\n- The ears of a rabbit are longer than **those of** a cat. (those = the ears, 복수)\n\n왜 that of를 쓸까요? 비교는 **같은 종류끼리** 해야 해요. "서울의 인구"는 "부산의 인구"와 견주어야지, 부산이라는 도시 자체와 견주면 안 되지요. 그래서 than Busan이 아니라 than **that of** Busan이라고 해요.\n\n> 💡 앞의 명사가 단수이거나 셀 수 없으면 that, 복수이면 those예요.\n\n> ⚠️ one은 "같은 종류의 다른 하나"예요. 바로 그 물건 자체를 가리킬 때는 it을 써요. I lost my umbrella. I need to buy a new **one**. / I found my umbrella. **It** was under the bed.',
+      body: '영어는 같은 명사를 되풀이하는 것을 싫어해서, 앞에 나온 명사를 대신하는 말을 써요.\n\n**one / ones**: 앞에 나온 것과 **같은 종류**의 셀 수 있는 명사 (앞에 나온 바로 그 물건은 아님)\n- This cap is too small. Can I see a bigger **one**? (one = cap)\n- I like the red shoes more than the black **ones**. (ones = shoes)\n\n**that of / those of**: 비교하는 문장에서 앞의 명사를 다시 가리킬 때\n- The population of Seoul is larger than **that of** Busan. (that = the population)\n- The ears of a rabbit are longer than **those of** a cat. (those = the ears, 복수)\n\n왜 that of를 쓸까요? 비교는 **같은 종류끼리** 해야 해요. "서울의 인구"는 "부산의 인구"와 견주어야지, 부산이라는 도시 자체와 견주면 안 되지요. 그래서 than Busan이 아니라 than **that of** Busan이라고 해요.\n\n> 💡 앞의 명사가 단수이거나 셀 수 없으면 that, 복수이면 those예요.\n\n> ⚠️ one은 "같은 종류의 다른 하나"예요. 바로 그 물건 자체를 가리킬 때는 it을 써요. I lost my umbrella. I need to buy a new **one**. / I found my umbrella. **It** was under the bed.',
       easy: '같은 말을 두 번 하면 지루하지요. 그래서 영어는 "대신 말해 주는 말"을 써요.\n\n- one: "같은 종류로 하나" — 모자를 보다가 "더 큰 거(one) 있어요?"\n- that of: "~의 그것" — "서울의 인구는 부산의 그것(=인구)보다 많다"\n\nthat of에서 that은 앞에 나온 명사를 그대로 받는 "복사 버튼"이라고 생각하세요. 복수 명사를 받을 때는 those예요.',
       check: {
         type: 'choice',
@@ -348,7 +348,7 @@ Tutor.registerUnit({
   deeper: [
     {
       title: '몇 배인지 말하기: twice as ~ as',
-      body: 'as ~ as 앞에 횟수를 나타내는 말을 붙이면 **몇 배**인지 말할 수 있어요.\n\n- My room is **twice as big as** yours. (내 방은 네 방보다 두 배 커요.)\n- This bridge is **three times as long as** that one. (이 다리는 저 다리보다 세 배 길어요.)\n\ntwice는 "두 배", three times는 "세 배"예요. 도표를 설명하는 글에서 이 표현을 쓰면 차이를 정확하게 전할 수 있어요. 예를 들어 등교 방법 그래프에서 걷기가 30%, 자전거가 15%라면 Walking is **twice as common as** biking.이라고 할 수 있어요.\n\n이번 단원에서 배운 것을 모으면 정도를 아주 섬세하게 말할 수 있어요.\n\n| 표현 | 차이 |\n|---|---|\n| as popular as | 같아요 |\n| a little more popular than | 조금 더 |\n| much more popular than | 훨씬 더 |\n| twice as popular as | 두 배 |',
+      body: 'as ~ as 앞에 횟수를 나타내는 말을 붙이면 **몇 배**인지 말할 수 있어요.\n\n- My room is **twice as big as** yours. (내 방은 네 방보다 두 배 커요.)\n- This bridge is **three times as long as** that one. (이 다리는 저 다리보다 세 배 길어요.)\n\ntwice는 "두 배", three times는 "세 배"예요. 도표를 설명하는 글에서 이 표현을 쓰면 차이를 정확하게 전할 수 있어요. 예를 들어 등교 방법 그래프에서 버스가 30%, 자전거가 15%라면 Going by bus is **twice as common as** going by bike.라고 할 수 있어요.\n\n이번 단원에서 배운 것을 모으면 정도를 아주 섬세하게 말할 수 있어요.\n\n| 표현 | 차이 |\n|---|---|\n| as popular as | 같아요 |\n| a little more popular than | 조금 더 |\n| much more popular than | 훨씬 더 |\n| twice as popular as | 두 배 |',
     },
   ],
 
@@ -498,7 +498,7 @@ Tutor.registerUnit({
             others: 'others는 정해지지 않은 여럿이에요. 마지막 남은 하나는 the other예요.',
           };
         } else {
-          q = 'I have five ' + th[0] + '. One is ' + c[0] + ', and [[빈칸]] are ' + c[1] + '.';
+          q = 'I have five ' + th[0] + '. One is ' + c[0] + ', and [[빈칸]] are all ' + c[1] + '.';
           correct = 'the others';
           expl = '하나를 빼고 **남은 것 전부**(넷)는 the others예요. 여럿이라 동사도 are를 써요.';
           reason = {

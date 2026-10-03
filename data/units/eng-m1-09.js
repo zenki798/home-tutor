@@ -78,17 +78,17 @@ Tutor.registerUnit({
 
   examples: [
     {
-      q: '빈칸에 알맞은 말을 고르고 해석하세요.\n\nYour plan sounds [[빈칸]] a lot of fun. (like / 없음)',
+      q: '빈칸에 알맞은 말을 고르고 해석하세요.\n\nThis pillow feels [[빈칸]] a cloud. (like / 없음)',
       steps: [
-        '빈칸 뒤 a lot of fun은 명사예요.',
+        '빈칸 뒤 a cloud는 명사예요.',
         '감각동사 뒤에 명사가 오면 like를 넣어요.',
-        'Your plan sounds **like** a lot of fun.',
-        '해석: 네 계획은 아주 재미있을 것 같아. (아주 재미있는 일처럼 들려.)',
+        'This pillow feels **like** a cloud.',
+        '해석: 이 베개는 구름 같은 느낌이 나요. (구름처럼 푹신해요.)',
       ],
       answer: 'like',
     },
     {
-      q: '두 문장을 that을 써서 한 문장으로 만드세요.\n\nI think so. Jia will win the race.',
+      q: 'that을 써서 한 문장으로 만드세요.\n\nI think + Jia will win the race.\n(나는 지아가 경주에서 이길 거라고 생각해요.)',
       steps: [
         '내가 생각하는 내용은 "지아가 경주에서 이길 것이다"예요.',
         'I think 뒤에 접속사 that을 쓰고 그 내용을 이어요.',
@@ -163,11 +163,11 @@ Tutor.registerUnit({
     {
       id: 'p8', level: 2, type: 'choice', concept: 1,
       q: '어법상 **틀린** 문장을 고르세요.',
-      choices: ['It sounds an exciting plan.', 'You look like a movie star.', 'The pie smells delicious.', 'Her hands felt cold.'],
+      choices: ['This candy tastes strawberries.', 'You look like a movie star.', 'The pie smells delicious.', 'Her hands felt cold.'],
       answer: 0,
       why: ['', '명사(a movie star) 앞에 like를 넣었어요. 바른 문장이에요.', '감각동사 smell 뒤에 형용사 delicious를 썼어요. 바른 문장이에요.', '감각동사 feel 뒤에 형용사 cold를 썼어요. 바른 문장이에요.'],
       hint: '감각동사 뒤에 명사가 오는 문장을 찾아보세요.',
-      explain: 'an exciting plan은 명사이므로 like가 필요해요. It sounds **like** an exciting plan.(신나는 계획 같아.)이 바른 문장이에요.',
+      explain: 'strawberries는 명사이므로 like가 필요해요. This candy tastes **like** strawberries.(이 사탕은 딸기 맛이 나요.)가 바른 문장이에요.',
     },
     {
       id: 'p9', level: 2, type: 'choice', concept: 4,
@@ -181,10 +181,10 @@ Tutor.registerUnit({
     {
       id: 'p10', level: 2, type: 'short', check: 'text', concept: 2,
       q: '대화를 읽고 빈칸에 알맞은 한 낱말을 쓰세요.\n\nA: Is it going to rain tomorrow?\nB: I don\'t [[빈칸]] so. The sky is clear.',
-      answer: ['think'],
+      answer: ['think', 'believe', 'suppose', 'expect'],
       wrong: [{ a: 'hope', why: 'I don\'t hope so.는 잘 쓰지 않는 말이에요. 의견을 말할 때는 I don\'t think so.(그렇지 않을 것 같아.)라고 해요.' }],
       hint: '"그렇지 않을 것 같아"라는 의견을 나타내는 말이에요.',
-      explain: '**I don\'t think so.**는 "그렇지 않다고 생각해, 아닐 것 같아"라는 뜻이에요. 하늘이 맑으니 비가 오지 않을 거라는 의견이에요.',
+      explain: '**I don\'t think so.**는 "그렇지 않다고 생각해, 아닐 것 같아"라는 뜻이에요. 하늘이 맑으니 비가 오지 않을 거라는 의견이에요. (I don\'t believe so., I don\'t suppose so., I don\'t expect so.도 비슷한 뜻으로 쓸 수 있어요.)',
     },
     {
       id: 'p11', level: 2, type: 'choice', concept: 3,
@@ -226,7 +226,7 @@ Tutor.registerUnit({
     },
     {
       id: 'a3', level: 3, type: 'short', check: 'text', concept: 1,
-      q: '우리말에 맞게 빈칸에 알맞은 두 낱말을 쓰세요.\n\n네 목소리는 꼭 가수 같아.\nYour voice [[빈칸]] a singer.',
+      q: '우리말에 맞게 **감각동사**를 써서 빈칸에 알맞은 두 낱말을 쓰세요.\n\n네 목소리는 꼭 가수 같아.\nYour voice [[빈칸]] a singer.',
       answer: ['sounds like'],
       wrong: [
         { a: 'looks like', why: '목소리는 귀로 듣는 것이므로 look이 아니라 sound를 써요.' },
@@ -301,9 +301,9 @@ Tutor.registerUnit({
         var nouns = [
           ['That cloud', 'looks', 'a rabbit', '저 구름은 토끼처럼 보여요.'],
           ['This candy', 'tastes', 'strawberries', '이 사탕은 딸기 맛이 나요.'],
-          ['Your plan', 'sounds', 'a great idea', '네 계획은 좋은 생각 같아요.'],
+          ['The wind', 'sounds', 'a song', '바람 소리가 노래처럼 들려요.'],
           ['This room', 'smells', 'flowers', '이 방은 꽃 냄새가 나요.'],
-          ['The stone', 'feels', 'ice', '그 돌은 얼음처럼 차갑게 느껴져요.'],
+          ['The stone', 'feels', 'ice', '그 돌은 얼음 같은 느낌이 나요.'],
           ['Your sister', 'looks', 'your mom', '네 여동생은 엄마를 닮았어요.'],
           ['That noise', 'sounds', 'thunder', '저 소리는 천둥처럼 들려요.'],
         ];

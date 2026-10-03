@@ -186,7 +186,7 @@ Tutor.registerUnit({
     {
       id: 'p7', level: 2, type: 'short', check: 'text', concept: 2,
       q: '괄호 안의 동사를 **과거완료**로 바꾸어 빈칸에 쓰세요.\n\nSeojun wasn\'t hungry at lunch because he [[빈칸]] a big breakfast. (eat)',
-      answer: ['had eaten'],
+      answer: ['had eaten', '\'d eaten'],
       hint: '과거완료는 had + 과거분사예요. eat의 과거분사를 떠올려 보세요.',
       wrong: [
         { a: 'had ate', why: 'ate는 과거형이에요. had 뒤에는 과거분사 eaten을 써요.' },
@@ -293,7 +293,7 @@ Tutor.registerUnit({
     {
       id: 'a3', level: 3, type: 'short', check: 'text', concept: 2,
       q: '다음 문장에서 어법상 틀린 낱말 하나를 찾아 바르게 고친 낱말만 쓰세요.\n\nYesterday I lost the umbrella that my dad has bought for me the week before.',
-      answer: ['had'],
+      answer: ['had', 'had bought'],
       hint: '우산을 산 일은 어제 잃어버린 일보다 먼저예요.',
       wrong: [
         { a: 'have', why: 'have bought도 현재완료예요. 기준이 과거(어제)이므로 had를 써요.' },
@@ -356,26 +356,27 @@ Tutor.registerUnit({
       level: 1,
       title: 'for와 since 고르기',
       make: function (R) {
-        // [문장 앞부분, 뜻]
-        var acts = [
-          ['I have been studying English', '나는 영어를 공부해 오고 있어요'],
-          ['Minsu has been playing computer games', '민수는 컴퓨터 게임을 하고 있어요'],
-          ['We have been waiting for the bus', '우리는 버스를 기다리고 있어요'],
-          ['It has been raining', '비가 계속 오고 있어요'],
-          ['Jia has been practicing the violin', '지아는 바이올린을 연습해 오고 있어요'],
-          ['They have been working on the project', '그들은 그 과제를 해 오고 있어요'],
-          ['My dad has been cooking', '아빠는 요리를 하고 계세요'],
-          ['Seojun has been learning taekwondo', '서준이는 태권도를 배워 오고 있어요'],
-        ];
         // [시간 표현, for/since, 뜻]
-        var times = [
-          ['two hours', 'for', '두 시간 동안'], ['three years', 'for', '3년 동안'], ['a long time', 'for', '오랫동안'],
-          ['ten minutes', 'for', '10분 동안'], ['five days', 'for', '닷새 동안'], ['a week', 'for', '일주일 동안'],
-          ['2021', 'since', '2021년부터'], ['last Monday', 'since', '지난 월요일부터'], ['this morning', 'since', '오늘 아침부터'],
-          ['9 o\'clock', 'since', '9시부터'], ['I was eight', 'since', '내가 여덟 살 때부터'], ['last summer', 'since', '지난여름부터'],
+        var T = {
+          h2: ['two hours', 'for', '두 시간 동안'], y3: ['three years', 'for', '3년 동안'], lt: ['a long time', 'for', '오랫동안'],
+          m10: ['ten minutes', 'for', '10분 동안'], d5: ['five days', 'for', '닷새 동안'], wk: ['a week', 'for', '일주일 동안'],
+          y21: ['2021', 'since', '2021년부터'], mon: ['last Monday', 'since', '지난 월요일부터'], morn: ['this morning', 'since', '오늘 아침부터'],
+          nine: ['9 o\'clock', 'since', '9시부터'], summer: ['last summer', 'since', '지난여름부터'],
+          i8: ['I was eight', 'since', '여덟 살 때부터'], he8: ['he was eight', 'since', '여덟 살 때부터'], she8: ['she was eight', 'since', '여덟 살 때부터'],
+        };
+        // [문장 앞부분, 뜻, 그 일과 어울리는 시간 표현] — 짧은 일에 "3년", 긴 일에 "10분"이 붙지 않게 짝을 정해 둔다
+        var acts = [
+          ['I have been studying English', '나는 영어를 공부해 오고 있어요', ['h2', 'y3', 'lt', 'wk', 'y21', 'morn', 'summer', 'i8']],
+          ['Minsu has been playing computer games', '민수는 컴퓨터 게임을 하고 있어요', ['h2', 'm10', 'lt', 'morn', 'nine']],
+          ['We have been waiting for the bus', '우리는 버스를 기다리고 있어요', ['m10', 'lt', 'nine']],
+          ['It has been raining', '비가 계속 오고 있어요', ['h2', 'lt', 'd5', 'wk', 'mon', 'morn', 'nine']],
+          ['Jia has been practicing the violin', '지아는 바이올린을 연습해 오고 있어요', ['h2', 'y3', 'lt', 'y21', 'morn', 'summer', 'she8']],
+          ['They have been working on the project', '그들은 그 과제를 해 오고 있어요', ['h2', 'lt', 'd5', 'wk', 'mon', 'morn', 'nine']],
+          ['My dad has been cooking', '아빠는 요리를 하고 계세요', ['h2', 'lt', 'morn', 'nine']],
+          ['Seojun has been learning taekwondo', '서준이는 태권도를 배워 오고 있어요', ['y3', 'lt', 'y21', 'summer', 'he8']],
         ];
         var a = R.pick(acts);
-        var t = R.pick(times);
+        var t = T[R.pick(a[2])];
         var ans = t[1];
         var other = ans === 'for' ? 'since' : 'for';
         var sentence = a[0] + ' [[빈칸]] ' + t[0] + '.';
@@ -400,7 +401,7 @@ Tutor.registerUnit({
         // [주어, 3인칭 단수인가]
         var subjects = [
           ['I', false], ['You', false], ['We', false], ['They', false], ['My parents', false],
-          ['He', true], ['She', true], ['Hayun', true], ['My brother', true], ['The baby', true],
+          ['He', true], ['She', true], ['Hayun', true], ['My brother', true], ['My sister', true],
         ];
         // [원형, -ing, 뒷말]
         var verbs = [
@@ -435,7 +436,7 @@ Tutor.registerUnit({
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : reason[c]; }),
-          explain: '지금까지 이어지는 동작이므로 현재완료진행형(have/has + been + -ing)을 써요. 주어 ' + s[0] + (s[1] ? '는 3인칭 단수라서 has' : '에는 have') + '를 써요.\n\n' + sentence.replace('[[빈칸]]', '**' + correct + '**'),
+          explain: '지금까지 이어지는 동작이므로 현재완료진행형(have/has + been + -ing)을 써요. 주어(' + s[0] + ')가 ' + (s[1] ? '3인칭 단수라서 has' : '3인칭 단수가 아니라서 have') + '를 써요.\n\n' + sentence.replace('[[빈칸]]', '**' + correct + '**'),
         };
       },
     },
@@ -452,7 +453,7 @@ Tutor.registerUnit({
           ['When the teacher came in,', 'the students', 'clean', 'cleaned', 'cleaned', 'the classroom', '선생님이 들어오셨을 때, 학생들은 교실을 청소해 두었어요.'],
           ['When I got to the theater,', 'the movie', 'start', 'started', 'started', 'already', '내가 극장에 도착했을 때, 영화는 이미 시작했어요.'],
           ['When Mom opened the fridge,', 'someone', 'drink', 'drank', 'drunk', 'all the milk', '엄마가 냉장고를 열었을 때, 누군가 우유를 다 마셔 버린 뒤였어요.'],
-          ['When Minsu found his bag,', 'he', 'lose', 'lost', 'lost', 'it for two days', '민수가 가방을 찾았을 때, 그는 이틀 동안 그것을 잃어버린 상태였어요.'],
+          ['When I met Jia,', 'she', 'lose', 'lost', 'lost', 'her phone', '내가 지아를 만났을 때, 지아는 휴대폰을 잃어버린 뒤였어요.'],
           ['When we reached the top,', 'the sun', 'rise', 'rose', 'risen', 'already', '우리가 꼭대기에 닿았을 때, 해는 이미 떠 있었어요.'],
           ['When Hayun woke up,', 'her dad', 'go', 'went', 'gone', 'to work', '하윤이가 깼을 때, 아빠는 일하러 가신 뒤였어요.'],
           ['When I saw Doyun,', 'he', 'cut', 'cut', 'cut', 'his hair short', '내가 도윤이를 봤을 때, 그는 머리를 짧게 자른 뒤였어요.'],
@@ -462,16 +463,23 @@ Tutor.registerUnit({
         var it = R.pick(items);
         var pp = it[4];
         var correct = 'had ' + pp;
-        var third = /^(my brother|the train|the movie|someone|he|the sun|her dad|the ice cream)$/i.test(it[1]);
+        var third = /^(my brother|the train|the movie|someone|he|she|the sun|her dad|the ice cream)$/i.test(it[1]);
         var presPerf = (third ? 'has ' : 'have ') + pp;
         var cands = [
-          [presPerf, presPerf + '은 현재완료라서 지금이 기준이에요. 기준이 과거(' + it[0].replace(/,$/, '') + ')이므로 had를 써요.'],
+          [presPerf, presPerf + '(현재완료)는 지금이 기준이에요. 기준이 과거(' + it[0].replace(/,$/, '') + ')이므로 had를 써요.'],
           ['had ' + it[2], 'had 뒤에는 동사원형이 아니라 과거분사(' + pp + ')가 와요.'],
         ];
-        if (it[3] !== pp) cands.push(['had ' + it[3], it[3] + '는 과거형이에요. had 뒤에는 과거분사 ' + pp + '를 써요.']);
-        else cands.push([it[2] + 's', '현재형은 과거 이야기와 맞지 않아요. 먼저 일어난 일은 had + 과거분사로 써요.']);
+        if (it[3] !== pp) cands.push(['had ' + it[3], '과거형(' + it[3] + ')이 아니라 과거분사(' + pp + ')를 had 뒤에 써요.']);
+        else cands.push([third ? it[2] + (/(sh|ch|s|x|o)$/.test(it[2]) ? 'es' : 's') : it[2], '현재형은 과거 이야기와 맞지 않아요. 먼저 일어난 일은 had + 과거분사로 써요.']);
         // 원형·과거형·과거분사가 같은 동사(cut 등)는 위 후보가 정답과 겹친다 — 늘 다른 후보를 하나 더 둔다
-        cands.push(['had been ' + pp, 'had been + 과거분사는 "~되어 있었다"는 수동의 뜻이에요. 여기서는 주어가 직접 한 일이므로 had + 과거분사를 써요.']);
+        // 뒤에 목적어가 있는 문장에서만 수동(had been + 과거분사)을 오답으로 쓴다.
+        // (the movie had been started, the ice cream had been melted 처럼 목적어 없는 문장에서는 수동도 어법상 가능해 정답이 둘이 된다)
+        if (it[5] !== 'already' && it[2] !== 'go') {
+          cands.push(['had been ' + pp, 'had been + 과거분사는 "~되어 있었다"는 수동의 뜻이에요. 여기서는 주어가 뒤의 목적어에 직접 한 일이므로 had + 과거분사를 써요.']);
+        } else {
+          var agreeBad = (third ? 'have ' : 'has ') + pp;
+          cands.push([agreeBad, agreeBad + '(현재완료)는 지금이 기준이고, 주어(' + it[1] + ')와 have·has도 맞지 않아요. 기준이 과거이므로 had를 써요.']);
+        }
         var reason = {};
         cands.forEach(function (c) { reason[c[0]] = c[1]; });
         var pick = R.choices(correct, cands.map(function (c) { return c[0]; }), 4);
@@ -485,7 +493,7 @@ Tutor.registerUnit({
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : reason[c]; }),
-          explain: '빈칸의 일이 "' + it[0].replace(/,$/, '') + '"보다 먼저 일어났으므로 과거완료 had + 과거분사를 써요. ' + it[2] + '의 과거분사는 ' + pp + '예요.\n\n' + full + '\n(' + it[6] + ')',
+          explain: '빈칸의 일이 "' + it[0].replace(/,$/, '') + '"보다 먼저 일어났으므로 과거완료 had + 과거분사를 써요. (' + it[2] + ' - ' + it[3] + ' - ' + pp + ')\n\n' + full + '\n(' + it[6] + ')',
         };
       },
     },

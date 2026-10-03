@@ -254,17 +254,17 @@ Tutor.registerUnit({
   advanced: [
     {
       id: 'a1', level: 3, type: 'choice', concept: 2,
-      q: '대화의 빈칸에 알맞은 말은 무엇일까요?\n\nA: Are you and your brother in the same school?\nB: [[blank]] He is a high school student.',
+      q: '대화의 빈칸에 알맞은 말은 무엇일까요?\n\nA: Are you and your brother at the same school?\nB: [[blank]] I\'m a middle school student, and he is a high school student.',
       choices: ["No, we aren't.", 'Yes, we are.', "No, they aren't.", "No, I'm not."],
       answer: 0,
       why: [
         '',
-        '뒤에서 형은 고등학생이라고 했으니 같은 학교가 아니에요. "아니요"로 대답해요.',
+        '뒤에서 나는 중학생, 형은 고등학생이라고 했으니 같은 학교가 아니에요. "아니요"로 대답해요.',
         '"너와 네 형"은 대답하는 사람 자신이 들어 있으니 they가 아니라 we로 받아요.',
         '질문의 주어는 "너와 네 형" 두 사람이에요. I가 아니라 we로 대답해요.',
       ],
       hint: '질문의 주어 you and your brother를 대답하는 사람의 입장에서 대명사로 바꾸어 보세요.',
-      explain: '"너와 네 형"은 대답하는 사람에게는 "우리(we)"예요. 형이 고등학생이니 같은 학교가 아니므로 No, we aren\'t.예요.',
+      explain: '"너와 네 형"은 대답하는 사람에게는 "우리(we)"예요. 나는 중학생이고 형은 고등학생이니 같은 학교가 아니므로 No, we aren\'t.예요.',
     },
     {
       id: 'a2', level: 3, type: 'short', concept: 0,
@@ -457,7 +457,7 @@ Tutor.registerUnit({
     { w: 'hobby', m: '취미', ex: 'What is your hobby?', exm: '너의 취미는 뭐니?' },
     { w: 'interested', m: '관심 있는', ex: 'I am interested in space.', exm: '나는 우주에 관심이 있어요.' },
     { w: 'classmate', m: '반 친구', ex: 'Jia is my classmate.', exm: '지아는 우리 반 친구예요.' },
-    { w: 'grade', m: '학년', ex: 'I am in the first grade of middle school.', exm: '나는 중학교 1학년이에요.' },
+    { w: 'grade', m: '학년', ex: 'What grade are you in?', exm: '너는 몇 학년이니?' },
     { w: 'club', m: '동아리', ex: 'Are you in the art club?', exm: '너는 미술 동아리에 있니?' },
     { w: 'member', m: '회원, 구성원', ex: 'She is a member of the soccer team.', exm: '그녀는 축구팀의 구성원이에요.' },
     { w: 'shy', m: '수줍어하는', ex: "I'm a little shy, but I'm friendly.", exm: '나는 조금 수줍음이 많지만 친절해요.' },

@@ -371,7 +371,9 @@ Tutor.registerUnit({
         var ans = a + bb;
         var cands = [];
         if (sub) cands.push([a + b, '빼는 수의 부호를 바꾸지 않고 더했어요. 빼는 수 $' + b + '$의 부호를 바꾸어 $' + P(-b) + '$' + R.josa(-b, '을/를') + ' 더해요.']);
-        cands.push([-ans, '부호를 다시 확인해 보세요. 절댓값이 큰 수의 부호를 따라요.']);
+        cands.push([-ans, (a > 0) === (bb > 0)
+          ? '부호를 다시 확인해 보세요. 부호가 같은 두 수의 합은 공통인 부호를 붙여요.'
+          : '부호를 다시 확인해 보세요. 절댓값이 큰 수의 부호를 따라요.']);
         if ((a > 0) !== (bb > 0)) cands.push([(Math.abs(a) + Math.abs(bb)) * (ans < 0 ? -1 : 1), '부호가 다른 두 수를 더할 때는 절댓값의 **차**를 구해요.']);
         else cands.push([(Math.abs(Math.abs(a) - Math.abs(bb))) * (ans < 0 ? -1 : 1), '부호가 같은 두 수를 더할 때는 절댓값의 **합**을 구해요.']);
         var wrong = [], seen = {};
@@ -412,7 +414,9 @@ Tutor.registerUnit({
         var ans = a.add(bb);
         var cands = [];
         if (sub) cands.push([a.add(b), '빼는 수의 부호를 바꾸지 않고 더했어요. 빼는 수의 부호를 바꾸어 더해요.']);
-        cands.push([ans.neg(), '부호를 다시 확인해 보세요. 통분한 뒤 절댓값이 큰 수의 부호를 따라요.']);
+        cands.push([ans.neg(), a.sign() === bb.sign()
+          ? '부호를 다시 확인해 보세요. 부호가 같은 두 수의 합은 공통인 부호를 붙여요.'
+          : '부호를 다시 확인해 보세요. 통분한 뒤 절댓값이 큰 수의 부호를 따라요.']);
         cands.push([a.sub(bb), '더하는 수의 부호를 거꾸로 했어요. ' + (sub ? '빼는 수의 부호를 바꾸어 더해요.' : '덧셈은 부호를 바꾸지 않아요.')]);
         var wrong = [], seen = {};
         seen[ans.toString()] = true;

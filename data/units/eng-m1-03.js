@@ -65,7 +65,7 @@ Tutor.registerUnit({
     },
     {
       title: '셀 수 있는 명사, 셀 수 없는 명사와 수량 표현',
-      body: '**셀 수 있는 명사**는 하나, 둘 셀 수 있어서 a/an을 붙이거나 복수형(-s)을 만들어요: an apple, two chairs.\n\n**셀 수 없는 명사**는 모양이 정해져 있지 않거나(water, milk, bread, rice), 덩어리로 생각하는 것(money, homework)이에요. a/an을 붙이지 않고 복수형도 없어요.\n\n수량을 나타내는 말은 명사의 종류에 따라 골라요.\n\n| 뜻 | 셀 수 있는 명사(복수) | 셀 수 없는 명사 |\n|---|---|---|\n| 많은 | **many** books | **much** water |\n| 조금 있는 | **a few** books | **a little** water |\n| 둘 다 쓰는 말 | a lot of, some, any | a lot of, some, any |\n\n- **some**은 주로 긍정문: There are **some** eggs.\n- **any**는 주로 부정문·의문문: There aren\'t **any** eggs. / Are there **any** eggs?\n\n> 💡 much는 주로 부정문·의문문에 써요. 긍정문에서 "많은"은 a lot of를 더 많이 써요: I drink a lot of water.',
+      body: '**셀 수 있는 명사**는 하나, 둘 셀 수 있어서 a/an을 붙이거나 복수형(-s)을 만들어요: an apple, two chairs.\n\n**셀 수 없는 명사**는 모양이 정해져 있지 않거나(water, milk, bread, rice), 전체를 하나로 묶어 생각하는 것(money, homework)이에요. 동전(coin)은 세지만 돈(money)은 "돈 하나, 돈 둘"로 세지 않아요. a/an을 붙이지 않고 복수형도 없어요.\n\n수량을 나타내는 말은 명사의 종류에 따라 골라요.\n\n| 뜻 | 셀 수 있는 명사(복수) | 셀 수 없는 명사 |\n|---|---|---|\n| 많은 | **many** books | **much** water |\n| 조금 있는 | **a few** books | **a little** water |\n| 둘 다 쓰는 말 | a lot of, some, any | a lot of, some, any |\n\n- **some**은 주로 긍정문: There are **some** eggs.\n- **any**는 주로 부정문·의문문: There aren\'t **any** eggs. / Are there **any** eggs?\n\n> 💡 much는 주로 부정문·의문문에 써요. 긍정문에서 "많은"은 a lot of를 더 많이 써요: I drink a lot of water.',
       easy: '사과는 한 개, 두 개 셀 수 있지만, 물은 "물 하나, 물 둘"이라고 세지 않지요? 물은 컵에 담아 "물 한 컵"이라고 세요.\n\n- 셀 수 있는 것(사과, 의자, 책) → many, a few\n- 셀 수 없는 것(물, 우유, 돈) → much, a little\n\n짝 맞추기로 기억해요: **many·a few는 개수**, **much·a little은 양**이에요.',
       check: {
         type: 'choice',
@@ -105,7 +105,7 @@ Tutor.registerUnit({
     {
       q: '빈칸에 many와 much 가운데 알맞은 말을 쓰세요.\n\n(1) There aren\'t (   ) people in the park.\n(2) I don\'t have (   ) money.',
       steps: [
-        '(1) people(사람들)은 셀 수 있는 명사의 복수형이에요. 그래서 many를 써요.',
+        '(1) 사람들(people)은 셀 수 있는 명사의 복수형이에요. 그래서 many를 써요.',
         '(2) money(돈)는 셀 수 없는 명사예요. 그래서 much를 써요.',
       ],
       answer: '(1) many (2) much',

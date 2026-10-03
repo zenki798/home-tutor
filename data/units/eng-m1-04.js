@@ -29,7 +29,7 @@ Tutor.registerUnit({
     {
       title: '규칙 동사의 과거형 만들기',
       body: '일반동사의 과거형은 대부분 동사원형에 **-ed**를 붙여 만들어요. 이런 동사를 **규칙 동사**라고 해요. 과거형은 주어가 무엇이든 모양이 같아요(3인칭 단수 -s가 없어요).\n\n| 동사의 끝 | 규칙 | 예 |\n|---|---|---|\n| 대부분 | -ed | play → played, watch → watched |\n| e | -d만 | like → liked, dance → danced |\n| 자음 + y | y를 i로 바꾸고 -ed | study → studied, cry → cried |\n| 모음 + y | -ed | play → played, enjoy → enjoyed |\n| 모음 하나 + 자음 하나 (한 음절) | 자음을 하나 더 쓰고 -ed | stop → stopped, plan → planned |\n\n> 💡 -ing를 붙이는 규칙(3단원)과 비슷해요. 자음을 하나 더 쓰는 동사가 같아요: stop → stopping, stopped',
-      easy: '과거형은 동사에 "지난 일 도장" -ed를 찍는 거예요.\n\nI **walk** to school. (지금 습관) → I **walked** to school yesterday. (어제 한 일)\n\n도장을 찍을 때 끝 글자에 따라 조금씩 모양을 다듬어요. e로 끝나면 d만, 자음 + y면 ied, stop처럼 짧은 동사는 끝 자음을 하나 더 써요.',
+      easy: '과거형은 동사에 "지난 일 도장" -ed를 찍는 거예요.\n\nI **walk** to school. (지금 습관) → I **walked** to school yesterday. (어제 한 일)\n\n도장을 찍을 때 끝 글자에 따라 조금씩 모양을 다듬어요. e로 끝나면 d만, 자음 + y면 ied, stop처럼 "모음 하나 + 자음 하나"로 끝나는 한 음절 동사는 끝 자음을 하나 더 써요(help, rain은 그냥 -ed).',
       check: {
         type: 'ox',
         q: '"study"의 과거형은 "studied"예요.',
@@ -59,7 +59,7 @@ Tutor.registerUnit({
         q: '빈칸에 알맞은 말은 무엇일까요?\n\nI [[blank]] eat breakfast this morning.',
         choices: ["didn't", "don't", "wasn't"],
         answer: 0,
-        why: ['', 'this morning(오늘 아침)은 지난 때예요. 과거 부정문에는 didn\'t를 써요.', 'eat은 일반동사예요. 일반동사 과거 부정문에는 wasn\'t가 아니라 didn\'t를 써요.'],
+        why: ['', '오늘 아침(this morning)은 지난 때예요. 과거 부정문에는 didn\'t를 써요.', 'eat은 일반동사예요. 일반동사 과거 부정문에는 wasn\'t가 아니라 didn\'t를 써요.'],
         explain: '오늘 아침에 먹지 않은 지난 일이므로 didn\'t + 동사원형(eat)을 써요. I didn\'t eat breakfast this morning.',
       },
     },

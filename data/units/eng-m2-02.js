@@ -282,7 +282,7 @@ Tutor.registerUnit({
     },
     {
       q: 'has gone to와 has been to는 어떻게 달라요?',
-      a: 'has gone to는 "가 버려서 지금 여기 없다"(결과), has been to는 "가 본 적이 있다"(경험)예요. He has gone to Busan.이면 그는 지금 부산에 있고, He has been to Busan.이면 지금은 돌아와 있을 수 있어요.',
+      a: 'has gone to는 "가 버려서 지금 여기 없다"(결과), has been to는 "가 본 적이 있다"(경험)예요. He has gone to Busan.이면 그는 부산에 가서 지금 여기 없고, He has been to Busan.이면 지금은 돌아와 있을 수 있어요.',
     },
     {
       q: '과거분사는 다 외워야 해요?',
@@ -359,7 +359,7 @@ Tutor.registerUnit({
           ['I [[빈칸]] this movie three times so far.', '나는 지금까지 이 영화를 세 번 봤어요.', 'have', 'see', 'saw', 'seen', true, 'so far(지금까지)'],
           ['My brother [[빈칸]] English since last year.', '내 남동생은 작년부터 지금까지 영어를 공부해 왔어요.', 'has', 'study', 'studied', 'studied', true, 'since last year'],
           ['Doyun [[빈칸]] in the school band for two years.', '도윤이는 2년 동안 학교 밴드에서 연주해 왔어요. (지금도 해요)', 'has', 'play', 'played', 'played', true, 'for two years(지금도 이어짐)'],
-          ['The children [[빈칸]] in the pool since ten o\'clock.', '아이들은 10시부터 지금까지 수영장에서 수영하고 있어요.', 'have', 'swim', 'swam', 'swum', true, 'since ten o\'clock'],
+          ['The children [[빈칸]] in the pool since ten o\'clock.', '아이들은 10시부터 지금까지 수영장에 머물고 있어요.', 'have', 'stay', 'stayed', 'stayed', true, 'since ten o\'clock'],
           ['It [[빈칸]] a lot since this morning.', '오늘 아침부터 지금까지 눈이 많이 내리고 있어요.', 'has', 'snow', 'snowed', 'snowed', true, 'since this morning'],
           ['My uncle [[빈칸]] at this company for six months.', '우리 삼촌은 6개월 동안 이 회사에서 일해 왔어요. (지금도 일해요)', 'has', 'work', 'worked', 'worked', true, 'for six months(지금도 이어짐)'],
           ['We [[빈칸]] many photos since we arrived here.', '우리는 여기 도착한 뒤로 지금까지 사진을 많이 찍었어요.', 'have', 'take', 'took', 'taken', true, 'since we arrived here'],
@@ -397,7 +397,7 @@ Tutor.registerUnit({
         }
         var pick = R.choices(correct, Object.keys(reason));
         return {
-          type: 'choice', concept: perfect ? 2 : 4,
+          type: 'choice', concept: perfect ? (/^(since|for) /.test(clue) ? 2 : 1) : 4,
           q: '우리말에 맞게 빈칸에 알맞은 것을 고르세요.\n\n' + it[0] + '\n(' + it[1] + ')',
           choices: pick.choices,
           answer: pick.answer,

@@ -39,7 +39,7 @@ Tutor.registerUnit({
     },
     {
       title: 'the + 최상급 + in / of: 가장 ~한',
-      body: '셋 이상 가운데 "가장 ~한"을 말할 때는 **the + 최상급**을 써요. 범위는 in이나 of로 나타내요.\n\n| 범위 | 쓰는 말 | 예문 |\n|---|---|---|\n| 장소·무리(하나의 집단) | **in** + 단수 명사 | Junho is **the tallest** boy **in** my class. |\n| 여럿 가운데 | **of** + 복수 명사·수 | This is **the biggest** box **of** the three. |\n\n- Winter is **the coldest** season **of** the year. (한 해의 여러 계절 가운데)\n- She is **the best** singer **in** our school.\n\n> 💡 in 뒤에는 "my class, the world, Korea"처럼 한 덩어리 장소나 집단이, of 뒤에는 "the three, all the students"처럼 여럿이 와요.',
+      body: '셋 이상 가운데 "가장 ~한"을 말할 때는 **the + 최상급**을 써요. 범위는 in이나 of로 나타내요.\n\n| 범위 | 쓰는 말 | 예문 |\n|---|---|---|\n| 장소·무리(하나의 집단) | **in** + 단수 명사 | Junho is **the tallest** boy **in** my class. |\n| 여럿 가운데 | **of** + 복수 명사·수 | This is **the biggest** box **of** the three. |\n\n- Winter is **the coldest** season **of** the year. (한 해의 여러 계절 가운데)\n- She is **the best** singer **in** our school.\n\n> 💡 in 뒤에는 "my class, the world, Korea"처럼 한 덩어리 장소나 집단이, of 뒤에는 "the three, all the students"처럼 여럿이 와요. of the year, of the week도 "한 해(한 주)를 이루는 여러 계절·날 가운데"라는 뜻이라 of를 써요.',
       easy: '달리기 경주의 시상대를 생각해 보세요. 1등은 딱 한 명이라서 정해진 하나를 가리키는 **the**를 붙여요: the fastest.\n\n그리고 "어디에서 1등이야?"를 말해 줘요. 우리 반이라는 한 곳에서라면 **in** my class, 다섯 명 가운데라면 **of** the five예요.',
       check: {
         type: 'choice',
@@ -153,9 +153,9 @@ Tutor.registerUnit({
     {
       id: 'p6', level: 1, type: 'short', check: 'text', concept: 2,
       q: '빈칸에 알맞은 한 낱말을 쓰세요.\n\nJunho is the fastest runner [[빈칸]] our school.',
-      answer: ['in'],
+      answer: ['in', 'at'],
       wrong: [{ a: 'of', why: 'our school은 한 덩어리 장소(집단)예요. 장소·집단 앞에는 in을 써요.' }, { a: 'than', why: 'than은 비교급과 함께 써요. 최상급의 범위는 in이나 of로 나타내요.' }],
-      explain: 'our school(우리 학교)은 하나의 장소·집단이므로 **in**을 써요. (준호는 우리 학교에서 가장 빠른 달리기 선수예요.)',
+      explain: 'our school(우리 학교)은 하나의 장소·집단이므로 **in**을 써요. (준호는 우리 학교에서 가장 빠른 달리기 선수예요.) 학교처럼 장소를 나타낼 때는 at our school이라고도 해요.',
     },
     {
       id: 'p7', level: 1, type: 'choice', concept: 3,
@@ -245,7 +245,7 @@ Tutor.registerUnit({
     },
     {
       id: 'a4', level: 3, type: 'choice', concept: 4,
-      q: '다음 글을 읽고, 글의 내용과 맞는 문장을 고르세요.\n\nOur class voted for our field trip place. The zoo got 9 votes. The science museum got 14 votes. The art museum got 6 votes. So we are going to the science museum!',
+      q: '다음 글을 읽고, 글의 내용과 맞는 문장을 고르세요.\n\nOur class voted to choose our field trip place. The zoo got 9 votes. The science museum got 14 votes. The art museum got 6 votes. So we are going to the science museum!',
       choices: ['The science museum was the most popular place.', 'The zoo was more popular than the science museum.', 'The art museum was more popular than the zoo.', 'The zoo was the least popular place.'],
       answer: 0,
       why: ['', '동물원 9표는 과학관 14표보다 적어요.', '미술관 6표는 동물원 9표보다 적어요.', '가장 적은 표를 받은 곳은 미술관(6표)이에요.'],
@@ -347,7 +347,7 @@ Tutor.registerUnit({
           ['fast', 'faster', 'fastest', 'more fast', 'most fast', 'A cheetah is [[빈칸]] than a lion.', 'Seojun is the [[빈칸]] runner in our school.'],
           ['large', 'larger', 'largest', 'more large', 'most large', 'This park is [[빈칸]] than that one.', 'This is the [[빈칸]] park in our town.'],
           ['expensive', 'more expensive', 'most expensive', 'expensiver', 'expensivest', 'This watch is [[빈칸]] than that one.', 'This is the [[빈칸]] watch in the shop.'],
-          ['interesting', 'more interesting', 'most interesting', 'interestinger', 'interestingest', 'This book is [[빈칸]] than the movie.', 'Science is the [[빈칸]] subject for me.'],
+          ['interesting', 'more interesting', 'most interesting', 'interestinger', 'interestingest', 'This book is [[빈칸]] than the movie.', 'For me, science is the [[빈칸]] subject of all.'],
           ['popular', 'more popular', 'most popular', 'popularer', 'popularest', 'Soccer is [[빈칸]] than baseball in my class.', 'Pizza is the [[빈칸]] food in our school.'],
           ['difficult', 'more difficult', 'most difficult', 'difficulter', 'difficultest', 'The second question was [[빈칸]] than the first one.', 'This is the [[빈칸]] puzzle of all.'],
           ['good', 'better', 'best', 'gooder', 'goodest', 'Your idea is [[빈칸]] than mine.', 'This is the [[빈칸]] song of the year.'],
@@ -362,12 +362,12 @@ Tutor.registerUnit({
         var pick = R.choices(correct, [other, it[0], bad], 4);
         var reasons = {};
         reasons[other] = useSup ? '비교급이에요. the와 in/of가 있어 "가장 ~한"을 말하므로 최상급을 써요.' : '최상급이에요. than으로 두 대상을 비교할 때는 비교급을 써요.';
-        reasons[it[0]] = '원급이에요. ' + (useSup ? 'the + 최상급' : '비교급 + than') + '이 필요해요.';
+        reasons[it[0]] = '원급(바꾸지 않은 모양)이에요. ' + (useSup ? 'the + 최상급' : '비교급 + than') + '이 필요해요.';
         reasons[bad] = '규칙대로 쓰면 ' + it[0] + ' → ' + (useSup ? it[2] : it[1]) + '. 만드는 규칙을 다시 확인해 보세요.';
         var sentence = useSup ? it[6] : it[5];
         return {
           type: 'choice', concept: useSup ? 2 : 1,
-          q: '빈칸에 알맞은 말을 고르세요.\n\n' + sentence + ' (' + it[0] + ')',
+          q: '괄호 안의 낱말을 알맞은 형태로 바꾸어 빈칸에 넣으려고 해요. 알맞은 것을 고르세요.\n\n' + sentence + ' (' + it[0] + ')',
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : reasons[c]; }),
@@ -387,7 +387,7 @@ Tutor.registerUnit({
     { w: 'light', m: '가벼운', ex: 'This bag is light and small.', exm: '이 가방은 가볍고 작아요.' },
     { w: 'difficult', m: '어려운', ex: 'The last question was difficult.', exm: '마지막 문제가 어려웠어요.' },
     { w: 'season', m: '계절', ex: 'Fall is my favorite season.', exm: '가을은 내가 가장 좋아하는 계절이에요.' },
-    { w: 'vote', m: '투표하다; 표', ex: 'We voted for the class leader.', exm: '우리는 반장을 뽑으려고 투표했어요.' },
+    { w: 'vote', m: '투표하다; 표', ex: 'Which place did you vote for?', exm: '너는 어느 장소에 투표했니?' },
     { w: 'graph', m: '그래프', ex: 'The graph shows our favorite fruits.', exm: '그래프는 우리가 좋아하는 과일을 보여 줘요.' },
     { w: 'price', m: '가격', ex: 'What is the price of this cap?', exm: '이 모자의 가격은 얼마예요?' },
     { w: 'than', m: '~보다', ex: 'My sister is older than me.', exm: '우리 언니는 나보다 나이가 많아요.' },

@@ -349,15 +349,19 @@ Tutor.registerUnit({
         var bigName = acts[vals.indexOf(big)];
         var table = '| 활동 | 만족(편익) |\n|---|---|\n' + [0, 1, 2].map(function (i) { return '| ' + acts[i] + ' | ' + vals[i] + '점 |'; }).join('\n');
         var rational = vals[t] > big;
+        // 포기한 두 값의 합이 고른 활동의 편익과 같으면, 같은 틀린 답에 진단이 둘로 갈리지 않게 하나로 묶는다
+        var wrong = (a + b === vals[t])
+          ? [{ a: String(vals[t]), why: vals[t] + '점은 고른 활동의 편익이고, 포기한 두 활동의 만족을 더한 값이기도 해요. 기회비용은 포기한 것 중 가장 큰 것 하나의 가치예요.' }]
+          : [
+            { a: String(a + b), why: '포기한 것을 모두 더했어요. 하나만 할 수 있었으니 포기한 것 중 가장 큰 것 하나만 기회비용이에요.' },
+            { a: String(vals[t]), why: vals[t] + '점은 고른 활동의 편익이에요. 기회비용은 포기한 것 중 가장 큰 가치예요.' },
+          ];
+        wrong.push({ a: String(small), why: '포기한 것 중 가장 작은 것을 골랐어요. 기회비용은 가장 큰 것이에요.' });
         return {
           type: 'short', check: 'number', unit: '점', concept: 1,
           q: who + R.josa(who, '은/는') + ' 주말 오후에 다음 가운데 하나만 할 수 있어요(돈은 들지 않아요). ' + acts[t] + R.josa(acts[t], '을/를') + ' 골랐다면 기회비용은 몇 점일까요?\n\n' + table,
           answer: String(big),
-          wrong: [
-            { a: String(a + b), why: '포기한 것을 모두 더했어요. 하나만 할 수 있었으니 포기한 것 중 가장 큰 것 하나만 기회비용이에요.' },
-            { a: String(vals[t]), why: vals[t] + '점은 고른 활동의 편익이에요. 기회비용은 포기한 것 중 가장 큰 가치예요.' },
-            { a: String(small), why: '포기한 것 중 가장 작은 것을 골랐어요. 기회비용은 가장 큰 것이에요.' },
-          ],
+          wrong: wrong,
           explain: acts[t] + R.josa(acts[t], '을/를') + ' 고르면 나머지 두 활동을 포기해요. 그중 가장 큰 ' + bigName + '의 ' + big + '점이 기회비용이에요. ' +
             (rational ? '편익 ' + vals[t] + '점이 기회비용 ' + big + '점보다 크니 합리적인 선택이에요.' : '편익 ' + vals[t] + '점이 기회비용 ' + big + '점보다 작으니 합리적인 선택은 아니에요.'),
         };

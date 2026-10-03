@@ -16,7 +16,7 @@ Tutor.registerUnit({
     {
       title: '조건의 if와 if절의 현재시제',
       body: '**if**는 "만약 ~하면"이라는 **조건**을 나타내는 접속사예요. 조건을 말하는 부분을 **if절(조건절)**, 그 조건이 이루어졌을 때의 결과를 말하는 부분을 **주절**이라고 해요.\n\n- **If it rains** tomorrow, we **will stay** home. (내일 비가 오면 우리는 집에 있을 거예요.)\n- **If you hurry**, you **will catch** the bus. (서두르면 너는 버스를 탈 수 있을 거야.)\n\n내일의 일인데도 if절에는 will rain이 아니라 **rains(현재시제)**를 써요. if절은 "그렇다고 치면"이라는 조건만 세우고, 앞으로 일어날 결과는 주절의 **will**이 나타내기 때문이에요.\n\n주어가 3인칭 단수(he, she, it, Minsu …)이면 현재시제 동사에 -s/-es를 붙이는 것도 잊지 마세요: If **she calls** me, I will tell her.\n\n> 💡 if절이 앞에 오면 if절 끝에 쉼표(,)를 찍고, 뒤에 오면 쉼표 없이 써요. We will stay home **if it rains** tomorrow.\n\n> ⚠️ If it **will rain** tomorrow(✗) → If it **rains** tomorrow(○)',
-      easy: 'if 문장은 "약속 카드" 두 칸이라고 생각해 보세요.\n\n- 왼쪽 칸(조건): **숙제를 다 하면** — If you finish your homework\n- 오른쪽 칸(결과): **게임을 해도 될 거야** — you will play games\n\n미래 표시(will)는 오른쪽 결과 칸에만 한 번 붙여요. 왼쪽 조건 칸은 지금 이야기하듯 현재형(finish)으로 써요. 두 칸 모두에 will을 붙이면 미래 표시가 두 번 겹치는 셈이에요.',
+      easy: 'if 문장은 "약속 카드" 두 칸이라고 생각해 보세요.\n\n- 왼쪽 칸(조건): **숙제를 다 하면** — If you finish your homework\n- 오른쪽 칸(결과): **게임을 할 거야** — you will play games\n\n미래 표시(will)는 오른쪽 결과 칸에만 한 번 붙여요. 왼쪽 조건 칸은 지금 이야기하듯 현재형(finish)으로 써요. 두 칸 모두에 will을 붙이면 미래 표시가 두 번 겹치는 셈이에요.',
       check: {
         type: 'choice',
         q: '빈칸에 알맞은 말을 고르세요.\n\nIf it [[빈칸]] tomorrow, we will stay home.',
@@ -197,7 +197,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p10', level: 2, type: 'short', check: 'text', concept: 0,
-      q: '대화의 빈칸에 알맞은 한 낱말을 쓰세요.\n\nA: What will you do tomorrow?\nB: If it [[빈칸]] sunny, I will go hiking with my dad.',
+      q: '대화의 빈칸에 알맞은 be동사 한 낱말을 쓰세요.\n\nA: What will you do tomorrow?\nB: If it [[빈칸]] sunny, I will go hiking with my dad.',
       answer: ['is'],
       wrong: [
         { a: 'will be', why: '조건의 if절에는 앞으로의 일이라도 will을 쓰지 않아요. 현재시제 is를 써요.' },

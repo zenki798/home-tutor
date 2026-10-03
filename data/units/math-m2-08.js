@@ -247,7 +247,7 @@ Tutor.registerUnit({
         '**직사각형의 두 대각선은 길이가 같고, 서로 다른 것을 이등분해요.** 그래서 $\\overline{OA}=\\overline{OB}=\\overline{OC}=\\overline{OD}$예요.\n\n' +
         '(이유: $\\triangle ABC$와 $\\triangle DCB$에서 $\\overline{AB}=\\overline{DC}$, $\\angle B=\\angle C=90°$, $\\overline{BC}$는 공통이므로 SAS 합동이고 $\\overline{AC}=\\overline{DB}$예요.)\n\n' +
         '**평행사변형이 직사각형이 되는 조건**: 한 내각이 직각이거나, 두 대각선의 길이가 같아요.',
-      easy: '문틀이 똑바른 직사각형인지 확인할 때 목수는 두 대각선의 길이를 줄자로 재어 봐요. 두 대각선의 길이가 같으면 네 모서리가 모두 직각이에요.\n\n' +
+      easy: '문틀이 똑바른 직사각형인지 확인할 때 목수는 두 대각선의 길이를 줄자로 재어 봐요. 마주 보는 변의 길이가 같게 짠 틀(평행사변형)이라면, 두 대각선의 길이가 같을 때 네 모서리가 모두 직각이에요.\n\n' +
         '직사각형에서는 대각선이 만나는 점 O에서 네 꼭짓점까지의 거리가 모두 같아요. 그래서 $\\triangle OAB$, $\\triangle OBC$ 같은 삼각형이 모두 이등변삼각형이 돼요.',
       fig: quadFig('rect', { diag: true, ticks: [['O', 'A', 1], ['O', 'B', 1], ['O', 'C', 1], ['O', 'D', 1]], rights: [['B', 'A', 'C'], ['C', 'B', 'D'], ['D', 'C', 'A'], ['A', 'D', 'B']], offO: [0, 16], alt: '직사각형 ABCD 와 길이가 같은 두 대각선' }),
       check: {
@@ -513,7 +513,7 @@ Tutor.registerUnit({
       hint: '$\\triangle ABD$에서 $\\overline{AB}=\\overline{AD}$이고 $\\angle A=60°$예요.',
       wrong: [
         { a: '20', why: '대각선이 한 변의 2배라고 생각했어요. $\\triangle ABD$가 어떤 삼각형인지 살펴보세요.' },
-        { a: '5', why: '한 변의 길이는 $40\\div4=10$ cm예요. 다시 계산해 보세요.' },
+        { a: '5', why: '대각선 BD의 절반인 $\\overline{BO}$를 구했어요. $\\triangle ABD$가 정삼각형이므로 $\\overline{BD}$는 한 변의 길이 $40\\div4=10$ (cm)와 같아요.' },
       ],
       explain: '한 변의 길이는 $40\\div4=10$ (cm)예요. $\\triangle ABD$에서 $\\overline{AB}=\\overline{AD}$이므로 $\\angle ABD=\\angle ADB=(180°-60°)\\div2=60°$예요. 세 각이 모두 $60°$인 정삼각형이므로 $\\overline{BD}=10$ cm예요.',
     },
@@ -536,7 +536,7 @@ Tutor.registerUnit({
       hint: '$\\angle A+\\angle B$의 값을 먼저 떠올려 보세요.',
       wrong: [
         { a: '180', why: '$\\angle A+\\angle B=180°$까지 구했어요. $\\triangle ABP$에서는 그 절반을 써요.' },
-        { a: '45', why: '$\\angle PAB+\\angle PBA=90°$예요. $\\angle APB$는 $180°$에서 그 값을 빼요.' },
+        { a: '45', why: '$\\angle PAB+\\angle PBA=90°$를 한 번 더 반으로 나누었어요. $\\angle APB$는 $180°$에서 $90°$를 빼서 구해요.' },
       ],
       explain: '$\\angle A+\\angle B=180°$이므로 $\\angle PAB+\\angle PBA=\\frac{1}{2}(\\angle A+\\angle B)=90°$예요. $\\triangle ABP$에서 $\\angle APB=180°-90°=90°$예요. $\\angle A$의 크기와 관계없이 항상 직각이에요.',
     },
@@ -545,8 +545,8 @@ Tutor.registerUnit({
   deeper: [
     {
       title: '평행사변형이 쓰이는 곳',
-      body: '접이식 옷걸이, 자동차를 들어 올리는 잭, 탁상 스탠드의 팔에는 길이가 같은 막대 두 쌍을 마주 보게 이은 구조가 많아요. 이 구조는 모양이 바뀌어도 늘 평행사변형이어서(두 쌍의 대변의 길이가 같으면 평행사변형) 위아래 면이 계속 평행하게 움직여요.\n\n' +
-        '그래서 스탠드의 전등이나 잭의 받침이 기울지 않고 수평을 유지할 수 있어요.',
+      body: '열면 여러 층의 칸이 펼쳐지는 공구함이나 탁상 스탠드의 팔에는 길이가 같은 막대 두 쌍을 마주 보게 이은 구조가 많아요. 이 구조는 모양이 바뀌어도 늘 평행사변형이어서(두 쌍의 대변의 길이가 같으면 평행사변형) 마주 보는 막대가 계속 평행하게 움직여요.\n\n' +
+        '그래서 공구함의 칸이 기울지 않고 수평을 유지하고, 스탠드의 전등도 팔을 움직여도 같은 방향을 향할 수 있어요.',
     },
     {
       title: '사각형의 포함 관계와 다음 단원',
@@ -619,10 +619,11 @@ Tutor.registerUnit({
         var e1 = lin(p, q), e2 = lin(r, s);
         var ans = side ? L : 2 * L;
         var wrong = x === ans ? [] : [{ a: String(x), why: '$x$의 값을 구했어요. 이 값을 식에 넣어 길이를 구해요.' }];
-        if (!side) wrong.push({ a: String(L), why: '$\\overline{OA}$의 길이를 구했어요. $\\overline{AC}$는 그 2배예요.' });
-        else wrong.push({ a: String(2 * L), why: '두 변의 길이를 더했어요. 묻는 것은 $\\overline{AB}$ 하나의 길이예요.' });
+        if (!side) { if (L !== x) wrong.push({ a: String(L), why: '$\\overline{OA}$의 길이를 구했어요. $\\overline{AC}$는 그 2배예요.' }); }
+        else if (2 * L !== x) wrong.push({ a: String(2 * L), why: '두 변의 길이를 더했어요. 묻는 것은 $\\overline{AB}$ 하나의 길이예요.' });
         var lhs = (p - r === 1 ? '' : p - r === -1 ? '-' : String(p - r)) + 'x';
-        var solve = '$' + e1 + '=' + e2 + '$에서 $' + lhs + '=' + (s - q) + '$, $x=' + x + '$' + R.josa(x, '이에요/예요') + '.';
+        // 계수가 1 이면 "x=8, x=8" 처럼 같은 식이 두 번 나오지 않게 한 단계로 쓴다
+        var solve = '$' + e1 + '=' + e2 + '$에서 ' + (p - r === 1 ? '' : '$' + lhs + '=' + (s - q) + '$, ') + '$x=' + x + '$' + R.josa(x, '이에요/예요') + '.';
         return {
           type: 'short', check: 'number', unit: 'cm', concept: 0,
           q: side

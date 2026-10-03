@@ -276,7 +276,7 @@ Tutor.registerUnit({
       explain: '양변에 12를 곱하면 $4x-3(x-2)=12$예요. 괄호를 풀면 $4x-3x+6=12$, 곧 $x=6$이에요. (확인: $\\frac{6}{3}-\\frac{4}{4}=2-1=1$)',
     },
     {
-      id: 'p10', level: 2, type: 'short', check: 'number', unit: '년 후', concept: 5,
+      id: 'p10', level: 2, type: 'short', check: 'number', unit: '년', concept: 5,
       q: '지금 어머니의 나이는 42살, 딸의 나이는 12살이에요. 몇 년 후에 어머니의 나이가 딸의 나이의 2배가 될까요?',
       answer: '18',
       hint: '$x$년 후에는 두 사람 모두 $x$살씩 나이를 먹어요.',
@@ -321,7 +321,7 @@ Tutor.registerUnit({
       q: '$x$에 대한 일차방정식 $3x+a=x-5$의 해가 $x=2$일 때, 상수 $a$의 값을 구해 보세요.',
       answer: '-9',
       hint: '해는 방정식을 참이 되게 하는 값이에요. $x=2$를 넣어 보세요.',
-      wrong: [{ a: '9', why: '$6+a=-3$에서 6을 이항할 때 부호를 확인해 보세요. $a=-3-6$이에요.' }],
+      wrong: [{ a: '3', why: '$6+a=-3$에서 6을 이항할 때 부호를 바꾸지 않았어요. 이항하면 부호가 바뀌어 $a=-3-6$이에요.' }],
       explain: '$x=2$가 해이므로 넣으면 등식이 참이에요. $3\\times2+a=2-5$, $6+a=-3$, 곧 $a=-9$예요.',
     },
     {
@@ -540,7 +540,7 @@ Tutor.registerUnit({
             type: 'short', check: 'number', concept: 0,
             q: '$x$에 대한 일차방정식 $' + R.fmt.poly([c, 0]) + '+a=' + R.fmt.poly([d, e]) + '$의 해가 $x=' + s + '$일 때, 상수 $a$의 값을 구해 보세요.',
             answer: String(aVal),
-            wrong: [{ a: String(-aVal), why: '$' + left + '+a=' + right + '$에서 $' + left + '$' + R.josa(left, '을/를') + ' 이항할 때 부호를 확인해 보세요. $a=' + right + R.fmt.signed(-left) + '$' + R.josa(left, '이에요/예요') + '.' }],
+            wrong: [{ a: String(right + left), why: '$' + left + '+a=' + right + '$에서 $' + left + '$' + R.josa(left, '을/를') + ' 이항할 때 부호를 바꾸지 않았어요. 이항하면 부호가 바뀌어 $a=' + right + R.fmt.signed(-left) + '$' + R.josa(left, '이에요/예요') + '.' }],
             hint: '해는 방정식을 참이 되게 하는 값이에요. $x=' + s + '$' + R.josa(s, '을/를') + ' 넣어 보세요.',
             explain: '$x=' + s + '$' + R.josa(s, '이/가') + ' 해이므로 넣으면 등식이 참이에요. $' + c + '\\times' + R.fmt.paren(s) + '+a=' + (d === 1 ? '' : d === -1 ? '-' : d + '\\times') + R.fmt.paren(s) + R.fmt.signed(e) + '$, 곧 $' + left + '+a=' + right + '$' + R.josa(right, '이에요/예요') + '. ' +
               '따라서 $a=' + right + R.fmt.signed(-left) + '=' + aVal + '$' + R.josa(aVal, '이에요/예요') + '.',

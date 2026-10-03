@@ -417,7 +417,7 @@ Tutor.registerUnit({
       q: '반지름의 길이가 3 cm인 구와, 밑면의 반지름의 길이가 3 cm인 원뿔의 부피가 같아요. 원뿔의 높이는 몇 cm일까요?',
       answer: '12',
       hint: '두 부피를 식으로 쓰고 같다고 놓아요.',
-      wrong: [{ a: '4', why: '$\\dfrac{1}{3}$을 양쪽에서 맞추지 않았어요. $36\\pi=\\dfrac{1}{3}\\times9\\pi\\times h$에서 $h$를 다시 구해 보세요.' }],
+      wrong: [{ a: '4', why: '원뿔의 부피에서 $\\dfrac{1}{3}$을 빠뜨렸어요. $9\\pi\\times h=36\\pi$가 아니라 $\\dfrac{1}{3}\\times9\\pi\\times h=36\\pi$, 곧 $3\\pi h=36\\pi$에서 $h$를 구해요.' }],
       explain: '구의 부피는 $\\dfrac{4}{3}\\pi\\times3^{3}=36\\pi$예요. 원뿔의 부피 $\\dfrac{1}{3}\\times\\pi\\times3^{2}\\times h=3\\pi h$가 $36\\pi$와 같으므로 $h=12$ (cm)예요.',
     },
     {

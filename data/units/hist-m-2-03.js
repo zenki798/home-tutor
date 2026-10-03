@@ -382,7 +382,8 @@ Tutor.registerUnit({
             return { t: o.p, why: o.p + R.josa(o.p, '은/는') + ' ' + o.d };
           }));
         } else {
-          q = '**' + me.p + '**' + R.josa(me.p, '과/와') + ' 관계 깊은 일은 무엇일까요?';
+          // "관계 깊은 일"로 물으면 '계백의 결사대를 물리쳤다'(김유신)도 계백과 관계 깊게 읽히므로, 그 인물이 한 일을 묻는다
+          q = '**' + me.p + '**' + R.josa(me.p, '이/가') + ' 한 일은 무엇일까요?';
           opts = [{ t: me.d, why: '' }].concat(others.map(function (o) {
             return { t: o.d, why: '이것은 ' + o.p + '에 대한 설명이에요.' };
           }));

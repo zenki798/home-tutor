@@ -385,7 +385,7 @@ Tutor.registerUnit({
       fig: M107.seg([['A', 0], ['M', 1 / 3], ['N', 2 / 3], ['B', 1]], [[0, 1 / 3], [1 / 3, 2 / 3], [2 / 3, 1]], '선분 AB를 삼등분하는 두 점 M, N'),
       answer: '16',
       wrong: [{ a: '8', why: '$\\overline{AM}$ 하나의 길이만 구했어요. $\\overline{AN}$은 $\\overline{AM}$ 두 개 길이예요.' }, { a: '12', why: '반으로 나누었어요. 세 부분으로 똑같이 나누면 한 부분은 8 cm예요.' }],
-      explain: '$\\overline{AM}=\\overline{MN}=\\overline{NB}=24\\div3=8$ (cm)이므로 $\\overline{AN}=8+8=16$ (cm)이에요.',
+      explain: '$\\overline{AM}=\\overline{MN}=\\overline{NB}=24\\div3=8$ (cm)이므로 $\\overline{AN}=8+8=16$ (cm)예요.',
     },
     {
       id: 'p5', level: 1, type: 'choice', concept: 2,
@@ -579,7 +579,7 @@ Tutor.registerUnit({
             q: pre + '$\\overline{AB}=' + AB + '$ cm일 때 $\\overline{MN}$의 길이는 몇 cm일까요?',
             answer: String(k),
             wrong: [{ a: String(2 * k), why: '$\\overline{MB}$의 길이를 구했어요. 점 N이 선분 MB의 중점이니 한 번 더 반으로 나눠요.' }],
-            explain: '$\\overline{MB}=\\frac{1}{2}\\overline{AB}=' + (2 * k) + '$ (cm)이고, $\\overline{MN}=\\frac{1}{2}\\overline{MB}=' + k + '$ (cm)' + R.josa(k, '이에요/예요') + '.',
+            explain: '$\\overline{MB}=\\frac{1}{2}\\overline{AB}=' + (2 * k) + '$ (cm)이고, $\\overline{MN}=\\frac{1}{2}\\overline{MB}=' + k + '$ (cm)예요.',
           };
         }
         if (v === 1) {
@@ -588,7 +588,7 @@ Tutor.registerUnit({
             q: pre + '$\\overline{AB}=' + AB + '$ cm일 때 $\\overline{AN}$의 길이는 몇 cm일까요?',
             answer: String(3 * k),
             wrong: [{ a: String(2 * k), why: '$\\overline{AM}$의 길이만 구했어요. $\\overline{AN}=\\overline{AM}+\\overline{MN}$이에요.' }, { a: String(k), why: '$\\overline{MN}$의 길이예요. 여기에 $\\overline{AM}$을 더해야 해요.' }],
-            explain: '$\\overline{AM}=\\frac{1}{2}\\times' + AB + '=' + (2 * k) + '$ (cm), $\\overline{MN}=\\frac{1}{2}\\times' + (2 * k) + '=' + k + '$ (cm)이므로 $\\overline{AN}=' + (2 * k) + '+' + k + '=' + (3 * k) + '$ (cm)' + R.josa(3 * k, '이에요/예요') + '.',
+            explain: '$\\overline{AM}=\\frac{1}{2}\\times' + AB + '=' + (2 * k) + '$ (cm), $\\overline{MN}=\\frac{1}{2}\\times' + (2 * k) + '=' + k + '$ (cm)이므로 $\\overline{AN}=' + (2 * k) + '+' + k + '=' + (3 * k) + '$ (cm)예요.',
           };
         }
         return {
@@ -596,7 +596,7 @@ Tutor.registerUnit({
           q: pre + '$\\overline{MN}=' + k + '$ cm일 때 $\\overline{AB}$의 길이는 몇 cm일까요?',
           answer: String(AB),
           wrong: [{ a: String(2 * k), why: '$\\overline{MB}$의 길이까지만 구했어요. $\\overline{AB}=2\\overline{MB}$예요.' }],
-          explain: '$\\overline{MB}=2\\overline{MN}=' + (2 * k) + '$ (cm)이고, $\\overline{AB}=2\\overline{MB}=' + AB + '$ (cm)' + R.josa(AB, '이에요/예요') + '.',
+          explain: '$\\overline{MB}=2\\overline{MN}=' + (2 * k) + '$ (cm)이고, $\\overline{AB}=2\\overline{MB}=' + AB + '$ (cm)예요.',
         };
       },
     },

@@ -119,7 +119,7 @@
       spec.lines.push(['A', 'D', true]);
       spec.rights.push(['D', 'C', 'A']);
       spec.labels.push('D');
-      spec.off.D = [0, 15];
+      spec.off.D = o.bc ? [-11, -11] : [0, 15];   // 밑변 길이 글을 BC 가운데 아래에 두므로 D 이름은 안쪽 위로
     }
     if (o.ext) {
       pts.D = [1.45, 0];
@@ -129,7 +129,7 @@
       spec.off.D = [4, 15];
       spec.off.C = [0, 15];
     }
-    if (o.bc) spec.texts.push([[o.D ? 0.25 : 0.5, 0], o.bc, 0, 16]);
+    if (o.bc) spec.texts.push([[0.5, 0], o.bc, 0, 16]);   // 변 BC 전체의 길이이므로 BC 의 가운데 아래 (BD 아래에 두면 BD 의 길이로 읽힌다)
     spec.alt = o.alt || '두 변 AB, AC 의 길이가 같은 이등변삼각형 ABC';
     return geo(spec);
   }
@@ -212,7 +212,7 @@ Tutor.registerUnit({
         '예: 폭이 일정한 종이 테이프를 비스듬히 접으면 겹쳐진 부분은 이등변삼각형이에요. 접은 각과 엇각이 같아서 두 내각의 크기가 같아지기 때문이에요.\n\n' +
         '> 💡 세 내각의 크기가 모두 같은 삼각형은 세 변의 길이도 모두 같은 정삼각형이에요.',
       easy: '"같은 크기의 각이 마주 보는 변은 길이도 같다"라고 기억해요.\n\n' +
-        '시소의 양쪽을 같은 각도로 올린 지붕을 떠올려 보세요. 양쪽 경사가 같으면 꼭대기는 정확히 가운데에 오고, 양쪽 지붕의 길이도 같아져요.',
+        '양쪽 경사가 같은 세모 지붕을 떠올려 보세요. 양쪽 경사(밑각)가 같으면 꼭대기는 정확히 가운데에 오고, 양쪽 지붕의 길이도 같아져요.',
       fig: isoFig(55, { base: '55°', baseC: '55°', alt: '두 밑각이 55도로 같은 삼각형 ABC' }),
       check: {
         type: 'ox',
@@ -475,7 +475,7 @@ Tutor.registerUnit({
       hint: '$\\triangle BCD$도 이등변삼각형이에요. 어느 두 각이 같을까요?',
       wrong: [
         { a: '72', why: '$\\angle ABC$ 전체를 구했어요. 여기서 $\\angle DBC$를 빼야 해요.' },
-        { a: '54', why: '$\\triangle BCD$에서 같은 두 각을 잘못 골랐어요. $\\overline{BC}=\\overline{BD}$이므로 $\\angle BDC=\\angle C$예요.' },
+        { a: '18', why: '$\\triangle BCD$에서 같은 두 각을 잘못 골랐어요($\\angle DBC=\\angle BDC=54°$로 계산). $\\overline{BC}=\\overline{BD}$이므로 같은 두 각은 $\\angle BDC=\\angle C$예요.' },
       ],
       explain: '$\\angle ABC=\\angle C=(180°-36°)\\div2=72°$예요. $\\triangle BCD$에서 $\\overline{BC}=\\overline{BD}$이므로 $\\angle BDC=\\angle C=72°$이고, $\\angle DBC=180°-72°\\times2=36°$예요. 그래서 $\\angle x=72°-36°=36°$예요.',
     },

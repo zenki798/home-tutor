@@ -182,7 +182,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p6', level: 1, type: 'short', concept: 2,
-      q: '괄호 안의 낱말을 알맞은 꼴로 바꿔 쓰세요.\n\nI had my bike [[빈칸]] at the shop. (fix)\n(나는 가게에서 자전거를 고쳤어요.)',
+      q: '괄호 안의 낱말을 알맞은 꼴로 바꿔 쓰세요.\n\nI had my bike [[빈칸]] at the shop. (fix)\n(나는 가게에 맡겨 자전거를 고쳤어요.)',
       answer: ['fixed'],
       wrong: [
         { a: 'fix', why: '자전거는 고치는 쪽이 아니라 고쳐지는 쪽이에요. 목적어가 당하는 쪽이면 과거분사 fixed를 써요.' },
@@ -259,12 +259,12 @@ Tutor.registerUnit({
       choices: [
         'Flour, water, and yeast are mixed together.',
         'The dough is left in a warm place to rise.',
-        'The dough is shaped into small rolls.',
+        'The risen dough is shaped into small rolls.',
         'The rolls are baked in a hot oven.',
       ],
       answer: [0, 1, 2, 3],
-      hint: '순서 말이 없으니 무엇이 먼저 있어야 다음 일을 할 수 있는지 따져 보세요. dough는 "반죽"이에요.',
-      explain: '재료를 섞어야 반죽(dough)이 생기고 → 반죽을 따뜻한 곳에 두어 부풀리고 → 작은 빵 모양으로 빚은 뒤 → 오븐에 구워요. 수동태 동사(are mixed, is left, is shaped, are baked)만 이어 봐도 과정이 보여요.',
+      hint: '순서 말이 없으니 무엇이 먼저 있어야 다음 일을 할 수 있는지 따져 보세요. dough는 "반죽", risen dough는 "부푼 반죽"이에요.',
+      explain: '재료를 섞어야 반죽(dough)이 생기고 → 반죽을 따뜻한 곳에 두어 부풀리고 → 부푼 반죽(the risen dough)을 작은 빵 모양으로 빚은 뒤 → 오븐에 구워요. 수동태 동사(are mixed, is left, is shaped, are baked)만 이어 봐도 과정이 보여요.',
     },
     {
       id: 'a2', level: 3, type: 'choice', concept: 1,

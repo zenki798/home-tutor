@@ -16,7 +16,7 @@ Tutor.registerUnit({
     {
       title: '일반동사와 3인칭 단수 현재형',
       body: '**일반동사**는 be동사를 뺀 나머지 동사예요(play, go, like, study …). 현재형은 늘 하는 일, 습관, 사실을 말할 때 써요.\n\n주어가 **3인칭 단수**(he, she, it, Minsu, my dog처럼 나와 너를 뺀 한 사람·한 개)이면 동사 끝에 -s나 -es를 붙여요.\n\n| 동사의 끝 | 규칙 | 예 |\n|---|---|---|\n| 대부분 | -s | play → plays, read → reads |\n| s, x, sh, ch, o | -es | watch → watches, wash → washes, go → goes, do → does |\n| 자음 + y | y를 i로 바꾸고 -es | study → studies, fly → flies |\n| 모음 + y | -s | play → plays, buy → buys |\n| have | 모양이 바뀜 | have → **has** |\n\n> 💡 I, you, we, they, 복수 명사가 주어이면 동사원형 그대로 써요. I play. / They play. / She **plays**.',
-      easy: '3인칭 단수는 "나도 아니고 너도 아닌, 딱 한 사람(한 개)"이에요. 이 주어가 오면 동사가 꼬리(-s)를 하나 달아요.\n\n- I like music. (나 → 꼬리 없음)\n- My sister **likes** music. (언니 한 명 → 꼬리 -s)\n\n꼬리를 붙이기 어려운 끝소리(watch, wash, go)에는 -es를, y로 끝나면 대부분 y를 i로 바꾸어 -ies를 달아요.',
+      easy: '3인칭 단수는 "나도 아니고 너도 아닌, 딱 한 사람(한 개)"이에요. 이 주어가 오면 동사가 꼬리(-s)를 하나 달아요.\n\n- I like music. (나 → 꼬리 없음)\n- My sister **likes** music. (언니 한 명 → 꼬리 -s)\n\n꼬리를 붙이기 어려운 끝소리(watch, wash, go)에는 -es를, 자음 + y로 끝나면(study, fly) y를 i로 바꾸어 -ies를 달아요. play처럼 모음 + y면 -s만 달아요.',
       check: {
         type: 'choice',
         q: '빈칸에 알맞은 말은 무엇일까요?\n\nMy brother [[blank]] TV every evening.',
@@ -234,11 +234,11 @@ Tutor.registerUnit({
     },
     {
       id: 'p11', level: 2, type: 'order', concept: 4,
-      q: '글을 읽고, 지아가 하는 일을 일어나는 순서대로 놓으세요.\n\nJia gets up at 6:30. First, she takes a shower. Then she eats breakfast with her family. She goes to school at 7:50. After school, she plays badminton with her friends. She always does her homework before dinner. She goes to bed at 10:30.',
+      q: '글을 읽고, 지아가 하는 일을 일어나는 순서대로 놓으세요.\n\nJia gets up at 6:30. First, she takes a shower. Then she eats breakfast with her family. She goes to school at 7:50. After school, she plays badminton with her friends. After that, she does her homework before dinner. She goes to bed at 10:30.',
       choices: ['takes a shower', 'eats breakfast', 'plays badminton', 'does her homework', 'goes to bed'],
       answer: [0, 1, 2, 3, 4],
-      hint: 'First, Then, After school, before dinner 같은 말에 표시해 보세요.',
-      explain: '샤워(First) → 아침 식사(Then) → 방과 후 배드민턴(After school) → 저녁 전 숙제(before dinner) → 10시 30분 잠자기 순서예요.',
+      hint: 'First, Then, After school, After that 같은 말에 표시해 보세요.',
+      explain: '샤워(First) → 아침 식사(Then) → 방과 후 배드민턴(After school) → 그 후 저녁 전에 숙제(After that, before dinner) → 10시 30분 잠자기 순서예요.',
     },
     {
       id: 'p12', level: 2, type: 'choice', concept: 4,
