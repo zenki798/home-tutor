@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'so + 형용사/부사 + that ~으로 원인과 결과를 한 문장에 담을 수 있어요.',
     'although/though로 기대와 반대되는 내용을 잇고, 원인과 결과를 설명하는 글을 요약할 수 있어요.',
   ],
-  standards: [],
+  standards: ['[9영02-05]', '[9영01-04]', '[9영02-07]'],
 
   concepts: [
     {

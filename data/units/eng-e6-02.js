@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'Get some rest.처럼 알맞은 조언을 할 수 있어요.',
     "That's too bad., Get well soon.으로 걱정하고 위로할 수 있어요.",
   ],
-  standards: [],
+  standards: ['[6영02-07]', '[6영01-04]', '[6영01-03]'],
 
   concepts: [
     {

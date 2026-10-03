@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'I think (that) ~, I hope (that) ~로 생각과 바람을 말할 수 있어요.',
     '이야기 속 인물의 기분을 단서로 추론하고 감정을 묘사하는 문장을 고를 수 있어요.',
   ],
-  standards: [],
+  standards: ['[9영02-02]', '[9영01-05]', '[9영02-06]'],
 
   concepts: [
     {

@@ -10,7 +10,7 @@ Tutor.registerUnit({
     '1이나 자연수에서 분수를 뺄 수 있어요.',
     '분모가 같은 대분수끼리 더하고 뺄 수 있어요.',
   ],
-  standards: [],
+  standards: ['[4수01-15]'],
 
   concepts: [
     {

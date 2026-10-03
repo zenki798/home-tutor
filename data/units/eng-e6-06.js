@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'will과 be going to로 계획을 말하고, 앞으로의 때를 나타내는 말을 쓸 수 있어요.',
     '계획을 소개하는 글을 읽고 내용을 찾을 수 있어요.',
   ],
-  standards: [],
+  standards: ['[6영02-06]', '[6영01-04]', '[6영02-08]'],
 
   concepts: [
     {

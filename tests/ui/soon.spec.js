@@ -114,3 +114,21 @@ test('단원이 모두 준비 중인 과정: 기다려 달라는 안내, 이어�
   await expect(page).toHaveURL(/#\/course\/kor-m2$/);
   expect(calls.units).toEqual([]);
 });
+
+test('교육과정 개정 반영 중인 단원: 목록에 "개정 반영 중" 표시, 열 수 있고 단원 위에 안내', async ({ page }) => {
+  const errors = collectErrors(page);
+  const calls = await open(page, { student: true, url: '/#/course/math-m2', catalogPatch: { rev: ['math-m2-02'] } });
+  const rows = page.locator('.unit-row');
+  await expect(rows.nth(1).locator('.rev-badge')).toHaveText('개정 반영 중');
+  await expect(rows.nth(0).locator('.rev-badge')).toHaveCount(0);
+  await rows.nth(1).click();
+  await waitReady(page);
+  await expect(page).toHaveURL(/#\/unit\/math-m2-02\/learn$/);
+  await expect(page.locator('.rev-note')).toContainText('새 교육과정에 맞춰 이 단원을 고치고 있어요');
+  await expect(page.locator('.concept-card:visible')).toHaveCount(1); // 공부는 그대로 된다
+  await page.evaluate(() => { location.hash = '#/unit/math-m2-01/learn'; });
+  await waitReady(page);
+  await expect(page.locator('.rev-note')).toHaveCount(0);
+  expect(errors).toEqual([]);
+  expect(calls.external).toEqual([]);
+});

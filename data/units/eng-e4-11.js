@@ -9,7 +9,7 @@ Tutor.registerUnit({
     'cake, bike, home, cute처럼 긴 모음 낱말을 읽을 수 있어요.',
     'sh, ch, th, wh, ck가 들어간 낱말을 읽고 알맞은 글자를 고를 수 있어요.',
   ],
-  standards: [],
+  standards: ['[4영01-04]', '[4영02-03]', '[4영01-01]'],
 
   concepts: [
     {

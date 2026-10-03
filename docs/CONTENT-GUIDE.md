@@ -66,7 +66,7 @@ Tutor.registerUnit({
   title: '분수의 덧셈과 뺄셈',          // 카탈로그의 단원 제목과 같게
   summary: '분모가 같은 분수끼리 더하고 빼는 방법을 배워요.',
   goals: ['…할 수 있어요.', '…'],      // 2~4개
-  standards: [],                       // 확실한 성취기준 코드만
+  standards: ['[4수01-15]'],           // 교육과정 지도(job-context)의 성취기준을 그대로 — 다르면 lint 경고, 화면에 "개정 반영 중"(docs/CURRICULUM-REVISION.md)
   concepts: [ … ],   // 3~6
   examples: [ … ],   // 1~3
   terms: [ … ],      // 3~10

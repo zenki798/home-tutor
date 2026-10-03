@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'on Saturday처럼 요일마다 하는 일을 말할 수 있어요.',
     '주간 계획표를 보고 요일 정보를 찾을 수 있어요.',
   ],
-  standards: [],
+  standards: ['[4영01-06]', '[4영02-08]', '[4영02-02]'],
 
   concepts: [
     {

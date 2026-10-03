@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'one, that of, those of로 반복을 피하고, one·another·the other(s)로 나누어 가리킬 수 있어요.',
     '도표를 설명하는 글을 읽고 요약하며 자료의 출처를 밝힐 수 있어요.',
   ],
-  standards: [],
+  standards: ['[9영02-07]', '[9영02-09]', '[9영01-08]'],
 
   concepts: [
     {

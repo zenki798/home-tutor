@@ -19,14 +19,11 @@ const TONE = {
   adult: '합니다체. 다시 배우는 어른을 존중하는 말투(아이 취급 금지), 생활 속 예',
 };
 
+// 지도 폴더: 기본은 curriculum/, 개정 작업 중에는 --map curriculum/revisions/<판> 으로 새 지도의 맥락을 본다
 function load() {
-  const dir = path.join(ROOT, 'curriculum');
-  const courses = [];
-  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.json')).sort()) {
-    const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
-    for (const c of j.courses) courses.push(Object.assign({ group: j.group }, c));
-  }
-  return courses;
+  const i = process.argv.indexOf('--map');
+  const dir = i > 0 && process.argv[i + 1] ? path.resolve(ROOT, process.argv[i + 1]) : undefined;
+  return require('./lib/curriculum').loadMap(dir).courses;
 }
 
 function main() {

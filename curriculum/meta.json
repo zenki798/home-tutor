@@ -1,0 +1,5 @@
+{
+  "version": "2022",
+  "name": "2022 개정 교육과정",
+  "note": "초·중·고는 교육부 고시 2022 개정 교육과정을 따른다. 개정되면 docs/CURRICULUM-REVISION.md 의 차례대로 이 파일과 curriculum/*.json 을 바꾼다."
+}

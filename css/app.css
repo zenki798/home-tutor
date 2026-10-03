@@ -1027,6 +1027,9 @@ html.no-profile .main { padding-bottom: 2rem; }
 /* ================= 준비 중 단원·과정 ================= */
 .soon-badge { background: var(--warn-wash); color: var(--warn-ink); font-size: 0.75rem; vertical-align: middle; }
 .teacher-card.is-soon { border-left-color: var(--line-strong); }
+/* 교육과정 개정 반영 중인 단원(카탈로그 rev) — 열 수는 있다 */
+.rev-badge { background: var(--warn-wash); color: var(--warn-ink); font-size: 0.75rem; vertical-align: middle; white-space: nowrap; }
+.rev-note { margin: 0.625rem 0 0; }
 .teacher-card.is-soon .t-icon { filter: grayscale(0.6); opacity: 0.75; }
 .unit-row.is-soon { background: var(--surface-2); box-shadow: none; border-style: dashed; color: var(--ink-2); cursor: default; }
 .unit-row.is-soon:hover { border-color: var(--line); box-shadow: none; }

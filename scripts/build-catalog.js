@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadUnitFile } = require('./validate-content.js');
+const { mapFiles, sameStandards } = require('./lib/curriculum');
 
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'data', 'catalog.js');
@@ -44,16 +45,27 @@ function fail(msg) {
 // 단원 파일이 실제로 실행되고 같은 id 의 단원을 등록하는가 (쓰다 끊긴 파일은 준비 중으로).
 // 화면처럼 엔진 전역(TutorMath·TutorText·TutorFig)이 있는 상태에서 실행한다 — 검사기(validate-content)와 같은 방식.
 // (엔진 없이 돌리면 맨 위에서 var F = TutorMath.F 를 쓰는 멀쩡한 단원이 준비 중이 된다)
-function unitReady(id) {
-  const file = path.join(UNITS, id + '.js');
-  if (!fs.existsSync(file)) return false;
+function loadReady(id, unitsDir) {
+  const file = path.join(unitsDir || UNITS, id + '.js');
+  if (!fs.existsSync(file)) return null;
   const r = loadUnitFile(file);
-  return !r.error && r.count === 1 && !!r.unit && r.unit.id === id;
+  return !r.error && r.count === 1 && !!r.unit && r.unit.id === id ? r.unit : null;
 }
 
-function build() {
-  const dir = path.join(ROOT, 'curriculum');
-  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).sort();
+// 교육과정 이름·판: curriculum/meta.json (개정 때 이 파일과 지도(curriculum/*.json)를 바꾼다 — docs/CURRICULUM-REVISION.md)
+function loadMeta(dir) {
+  const file = path.join(dir || path.join(ROOT, 'curriculum'), 'meta.json');
+  let m = {};
+  try { m = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { fail('curriculum/meta.json 을 읽지 못했어요: ' + e.message); }
+  if (!m.name || !m.version) fail('curriculum/meta.json 에 name·version 이 필요해요');
+  return m;
+}
+
+// opts(시험용): { curDir, unitsDir } — 기본은 curriculum/ 와 data/units/
+function build(opts) {
+  opts = opts || {};
+  const dir = opts.curDir || path.join(ROOT, 'curriculum');
+  const files = mapFiles(dir);
   const courses = [];
   const seen = new Set();
   for (const f of files) {
@@ -72,7 +84,10 @@ function build() {
         seen.add(u.id);
         const out = { id: u.id, title: u.title, summary: u.summary };
         if (u.sem === 1 || u.sem === 2) out.sem = u.sem;
-        if (!unitReady(u.id)) out.soon = true;
+        const unit = loadReady(u.id, opts.unitsDir);
+        if (!unit) out.soon = true;
+        // 개정 반영 필요: 단원 파일이 지도와 다른 성취기준으로 쓰였다(교육과정이 바뀐 뒤 아직 다시 쓰지 않음)
+        else if (!sameStandards(unit.standards, u.standards)) out.rev = true;
         return out;
       });
       const course = { id: c.id, subject: c.subject, level: c.level, grades: c.grades, title: c.title };
@@ -88,14 +103,16 @@ function build() {
     (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   const total = courses.reduce((s, c) => s + c.units.length, 0);
   const soon = courses.reduce((s, c) => s + c.units.filter((u) => u.soon).length, 0);
+  const rev = courses.reduce((s, c) => s + c.units.filter((u) => u.rev).length, 0);
+  const meta = loadMeta(dir);
   const head = '/* 자동 생성 — node scripts/build-catalog.js (원본: curriculum/*.json). 직접 고치지 않는다.\n' +
-    ' * 과정 ' + courses.length + ' · 단원 ' + total + ' (준비 중 ' + soon + ') */\n';
+    ' * 과정 ' + courses.length + ' · 단원 ' + total + ' (준비 중 ' + soon + (rev ? ' · 개정 반영 중 ' + rev : '') + ') */\n';
   const body = 'Tutor.registerCatalog({\n' +
-    '"version":1,"curriculum":"2022 개정 교육과정",\n' +
+    '"version":1,"curriculum":' + JSON.stringify(meta.name) + ',\n' +
     '"levels":' + JSON.stringify(LEVELS) + ',\n' +
     '"subjects":' + JSON.stringify(SUBJECTS) + ',\n' +
     '"courses":[\n' + courses.map((c) => JSON.stringify(c)).join(',\n') + '\n]});\n';
-  return { text: head + body, courses: courses.length, total, soon };
+  return { text: head + body, courses: courses.length, total, soon, rev };
 }
 
 function main() {
@@ -106,12 +123,12 @@ function main() {
       console.error('✗ data/catalog.js 가 최신이 아니에요 — node scripts/build-catalog.js 로 다시 만드세요');
       process.exit(1);
     }
-    console.log('✓ data/catalog.js 최신 (과정 ' + r.courses + ' · 단원 ' + r.total + ' · 준비 중 ' + r.soon + ')');
+    console.log('✓ data/catalog.js 최신 (과정 ' + r.courses + ' · 단원 ' + r.total + ' · 준비 중 ' + r.soon + (r.rev ? ' · 개정 반영 중 ' + r.rev : '') + ')');
     return;
   }
   fs.writeFileSync(OUT, r.text);
-  console.log('data/catalog.js — 과정 ' + r.courses + ' · 단원 ' + r.total + ' · 준비 중 ' + r.soon + ' · ' + Math.round(r.text.length / 1024) + 'KB');
+  console.log('data/catalog.js — 과정 ' + r.courses + ' · 단원 ' + r.total + ' · 준비 중 ' + r.soon + (r.rev ? ' · 개정 반영 중 ' + r.rev : '') + ' · ' + Math.round(r.text.length / 1024) + 'KB');
 }
 
 if (require.main === module) main();
-module.exports = { build, LEVELS, SUBJECTS };
+module.exports = { build, LEVELS, SUBJECTS, sameStandards, loadMeta };

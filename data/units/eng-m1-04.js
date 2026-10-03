@@ -10,7 +10,7 @@ Tutor.registerUnit({
     "didn't와 Did를 써서 과거시제의 부정문과 의문문을 만들 수 있어요.",
     'when, before, after로 일의 순서를 나타내며 일기를 읽고 쓸 수 있어요.',
   ],
-  standards: [],
+  standards: ['[9영02-04]', '[9영01-04]', '[9영02-08]'],
 
   concepts: [
     {

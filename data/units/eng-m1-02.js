@@ -10,7 +10,7 @@ Tutor.registerUnit({
     '빈도부사(always, usually, often, sometimes, never)를 알맞은 자리에 쓸 수 있어요.',
     '하루 일과를 소개하는 글에서 일이 일어나는 순서를 찾을 수 있어요.',
   ],
-  standards: [],
+  standards: ['[9영02-03]', '[9영01-02]', '[9영01-04]'],
 
   concepts: [
     {

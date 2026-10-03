@@ -18,7 +18,7 @@
       'Do you like ~?로 묻고 Yes, I do. / No, I don\'t.로 대답할 수 있어요.',
       '음식과 동물을 나타내는 낱말을 알아요.',
     ],
-    standards: [],
+    standards: ['[4영02-08]', '[4영01-06]', '[4영02-04]'],
 
     concepts: [
       {

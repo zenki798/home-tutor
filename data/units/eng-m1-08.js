@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'because와 so로 이유와 결과를 이어 말할 수 있어요.',
     '원인과 결과를 설명하는 글에서 논리적 관계를 찾을 수 있어요.',
   ],
-  standards: [],
+  standards: ['[9영02-05]', '[9영01-04]', '[9영01-02]'],
 
   concepts: [
     {

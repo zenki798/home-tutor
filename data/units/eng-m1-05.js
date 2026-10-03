@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'must, have to로 의무를 말하고, must not과 don\'t have to의 차이를 구별할 수 있어요.',
     'should로 충고하고, 규칙 안내문을 읽고 글의 목적을 파악할 수 있어요.',
   ],
-  standards: [],
+  standards: ['[9영02-04]', '[9영01-06]', '[9영02-03]'],
 
   concepts: [
     {

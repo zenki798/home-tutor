@@ -72,11 +72,19 @@ index.html · css/ · js/        화면과 엔진 (분수·채점, 수식 표시
 data/catalog.js                교육과정 지도 (학교급·학년·과목·과정·단원)
 data/units/<단원>.js            단원 내용 — 단원을 열 때 불러옵니다
 data/index/<과목>.js            질문 검색용 색인 (자동 생성)
-curriculum/                    교육과정 지도 원본
+curriculum/                    교육과정 지도 원본 (meta.json: 판·이름)
 docs/                          설계 계약(ARCHITECTURE) · 내용 작성 안내(CONTENT-GUIDE)
-scripts/                       내용 검사 · 색인/카탈로그 생성 · 아이콘
+scripts/                       내용 검사 · 색인/카탈로그 생성 · 아이콘 · 교육과정 개정 비교/적용/소식 확인
+tools/content-workflow.js      단원 작성·고쳐 쓰기·독립 검토 워크플로
 tests/                         Playwright 테스트
 ```
+
+## 교육과정이 바뀌면
+
+- 매주 교육부 보도자료를 자동으로 살펴 교육과정 개정 소식이 있으면 저장소에 **이슈**로 알려 줍니다.
+- 새 교육과정 지도를 넣으면 바뀐 단원을 자동으로 찾아, 사이트에 **"개정 반영 중"**(바뀌는 단원)·**"준비 중"**(새 단원)으로 표시하고 다시 쓸 작업 목록을 만듭니다.
+- 다시 쓴 단원은 표시가 저절로 사라지고, 배포되면 학생 기기에 자동으로 반영됩니다. 차례: [docs/CURRICULUM-REVISION.md](docs/CURRICULUM-REVISION.md)
+- AI 를 쓰지 않으므로 새 내용을 쓰는 일 자체는 사람(또는 작성 워크플로)이 합니다.
 
 ## 직접 돌려 보기
 

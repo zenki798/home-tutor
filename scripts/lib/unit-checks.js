@@ -188,6 +188,11 @@ function checkUnit(unit, ctx) {
   if (meta) {
     if (unit.course !== meta.course.id) err('course', '과정 id 가 달라요: ' + unit.course + ' (지도: ' + meta.course.id + ')');
     if (meta.unit && unit.title !== meta.unit.title) warn('title', '지도의 단원 제목과 달라요: "' + unit.title + '" / 지도 "' + meta.unit.title + '"');
+    // 성취기준은 지도와 똑같이 — 다르면 화면에 "개정 반영 중"으로 표시된다(build-catalog). 교육과정 개정 뒤 다시 쓴 단원은 새 성취기준으로 바꾼다
+    if (meta.unit && Array.isArray(meta.unit.standards) && !require('./curriculum').sameStandards(unit.standards, meta.unit.standards)) {
+      warn('standards', '성취기준이 교육과정 지도와 달라요: ' + JSON.stringify(unit.standards || []) + ' / 지도 ' + JSON.stringify(meta.unit.standards) +
+        ' — 지도의 성취기준을 그대로 써요(다르면 화면에 "개정 반영 중"으로 보여요)');
+    }
   } else if (ctx.requireMeta) {
     err('id', '교육과정 지도(curriculum/*.json)에 없는 단원이에요: ' + unit.id);
   }

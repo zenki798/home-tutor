@@ -1,0 +1,31 @@
+name: 교육과정 개정 소식 확인
+
+# 매주 월요일 아침(한국 시간 09:00) 교육부 보도자료에서 교육과정 개정 소식을 찾아, 새 소식이면 이슈를 연다.
+# 사이트(페이지)와 학생 기기에는 아무 영향이 없다 — 저장소 관리용 알림이다. 자세한 차례: docs/CURRICULUM-REVISION.md
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+# 이슈를 여는 데 필요한 권한만. 비밀(secrets)은 쓰지 않는다(기본 GITHUB_TOKEN 뿐).
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    name: 교육부 보도자료 확인
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # 목록을 읽지 못하면 실패로 끝나 저장소 주인에게 알림이 간다(페이지 모양이 바뀌었을 수 있음)
+      - name: 개정 소식 찾기 → 새 소식이면 이슈 열기
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/curriculum-watch.js --issue

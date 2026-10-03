@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'He\'s sleeping., She\'s singing.처럼 다른 사람이 하는 일을 말할 수 있어요.',
     'Are you ~ing?로 묻고 Yes, I am. / No, I\'m not.으로 답할 수 있어요.',
   ],
-  standards: [],
+  standards: ['[4영02-04]', '[4영02-08]', '[4영01-05]'],
 
   concepts: [
     {

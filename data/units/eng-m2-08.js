@@ -10,7 +10,7 @@ Tutor.registerUnit({
     '가목적어 it(find/make/think it + 형용사 + to부정사)을 쓸 수 있어요.',
     '동의·반대 표현을 쓰고, 주장하는 글의 짜임과 필자의 의도를 파악할 수 있어요.',
   ],
-  standards: [],
+  standards: ['[9영02-06]', '[9영01-06]', '[9영01-09]'],
 
   concepts: [
     {

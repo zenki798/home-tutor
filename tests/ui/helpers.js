@@ -29,6 +29,9 @@ function patchCatalog(patch) {
   (patch.soon || []).forEach(function (id) {
     c.courses.forEach(function (co) { co.units.forEach(function (u) { if (u.id === id) u.soon = true; }); });
   });
+  (patch.rev || []).forEach(function (id) {
+    c.courses.forEach(function (co) { co.units.forEach(function (u) { if (u.id === id) u.rev = true; }); });
+  });
   (patch.courses || []).forEach(function (co) { c.courses.push(co); });
   Tutor.registerCatalog(c);
 }
@@ -36,6 +39,7 @@ function patchCatalog(patch) {
 /**
  * @param {import('@playwright/test').Page|import('@playwright/test').BrowserContext} target
  * @param {object} [opt]
+ * catalogPatch: { soon: [단원id…], rev: [단원id…](개정 반영 중), courses: [과정…] }
  * @param {string[]} [opt.failUnits]  이 단원 파일은 처음 한 번 실패시킨다(다시 시도 확인용)
  * @param {boolean}  [opt.failIndex]  검색 색인을 모두 실패시킨다
  * @param {string[]} [opt.blockScripts] 이 경로(js/…)의 스크립트를 404 로 (엔진이 없을 때 화면이 버티는지)

@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'Can you tell me ~? / I wonder ~로 공손하게 묻고, 부가의문문으로 내용을 확인할 수 있어요.',
     '인터뷰 글을 읽고 질문과 답을 알맞게 연결할 수 있어요.',
   ],
-  standards: [],
+  standards: ['[9영02-10]', '[9영02-11]', '[9영01-02]'],
 
   concepts: [
     {

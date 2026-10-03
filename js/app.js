@@ -1322,7 +1322,8 @@
     if (p.solved) meta.push('문제 ' + p.solved + '개 · 정답률 ' + Math.round((100 * p.correct) / p.solved) + '%');
     return '<li><a class="unit-row status-' + st.key + '" href="#/unit/' + encodeURIComponent(u.id) + '/learn" data-unit="' + esc(u.id) + '">' +
       '<span class="u-num" aria-hidden="true">' + (i + 1) + '</span>' +
-      '<span class="u-body"><span class="u-title"><span class="sr-only">' + (i + 1) + '단원 </span>' + E.inline(u.title) + '</span>' +
+      '<span class="u-body"><span class="u-title"><span class="sr-only">' + (i + 1) + '단원 </span>' + E.inline(u.title) +
+      (u.rev ? ' <span class="badge rev-badge" title="새 교육과정에 맞춰 고치는 중">개정 반영 중</span>' : '') + '</span>' +
       (u.summary ? '<span class="u-sum">' + E.inline(u.summary) + '</span>' : '') +
       (meta.length ? '<span class="u-meta">' + esc(meta.join(' · ')) + '</span>' : '') + '</span>' +
       '<span class="u-status"><span aria-hidden="true">' + st.icon + '</span> ' + st.label + '</span></a></li>';
@@ -1466,7 +1467,13 @@
       var head = '<div class="unit-head">' +
         (course ? '<p class="crumb"><a href="#/course/' + encodeURIComponent(course.id) + '">' + esc(course.title) + '</a>' + (meta ? ' · ' + (meta.index + 1) + '단원' : '') + '</p>' : '') +
         '<h2 class="page-title" tabindex="-1">' + E.inline(unit.title) + '</h2>' +
-        (unit.summary ? '<p class="unit-sum">' + E.inline(unit.summary) + '</p>' : '') + '</div>' +
+        (unit.summary ? '<p class="unit-sum">' + E.inline(unit.summary) + '</p>' : '') +
+        /* 교육과정이 바뀐 뒤 아직 새 성취기준으로 다시 쓰지 않은 단원(카탈로그 rev — build-catalog 가 붙인다) */
+        (meta && meta.unit && meta.unit.rev ? '<p class="notice rev-note" role="note"><span aria-hidden="true">🔄</span> ' +
+          esc(say({ e: '새 교육과정에 맞춰 이 단원을 고치고 있어요. 공부는 그대로 할 수 있지만, 학교에서 배우는 내용과 조금 다를 수 있어요.',
+            m: '새 교육과정에 맞춰 이 단원을 고치고 있어요. 공부는 그대로 할 수 있지만, 학교에서 배우는 내용과 조금 다를 수 있어요.',
+            h: '새 교육과정에 맞춰 이 단원을 고치는 중입니다. 공부는 그대로 할 수 있지만, 학교에서 배우는 내용과 조금 다를 수 있습니다.' })) + '</p>' : '') +
+        '</div>' +
         '<nav class="unit-tabs" aria-label="단원 메뉴">' + UNIT_TABS.map(function (t) {
           return '<a href="#/unit/' + encodeURIComponent(unit.id) + '/' + t + '" data-tab="' + t + '"' + (t === tab ? ' aria-current="page"' : '') + '>' + TAB_LABELS[t] + '</a>';
         }).join('') + '</nav>';

@@ -239,7 +239,8 @@ function loadUnitFile(file, source) {
 const CATALOG_KEYS = ['version', 'curriculum', 'levels', 'subjects', 'courses'];
 const COURSE_KEYS = ['id', 'subject', 'level', 'grades', 'title', 'note', 'units'];
 // soon: 내용이 아직 없는 단원(화면에 '준비 중'으로 보인다) — build-catalog.js 가 파일 유무로 붙인다
-const CAT_UNIT_KEYS = ['id', 'title', 'summary', 'sem', 'soon'];
+// rev: 교육과정 개정 뒤 아직 새 성취기준으로 다시 쓰지 않은 단원(화면에 '개정 반영 중') — build-catalog.js 가 성취기준을 견줘 붙인다
+const CAT_UNIT_KEYS = ['id', 'title', 'summary', 'sem', 'soon', 'rev'];
 const ID_RE = /^[a-z][a-z0-9]*$/;
 const COURSE_ID_RE = /^[a-z][a-z0-9]*(-[a-z0-9]+)+$/;
 

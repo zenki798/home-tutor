@@ -10,7 +10,7 @@ Tutor.registerUnit({
     'wash, cut, mix, put, pour, bake 같은 요리 동작 낱말을 알 수 있어요.',
     'How do you make it?으로 만드는 방법을 묻고, 설명을 읽고 순서대로 정리할 수 있어요.',
   ],
-  standards: [],
+  standards: ['[6영02-05]', '[6영01-06]', '[6영01-07]'],
 
   concepts: [
     {
