@@ -105,7 +105,7 @@ Tutor.registerUnit({
     { term: '소문자', def: '알파벳을 작게 쓴 글자예요. 예: a, b, c. 영어 낱말은 대부분 소문자로 써요.' },
     { term: '대문자와 소문자의 짝', def: '이름이 같은 대문자와 소문자예요. 예: A와 a, G와 g' },
     { term: '네 줄 칸', def: '영어 글자를 바른 크기로 쓰도록 줄 네 개를 그은 칸이에요. 소문자는 글자마다 쓰는 칸이 달라요.' },
-    { term: '위로 올라가는 글자', def: '네 줄 칸의 맨 윗줄까지 올라가는 소문자예요. b, d, f, h, k, l, t' },
+    { term: '위로 올라가는 글자', def: '네 줄 칸에서 가운데 칸보다 위로, 맨 윗줄 쪽까지 올라가는 소문자예요. b, d, f, h, k, l, t (t는 조금 덜 올라가요)' },
     { term: '아래로 내려가는 글자', def: '네 줄 칸의 맨 아랫줄까지 내려가는 소문자예요. g, j, p, q, y' },
   ],
 
@@ -148,7 +148,7 @@ Tutor.registerUnit({
       choices: ['h', 'a', 'g', 'o'],
       answer: 0,
       why: ['', 'a는 가운데 칸에만 쓰는 글자예요.', 'g는 아래로 내려가는 글자예요.', 'o는 가운데 칸에만 쓰는 글자예요.'],
-      explain: 'h는 b, d, f, k, l, t와 함께 맨 윗줄까지 올라가는 글자예요.',
+      explain: 'h는 b, d, f, k, l, t와 함께 위로 올라가는 글자예요. h는 맨 윗줄까지 올라가게 써요.',
     },
     {
       id: 'p5', level: 1, type: 'short', check: 'text', concept: 3,
@@ -377,7 +377,7 @@ Tutor.registerUnit({
         var g = up.indexOf(x) >= 0 ? 1 : down.indexOf(x) >= 0 ? 2 : 0;
         var j = 'lmnr'.indexOf(x) >= 0; // 엘·엠·엔·알만 받침이 있다
         var eun = j ? '은' : '는';
-        var choices = ['가운데 칸에만 써요.', '맨 윗줄까지 올라가게 써요.', '맨 아랫줄까지 내려가게 써요.'];
+        var choices = ['가운데 칸에만 써요.', '가운데 칸보다 위로 올라가게 써요.', '맨 아랫줄까지 내려가게 써요.'];
         var names = ['가운데 칸에만 쓰는 글자', '위로 올라가는 글자', '아래로 내려가는 글자'];
         var lists = ['a c e i m n o r s u v w x z', 'b d f h k l t', 'g j p q y'];
         var why = choices.map(function (c, i) {

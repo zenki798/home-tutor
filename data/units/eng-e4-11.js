@@ -25,7 +25,7 @@ Tutor.registerUnit({
     },
     {
       title: '긴 모음 낱말 읽기',
-      body: '**모음 + 자음 하나 + e** 꼴의 낱말을 읽어 볼까요? 모음마다 자주 만나는 낱말이에요.\n\n| 꼴 | 낱말 |\n|---|---|\n| a_e | c**a**k**e** (케이크), n**a**m**e** (이름), g**a**m**e** (게임) |\n| i_e | b**i**k**e** (자전거), f**i**v**e** (다섯), k**i**t**e** (연) |\n| o_e | h**o**m**e** (집), n**o**s**e** (코), r**o**s**e** (장미) |\n| u_e | c**u**t**e** (귀여운), c**u**b**e** (정육면체), t**u**b**e** (관, 튜브) |\n\n읽는 순서는 이래요.\n1. 끝에 e가 있는지 봐요.\n2. 그 앞의 모음을 알파벳 이름 소리로 길게 읽어요.\n3. 끝의 e는 소리 내지 않아요.',
+      body: '**모음 + 자음 하나 + e** 꼴의 낱말을 읽어 볼까요? 모음마다 자주 만나는 낱말이에요.\n\n| 꼴 | 낱말 |\n|---|---|\n| a_e | c**a**k**e** (케이크), n**a**m**e** (이름), g**a**m**e** (게임) |\n| i_e | b**i**k**e** (자전거), f**i**v**e** (다섯), k**i**t**e** (연) |\n| o_e | h**o**m**e** (집), n**o**s**e** (코), r**o**s**e** (장미) |\n| u_e | c**u**t**e** (귀여운), c**u**b**e** (정육면체), **u**s**e** (쓰다) |\n\n읽는 순서는 이래요.\n1. 끝에 e가 있는지 봐요.\n2. 그 앞의 모음을 알파벳 이름 소리로 길게 읽어요.\n3. 끝의 e는 소리 내지 않아요.',
       easy: '긴 모음 낱말은 모음이 알파벳 노래를 부르듯 자기 이름을 말해요.\n\n- five: i가 "I!" 하고 이름을 말해요.\n- home: o가 "O!" 하고 이름을 말해요.\n\n짧은 낱말 끝에 e가 붙어 있으면, 앞 모음이 이름을 말한다고 기억해 두세요.',
       check: {
         type: 'choice',
@@ -62,7 +62,7 @@ Tutor.registerUnit({
     },
     {
       title: '두 글자가 한 소리: wh, ck',
-      body: '**wh**: 낱말 앞에 오는 wh는 **w와 같은 소리**를 내요. h는 거의 들리지 않아요.\n- **wh**ale (고래), **wh**ite (하얀), **wh**eel (바퀴), **wh**at (무엇)\n\n**ck**: c와 k가 나란히 있어도 **k 소리 하나**만 나요. ck는 짧은 모음 바로 뒤, 낱말 끝에 자주 와요.\n- du**ck** (오리), so**ck** (양말), ba**ck** (등, 뒤), ne**ck** (목)\n\n| 두 글자 | 내는 소리 | 낱말 |\n|---|---|---|\n| wh | w 소리 | whale, white |\n| ck | k 소리 하나 | duck, sock |',
+      body: '**wh**: 낱말 앞에 오는 wh는 대부분 **w와 같은 소리**를 내요. h는 거의 들리지 않아요.\n- **wh**ale (고래), **wh**ite (하얀), **wh**eel (바퀴), **wh**at (무엇)\n- 다만 **who**(누구)처럼 h 소리가 나는 낱말도 몇 개 있어요.\n\n**ck**: c와 k가 나란히 있어도 **k 소리 하나**만 나요. ck는 짧은 모음 바로 뒤, 낱말 끝에 자주 와요.\n- du**ck** (오리), so**ck** (양말), ba**ck** (등, 뒤), ne**ck** (목)\n\n| 두 글자 | 내는 소리 | 낱말 |\n|---|---|---|\n| wh | w 소리 | whale, white |\n| ck | k 소리 하나 | duck, sock |',
       easy: 'wh의 h는 수줍음이 많아서 소리를 거의 내지 않아요. 그래서 whale은 w로 시작하는 낱말처럼 읽어요.\n\nck는 같은 소리를 내는 c와 k가 함께 있는 거예요. 둘이 같은 소리라서 한 번만 소리 내면 돼요. duck을 말할 때 k 소리를 두 번 내지 않아요.',
       check: {
         type: 'choice',
@@ -98,7 +98,7 @@ Tutor.registerUnit({
   ],
 
   terms: [
-    { term: '모음 글자', def: 'a, e, i, o, u 다섯 글자예요. 낱말마다 모음이 하나 이상 들어 있어요.' },
+    { term: '모음 글자', def: 'a, e, i, o, u 다섯 글자예요. 대부분의 낱말에는 모음 글자가 하나 이상 들어 있어요.' },
     { term: '짧은 모음', def: 'cap의 a, kit의 i처럼 짧게 나는 모음 소리예요. 끝에 e가 없는 짧은 낱말에서 자주 나요.' },
     { term: '긴 모음', def: '알파벳 이름을 부를 때와 같은 모음 소리예요. 예: cake의 a, five의 i, home의 o, cute의 u' },
     { term: '소리 나지 않는 e', def: 'cake, bike처럼 낱말 끝에 있으면서 소리를 내지 않는 e예요. 앞의 모음을 길게 소리 나게 해 줘요.' },
@@ -148,7 +148,7 @@ Tutor.registerUnit({
     {
       id: 'p5', level: 1, type: 'short', check: 'text', concept: 2,
       q: '빈칸에 알맞은 두 글자를 써 보세요.\n\nlun[[ch]] (점심)',
-      answer: ['ch'],
+      answer: ['ch', 'lunch'],
       wrong: [{ a: 'sh', why: 'lunsh가 아니라 lunch예요. 점심의 끝소리는 짧고 세게 터지는 ch 소리예요.' }],
       explain: '점심은 lun**ch**예요. 끝의 ch는 짧고 세게 터지는 소리예요.',
     },
@@ -308,7 +308,7 @@ Tutor.registerUnit({
         var pairs = [
           ['cap', 'cape'], ['tap', 'tape'], ['can', 'cane'], ['mad', 'made'], ['hat', 'hate'],
           ['kit', 'kite'], ['pin', 'pine'], ['bit', 'bite'], ['hid', 'hide'], ['dim', 'dime'],
-          ['hop', 'hope'], ['not', 'note'], ['rob', 'robe'], ['cub', 'cube'], ['cut', 'cute'], ['tub', 'tube'],
+          ['hop', 'hope'], ['not', 'note'], ['rob', 'robe'], ['cub', 'cube'], ['cut', 'cute'], ['us', 'use'],
         ];
         var k = R.int(0, pairs.length - 1);
         var correct = pairs[k][1];
@@ -336,12 +336,12 @@ Tutor.registerUnit({
       level: 1,
       title: '두 글자 소리 채우기',
       make: function (R) {
-        // [앞부분, 두 글자, 뒷부분, 뜻]
+        // [앞부분, 두 글자, 뒷부분, 뜻, (보기에서 뺄 두 글자 — 넣으면 아이에게 알맞지 않은 낱말이 되는 것)]
         var words = [
-          ['', 'sh', 'ip', '배'], ['', 'sh', 'op', '가게'], ['fi', 'sh', '', '물고기'], ['di', 'sh', '', '접시'], ['', 'sh', 'ell', '조개껍데기'],
+          ['', 'sh', 'ip', '배'], ['', 'sh', 'op', '가게'], ['fi', 'sh', '', '물고기'], ['di', 'sh', '', '접시', 'ck'], ['', 'sh', 'ell', '조개껍데기'],
           ['', 'ch', 'air', '의자'], ['', 'ch', 'eese', '치즈'], ['lun', 'ch', '', '점심'], ['', 'ch', 'ick', '병아리'], ['ben', 'ch', '', '긴 의자'],
           ['', 'th', 'ree', '셋'], ['', 'th', 'ank', '고마워하다'], ['ba', 'th', '', '목욕'], ['', 'th', 'is', '이것'], ['', 'th', 'at', '저것'],
-          ['', 'wh', 'ale', '고래'], ['', 'wh', 'ite', '하얀'], ['', 'wh', 'eel', '바퀴'],
+          ['', 'wh', 'ale', '고래'], ['', 'wh', 'ite', '하얀', 'sh'], ['', 'wh', 'eel', '바퀴'],
           ['du', 'ck', '', '오리'], ['so', 'ck', '', '양말'], ['ba', 'ck', '', '등, 뒤'], ['ne', 'ck', '', '목'],
         ];
         var desc = {
@@ -354,7 +354,7 @@ Tutor.registerUnit({
         var wd = R.pick(words);
         var correct = wd[1];
         var full = wd[0] + wd[1] + wd[2];
-        var pool = ['sh', 'ch', 'th', 'wh', 'ck'].filter(function (x) { return x !== correct; });
+        var pool = ['sh', 'ch', 'th', 'wh', 'ck'].filter(function (x) { return x !== correct && x !== wd[4]; });
         var pick = R.choices(correct, pool);
         var concept = correct === 'sh' || correct === 'ch' ? 2 : correct === 'th' ? 3 : 4;
         return {

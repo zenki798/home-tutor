@@ -315,7 +315,7 @@ Tutor.registerUnit({
   deeper: [
     {
       title: 'favorite과 favourite, fall과 autumn',
-      body: "영어는 나라마다 조금씩 다르게 쓰기도 해요.\n\n- 미국에서는 **favorite**, 영국에서는 **favourite**라고 써요. 뜻과 소리는 같아요.\n- 가을을 미국에서는 주로 **fall**, 영국에서는 주로 **autumn**이라고 해요.\n\n둘 다 바른 영어예요. 우리 교과서는 주로 미국식(favorite, fall)을 써요.",
+      body: "영어는 나라마다 조금씩 다르게 쓰기도 해요.\n\n- 미국에서는 **favorite**, 영국에서는 **favourite**이라고 써요. 뜻과 소리는 같아요.\n- 가을을 미국에서는 주로 **fall**, 영국에서는 주로 **autumn**이라고 해요.\n\n둘 다 바른 영어예요. 우리 교과서는 주로 미국식(favorite, fall)을 써요.",
     },
     {
       title: '좋아하는 활동을 말할 때 붙는 -ing',

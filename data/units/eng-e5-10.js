@@ -73,7 +73,7 @@
       },
       {
         title: '위치 묻고 답하기: Where is the bank?',
-        body: '장소가 어디에 있는지 물을 때는 **Where is ~?** 를 써요.\n\n- **Where is the bank?** 은행은 어디에 있어요?\n- **It\'s next to the park.** 공원 옆에 있어요.\n\n대답의 **It\'s** 는 **It is** 를 줄인 말이에요. 묻는 장소를 다시 말하지 않고 It 으로 받아요.\n\n- Where is the library? → **It\'s across from the hospital.**\n- Where is the bakery? → **It\'s between the bank and the school.**\n\n> 💡 Where 로 묻는 질문에는 Yes 나 No 로 답하지 않아요. 위치를 알려 줘요.',
+        body: '장소가 어디에 있는지 물을 때는 **Where is ~?** 를 써요.\n\n- **Where is the bank?** 은행은 어디에 있어요?\n- **It\'s next to the park.** 공원 옆에 있어요.\n\n대답의 **It\'s** 는 **It is** 를 줄인 말이에요. 묻는 장소를 다시 말하지 않고 It 으로 받아요.\n\n- Where is the library? → **It\'s across from the hospital.**\n- Where is the bakery? → **It\'s next to the bank.**\n\n> 💡 Where 로 묻는 질문에는 Yes 나 No 로 답하지 않아요. 위치를 알려 줘요.',
         easy: '길을 지나가다 누가 "은행이 어디 있어요?" 하고 물으면, 우리는 "공원 옆에 있어요."라고 답하지요. 은행이라는 말을 다시 하지 않아도 알아들어요.\n\n영어도 같아요. **Where is the bank?** 하고 물으면 **It\'s** next to the park. 하고 답해요. It 이 "그것(은행)"이에요.\n\n질문: Where is + 장소?\n대답: It\'s + 위치 말 + 기준 장소.',
         check: {
           type: 'choice',
@@ -90,7 +90,7 @@
       },
       {
         title: '무엇이 있는지 말하기: There is / There are',
-        body: '어떤 곳에 무엇이 **있다**고 말할 때는 **There is** 나 **There are** 로 시작해요.\n\n- 하나일 때: **There is a bakery** near my house. 우리 집 근처에 빵집이 하나 있어요.\n- 둘 이상일 때: **There are two beds** in my room. 내 방에 침대가 두 개 있어요.\n\n| 몇 개? | 쓰는 말 | 예 |\n|---|---|---|\n| 하나 | There **is** a(an) ~ | There is **a** park. |\n| 둘 이상 | There **are** ~s | There are **three** parks. |\n\n둘 이상일 때는 낱말 끝에 s 를 붙여요(bed → beds, park → parks). bakery 처럼 y 로 끝나면 y 를 i 로 바꾸고 es 를 붙여 **bakeries** 가 돼요.\n\n> 💡 near 는 "~ 근처에"라는 뜻이에요. There is a bank **near** the school. (학교 근처에 은행이 있어요.)',
+        body: '어떤 곳에 무엇이 **있다**고 말할 때는 **There is** 나 **There are** 로 시작해요.\n\n- 하나일 때: **There is a bakery** near my house. 우리 집 근처에 빵집이 하나 있어요.\n- 둘 이상일 때: **There are two beds** in my room. 내 방에 침대가 두 개 있어요.\n\n| 몇 개? | 쓰는 말 | 예 |\n|---|---|---|\n| 하나 | There **is** a(an) ~ | There is **a** park. |\n| 둘 이상 | There **are** ~s | There are **three** parks. |\n\n둘 이상일 때는 낱말 끝에 s 를 붙여요(bed → beds, park → parks). bakery, library 처럼 y 로 끝나고 y 바로 앞 글자가 a, e, i, o, u 가 아니면 y 를 i 로 바꾸고 es 를 붙여 **bakeries**, **libraries** 가 돼요. (toy 는 y 앞이 o 라서 그냥 toys 예요.)\n\n> 💡 near 는 "~ 근처에"라는 뜻이에요. There is a bank **near** the school. (학교 근처에 은행이 있어요.)',
         easy: '물건을 하나씩 손가락으로 세어 보세요.\n\n- 손가락 하나만 펴면 → There **is** a desk.\n- 손가락 두 개 이상 펴면 → There **are** two desks.\n\n하나면 is 와 a, 여럿이면 are 와 낱말 끝의 s 가 짝이에요.',
         check: {
           type: 'choice',
@@ -297,7 +297,7 @@
       },
       {
         id: 'a2', level: 3, type: 'choice', concept: 4,
-        q: '글을 읽고 물음에 답하세요.\n\nThere are three buildings in a row: a bank, a bakery, and a library. The bank is not next to the bakery.\n\nWhere is the library?',
+        q: '글을 읽고 물음에 답하세요.\n\nThere are three buildings in a row: a bank, a bakery, and a library. They are not in this order. The bank is not next to the bakery.\n\nWhere is the library?',
         choices: [
           "It's between the bank and the bakery.",
           "It's next to the bank, but not next to the bakery.",
@@ -473,13 +473,13 @@
     vocab: [
       { w: 'library', m: '도서관', ex: 'I borrow books from the library.', exm: '나는 도서관에서 책을 빌려요.' },
       { w: 'bank', m: '은행', ex: 'My mom goes to the bank on Friday.', exm: '우리 엄마는 금요일에 은행에 가세요.' },
-      { w: 'hospital', m: '병원', ex: 'The hospital is next to the park.', exm: '병원은 공원 옆에 있어요.' },
+      { w: 'hospital', m: '병원', ex: 'The hospital is across from the library.', exm: '병원은 도서관 맞은편에 있어요.' },
       { w: 'park', m: '공원', ex: 'We ride bikes in the park.', exm: '우리는 공원에서 자전거를 타요.' },
       { w: 'post office', m: '우체국', ex: 'I send a letter at the post office.', exm: '나는 우체국에서 편지를 보내요.' },
       { w: 'bakery', m: '빵집', ex: 'The bakery smells sweet.', exm: '그 빵집에서는 달콤한 냄새가 나요.' },
       { w: 'town', m: '마을, 동네', ex: 'There is a big library in my town.', exm: '우리 동네에는 큰 도서관이 있어요.' },
       { w: 'next to', m: '~ 바로 옆에', ex: 'Jiho sits next to me.', exm: '지호는 내 옆에 앉아요.' },
-      { w: 'across from', m: '(길 건너) ~ 맞은편에', ex: 'The bakery is across from the bank.', exm: '빵집은 은행 맞은편에 있어요.' },
+      { w: 'across from', m: '(길 건너) ~ 맞은편에', ex: 'The bakery is across from the park.', exm: '빵집은 공원 맞은편에 있어요.' },
       { w: 'between', m: '~ 사이에', ex: 'The bank is between the bakery and the library.', exm: '은행은 빵집과 도서관 사이에 있어요.' },
       { w: 'in front of', m: '~ 앞에', ex: 'There is a big tree in front of my school.', exm: '우리 학교 앞에 큰 나무가 있어요.' },
       { w: 'behind', m: '~ 뒤에', ex: 'The cat is hiding behind the sofa.', exm: '고양이가 소파 뒤에 숨어 있어요.' },

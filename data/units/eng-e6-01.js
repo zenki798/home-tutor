@@ -22,7 +22,7 @@ Tutor.registerUnit({
         q: 'What grade are you in?에 4학년 학생이 바르게 대답한 것은 무엇일까요?',
         choices: ["I'm in the fourth grade.", "I'm in the four grade.", "I'm four grade."],
         answer: 0,
-        why: ['', '학년은 순서를 나타내는 말로 말해요. four가 아니라 fourth예요.', 'in the와 fourth가 빠졌어요. I\'m in the fourth grade.처럼 말해요.'],
+        why: ['', '학년은 순서를 나타내는 말로 말해요. four가 아니라 fourth예요.', 'in the가 빠졌고, four가 아니라 순서를 나타내는 fourth를 써야 해요. I\'m in the fourth grade.처럼 말해요.'],
         explain: '학년은 "넷째"처럼 순서를 나타내는 말로 말해요. 4학년은 I\'m in the **fourth** grade.예요.',
       },
     },
@@ -42,7 +42,7 @@ Tutor.registerUnit({
     {
       title: '달 이름 (January ~ December)',
       body: '영어의 달 이름은 열두 개가 모두 달라서 하나씩 익혀야 해요. 달 이름은 사람 이름처럼 **첫 글자를 늘 대문자**로 써요.\n\n| 달 | 영어 | 달 | 영어 |\n|---|---|---|---|\n| 1월 | **January** | 7월 | **July** |\n| 2월 | **February** | 8월 | **August** |\n| 3월 | **March** | 9월 | **September** |\n| 4월 | **April** | 10월 | **October** |\n| 5월 | **May** | 11월 | **November** |\n| 6월 | **June** | 12월 | **December** |\n\n> 💡 9월부터 12월까지는 모두 **-ber**로 끝나요. Septem**ber**, Octo**ber**, Novem**ber**, Decem**ber**.',
-      easy: '달 이름을 세 개씩 네 묶음으로 나눠 외워 보세요.\n\n- 겨울·봄 시작: January, February, March\n- 봄: April, May, June\n- 여름: July, August, September\n- 가을·겨울: October, November, December\n\nJune(6월)과 July(7월)는 둘 다 J로 시작해서 헷갈리기 쉬워요. 짧은 June이 먼저예요.',
+      easy: '달 이름을 세 개씩 네 묶음으로 나눠 외워 보세요.\n\n- 1~3월: January, February, March\n- 4~6월: April, May, June\n- 7~9월: July, August, September\n- 10~12월: October, November, December\n\nJune(6월)과 July(7월)는 둘 다 J로 시작하고 글자 수도 같아서 헷갈리기 쉬워요. Ju**n**e의 n, Ju**l**y의 l을 눈여겨보세요. 6월이 June, 7월이 July예요.',
       check: {
         type: 'choice',
         q: '12월을 뜻하는 낱말은 무엇일까요?',
@@ -205,7 +205,7 @@ Tutor.registerUnit({
       q: '대화의 빈칸에 알맞은 말을 고르세요.\n\nA: Happy birthday, Minsu! This is for you.\nB: [[빈칸]]',
       choices: ['Wow! Thank you so much.', "You're welcome.", "That's okay.", "I'm in the sixth grade."],
       answer: 0,
-      why: ['', 'You\'re welcome.은 고맙다는 말에 대답할 때 써요. 선물을 받은 민수가 먼저 고마움을 말해야 해요.', 'That\'s okay.는 사과를 받아 줄 때 하는 말이에요.', '학년을 묻지 않았어요. 선물을 받았으니 고마움을 말해요.'],
+      why: ['', 'You\'re welcome.은 고맙다는 말에 대답할 때 써요. 선물을 받은 민수가 먼저 고마움을 말해야 해요.', 'That\'s okay.는 주로 사과를 받아 줄 때 "괜찮아."라고 하는 말이에요. 선물을 받았으면 고마움을 말해요.', '학년을 묻지 않았어요. 선물을 받았으니 고마움을 말해요.'],
       hint: '선물을 받은 사람이 할 말을 찾아보세요.',
       explain: 'A가 생일을 축하하며 선물을 주었으니, 민수는 **Wow! Thank you so much.**(와, 정말 고마워.)라고 답하는 것이 알맞아요.',
     },
@@ -243,7 +243,7 @@ Tutor.registerUnit({
       explain: '5월 5일 다음 날은 5월 6일이에요. 6일은 sixth이므로 **It\'s May sixth.**(줄여 쓰면 May 6th)가 알맞아요.',
     },
     {
-      id: 'a4', level: 3, type: 'choice', concept: 0,
+      id: 'a4', level: 3, type: 'choice', concept: 2,
       q: '글을 읽고 물음에 답하세요.\n\nHello, I\'m Seojun. I\'m in the sixth grade. My sister Hayun is in the third grade. Her birthday is March 2nd. My birthday is December 24th.\n\n글의 내용과 **맞지 않는** 것은 무엇일까요?',
       choices: ['서준이는 6학년이에요.', '하윤이는 3학년이에요.', '하윤이의 생일은 3월 2일이에요.', '서준이의 생일은 11월 24일이에요.'],
       answer: 3,
@@ -253,7 +253,7 @@ Tutor.registerUnit({
     },
     {
       id: 'a5', level: 3, type: 'order', concept: 4,
-      q: '생일 대화가 자연스럽게 이어지도록 순서대로 놓으세요.',
+      q: '생일 대화가 자연스럽게 이어지도록 순서대로 놓으세요. (민수가 먼저 생일 축하 인사를 하고, 두 사람이 한 번씩 번갈아 말해요.)',
       choices: ['Minsu: Happy birthday, Jia!', 'Jia: Thank you, Minsu.', 'Minsu: This is for you.', 'Jia: Wow, a cap! I like it.'],
       answer: [0, 1, 2, 3],
       hint: '민수와 지아가 번갈아 말해요. 선물을 보고 놀라는 말은 선물을 건넨 뒤에 나와요.',

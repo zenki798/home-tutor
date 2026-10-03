@@ -43,7 +43,7 @@ Tutor.registerUnit({
     },
     {
       title: 'a와 an',
-      body: "낱말이 **모음 소리**로 시작하면 a 대신 **an**을 써요. 모음 소리는 주로 a, e, i, o, u 글자가 내는 소리예요.\n\n| a를 쓰는 낱말 | an을 쓰는 낱말 |\n|---|---|\n| a book, a pencil, a ruler | an apple, an eraser, an orange |\n| a bag, a desk, a chair | an egg, an umbrella |\n\nIt's **an** apple. (그것은 사과야.)\nIt's **an** eraser. (그것은 지우개야.)\n\n모음 소리끼리 바로 이어지면 말하기 불편해서, 사이에 n을 넣어 부드럽게 이어 주는 거예요.\n\n> 💡 a, e, i, o, u로 시작하는 낱말은 대부분 모음 소리로 시작해서 an을 써요. 정확히는 첫 글자가 아니라 **첫소리**로 정해요(심화 학습에서 더 알아봐요).",
+      body: "낱말이 **모음 소리**로 시작하면 a 대신 **an**을 써요. 모음 소리는 주로 a, e, i, o, u 글자가 내는 소리예요.\n\n| a를 쓰는 낱말 | an을 쓰는 낱말 |\n|---|---|\n| a book, a pencil, a ruler | an apple, an eraser, an orange |\n| a bag, a desk, a chair | an egg, an umbrella |\n\nIt's **an** apple. (그것은 사과야.)\nIt's **an** eraser. (그것은 지우개야.)\n\na 다음에 모음 소리가 바로 이어지면 소리가 부딪혀 말하기 불편해요. an을 쓰면 n 소리가 두 소리를 부드럽게 이어 줘요.\n\n> 💡 a, e, i, o, u로 시작하는 낱말은 대부분 모음 소리로 시작해서 an을 써요. 정확히는 첫 글자가 아니라 **첫소리**로 정해요(심화 학습에서 더 알아봐요).",
       easy: '"a apple"과 "an apple"을 소리 내어 차례로 말해 보세요. a 다음에 바로 apple의 첫소리가 오면 소리가 부딪혀서 끊어지지요?\n\nan을 쓰면 n이 두 소리 사이에 다리를 놓아 주어서 매끄럽게 이어져요. 그래서 apple, egg, eraser처럼 모음 소리로 시작하는 낱말 앞에는 an을 써요.',
       check: {
         type: 'choice',
@@ -300,7 +300,7 @@ Tutor.registerUnit({
     },
     {
       id: 'a5', level: 3, type: 'choice', concept: 4,
-      q: "B가 든 물건은 정말 책상이에요. B의 대답으로 **옳지 않은** 것은 무엇일까요?\n\nA: Is it a desk?",
+      q: "A가 B 옆에 있는 물건을 보고 물어요. 그 물건은 정말 책상이에요. B의 대답으로 **옳지 않은** 것은 무엇일까요?\n\nA: Is it a desk?",
       choices: ["Yes, it's.", 'Yes, it is.', "Yes, it's a desk."],
       answer: 0,
       why: [
@@ -327,7 +327,7 @@ Tutor.registerUnit({
     },
     {
       q: '왜 apple 앞에는 a가 아니라 an을 써요?',
-      a: 'apple은 모음 소리로 시작해요. a 다음에 모음 소리가 바로 오면 소리가 부딪혀서 말하기 불편해서, n을 넣어 an apple이라고 해요. egg, eraser, orange, umbrella도 마찬가지예요.',
+      a: 'apple은 모음 소리로 시작해요. a 다음에 모음 소리가 바로 오면 소리가 부딪혀서 말하기 불편해요. 그래서 a 대신 an을 써서 an apple이라고 해요. egg, eraser, orange, umbrella도 마찬가지예요.',
     },
     {
       q: "Is it a ~?에 No라고 답하면 그걸로 끝이에요?",
@@ -371,7 +371,7 @@ Tutor.registerUnit({
         var pick = R.choices(ans, [wrongA, wrongB], 3);
         return {
           type: 'choice', concept: 2,
-          q: '지아가 손에 든 물건은 **' + it[1] + '**(' + w + ')' + R.josa(it[1], '이에요/예요') + ". What's this?에 알맞은 대답을 고르세요.",
+          q: '지아가 그림 카드를 손에 들고 있어요. 카드 속 그림은 **' + it[1] + '**(' + w + ')' + R.josa(it[1], '이에요/예요') + ". What's this?에 알맞은 대답을 고르세요.",
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === ans ? '' : reason[c]; }),
@@ -388,7 +388,7 @@ Tutor.registerUnit({
         var things = [['book', false], ['pencil', false], ['eraser', true], ['ruler', false], ['bag', false],
           ['desk', false], ['chair', false], ['apple', true], ['umbrella', true], ['clock', false]];
         var near = ['바로 옆에 있는 물건을 만지며', '바로 앞에 있는 물건에 손을 얹고'];
-        var far = ['교실 저쪽 멀리 있는 물건을 가리키며', '운동장 건너편 멀리 있는 물건을 가리키며'];
+        var far = ['교실 저쪽 멀리 있는 물건을 가리키며', '교실 맨 뒤쪽 멀리 있는 물건을 가리키며'];
         var who = R.pick(people);
         var isNear = R.bool();
         var how = isNear ? R.pick(near) : R.pick(far);
@@ -449,7 +449,7 @@ Tutor.registerUnit({
         var pick = R.choices(ans, wrongs);
         return {
           type: 'choice', concept: 4,
-          q: 'B가 든 물건은 **' + real[1] + '**(' + real[0] + ')' + R.josa(real[1], '이에요/예요') + '. 빈칸에 알맞은 대답을 고르세요.\n\nA: Is it ' + an(asked) + '?\nB: [[빈칸]]',
+          q: 'A가 B 옆에 있는 물건을 보고 물어요. 그 물건은 **' + real[1] + '**(' + real[0] + ')' + R.josa(real[1], '이에요/예요') + '. 빈칸에 알맞은 대답을 고르세요.\n\nA: Is it ' + an(asked) + '?\nB: [[빈칸]]',
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === ans ? '' : reason[c]; }),

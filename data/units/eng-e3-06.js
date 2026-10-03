@@ -231,7 +231,7 @@
           '',
           'open은 "열다"예요. 추울 때는 창문을 닫아야 하지요.',
           '뜻은 맞지만 please가 없어서 공손함이 덜해요.',
-          'your book은 "책"이에요. 닫아야 하는 것은 창문(the window)이에요.',
+          'your book은 "(네) 책"이에요. 닫아야 하는 것은 창문(the window)이에요.',
         ],
         hint: '"닫다"와 "창문"을 영어로 떠올리고, 공손하게 만드는 낱말을 붙여 보세요.',
         explain: '"닫다"는 close, "창문"은 the window예요. please를 붙이면 공손한 말이 되어 Close the window, please.예요.',
@@ -252,7 +252,10 @@
         q: '빈칸에 알맞은 낱말 하나를 쓰세요.\n\nClose [[your]] book. ((네) 책을 덮으세요.)',
         answer: ['your'],
         hint: '"너의"라는 뜻의 낱말이에요.',
-        wrong: [{ a: 'you', why: 'you는 "너"예요. "너의 책"이라고 할 때는 your를 써요.' }],
+        wrong: [
+          { a: 'you', why: 'you는 "너"예요. "너의 책"이라고 할 때는 your를 써요.' },
+          { a: 'the', why: 'Close the book.도 영어 문장은 되지만, 이 문제는 "(네) 책"이라고 했어요. "너의"는 your예요.' },
+        ],
         explain: '"너의"는 your예요. Close your book.은 "책을 덮으세요."라는 말이에요.',
       },
     ],
@@ -335,7 +338,7 @@
       },
       {
         q: 'Open the door.랑 Open your book.에서 the랑 your는 뭐가 달라요?',
-        a: 'the는 "그"처럼 서로 알고 있는 것을 가리킬 때 써요. 교실의 문은 하나라서 the door라고 해요.\n\nyour는 "너의"라는 뜻이에요. 책은 사람마다 따로 있으니 "네 책"이라는 뜻으로 your book이라고 해요.',
+        a: 'the는 "그"처럼 서로 알고 있는 것을 가리킬 때 써요. 교실에서 "그 문"이라고 하면 어느 문인지 서로 다 아니까 the door라고 해요.\n\nyour는 "너의"라는 뜻이에요. 책은 사람마다 따로 있으니 "네 책"이라는 뜻으로 your book이라고 해요.',
       },
       {
         q: '지시를 들으면 꼭 대답해야 해요?',

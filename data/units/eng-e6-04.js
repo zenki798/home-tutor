@@ -256,7 +256,7 @@ Tutor.registerUnit({
   deeper: [
     {
       title: '요리법(recipe)은 어떻게 생겼을까?',
-      body: '영어 요리법은 보통 두 부분으로 되어 있어요.\n\n1. **Ingredients(재료)** — 필요한 재료를 목록으로 적어요. 예: 2 apples, 1 cup of yogurt\n2. **Directions(만드는 방법)** — 명령문으로 할 일을 순서대로 적어요. 번호(1, 2, 3)를 붙이거나 First, Then, Finally를 써요.\n\n요리법뿐 아니라 종이접기, 화분에 씨앗 심기, 게임 방법을 설명할 때도 같은 방법을 써요.\n\n- First, put some soil in the pot. Then, put the seeds in the soil. Finally, water them.\n\n중학교에서는 After that, Before you start 같은 더 다양한 순서의 말을 배워요.',
+      body: '영어 요리법은 보통 두 부분으로 되어 있어요.\n\n1. **Ingredients(재료)** — 필요한 재료를 목록으로 적어요. 예: 2 apples, 1 cup of yogurt\n2. **Directions(만드는 방법)** — 명령문으로 할 일을 순서대로 적어요. 번호(1, 2, 3)를 붙이거나 First, Then, Finally를 써요.\n\n요리법뿐 아니라 종이접기, 화분에 씨앗 심기, 게임 방법을 설명할 때도 같은 방법을 써요.\n\n- First, put some soil in the pot. Then, put the seeds in the soil. Finally, water them.\n\n순서의 말에는 After that(그 뒤에)처럼 이 단원에서 배운 것 말고도 여러 가지가 있어요.',
     },
   ],
 
@@ -327,14 +327,18 @@ Tutor.registerUnit({
           ['mix flour, sugar, and eggs', 'make small balls', 'put the balls on a tray', 'bake them in the oven'],
           ['cut a banana', 'put it in a blender', 'pour some milk into the blender', 'mix them'],
           ['wash the potatoes', 'cut them', 'put them in the pot', 'pour some water into the pot'],
+          ['wash the strawberries', 'cut them', 'put them in a cup', 'pour some milk on them'],
         ];
+        // 세 단계로 줄일 때 빼도 글이 이어지는 단계 번호 (샌드위치에서 치즈 단계를 빼면 on the cheese 가 어색해지는 것처럼)
+        var DROPS = [[1, 2], [2], [2], [1], [1, 2], [1, 2]];
         var r = R.pick(RECIPES);
+        var canDrop = DROPS[RECIPES.indexOf(r)];
         var variant = R.int(0, 4);
         var words, steps;
         if (variant === 0) { words = ['First', 'Second', 'Third', 'Finally']; steps = r; }
         else {
           var mid = variant <= 2 ? 'Then' : 'Next';
-          var drop = variant % 2 === 1 ? 1 : 2;
+          var drop = variant % 2 === 1 ? canDrop[0] : canDrop[canDrop.length - 1];
           words = ['First', mid, 'Finally'];
           steps = r.filter(function (s, i) { return i !== drop; });
         }
@@ -360,7 +364,7 @@ Tutor.registerUnit({
     { w: 'mix', m: '섞다', ex: 'Mix the eggs and sugar.', exm: '달걀과 설탕을 섞으세요.' },
     { w: 'put', m: '넣다, 놓다', ex: 'Put the fruit in a bowl.', exm: '과일을 그릇에 담으세요.' },
     { w: 'pour', m: '붓다', ex: 'Pour the milk into the cup.', exm: '우유를 컵에 부으세요.' },
-    { w: 'bake', m: '(오븐에) 굽다', ex: 'We bake cookies on Saturday.', exm: '우리는 토요일에 쿠키를 구워요.' },
+    { w: 'bake', m: '(오븐에) 굽다', ex: 'We bake cookies every Saturday.', exm: '우리는 토요일마다 쿠키를 구워요.' },
     { w: 'make', m: '만들다', ex: 'How do you make it?', exm: '그것을 어떻게 만드니?' },
     { w: 'bowl', m: '그릇, 사발', ex: 'Put the rice in a bowl.', exm: '밥을 그릇에 담으세요.' },
     { w: 'oven', m: '오븐', ex: 'The bread is in the oven.', exm: '빵이 오븐 안에 있어요.' },

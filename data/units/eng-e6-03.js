@@ -273,7 +273,7 @@
         explain: '병원은 둘째 가로 길(two blocks)에서 큰길의 오른쪽 편에 있으니 오른쪽으로 돌아요(turn right). 오른쪽으로 돌면 지도의 아래쪽이 내 오른쪽인데, 병원은 길의 아래쪽에 있으므로 It\'s on your right.예요.',
       },
       {
-        id: 'a2', level: 3, type: 'choice', concept: 1,
+        id: 'a2', level: 3, type: 'choice', concept: 4,
         q: '지도를 보고 답하세요. 서준이가 Go straight one block and turn right.를 따라 걸어가고 있어요. 이때 Library(도서관)는 서준이의 어느 쪽에 있을까요?',
         fig: MAP,
         choices: ["It's on your left.", "It's on your right.", "It's behind you."],
@@ -283,7 +283,7 @@
         explain: '오른쪽으로 돈 서준이는 지도의 오른쪽을 바라보고 걸어요. 이때 지도의 위쪽이 서준이의 왼쪽이에요. 도서관은 길의 위쪽에 있으므로 **It\'s on your left.**예요.',
       },
       {
-        id: 'a3', level: 3, type: 'short', check: 'text', concept: 2,
+        id: 'a3', level: 3, type: 'short', check: 'text', concept: 4,
         q: '지도를 보고 출발점에서 Bakery(빵집)로 가는 안내를 완성하세요. 빈칸에 알맞은 낱말 하나를 쓰세요.\n\nGo straight one block and turn [[빈칸]]. It\'s on your left.',
         fig: MAP,
         answer: ['left'],
@@ -356,7 +356,7 @@
             choices: c.choices,
             answer: c.answer,
             why: c.choices.map(function (s) { return s === t[1] ? '' : '그 문장은 "' + koOf[s] + '"라는 뜻이에요.'; }),
-            explain: '"' + t[0] + '"는 영어로 **' + t[1] + '** turn은 "돌다", on your ~는 "당신의 ~쪽에", by는 "~으로(타고)"라는 뜻이에요.',
+            explain: '"' + t[0] + '"를 영어로 하면 **' + t[1] + '**\n\nturn은 "돌다", on your ~는 "당신의 ~쪽에", by는 "~으로(타고)"라는 뜻이에요.',
           };
         },
       },

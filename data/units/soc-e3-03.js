@@ -319,7 +319,9 @@ Tutor.registerUnit({
       level: 1,
       title: '몇 년대인지 구하기',
       make: function (R) {
-        var y = R.int(1901, 2025);
+        var y = R.int(1910, 2025);
+        // 1900년대·2000년대는 '20세기·21세기'의 뜻으로도 흔히 쓰여 헷갈리므로 내지 않는다
+        if (y % 100 < 10) y += 10;
         var d = Math.floor(y / 10) * 10;
         var wrongs = [];
         if (y % 10 >= 5) wrongs.push({ a: String(d + 10), why: '다음 10년으로 올려서 셌어요. ' + y + '년은 ' + d + '년부터 ' + (d + 9) + '년 사이에 있으니 ' + d + '년대예요.' });

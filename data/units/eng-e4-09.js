@@ -28,7 +28,7 @@ Tutor.registerUnit({
     },
     {
       title: '요일 이름은 대문자로 시작해요',
-      body: '영어에서 요일 이름은 **언제나 첫 글자를 대문자로** 써요. 문장 가운데에 있어도 마찬가지예요.\n\n- I swim on **T**uesday. (O)\n- I swim on **t**uesday. (X)\n\n사람 이름(Mina, Junho)이나 나라 이름(Korea)처럼, 요일도 하나뿐인 특별한 이름이라서 대문자로 시작해요.\n\n달력이나 계획표에서는 짧게 줄여 쓰기도 해요. 줄여 쓸 때도 대문자로 시작하고, 끝에 점(.)을 찍어요.\n\n| Mon. | Tue. | Wed. | Thu. | Fri. | Sat. | Sun. |\n|---|---|---|---|---|---|---|\n| 월 | 화 | 수 | 목 | 금 | 토 | 일 |',
+      body: '영어에서 요일 이름은 **언제나 첫 글자를 대문자로** 써요. 문장 가운데에 있어도 마찬가지예요.\n\n- I swim on **T**uesday. (O)\n- I swim on **t**uesday. (X)\n\n사람 이름(Mina, Junho)이나 나라 이름(Korea)처럼, 요일도 하나뿐인 특별한 이름이라서 대문자로 시작해요.\n\n달력이나 계획표에서는 짧게 줄여 쓰기도 해요. 줄여 쓸 때도 대문자로 시작하고, 끝에 점(.)을 찍기도 해요.\n\n| Mon. | Tue. | Wed. | Thu. | Fri. | Sat. | Sun. |\n|---|---|---|---|---|---|---|\n| 월 | 화 | 수 | 목 | 금 | 토 | 일 |',
       easy: '요일 이름은 이름표를 단 친구라고 생각해 보세요. 친구 이름 Mina를 쓸 때 M을 크게 쓰지요? 요일도 이름이 있는 특별한 날이라서 첫 글자를 크게 써요.\n\nMonday의 M, Sunday의 S처럼 맨 앞 한 글자만 대문자예요. 나머지는 소문자예요.',
       check: {
         type: 'ox',
@@ -94,7 +94,7 @@ Tutor.registerUnit({
         '찾을 것은 Wednesday(수요일)에 하는 일이에요.',
         '표에서 Wednesday 줄을 찾아요.',
         '옆 칸에 piano lesson이 있어요.',
-        '그래서 I have a piano lesson.(피아노 수업이 있어요.)이라고 답해요.',
+        '그래서 I have a piano lesson.(피아노 수업이 있어요.)라고 답해요.',
       ],
       answer: 'I have a piano lesson.',
     },

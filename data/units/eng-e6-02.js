@@ -95,7 +95,7 @@ Tutor.registerUnit({
         '배는 stomach이에요.',
         '방법 1: stomach에 ache를 붙이면 stomachache(복통)이므로 I have a stomachache.',
         '방법 2: 몸의 부분 낱말과 hurts를 써서 My stomach hurts.',
-        'My stomach는 하나이므로 hurt 끝에 s를 붙여요.',
+        'My stomach은 하나이므로 hurt 끝에 s를 붙여요.',
       ],
       answer: 'I have a stomachache. / My stomach hurts.',
     },
@@ -124,7 +124,7 @@ Tutor.registerUnit({
       choices: ['배', '머리', '이(치아)', '다리'],
       answer: 0,
       why: ['', '머리는 head예요.', '이는 tooth예요.', '다리는 leg예요.'],
-      explain: '**stomach**는 "배"예요. 배가 아플 때는 I have a stomachache.라고 말해요.',
+      explain: '**stomach**은 "배"예요. 배가 아플 때는 I have a stomachache.라고 말해요.',
     },
     {
       id: 'p3', level: 1, type: 'short', check: 'text', concept: 1,
@@ -237,7 +237,7 @@ Tutor.registerUnit({
         { a: 'stomachache', why: 'hurts가 이미 "아프다"라는 뜻이에요. 빈칸에는 몸의 부분 낱말 stomach만 써요.' },
         { a: 'head', why: 'head는 머리예요. 배는 stomach예요.' },
       ],
-      explain: 'My + 몸의 부분 + hurts.의 꼴이므로 배를 뜻하는 **stomach**를 써요. My stomach hurts.는 I have a stomachache.와 같은 뜻이에요.',
+      explain: 'My + 몸의 부분 + hurts.의 꼴이므로 배를 뜻하는 **stomach**을 써요. My stomach hurts.는 I have a stomachache.와 같은 뜻이에요.',
     },
     {
       id: 'a3', level: 3, type: 'order', concept: 4,
@@ -261,7 +261,7 @@ Tutor.registerUnit({
   deeper: [
     {
       title: 'I have a cold.와 I\'m cold.는 달라요',
-      body: 'cold는 "추운"이라는 뜻도 있고 "감기"라는 뜻도 있어요.\n\n- **I\'m cold.** — 나는 추워. (몸이 차가운 느낌)\n- **I have a cold.** — 나는 감기에 걸렸어. (병)\n\nhave a를 붙이면 "감기를 가지고 있다", 곧 감기에 걸렸다는 뜻이 돼요. 그래서 I have a fever.(열이 나.), I have a headache.(머리가 아파.)도 모두 have를 써요.\n\n다른 사람이 아플 때는 have 대신 **has**를 써요. 예: Minsu has a cold.(민수는 감기에 걸렸어.)',
+      body: 'cold는 "추운"이라는 뜻도 있고 "감기"라는 뜻도 있어요.\n\n- **I\'m cold.** — 나는 추워. (몸이 차가운 느낌)\n- **I have a cold.** — 나는 감기에 걸렸어. (병)\n\nhave a를 붙이면 "감기를 가지고 있다", 곧 감기에 걸렸다는 뜻이 돼요. 그래서 I have a fever.(열이 나.), I have a headache.(머리가 아파.)도 모두 have를 써요.\n\n아픈 사람이 he, she, 민수처럼 나도 너도 아닌 **한 사람**일 때는 have 대신 **has**를 써요. 예: Minsu has a cold.(민수는 감기에 걸렸어.)',
     },
   ],
 
@@ -316,7 +316,7 @@ Tutor.registerUnit({
           choices: c.choices,
           answer: c.answer,
           why: c.choices.map(function (s) { return s === target[1] ? '' : '그 문장은 "' + korOf[s] + '"라는 뜻이에요.'; }),
-          explain: '"' + target[0] + '"는 영어로 **' + target[1] + '** 증상은 I have a ~., 팔·다리처럼 몸의 부분이 아플 때는 My ~ hurts.로 말해요.',
+          explain: '"' + target[0] + '"를 영어로 하면 **' + target[1] + '**\n\n증상은 I have a ~., 팔·다리처럼 몸의 부분이 아플 때는 My ~ hurts.로 말해요.',
         };
       },
     },
@@ -347,7 +347,7 @@ Tutor.registerUnit({
                 ? '몸의 부분 낱말만 골랐어요. I have a 다음에는 ache가 붙은 증상 낱말이 와요.'
                 : 'hurts가 이미 "아프다"라는 뜻이라서 빈칸에는 ache가 없는 몸의 부분 낱말이 와요.';
             }
-            return '그 낱말은 "' + MEAN[w] + '"라는 뜻이에요.';
+            return '그 낱말은 "' + MEAN[w] + '"' + R.josa(MEAN[w], '이라는/라는') + ' 뜻이에요.';
           }),
           explain: frameA
             ? '증상을 말할 때는 I have a + 증상.으로 말해요. ' + t[0] + '의 뜻은 "' + MEAN[t[0]] + '"이므로 답은 **I have a ' + t[0] + '.**'

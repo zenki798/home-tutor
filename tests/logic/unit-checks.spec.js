@@ -110,6 +110,20 @@ test('조사 검사기: 틀린 문장은 잡고 맞는 문장은 넘긴다', () 
   for (const t of right) expect(lintParticles(t), t).toEqual([]);
 });
 
+test('조사 검사기: 거듭제곱은 식이 지수로 끝날 때만 "제곱"으로 읽는다 (x^2+4x 는 끝 항 4x)', () => {
+  const sq = (s) => B + 'sqrt{' + s + '}';
+  // 식이 지수로 끝나면 "…제곱"(ㅂ 받침) → 은·을·이·과
+  for (const t of ['$x^2$는 0 이상', '$x^{n+1}$를 미분해요.', '$10^3$가 1000이에요.']) expect(lintParticles(t).length, t).toBeGreaterThan(0);
+  for (const t of ['$x^2$은 0 이상', '$x^{n+1}$을 미분해요.', '$10^3$이 1000이에요.']) expect(lintParticles(t), t).toEqual([]);
+  // 지수 뒤에 다른 항이 오면 끝 항으로 읽는다: x^2+4x → "…4x(엑스)" → 와·를·가, 3^2=9 → "…9(구)" → 가
+  for (const t of ['$x^2+4x$를 인수분해해요.', '$3^2=9$가 성립해요.', '$' + sq('x^2+4x') + '$와 비교해요.', '$x^2-x$를 미분해요.']) expect(lintParticles(t), t).toEqual([]);
+  expect(lintParticles('$x^2+4x$을 인수분해해요.').length).toBeGreaterThan(0);
+  // 각도 60^{\circ} 는 지수가 아니라 "육십 도" → 예요
+  const deg = (n) => n + '^{' + B + 'circ}';
+  expect(lintParticles('$' + deg(90) + '-' + deg(30) + '=' + deg(60) + '$예요.')).toEqual([]);
+  expect(lintParticles('$' + deg(60) + '$이에요.').length).toBeGreaterThan(0);
+});
+
 test('견본 단원(math-e4-07)은 오류·경고 0', () => {
   const { lintFile, loadCurriculum } = require(path.join(ROOT, 'scripts', 'lint-unit.js'));
   const r = lintFile(path.join(ROOT, 'data', 'units', 'math-e4-07.js'), loadCurriculum(), { seeds: 120 });

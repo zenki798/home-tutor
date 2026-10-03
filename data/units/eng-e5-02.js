@@ -104,7 +104,7 @@ Tutor.registerUnit({
     { term: '거절', def: "부탁이나 요청을 받아들이지 않는 것이에요. 예: Sorry, you can't." },
     { term: '안내 표지', def: '공공장소의 규칙을 짧은 말이나 그림으로 알려 주는 판이에요. 예: No food. / Quiet, please.' },
     { term: '공공장소', def: '도서관, 박물관, 수영장처럼 여러 사람이 함께 쓰는 곳이에요.' },
-    { term: '줄임말', def: "두 낱말을 줄여 한 낱말처럼 쓴 말이에요. 빠진 글자 자리에 ' 표시를 해요. 예: can't = cannot, I'm = I am" },
+    { term: '줄임말', def: "말의 일부 글자를 빼고 줄여 쓴 말이에요. 빠진 글자 자리에 ' 표시를 해요. 예: can't = cannot, I'm = I am" },
   ],
 
   practice: [
@@ -132,9 +132,9 @@ Tutor.registerUnit({
     {
       id: 'p3', level: 1, type: 'short', concept: 0,
       q: '빈칸에 알맞은 낱말을 쓰세요.\n\nA: [[May]] I use your pencil?\nB: Sure. Here you are.',
-      answer: ['May', 'Can'],
+      answer: ['May', 'Can', 'Could'],
       wrong: [{ a: 'Do', why: 'Do I ~?는 허락을 구하는 말이 아니에요. May나 Can으로 시작해요.' }],
-      explain: '허락을 구할 때는 May I ~?나 Can I ~?를 써요. 그래서 May와 Can 모두 정답이에요.',
+      explain: '허락을 구할 때는 May I ~?나 Can I ~?를 써요. 그래서 May와 Can 모두 정답이에요. 더 공손하게 묻는 Could도 정답으로 받아요.',
     },
     {
       id: 'p4', level: 1, type: 'ox', concept: 3,
@@ -276,7 +276,7 @@ Tutor.registerUnit({
   deeper: [
     {
       title: 'May I와 Can I, 무엇이 다를까?',
-      body: "둘 다 허락을 구하는 말이지만 느낌이 조금 달라요.\n\n- **May I ~?** : 공손하고 정중한 느낌. 선생님, 처음 만난 어른, 가게 점원에게 잘 어울려요.\n- **Can I ~?** : 편하고 친근한 느낌. 친구, 가족 사이에서 많이 써요.\n\n어른께도 Can I ~?를 많이 쓰지만, 예의를 갖춰야 할 때는 May I ~?를 쓰면 좋아요. 중학교에 가면 Could I ~?처럼 더 공손한 말도 배워요.",
+      body: "둘 다 허락을 구하는 말이지만 느낌이 조금 달라요.\n\n- **May I ~?** : 공손하고 정중한 느낌. 선생님, 처음 만난 어른, 가게 점원에게 잘 어울려요.\n- **Can I ~?** : 편하고 친근한 느낌. 친구, 가족 사이에서 많이 써요.\n\n어른께도 Can I ~?를 많이 쓰지만, 예의를 갖춰야 할 때는 May I ~?를 쓰면 좋아요. Could I ~?처럼 공손하게 허락을 구하는 말도 있는데, 앞으로 더 배우게 돼요.",
     },
     {
       title: '그림으로 된 안내 표지',

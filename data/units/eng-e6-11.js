@@ -49,7 +49,7 @@ Tutor.registerUnit({
     },
     {
       title: '소식과 계획 전하기',
-      body: '이메일에는 초대만이 아니라 내 **소식**과 **계획**도 쓸 수 있어요.\n\n**지난 소식**은 지난 일 모양으로 써요.\n- **I joined a soccer club.** (나는 축구 동아리에 들어갔어.)\n- **I visited my uncle in Busan.** (나는 부산에 있는 삼촌 댁에 다녀왔어.)\n\n**앞으로의 계획**은 **I\'m going to + 원래 모양**으로 써요.\n- **I\'m going to play in a soccer game next week.** (나는 다음 주에 축구 경기에 나갈 거야.)\n- **I\'m going to learn swimming this summer.** (나는 이번 여름에 수영을 배울 거야.)\n\n> 💡 joined, visited처럼 -ed가 붙으면 지난 일이에요. I\'m going to 뒤에는 play, learn처럼 원래 모양이 와요.',
+      body: '이메일에는 초대만이 아니라 내 **소식**과 **계획**도 쓸 수 있어요.\n\n**지난 소식**은 지난 일 모양으로 써요.\n- **I joined a soccer club.** (나는 축구 동아리에 들어갔어.)\n- **I visited my uncle in Busan.** (나는 부산에 있는 삼촌 댁에 다녀왔어.)\n\n**앞으로의 계획**은 **I\'m going to + 원래 모양**으로 써요.\n- **I\'m going to play in a soccer game next week.** (나는 다음 주에 축구 경기에 나갈 거야.)\n- **I\'m going to learn to swim this summer.** (나는 이번 여름에 수영을 배울 거야.)\n\n> 💡 joined, visited처럼 -ed가 붙으면 지난 일이에요. I\'m going to 뒤에는 play, learn처럼 원래 모양이 와요.',
       easy: '시간 줄을 떠올려 보세요.\n\n어제·지난주 ← **오늘** → 내일·다음 주\n\n- 왼쪽(지나간 일): **I joined** a club. (들어갔어.)\n- 오른쪽(앞으로 할 일): **I\'m going to join** a club. (들어갈 거야.)\n\n같은 join이라도 언제 일어난 일인지에 따라 모양이 달라져요.',
       check: {
         type: 'choice',
@@ -77,7 +77,7 @@ Tutor.registerUnit({
     },
     {
       title: '바꿔 쓰고 점검하기: 대문자·문장 부호·철자',
-      body: '예시 이메일에서 **이름·날짜·장소만 바꾸면** 나만의 이메일이 돼요. 다 쓴 뒤에는 꼭 세 가지를 점검해요.\n\n**1. 대문자**\n- 문장의 첫 글자: **M**y party is on Saturday.\n- 나를 뜻하는 **I**는 언제나 대문자\n- 사람 이름(**M**ina), 요일(**S**aturday), 달(**M**ay)\n\n**2. 문장 부호**\n- 보통 문장 끝: 마침표 **.**\n- 묻는 문장 끝: 물음표 **?** → Can you come to my party?\n- 기쁜 느낌: 느낌표 **!** → Thank you so much!\n- 인사 뒤: 쉼표 **,** → Dear Mina,\n- 줄임말: 작은 따옴표 **\'** → I\'m, can\'t\n\n**3. 철자**: 자주 틀리는 낱말을 다시 봐요. 예: friend(frend X), birthday, Saturday',
+      body: '예시 이메일에서 **이름·날짜·장소만 바꾸면** 나만의 이메일이 돼요. 다 쓴 뒤에는 꼭 세 가지를 점검해요.\n\n**1. 대문자**\n- 문장의 첫 글자: **M**y party is on Saturday.\n- 나를 뜻하는 **I**는 언제나 대문자\n- 사람 이름(**M**ina), 요일(**S**aturday), 달(**M**ay)\n\n**2. 문장 부호**\n- 보통 문장 끝: 마침표 **.**\n- 묻는 문장 끝: 물음표 **?** → Can you come to my party?\n- 기쁜 느낌: 느낌표 **!** → Thank you so much!\n- 인사 뒤: 쉼표 **,** → Dear Mina,\n- 줄임말: 아포스트로피(작은따옴표 모양) **\'** → I\'m, can\'t\n\n**3. 철자**: 자주 틀리는 낱말을 다시 봐요. 예: friend(frend X), birthday, Saturday',
       easy: '이메일을 다 쓰면 "점검 안경"을 쓰고 세 번 읽어요.\n\n1. 첫 번째 읽기: 대문자 안경 — 문장 첫 글자, I, 이름, 요일·달이 대문자인가?\n2. 두 번째 읽기: 부호 안경 — 묻는 말 끝에 ?, 보통 문장 끝에 .이 있나?\n3. 세 번째 읽기: 철자 안경 — friend, birthday를 바르게 썼나?',
       check: {
         type: 'choice',
@@ -123,7 +123,7 @@ Tutor.registerUnit({
     { term: 'Subject', def: '이메일의 제목이에요. 무엇에 대한 이메일인지 짧게 써요. 예: My Birthday Party' },
     { term: 'I\'m going to ~.', def: '"나는 ~할 거야."라고 앞으로의 계획을 말해요. 뒤에는 원래 모양이 와요. 예: I\'m going to join a club.' },
     { term: 'Thank you for ~.', def: '"~해 줘서(~을 줘서) 고마워."라는 말이에요. 예: Thank you for the gift. / Thank you for helping me.' },
-    { term: '문장 부호', def: '문장에 찍는 부호예요. 마침표(.), 물음표(?), 느낌표(!), 쉼표(,), 작은 따옴표(\') 등이 있어요.' },
+    { term: '문장 부호', def: '문장에 찍는 부호예요. 마침표(.), 물음표(?), 느낌표(!), 쉼표(,), 줄임말에 쓰는 아포스트로피(\') 등이 있어요.' },
     { term: '대문자', def: 'A, B, C처럼 큰 글자예요. 문장의 첫 글자, I, 이름, 요일, 달 이름을 대문자로 시작해요.' },
   ],
 

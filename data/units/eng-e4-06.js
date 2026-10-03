@@ -75,10 +75,10 @@ Tutor.registerUnit({
     {
       title: 'my, your, his, her — 누구의 것인지 말하기',
       body: "물건 이름 앞에 붙여서 **누구의 것인지** 나타내는 말이에요.\n\n| 말 | 뜻 | 예 |\n|---|---|---|\n| **my** | 나의 | my ball (내 공) |\n| **your** | 너의 | your ball (네 공) |\n| **his** | 그의(남자) | his ball (그의 공) |\n| **her** | 그녀의(여자) | her ball (그녀의 공) |\n\n앞에서 배운 he(그)와 she(그녀)처럼, 남자의 것은 **his**, 여자의 것은 **her** 예요.\n\n예: 서준이(남자)의 공 → **his** ball, 지아(여자)의 공 → **her** ball",
-      easy: '물건에 이름 스티커를 붙인다고 생각해 보세요.\n\n- 내 거 → **my** 스티커\n- 지금 이야기하는 친구 거 → **your** 스티커\n- 남자아이 거 → **his** 스티커\n- 여자아이 거 → **her** 스티커\n\n스티커는 늘 물건 이름 앞에 붙여요: my bag, his cap.',
+      easy: '물건에 이름 스티커를 붙인다고 생각해 보세요.\n\n- 내 거 → **my** 스티커\n- 지금 내 말을 듣는 친구 거 → **your** 스티커\n- 남자아이 거 → **his** 스티커\n- 여자아이 거 → **her** 스티커\n\n스티커는 늘 물건 이름 앞에 붙여요: my bag, his cap.',
       check: {
         type: 'choice',
-        q: '지아(여자)의 우산을 가리키며 말해요. 알맞은 것은 무엇일까요?\n\nThis is [[her]] umbrella.',
+        q: '지아(여자)의 우산을 가리키며 다른 친구에게 말해요. 알맞은 것은 무엇일까요?\n\nThis is [[her]] umbrella.',
         choices: ['her', 'his', 'my'],
         answer: 0,
         why: ['', 'his 는 남자의 것을 나타내요. 지아는 여자예요.', 'my 는 "나의"예요. 지아의 우산이니 her 를 써요.'],
@@ -230,14 +230,14 @@ Tutor.registerUnit({
     },
     {
       id: 'p10', level: 2, type: 'choice', concept: 4,
-      q: '서준이(남자)가 공을 찾고 있어요. 서준이의 공을 들고 친구에게 말해요.\n\nThis is [[his]] ball.\n\n빈칸에 알맞은 말은 무엇일까요?',
+      q: '서준이(남자)가 공을 찾고 있어요. 민수가 서준이의 공을 찾아서 지아에게 보여 주며 말해요.\n\nThis is [[his]] ball.\n\n빈칸에 알맞은 말은 무엇일까요?',
       choices: ['his', 'her', 'my', 'your'],
       answer: 0,
       why: [
         '',
         'her 는 여자의 것을 나타내요. 서준이는 남자예요.',
-        'my 는 "나의"예요. 말하는 사람의 공이 아니라 서준이의 공이에요.',
-        'your 는 "너의"예요. 지금 말을 듣는 친구의 공이 아니라 서준이의 공이에요.',
+        'my 는 "나의"예요. 말하는 민수의 공이 아니라 서준이의 공이에요.',
+        'your 는 "너의"예요. 지금 말을 듣는 지아의 공이 아니라 서준이의 공이에요.',
       ],
       hint: '서준이는 남자예요. he(그)의 것은 무엇이라고 할까요?',
       explain: '남자인 서준이의 것이므로 "그의"인 his 를 써요. This is his ball.',
@@ -362,6 +362,6 @@ Tutor.registerUnit({
     { w: 'on', m: '~ 위에', ex: 'The book is on the desk.', exm: '책은 책상 위에 있어.' },
     { w: 'under', m: '~ 아래에', ex: 'The dog is under the bed.', exm: '개가 침대 아래에 있어.' },
     { w: 'where', m: '어디에', ex: 'Where is my bag?', exm: '내 가방은 어디에 있어?' },
-    { w: 'welcome', m: '환영받는 (You\'re welcome. 천만에.)', ex: "Thank you. You're welcome.", exm: '고마워. 천만에.' },
+    { w: 'welcome', m: '환영받는 (You\'re welcome. 천만에.)', ex: "A: Thank you. B: You're welcome.", exm: 'A: 고마워. B: 천만에.' },
   ],
 });

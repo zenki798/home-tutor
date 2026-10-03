@@ -167,7 +167,7 @@
         id: 'p2', level: 1, type: 'short', check: 'text', concept: 0,
         q: '우리말 뜻에 맞는 낱말을 쓰세요.\n\n요리사',
         answer: ['cook', 'chef'],
-        wrong: [{ a: 'cooker', why: 'cooker 는 음식을 익히는 조리 기구(밥솥, 냄비 등)예요. 요리사는 cook 이에요.' }],
+        wrong: [{ a: 'cooker', why: 'cooker 는 음식을 익히는 조리 기구(밥솥, 가스레인지 등)예요. 요리사는 cook 이에요.' }],
         explain: '요리사는 **cook** 이에요. (식당의 주방장을 뜻하는 chef 도 정답이에요.) cook 은 "요리하다"라는 뜻도 있어요.',
       },
       {
@@ -372,7 +372,7 @@
     ],
 
     mistakes: [
-      'to be 를 빠뜨리는 실수 — I want a doctor.(X, 의사를 갖고 싶다는 이상한 뜻) → I want to be a doctor.(O)',
+      'to be 를 빠뜨리는 실수 — I want a doctor.(X, "의사가 필요해요"라는 다른 뜻이 돼요) → I want to be a doctor.(O)',
       '직업 앞에 a 를 빠뜨리는 실수 — I want to be pilot.(X) → I want to be a pilot.(O)',
       '한 사람이 하는 일에 s 를 빠뜨리는 실수 — A cook make food.(X) → A cook makes food.(O)',
     ],
@@ -384,7 +384,8 @@
         title: '직업과 하는 일 짝짓기',
         make: function (R) {
           var j = R.pick(JOBS);
-          var others = R.shuffle(JOBS.filter(function (x) { return x !== j; }));
+          // 같은 묶음(의사·과학자·소방관, 요리사·농부)은 하는 일이 겹쳐 보일 수 있어 오답으로 쓰지 않는다.
+          var others = R.shuffle(JOBS.filter(function (x) { return x !== j && x[6] !== j[6]; }));
           var reason = {};
           if (R.bool()) {
             // 하는 일 → 직업

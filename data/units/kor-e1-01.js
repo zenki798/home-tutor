@@ -302,7 +302,7 @@
         make: function (R) {
           var w = R.pick(WORDS);
           var n = w.length;
-          var parts = w.split('').join('·');
+          var parts = n === 1 ? '한 마디' : w.split('').join('·');
           return {
             type: 'short', check: 'number', unit: '번', concept: 4,
             q: '"' + w + '"' + R.josa(w, '을/를') + ' 말하며 소리 마디마다 손뼉을 치면 몇 번 칠까요?',

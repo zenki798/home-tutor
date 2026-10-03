@@ -60,7 +60,7 @@ Tutor.registerUnit({
     },
     {
       title: '정중하게 거절하기',
-      body: "함께 할 수 없을 때는 **Sorry, I can't.** (미안하지만 못 해.)라고 말해요.\n\n**can't** 는 can not(할 수 없다)을 줄인 말이에요. 앞에 Sorry 를 붙이면 친구의 마음이 덜 상해요.\n\n이유를 한 문장 덧붙이면 더 친절해요.\n\n- Sorry, I can't. **I'm tired.** (피곤해.)\n- Sorry, I can't. **I'm sleepy.** (졸려.)\n\n> ⚠️ 그냥 No. 라고만 하면 퉁명스럽게 들릴 수 있어요.",
+      body: "함께 할 수 없을 때는 **Sorry, I can't.** (미안하지만 못 해.)라고 말해요.\n\n**can't** 는 cannot(할 수 없다)을 줄인 말이에요. 앞에 Sorry 를 붙이면 친구의 마음이 덜 상해요.\n\n이유를 한 문장 덧붙이면 더 친절해요.\n\n- Sorry, I can't. **I'm tired.** (피곤해.)\n- Sorry, I can't. **I'm sleepy.** (졸려.)\n\n> ⚠️ 그냥 No. 라고만 하면 퉁명스럽게 들릴 수 있어요.",
       easy: '친구가 놀자고 했는데 오늘은 힘들어요. 그럴 때 "싫어!"보다 "미안, 오늘은 못 해."가 더 따뜻하지요?\n\n영어도 똑같아요. **Sorry**(미안해) + **I can\'t**(나는 못 해)를 붙여서 Sorry, I can\'t. 라고 해요.',
       check: {
         type: 'ox',
@@ -113,7 +113,7 @@ Tutor.registerUnit({
     { term: "Let's", def: '"우리 함께 ~하자"라는 뜻으로 제안할 때 쓰는 말이에요. Let us 를 줄인 말이에요. 예: Let\'s play tag.' },
     { term: '제안', def: '어떤 일을 함께 하자고 말하는 것이에요. 영어로는 Let\'s ~. 로 해요.' },
     { term: '거절', def: '제안을 받아들이지 않는 것이에요. 정중하게 거절할 때는 Sorry, I can\'t. 라고 해요.' },
-    { term: "can't", def: 'can not 을 줄인 말로 "~할 수 없다"는 뜻이에요. 예: Sorry, I can\'t.' },
+    { term: "can't", def: 'cannot 을 줄인 말로 "~할 수 없다"는 뜻이에요. 예: Sorry, I can\'t.' },
     { term: 'Sounds good.', def: '"좋아."라는 뜻으로, 제안을 받아들일 때 쓰는 말이에요.' },
   ],
 
@@ -276,7 +276,7 @@ Tutor.registerUnit({
         { a: 'can', why: 'can 은 "할 수 있다"예요. 졸려서 못 한다는 뜻이므로 "할 수 없다"인 can\'t 를 써요.' },
         { a: 'cant', why: "can 과 t 사이에 작은 점(')이 빠졌어요. can't 로 써요." },
       ],
-      explain: "졸려서(I'm sleepy) 못 한다는 뜻이므로 Sorry, I can't. 가 알맞아요. can't 는 can not 을 줄인 말이에요.",
+      explain: "졸려서(I'm sleepy) 못 한다는 뜻이므로 Sorry, I can't. 가 알맞아요. can't 는 cannot 을 줄인 말이라 cannot 으로 써도 맞아요.",
     },
   ],
 

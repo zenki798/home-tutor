@@ -46,7 +46,7 @@
       {
         title: '기분을 나타내는 낱말',
         body: '**기분**은 지금 마음이 어떤지를 말해요. 영어에는 기분을 나타내는 낱말이 많아요.\n\n| 낱말 | 뜻 |\n|---|---|\n| **happy** | 행복한, 기쁜 |\n| **sad** | 슬픈 |\n| **angry** | 화가 난 |\n| **tired** | 피곤한 |\n| **sleepy** | 졸린 |\n| **scared** | 무서운, 겁이 난 |\n\n내 기분을 말할 때는 **I\'m** 다음에 기분 낱말을 써요.\n- I\'m **happy**. 나는 기뻐요.\n- I\'m **sleepy**. 나는 졸려요.\n\n> 💡 tired 는 많이 움직여서 몸이 지친 것, sleepy 는 잠이 와서 눈이 감기는 것이에요.',
-        easy: '얼굴 표정을 떠올려 보세요. 활짝 웃는 얼굴은 happy, 눈물이 나는 얼굴은 sad, 눈썹이 올라가고 씩씩대는 얼굴은 angry 예요.\n\n하품하며 눈이 감기는 얼굴은 sleepy, 달리기를 하고 나서 축 늘어진 얼굴은 tired, 깜짝 놀라 떨리는 얼굴은 scared 예요.\n\n거울을 보고 표정을 지으면서 낱말을 소리 내어 말해 보세요.',
+        easy: '얼굴 표정을 떠올려 보세요. 활짝 웃는 얼굴은 happy, 눈물이 나는 얼굴은 sad, 눈썹을 찌푸리고 씩씩대는 얼굴은 angry 예요.\n\n하품하며 눈이 감기는 얼굴은 sleepy, 달리기를 하고 나서 축 늘어진 얼굴은 tired, 깜짝 놀라 떨리는 얼굴은 scared 예요.\n\n거울을 보고 표정을 지으면서 낱말을 소리 내어 말해 보세요.',
         fig: { type: 'svg', alt: '눈이 감기고 하품을 하며 머리 위에 Z 글자가 있는 얼굴', svg: face('sleepy') },
         check: {
           type: 'choice',
@@ -133,7 +133,7 @@
     terms: [
       { term: '기분', def: '지금 마음이 어떤지를 나타내는 상태예요. 영어로는 happy, sad, angry 같은 낱말로 말해요.' },
       { term: '억양', def: '말할 때 목소리가 올라가고 내려가는 높낮이예요. 예/아니오로 답하는 질문은 끝을 올려 말해요.' },
-      { term: '줄임말', def: '두 낱말을 줄여 하나로 쓴 말이에요. 빠진 글자 자리에 작은 따옴표(\')를 찍어요. 예: I am → I\'m, That is → That\'s' },
+      { term: '줄임말', def: '두 낱말을 줄여 하나로 쓴 말이에요. 빠진 글자 자리에 작은따옴표(\')를 찍어요. 예: I am → I\'m, That is → That\'s' },
       { term: '예/아니오 질문', def: 'Yes 나 No 로 대답하는 질문이에요. 예: Are you sad? — Yes, I am. / No, I\'m not.' },
     ],
 
@@ -182,7 +182,7 @@
       },
       {
         id: 'p6', level: 1, type: 'short', check: 'text', concept: 2,
-        q: '빈칸에 알맞은 낱말을 한 개 쓰세요.\n\nA: Are you tired?\nB: No, I\'m [[not]]. I\'m happy.',
+        q: '빈칸에 알맞은 낱말을 한 개 쓰세요.\n\nA: Are you tired?\nB: No, I\'m [[not]]. I\'m happy.\n\n(B의 말: 아니, 안 피곤해. 나는 기뻐.)',
         answer: ['not'],
         wrong: [{ a: 'am', why: 'No 로 대답할 때는 No, I\'m not. 이에요. I am 은 Yes 와 함께 써요.' }],
         explain: '피곤하지 않으니 No, I\'m not. 하고 대답해요. 그리고 진짜 기분 I\'m happy. 를 덧붙였어요.',
@@ -358,7 +358,7 @@
           var pick = R.choices(correct, [yes, no, 'Yes, I\'m not.', 'No, I am.']);
           return {
             type: 'choice', concept: 2,
-            q: name + R.josa(name, '은/는') + ' 지금 ' + real.now + '. 친구가 **Are you ' + asked.w + '?** 하고 물었어요.\n\n' + name + '의 대답으로 알맞은 것을 고르세요.',
+            q: name + R.josa(name, '은/는') + ' 지금 ' + real.now + '.' + (same ? '' : ' ' + asked.not + '.') + ' 친구가 **Are you ' + asked.w + '?** 하고 물었어요.\n\n' + name + '의 대답으로 알맞은 것을 고르세요.',
             choices: pick.choices,
             answer: pick.answer,
             why: pick.choices.map(function (c) { return c === correct ? '' : reason[c]; }),

@@ -39,7 +39,7 @@ Tutor.registerUnit({
     },
     {
       title: '가족을 나타내는 낱말',
-      body: '가족을 소개할 때 쓰는 낱말이에요.\n\n| he 로 가리켜요 | 뜻 | she 로 가리켜요 | 뜻 |\n|---|---|---|---|\n| **dad** | 아빠 | **mom** | 엄마 |\n| **grandpa** | 할아버지 | **grandma** | 할머니 |\n| **brother** | 형, 오빠, 남동생 | **sister** | 누나, 언니, 여동생 |\n| **uncle** | 삼촌, 이모부, 고모부 | **aunt** | 이모, 고모, 숙모 |\n\n우리말은 형·오빠·남동생처럼 나이와 말하는 사람에 따라 다르게 부르지만, 영어는 남자 형제를 모두 **brother**, 여자 형제를 모두 **sister** 라고 해요.\n\n> 💡 더 바른 말로는 mom 대신 mother, dad 대신 father 를 써요.',
+      body: '가족을 소개할 때 쓰는 낱말이에요.\n\n| he 로 가리켜요 | 뜻 | she 로 가리켜요 | 뜻 |\n|---|---|---|---|\n| **dad** | 아빠 | **mom** | 엄마 |\n| **grandpa** | 할아버지 | **grandma** | 할머니 |\n| **brother** | 형, 오빠, 남동생 | **sister** | 누나, 언니, 여동생 |\n| **uncle** | 삼촌, 이모부, 고모부 | **aunt** | 이모, 고모, 숙모 |\n\n우리말은 형·오빠·남동생처럼 나이와 말하는 사람에 따라 다르게 부르지만, 영어는 남자 형제를 모두 **brother**, 여자 형제를 모두 **sister** 라고 해요.\n\n> 💡 mom 과 dad 는 집에서 친근하게 부르는 말이에요. 예의를 갖춰 말할 때는 mother(어머니), father(아버지)라고 해요.',
       easy: '가족을 남자 칸과 여자 칸으로 나누어 보세요.\n- 남자 칸: dad(아빠), grandpa(할아버지), brother(남자 형제), uncle(삼촌)\n- 여자 칸: mom(엄마), grandma(할머니), sister(여자 형제), aunt(이모, 고모)\n\n짝을 지어 외우면 쉬워요. dad와 mom, grandpa와 grandma, brother와 sister, uncle과 aunt.',
       check: {
         type: 'choice',
@@ -151,7 +151,7 @@ Tutor.registerUnit({
       q: '우리말 뜻에 맞는 영어 낱말을 쓰세요.\n\n할머니',
       answer: ['grandma', 'grandmother'],
       wrong: [{ a: 'grandpa', why: 'grandpa 는 할아버지예요. 할머니는 grandma 예요.' }],
-      explain: '할머니는 grandma 예요. 더 바른 말로 grandmother 라고도 해요.',
+      explain: '할머니는 grandma 예요. grandmother 라고도 하니 이것도 정답이에요.',
     },
     {
       id: 'p4', level: 1, type: 'ox', concept: 1,

@@ -52,7 +52,7 @@ Tutor.registerUnit({
     },
     {
       title: 'I have ~. — 가진 것 말하기',
-      body: '내가 가진 물건을 말할 때는 **I have ~.**라고 해요. "나는 ~을 가지고 있어요."라는 뜻이에요.\n\n- **I have a notebook.** 나는 공책 한 권이 있어요.\n- **I have two markers.** 나는 마커 두 개가 있어요.\n\n하나일 때는 물건 이름 앞에 **a**를 쓰고, **두 개 이상**일 때는 수를 말한 뒤 물건 이름 끝에 **s**를 붙여요.\n\n| 하나 | 여러 개 |\n|---|---|\n| a crayon | three crayons |\n| a marker | two markers |\n\n> ⚠️ 여러 개일 때는 a를 쓰지 않아요. a two markers(X), two markers(O)',
+      body: '내가 가진 물건을 말할 때는 **I have ~.**라고 해요. "나는 ~을 가지고 있어요."라는 뜻이에요.\n\n- **I have a notebook.** 나는 공책 한 권이 있어요.\n- **I have two markers.** 나는 마커 두 개가 있어요.\n\n하나일 때는 물건 이름 앞에 **a**를 쓰고, **두 개 이상**일 때는 수를 말한 뒤 물건 이름 끝에 **s**를 붙여요.\n\n| 하나 | 여러 개 |\n|---|---|\n| a crayon | three crayons |\n| a marker | two markers |\n\n**brush**(붓)처럼 sh로 끝나는 낱말은 es를 붙여 **two brushes**라고 써요.\n\n> ⚠️ 여러 개일 때는 a를 쓰지 않아요. a two markers(X), two markers(O)',
       easy: '영어에서는 물건이 여러 개면 낱말 끝에 꼬리 **s**를 달아 줘요.\n\n크레용 하나는 **a crayon**, 크레용 셋은 **three crayons**예요. s 꼬리가 "여러 개예요!" 하고 알려 주는 표시라고 생각하세요.',
       check: {
         type: 'choice',

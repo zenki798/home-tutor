@@ -137,12 +137,12 @@ Tutor.registerUnit({
     {
       id: 'p2', level: 1, type: 'short', concept: 0,
       q: '"우리는 함께 놀 수 있기 때문에 재미있다고 생각해."라는 뜻이 되게 빈칸에 알맞은 낱말 하나를 쓰세요.\n\nI think it\'s fun [[because]] we can play together.',
-      answer: ['because'],
+      answer: ['because', 'since'],
       wrong: [
         { a: 'becuase', why: '철자를 확인해 보세요. b-e-c-a-u-s-e예요.' },
         { a: 'and', why: 'and는 "그리고"예요. 이유를 이어 붙일 때는 because를 써요.' },
       ],
-      explain: '"~하기 때문에"라는 이유를 이어 붙이는 말은 because예요.',
+      explain: '"~하기 때문에"라는 이유를 이어 붙이는 말은 because예요. (since도 "~이기 때문에"라는 뜻으로 쓸 수 있어서 정답이에요.)',
     },
     {
       id: 'p3', level: 1, type: 'choice', concept: 1,
@@ -331,7 +331,7 @@ Tutor.registerUnit({
     },
     {
       title: '중학교에서 이어지는 의견 말하기',
-      body: '중학교에 가면 I think 뒤에 that을 넣어 "I think **that** ~."처럼 말하는 방법도 배워요. that은 빼도 뜻이 같아서, 지금처럼 I think ~.라고 해도 괜찮아요.\n\n또 의견을 더 부드럽게 말하는 표현(In my opinion, ~)과 이유를 여러 개 드는 방법(First, ~. Second, ~.)도 배워요. 앞 단원에서 배운 순서를 나타내는 말(First, Next …)이 여기서도 쓰여요.',
+      body: '중학교에 가면 I think 뒤에 that을 넣어 "I think **that** ~."처럼 말하는 방법도 배워요. that은 빼도 뜻이 같아서, 지금처럼 I think ~.라고 해도 괜찮아요.\n\n또 의견을 밝히는 다른 표현(In my opinion, ~: 내 생각에는 ~)과 이유를 여러 개 드는 방법(First, ~. Second, ~.)도 배워요. "방법과 순서 설명하기" 단원에서 배운 순서를 나타내는 말(First, Next …)이 여기서도 쓰여요.',
     },
   ],
 

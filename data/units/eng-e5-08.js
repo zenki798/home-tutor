@@ -378,6 +378,7 @@ Tutor.registerUnit({
         var rest = R.pick(v[3]);
         var when = R.pick(['yesterday', 'last weekend', 'last Sunday', 'last Saturday', 'last summer']);
         var who = R.pick(['I', 'We']);
+        if (who === 'We' && rest === 'my homework') rest = 'our homework';
         var wrong = [{ a: v[0], why: when + '는 지난 때예요. 동사를 지난 일의 모양으로 바꿔요.' }];
         if (v[2]) {
           wrong.push({

@@ -37,10 +37,11 @@ function jongOfTex(tex) {
   // 분수: 분자 ("b분의 a")
   let m = /\\d?frac\{([^{}]*)\}\{[^{}]*\}$/.exec(t);
   if (m) return jongOfTex(m[1]);
-  // 거듭제곱: "…제곱"(ㅂ)
-  if (/(\^\{?[^{}]*\}?|²|³)$/.test(t) && /\^|²|³/.test(t.slice(-6))) return 17;
-  // 도(°)·퍼센트
-  if (/(\\circ|°|\\degree)$/.test(t)) return 0;
+  // 도(°)·퍼센트 — 60^{\circ} 도 "육십 도"(지수가 아니다)라서 거듭제곱보다 먼저 본다
+  if (/(\\circ\}?|°|\\degree)$/.test(t)) return 0;
+  // 거듭제곱: "…제곱"(ㅂ) — 식이 지수로 끝날 때만(x^2, x^{n+1}, 10³).
+  // x^2+4x · 3^2=9 처럼 지수 뒤에 다른 항이 오면 아래에서 끝 항(4x, 9)으로 읽는다
+  if (/(\^(\{[^{}]*\}|[0-9A-Za-z])|²|³)$/.test(t)) return 17;
   if (/(\\%|%)$/.test(t)) return 0;
   // 그리스 문자
   m = /\\([a-zA-Z]+)$/.exec(t);

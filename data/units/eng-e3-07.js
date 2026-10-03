@@ -196,7 +196,7 @@
         q: '빈칸에 알맞은 낱말 하나를 쓰세요.\n\nHow [[many]] pencils? (연필이 몇 자루예요?)',
         answer: ['many'],
         wrong: [
-          { a: 'much', why: '개수를 물을 때는 How many를 써요. much는 이 단원에서 쓰지 않아요.' },
+          { a: 'much', why: '연필처럼 하나, 둘 셀 수 있는 것의 개수를 물을 때는 How many를 써요. much는 개수를 물을 때 쓰지 않아요.' },
           { a: 'any', why: 'any가 아니라 many예요. m을 앞에 붙여요.' },
         ],
         explain: '개수를 물을 때는 How many ~?를 써요. How many pencils?는 "연필이 몇 자루예요?"예요.',

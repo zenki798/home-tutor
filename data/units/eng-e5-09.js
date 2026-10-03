@@ -184,7 +184,7 @@ Tutor.registerUnit({
     {
       id: 'p6', level: 1, type: 'short', check: 'text', concept: 2,
       q: '우리말에 맞게 빈칸에 알맞은 낱말을 쓰세요.\n\n그녀는 안경을 썼어요. → She wears [[blank]].',
-      answer: ['glasses'],
+      answer: ['glasses', 'eyeglasses'],
       wrong: [{ a: 'glass', why: '안경은 알이 두 개라서 끝에 es 를 붙여 glasses 라고 써요. glass 는 "유리, 유리컵"이에요.' }],
       explain: '안경은 **glasses** 예요. 안경알이 두 개라서 끝에 es 가 붙어요.',
     },
@@ -326,7 +326,7 @@ Tutor.registerUnit({
     },
     {
       title: 'look like 의 또 다른 쓰임: 닮았어요',
-      body: 'look like 뒤에 사람을 쓰면 "~와 닮았다"라는 뜻이 돼요.\n\n- **You look like your mom.** 너는 엄마를 닮았구나.\n- **He looks like his dad.** 그는 아빠를 닮았어요.\n\n두 번째 문장에서 look 이 아니라 **looks** 인 것도 눈여겨보세요. he, she 처럼 한 사람이 주어이면 동사 끝에 s 가 붙어요(has, wears, likes 와 같아요). 그래서 질문에서는 does 가 앞에 나오고, 대답에서는 동사에 s 가 붙는 거예요.',
+      body: 'look like 뒤에 사람을 쓰면 "~와 닮았다"라는 뜻이 돼요.\n\n- **You look like your mom.** 너는 엄마를 닮았구나.\n- **He looks like his dad.** 그는 아빠를 닮았어요.\n\n두 번째 문장에서 look 이 아니라 **looks** 인 것도 눈여겨보세요. he, she 처럼 한 사람이 주어이면 동사 끝에 s 가 붙어요(wears, likes 와 같아요. have 는 has 로 바뀌어요). 그래서 질문에서는 does 가 앞에 나오고, 대답에서는 동사에 s 가 붙는 거예요.',
     },
   ],
 

@@ -15,7 +15,7 @@ Tutor.registerUnit({
   concepts: [
     {
       title: '색깔 낱말',
-      body: '여러 가지 색깔을 영어로 말해 봐요.\n\n| 영어 | 뜻 | 떠오르는 것 |\n|---|---|---|\n| **red** | 빨간색 | 딸기 |\n| **blue** | 파란색 | 맑은 하늘 |\n| **yellow** | 노란색 | 바나나 |\n| **green** | 초록색 | 여름 나뭇잎 |\n| **black** | 검은색 | 밤하늘 |\n| **white** | 흰색 | 눈 |\n| **pink** | 분홍색 | 벚꽃 |\n\n> 💡 색깔 낱말을 외울 때는 그 색을 가진 물건을 하나씩 짝지어 두면 오래 기억나요.',
+      body: '여러 가지 색깔을 영어로 말해 봐요.\n\n| 영어 | 뜻 | 떠오르는 것 |\n|---|---|---|\n| **red** | 빨간색 | 딸기 |\n| **blue** | 파란색 | 맑은 하늘 |\n| **yellow** | 노란색 | 바나나 |\n| **green** | 초록색 | 여름 나뭇잎 |\n| **black** | 검은색 | 밤하늘 |\n| **white** | 흰색 | 눈사람 |\n| **pink** | 분홍색 | 벚꽃 |\n\n> 💡 색깔 낱말을 외울 때는 그 색을 가진 물건을 하나씩 짝지어 두면 오래 기억나요.',
       easy: '크레용 상자를 열었다고 생각해 보세요. 크레용마다 영어 이름표가 붙어 있어요.\n\n딸기를 칠하는 크레용은 **red**, 바나나를 칠하는 크레용은 **yellow**, 나뭇잎을 칠하는 크레용은 **green**이에요.\n\n주변의 물건을 보며 "red!", "white!" 하고 색깔 이름을 불러 보세요.',
       check: {
         type: 'choice',
@@ -214,9 +214,9 @@ Tutor.registerUnit({
     {
       id: 'a2', level: 3, type: 'choice', concept: 2,
       q: '그림 대신 낱말로 설명했어요. 설명이 **맞지 않는** 것을 고르세요.',
-      choices: ["개미 — It's big.", "코끼리 — It's big.", "기린의 목 — It's long.", "눈 — It's white."],
+      choices: ["개미 — It's big.", "코끼리 — It's big.", "기린의 목 — It's long.", "눈사람 — It's white."],
       answer: 0,
-      why: ['', '코끼리는 커요. big이 맞아요.', '기린의 목은 길어요. long이 맞아요.', '눈은 흰색이에요. white가 맞아요.'],
+      why: ['', '코끼리는 커요. big이 맞아요.', '기린의 목은 길어요. long이 맞아요.', '눈사람은 흰색이에요. white가 맞아요.'],
       hint: '각 낱말의 뜻을 우리말로 바꾸어 보세요.',
       explain: "개미는 아주 작아요. 그러니 It's small.이라고 해야 맞아요. big은 \"큰\"이에요.",
     },
@@ -242,7 +242,7 @@ Tutor.registerUnit({
   deeper: [
     {
       title: '색깔과 크기를 함께 말하기',
-      body: "크기와 색깔을 한꺼번에 말할 수도 있어요.\n\n- **It's a big red ball.** 그것은 크고 빨간 공이에요.\n- **It's a small white cat.** 그것은 작고 하얀 고양이예요.\n\n이때 영어에서는 보통 **크기 → 색깔 → 물건 이름** 순서로 말해요. a red big ball보다 a big red ball이 자연스러워요.\n\n지금은 It's big. It's red.처럼 한 문장에 하나씩 말해도 충분해요. 위로 올라가면 더 많은 꾸미는 말을 이어서 쓰는 법을 배워요.",
+      body: "크기와 색깔을 한꺼번에 말할 수도 있어요.\n\n- **It's a big red ball.** 그것은 크고 빨간 공이에요.\n- **It's a small white cat.** 그것은 작고 하얀 고양이예요.\n\n이때 영어에서는 보통 **크기 → 색깔 → 물건 이름** 순서로 말해요. a red big ball보다 a big red ball이 자연스러워요.\n\n지금은 It's big. It's red.처럼 한 문장에 하나씩 말해도 충분해요. 학년이 올라가면 더 많은 꾸미는 말을 이어서 쓰는 법을 배워요.",
     },
   ],
 
@@ -298,7 +298,7 @@ Tutor.registerUnit({
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (x) { return x === correct ? '' : reason[x] || ''; }),
-          explain: c[1] + '은 영어로 **' + c[0] + '**, 색깔을 물었으니 **' + correct + '**라고 대답해요.',
+          explain: c[1] + '은 영어로 **' + c[0] + '**, 색깔을 물었으니 **' + correct + '**' + (c[2] === '은' ? '이라고' : '라고') + ' 대답해요.',
         };
       },
     },

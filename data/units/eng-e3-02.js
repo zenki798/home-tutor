@@ -147,7 +147,7 @@ Tutor.registerUnit({
         '',
         'Good morning.은 아침에 만나 처음 하는 인사예요. 반갑다는 말에는 too를 붙여 똑같이 답해요.',
         'Goodbye.는 헤어질 때 하는 인사예요.',
-        '이름은 Nice to meet you.를 말하기 전에 이미 주고받았어요.',
+        "What's your name?은 이름을 묻는 말이에요. 반갑다는 말에는 too를 붙여 똑같이 반갑다고 답해요.",
       ],
       explain: 'Nice to meet you.(만나서 반가워.)에는 Nice to meet you, too.(나도 만나서 반가워.)라고 답해요.',
     },

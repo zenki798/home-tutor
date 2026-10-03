@@ -38,7 +38,7 @@ Tutor.registerUnit({
     },
     {
       title: "I can't ~. — 할 수 없는 일 말하기",
-      body: "할 수 없는 일을 말할 때는 **I can't** 뒤에 동작 낱말을 붙여요. **can't**는 \"~할 수 없다\"라는 뜻이에요.\n\n- **I can't skate.** 나는 스케이트를 탈 수 없어요.\n- **I can't sing.** 나는 노래할 수 없어요.\n\n**can't**는 **cannot**을 줄인 말이에요. cannot은 띄어 쓰지 않고 한 낱말로 붙여 써요.\n\n| 할 수 있어요 | 할 수 없어요 |\n|---|---|\n| I can swim. | I can't swim. |\n| I can dance. | I can't dance. |",
+      body: "할 수 없는 일을 말할 때는 **I can't** 뒤에 동작 낱말을 붙여요. **can't**는 \"~할 수 없다\"라는 뜻이에요.\n\n- **I can't skate.** 나는 스케이트를 탈 수 없어요.\n- **I can't sing.** 나는 노래할 수 없어요.\n\n**can't**는 **cannot**을 줄인 말이에요. cannot은 보통 띄어 쓰지 않고 한 낱말로 붙여 써요.\n\n| 할 수 있어요 | 할 수 없어요 |\n|---|---|\n| I can swim. | I can't swim. |\n| I can dance. | I can't dance. |",
       easy: "can 끝에 꼬리 **'t**가 붙으면 뜻이 반대로 바뀌어요.\n\n- can: 할 수 있어요\n- can**'t**: 할 수 없어요\n\n소리를 잘 들어 보세요. can't는 끝에 짧은 t 소리가 나요. 이 작은 소리 하나로 뜻이 반대가 되니 귀를 쫑긋 세워요.",
       check: {
         type: 'choice',
@@ -290,7 +290,7 @@ Tutor.registerUnit({
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : reason[c] || ''; }),
-          explain: 'Can으로 물었으니 can으로 대답해요. ' + name + R.josa(name, '은/는') + ' ' + a[1] + ' ' + (can ? '수 있으니' : '수 없으니') + ' **' + correct + '**라고 대답해요.',
+          explain: 'Can으로 물었으니 can으로 대답해요. ' + name + R.josa(name, '은/는') + ' ' + a[1] + ' ' + (can ? '수 있으니' : '수 없으니') + ' **' + correct + '**' + (can ? '이라고' : '라고') + ' 대답해요.',
         };
       },
     },

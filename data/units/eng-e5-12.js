@@ -215,7 +215,7 @@
         why: [
           '',
           'they found(그들이 찾았다), the kite(그 연)처럼 붙어 있어야 할 말을 갈라 놓았어요.',
-          'in a big tree(큰 나무에서)는 한 덩어리인데 둘로 나누었어요.',
+          'found 와 the kite(그 연)를 갈라 놓았고, in a big tree(큰 나무에서)도 한 덩어리인데 세 조각으로 나누었어요.',
           '한 낱말씩 끊으면 로봇처럼 들리고 뜻이 잘 전해지지 않아요.',
         ],
         explain: '**언제(Finally)** / **누가 무엇을 했나(they found the kite)** / **어디서(in a big tree)** 로 끊어 읽으면 뜻이 잘 전해져요.',
@@ -352,7 +352,7 @@
       {
         id: 'a4', level: 3, type: 'short', check: 'text', concept: 2,
         q: '빈칸에 들어갈 순서 말을 쓰세요. (한 낱말 또는 두 낱말)\n\nJia fed her cat in the morning. [[blank]], she walked to school. Finally, she arrived at school and said hello to her friends.',
-        answer: ['Then', 'Next', 'After that', 'Later', 'Afterward', 'Afterwards'],
+        answer: ['Then', 'Next', 'After that', 'And then', 'Later', 'Afterward', 'Afterwards'],
         wrong: [
           { a: 'Suddenly', why: 'Suddenly 는 뜻밖의 일이 "갑자기" 일어날 때 써요. 학교에 걸어가는 것은 차례대로 하는 일이라 Then 이 알맞아요.' },
           { a: 'Finally', why: 'Finally 는 맨 마지막 일에 써요. 이 글에는 뒤에 마지막 일이 따로 나와요.' },
@@ -473,7 +473,7 @@
       { w: 'excited', m: '신이 난, 들뜬', ex: 'I am excited about the school trip.', exm: '나는 현장 체험 학습 때문에 신이 나요.' },
       { w: 'worried', m: '걱정되는', ex: 'Mom was worried because I came home late.', exm: '내가 늦게 와서 엄마가 걱정하셨어요.' },
       { w: 'scared', m: '무서운, 겁이 난', ex: 'My little brother is scared of the dark.', exm: '내 남동생은 어둠을 무서워해요.' },
-      { w: 'sorry', m: '미안한; 안된, 안타까운', ex: 'I\'m sorry I broke your crayon.', exm: '네 크레파스를 부러뜨려서 미안해.' },
+      { w: 'sorry', m: '미안한; 안된, 안타까운', ex: 'I\'m sorry I broke your crayon.', exm: '네 크레용을 부러뜨려서 미안해.' },
     ],
   });
 })();

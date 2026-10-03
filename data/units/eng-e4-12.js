@@ -29,7 +29,7 @@ Tutor.registerUnit({
     },
     {
       title: '인물과 장소 찾기',
-      body: '**인물**은 이야기에 나오는 사람이나 동물이에요. **장소**는 일이 일어나는 곳이에요.\n\n- 인물 찾기: 이름은 **대문자로 시작**해요(Mina, Coco). he, she, it도 인물을 가리켜요.\n- 장소 찾기: **in the ~, at the ~, under the ~** 다음에 오는 말을 봐요.\n\n| 문장 | 인물 | 장소 |\n|---|---|---|\n| Mina looks **in the garden**. | Mina | garden(정원) |\n| Junho is **at the park**. | Junho | park(공원) |\n| Coco is **in the box**. | Coco | box(상자) 안 |\n\n> 💡 3학년 때 배운 in(안에), on(위에), under(아래에)가 장소를 찾는 열쇠예요.',
+      body: '**인물**은 이야기에 나오는 사람이나 동물이에요. **장소**는 일이 일어나는 곳이에요.\n\n- 인물 찾기: 이름은 **대문자로 시작**해요(Mina, Coco). he, she, it도 인물을 가리켜요.\n- 장소 찾기: **in the ~, at the ~, under the ~** 다음에 오는 말을 봐요.\n\n| 문장 | 인물 | 장소 |\n|---|---|---|\n| Mina looks **in the garden**. | Mina | garden(정원) |\n| Junho is **at the park**. | Junho | park(공원) |\n| Coco is **in the box**. | Coco | box(상자) 안 |\n\n> 💡 「잃어버린 물건 찾기」 단원에서 배운 in(안에), on(위에), under(아래에)가 장소를 찾는 열쇠예요.',
       easy: '이야기를 연극이라고 생각해 보세요. 무대에 올라오는 배우가 **인물**, 무대 뒤의 배경이 **장소**예요.\n\n대문자로 시작하는 이름이 나오면 "배우 등장!", in the나 at the가 나오면 "배경이 나왔다!" 하고 표시하며 읽어 보세요.',
       check: {
         type: 'choice',
@@ -56,7 +56,7 @@ Tutor.registerUnit({
     },
     {
       title: '반복되는 문장을 리듬에 맞춰 읽기',
-      body: '그림 이야기에는 **같은 문장이 여러 번 나오는** 경우가 많아요. 반복되는 문장을 찾으면 이야기가 쉬워지고, 노래처럼 리듬을 타며 읽을 수 있어요.\n\nMina looks in the garden.\n**"Coco, Coco, where are you?"**\nMina looks under the table.\n**"Coco, Coco, where are you?"**\n\n읽는 방법\n1. 반복되는 문장을 찾아 표시해요.\n2. 손뼉을 치며 같은 빠르기로 읽어요. 두 번째부터는 책을 보지 않고 말해 보세요.\n3. 물음표(?)로 끝나는 문장은 끝을 올려 묻듯이 읽어요.\n\n반복되는 문장 사이에 바뀌는 부분(in the garden → under the table)을 보면 이야기가 어떻게 흘러가는지도 알 수 있어요.',
+      body: '그림 이야기에는 **같은 문장이 여러 번 나오는** 경우가 많아요. 반복되는 문장을 찾으면 이야기가 쉬워지고, 노래처럼 리듬을 타며 읽을 수 있어요.\n\nMina looks in the garden.\n**"Coco, Coco, where are you?"**\nMina looks under the table.\n**"Coco, Coco, where are you?"**\n\n읽는 방법\n1. 반복되는 문장을 찾아 표시해요.\n2. 손뼉을 치며 같은 빠르기로 읽어요. 두 번째부터는 책을 보지 않고 말해 보세요.\n3. Is it here?처럼 Yes나 No로 답하는 물음은 끝을 올려 읽어요. where처럼 묻는 낱말로 시작하는 물음은 보통 끝을 내려 읽어요.\n\n반복되는 문장 사이에 바뀌는 부분(in the garden → under the table)을 보면 이야기가 어떻게 흘러가는지도 알 수 있어요.',
       easy: '노래의 후렴을 떠올려 보세요. 같은 부분이 여러 번 나오면 금방 따라 부를 수 있지요?\n\n이야기 속 반복되는 문장도 후렴이에요. 처음 한 번 잘 읽어 두면, 다음부터는 친구와 함께 노래하듯 신나게 읽을 수 있어요.',
       check: {
         type: 'choice',
@@ -75,7 +75,7 @@ Tutor.registerUnit({
       steps: [
         '인물: 대문자로 시작하는 이름을 찾아요. Mina(미나)와 Coco(고양이 코코)예요.',
         '장소: in the, under the 다음 말을 찾아요. garden(정원), table(탁자) 아래, big box(큰 상자) 안이 나와요.',
-        '기분: 코코를 못 찾았을 때 Mina is sad.(슬퍼요), 코코를 찾은 뒤 Mina is happy again.(다시 기뻐요)이라고 했어요.',
+        '기분: 코코를 못 찾았을 때 Mina is sad.(슬퍼요), 코코를 찾은 뒤 Mina is happy again.(다시 기뻐요)라고 했어요.',
         '반복되는 문장: "Coco, Coco, where are you?"가 두 번 나와요. 리듬을 타며 읽어 보세요.',
       ],
       answer: '인물: Mina, Coco / 장소: garden, table 아래, box 안 / 기분: 슬펐다가(sad) 다시 기뻐요(happy)',
@@ -247,7 +247,7 @@ Tutor.registerUnit({
         '기쁜 것은 맞지만, 정원에서 논 것이 아니라 코코를 찾아서 기뻐요.',
       ],
       hint: '마지막 두 문장을 잘 읽어 보세요. 기분이 바뀐 까닭이 있어요.',
-      explain: '코코를 못 찾았을 때는 sad(슬픈)였지만, 상자 안에서 코코를 찾은 뒤 **Mina is happy again.**(미나는 다시 기뻐요.)이라고 했어요. 코코를 찾았기 때문에 기뻐요.',
+      explain: '코코를 못 찾았을 때는 sad(슬픈)였지만, 상자 안에서 코코를 찾은 뒤 **Mina is happy again.**(미나는 다시 기뻐요.)라고 했어요. 코코를 찾았기 때문에 기뻐요.',
     },
     {
       id: 'a2', level: 3, type: 'short', check: 'text', concept: 1,
@@ -277,7 +277,7 @@ Tutor.registerUnit({
         '토끼가 찾는 것은 사과(apple)가 아니라 당근(carrot)이에요.',
       ],
       hint: '토끼가 다른 곳에 갈 때마다 같은 말을 하고 있어요.',
-      explain: '토끼는 장소를 옮길 때마다 **"Carrot, carrot, where is my carrot?"**(당근아, 당근아, 내 당근은 어디 있니?)이라고 말해요. 정원에서도 아직 못 찾았으니 같은 문장이 들어가요.',
+      explain: '토끼는 장소를 옮길 때마다 **"Carrot, carrot, where is my carrot?"**(당근아, 당근아, 내 당근은 어디 있니?)라고 말해요. 정원에서도 아직 못 찾았으니 같은 문장이 들어가요.',
     },
     {
       id: 'a4', level: 3, type: 'short', check: 'text', concept: 2,

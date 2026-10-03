@@ -147,7 +147,7 @@ Tutor.registerUnit({
     },
     {
       id: 'p5', level: 1, type: 'choice', concept: 2,
-      q: "대화의 빈칸에 알맞은 말은 무엇일까요?\n\nA: Is this Mina's eraser?\nB: Yes, it's [[hers]].",
+      q: "대화의 빈칸에 알맞은 말은 무엇일까요? (미나는 여자아이예요.)\n\nA: Is this Mina's eraser?\nB: Yes, it's [[hers]].",
       choices: ['hers', 'her', 'his', 'she'],
       answer: 0,
       why: ['', "her는 '그녀의'라는 뜻이라 뒤에 물건 이름이 와야 해요. '그녀의 것'은 hers예요.", "his는 남자를 가리켜요. 미나는 여자아이예요.", "she는 '그녀는'이라는 뜻이에요."],
@@ -224,7 +224,7 @@ Tutor.registerUnit({
   advanced: [
     {
       id: 'a1', level: 3, type: 'choice', concept: 4,
-      q: "안내문을 읽고 대화의 빈칸에 알맞은 말을 고르세요.\n\n**LOST AND FOUND**\nIs this your umbrella? It's yellow. The name on it is SORA.\n\nA: Whose umbrella is this?\nB: [[It's Sora's.]]",
+      q: "안내문을 읽고 대화의 빈칸에 알맞은 말을 고르세요. (A와 B는 소라가 아니에요.)\n\n**LOST AND FOUND**\nIs this your umbrella? It's yellow. The name on it is SORA.\n\nA: Whose umbrella is this?\nB: [[It's Sora's.]]",
       choices: ["It's Sora's.", "It's Sora.", "They're Sora's.", "It's yours."],
       answer: 0,
       why: [
@@ -262,10 +262,11 @@ Tutor.registerUnit({
     {
       id: 'a4', level: 3, type: 'short', concept: 1,
       q: "글을 읽고, 빨간 모자의 주인을 빈칸에 쓰세요.\n\n> There are two caps: a red cap and a blue cap. One is Mina's. The other is Jiho's. The blue cap is not Jiho's.\n\nThe red cap is [[Jiho's]].",
-      answer: ["Jiho's"],
+      answer: ["Jiho's", "Jiho's cap"],
       wrong: [
         { a: "Mina's", why: '파란 모자가 지호의 것이 아니니 파란 모자는 미나의 것이에요. 그러면 빨간 모자는 누구의 것일까요?' },
         { a: 'Jiho', why: "주인을 나타내려면 이름 뒤에 's를 붙여요. → Jiho's" },
+        { a: 'Jihos', why: "아포스트로피(')가 빠졌어요. s 앞에 ' 를 써서 Jiho's로 써요." },
       ],
       hint: '먼저 파란 모자의 주인을 알아내 보세요.',
       explain: "모자 두 개는 미나의 것 하나, 지호의 것 하나예요. 파란 모자는 지호의 것이 아니니 미나의 것이고, 남은 빨간 모자가 지호의 것이에요. → The red cap is Jiho's.",
@@ -337,7 +338,7 @@ Tutor.registerUnit({
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : reason[c] || ''; }),
-          explain: (pl ? item + "는 여러 개라서 are these로 묻고 They're로 답해요." : "물건이 하나라서 is this로 묻고 It's로 답해요.") + " 주인 이름 " + N + " 뒤에 's를 붙여요. → " + correct,
+          explain: (pl ? item + "는 여러 개로 말하는 물건이라서 are these로 묻고 They're로 답해요." : "물건이 하나라서 is this로 묻고 It's로 답해요.") + " 주인 이름 " + N + " 뒤에 's를 붙여요. → " + correct,
         };
       },
     },

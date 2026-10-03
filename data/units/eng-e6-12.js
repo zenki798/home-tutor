@@ -15,11 +15,11 @@ Tutor.registerUnit({
   concepts: [
     {
       title: '시에서 반복되는 말과 리듬',
-      body: '짧은 영어 시를 읽어 봐요.\n\n> **Rain**\n> Rain, rain, on my window,\n> Tap, tap, tap.\n> Rain, rain, on my umbrella,\n> Tap, tap, tap.\n> Rain, rain, on my yellow boots,\n> Splash, splash, splash!\n\n이 시에는 **같은 말이 되풀이**돼요. "Rain, rain"이 줄마다 처음에 나오고, "Tap, tap, tap."이 두 번 나와요. 같은 말이 반복되면 노래처럼 일정한 박자, 곧 **리듬**이 생겨요.\n\n시의 리듬을 만드는 또 한 가지는 **끝소리가 같은 낱말**이에요. 예를 들어 tree와 me, fly와 sky는 끝소리가 같아요. 줄 끝에 이런 낱말을 두면 읽을 때 소리가 맞아떨어져서 재미있어요.\n\n> 💡 Tap, tap, tap(톡톡톡)이나 Splash(첨벙) 같은 소리 흉내 말도 시를 생생하게 만들어요.',
+      body: '짧은 영어 시를 읽어 봐요.\n\n> **Rain**\n> Rain, rain, on my window,\n> Tap, tap, tap.\n> Rain, rain, on my umbrella,\n> Tap, tap, tap.\n> Rain, rain, on my yellow boots,\n> Splash, splash, splash!\n\n이 시에는 **같은 말이 되풀이**돼요. "Rain, rain"이 1줄·3줄·5줄 처음에 나오고, "Tap, tap, tap."이 두 번 나와요. 같은 말이 반복되면 노래처럼 일정한 박자, 곧 **리듬**이 생겨요.\n\n시의 리듬을 만드는 또 한 가지는 **끝소리가 같은 낱말**이에요. 예를 들어 tree와 me, fly와 sky는 끝소리가 같아요. 줄 끝에 이런 낱말을 두면 읽을 때 소리가 맞아떨어져서 재미있어요.\n\n> 💡 Tap, tap, tap(톡톡톡)이나 Splash(첨벙) 같은 소리 흉내 말도 시를 생생하게 만들어요.',
       easy: '노래 가사를 떠올려 보세요. 같은 부분이 자꾸 나와서 금방 따라 부를 수 있지요?\n\n시도 똑같아요. "Rain, rain"을 손뼉 두 번, "Tap, tap, tap"을 손뼉 세 번에 맞춰 읽어 보세요. 되풀이되는 말 덕분에 몸이 저절로 박자를 타요. 그게 리듬이에요.',
       check: {
         type: 'choice',
-        q: '시 "Rain"에서 줄마다 처음에 되풀이되는 말은 무엇일까요?\n\n> Rain, rain, on my window,\n> Tap, tap, tap.\n> Rain, rain, on my umbrella,\n> Tap, tap, tap.',
+        q: '시 "Rain"에서 1줄과 3줄 처음에 되풀이되는 말은 무엇일까요?\n\n> Rain, rain, on my window,\n> Tap, tap, tap.\n> Rain, rain, on my umbrella,\n> Tap, tap, tap.',
         choices: ['Rain, rain', 'on my window', 'umbrella'],
         answer: 0,
         why: [
@@ -77,7 +77,7 @@ Tutor.registerUnit({
     },
     {
       title: '이야기의 뒷부분 상상하기',
-      body: '이야기가 끝난 뒤에 무슨 일이 일어날지 상상해 봐요. 아무렇게나 지어내는 것이 아니라 **두 가지를 지키며** 상상해요.\n\n1. **이야기의 흐름**: 앞에서 일어난 일과 이어져야 해요.\n2. **인물의 성격**: 인물이 지금까지 해 온 행동과 어울려야 해요.\n\n예: "Mia and the Sunflower"의 끝에서 해바라기에 씨앗이 많이 생겼어요. 그다음은?\n\n- Mia plants the seeds again. (미아는 씨앗을 다시 심어요.) → 꾸준히 식물을 돌보는 미아와 어울려요.\n- Mia gives some seeds to her brother. (미아는 남동생에게 씨앗을 나누어 줘요.) → 흐름과 어울려요.\n- Mia throws the sunflower away. (미아는 해바라기를 버려요.) → 정성껏 키운 미아와 **어울리지 않아요.**',
+      body: '이야기가 끝난 뒤에 무슨 일이 일어날지 상상해 봐요. 아무렇게나 지어내는 것이 아니라 **두 가지를 지키며** 상상해요.\n\n1. **이야기의 흐름**: 앞에서 일어난 일과 이어져야 해요.\n2. **인물의 성격**: 인물이 지금까지 해 온 행동과 어울려야 해요.\n\n예: "Mia and the Sunflower"는 해바라기가 피는 것으로 끝나요. 가을이 되어 해바라기에 씨앗이 많이 생겼다면, 그다음은?\n\n- Mia plants the seeds again. (미아는 씨앗을 다시 심어요.) → 꾸준히 식물을 돌보는 미아와 어울려요.\n- Mia gives some seeds to her brother. (미아는 brother(오빠나 남동생)에게 씨앗을 나누어 줘요.) → 흐름과 어울려요.\n- Mia throws the sunflower away. (미아는 해바라기를 버려요.) → 정성껏 키운 미아와 **어울리지 않아요.**',
       easy: '드라마 다음 회를 상상하는 것과 같아요. 착한 주인공이 갑자기 아무 까닭 없이 나쁜 일을 하면 "에이, 말이 안 돼!" 하지요?\n\n뒷이야기도 앞 이야기와 **이어지고**, 인물이 **할 법한** 일이어야 해요.',
       check: {
         type: 'ox',
@@ -356,7 +356,7 @@ Tutor.registerUnit({
     { w: 'lesson', m: '교훈, 수업', ex: 'What is the lesson of this story?', exm: '이 이야기의 교훈은 무엇일까요?' },
     { w: 'feel', m: '느끼다', ex: 'How do you feel today?', exm: '오늘 기분이 어때요?' },
     { w: 'worried', m: '걱정하는', ex: 'Dana is worried about the contest.', exm: '다나는 대회를 걱정해요.' },
-    { w: 'proud', m: '자랑스러운', ex: 'I am proud of my brother.', exm: '나는 우리 형이 자랑스러워요.' },
+    { w: 'proud', m: '자랑스러운', ex: 'I am proud of you.', exm: '나는 네가 자랑스러워.' },
     { w: 'surprised', m: '놀란', ex: 'He was surprised at the gift.', exm: '그는 선물을 보고 놀랐어요.' },
     { w: 'kind', m: '친절한', ex: 'Jun is kind to animals.', exm: '준은 동물에게 친절해요.' },
     { w: 'end', m: '끝, 결말', ex: 'I like the end of the story.', exm: '나는 이 이야기의 결말이 좋아요.' },

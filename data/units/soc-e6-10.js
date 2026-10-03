@@ -42,7 +42,7 @@ Tutor.registerUnit({
     },
     {
       title: '기업이 하는 일',
-      body: '**기업**은 사람들에게 필요한 물건과 서비스를 만들어 파는 곳이에요. 공장, 회사, 가게, 식당, 병원도 생산 활동을 하면 기업이라고 할 수 있어요. 그래서 기업을 **생산의 주체**라고 해요.\n\n기업이 하는 일\n- 물건과 서비스를 **생산**해서 가계에 팔아요.\n- 생산을 위해 사람을 고용하여 **일자리**를 만들고, 일한 대가로 **임금**을 줘요.\n- 더 좋은 물건을 만들려고 새로운 **기술을 개발**해요.\n\n기업은 물건을 팔아 번 돈(판매액)에서 재료비·임금 같은 **비용**을 빼고 남은 **이윤**을 얻으려고 해요.\n\n$\\text{이윤}=\\text{판매액}-\\text{비용}$',
+      body: '**기업**은 사람들에게 필요한 물건과 서비스를 만들어 파는 곳이에요. 공장, 회사, 가게, 식당처럼 물건을 만들거나 서비스를 제공해 이윤을 얻으려는 곳이 기업이에요. 그래서 기업을 **생산의 주체**라고 해요.\n\n기업이 하는 일\n- 물건과 서비스를 **생산**해서 가계에 팔아요.\n- 생산을 위해 사람을 고용하여 **일자리**를 만들고, 일한 대가로 **임금**을 줘요.\n- 더 좋은 물건을 만들려고 새로운 **기술을 개발**해요.\n\n기업은 물건을 팔아 번 돈(판매액)에서 재료비·임금 같은 **비용**을 빼고 남은 **이윤**을 얻으려고 해요.\n\n$\\text{이윤}=\\text{판매액}-\\text{비용}$',
       easy: '빵집을 떠올려 보세요. 빵집은 밀가루와 버터를 사고, 제빵사에게 월급을 주고, 빵을 구워 팔아요.\n\n빵을 팔아 번 돈이 100만 원이고, 재료비와 월급 등으로 70만 원을 썼다면 빵집에 남는 돈은 30만 원이에요. 이 남는 돈이 **이윤**이에요.',
       check: {
         type: 'choice',
@@ -56,7 +56,7 @@ Tutor.registerUnit({
     {
       title: '가계와 기업이 주고받는 관계',
       body: '가계와 기업은 **시장**에서 서로 필요한 것을 주고받아요. 시장은 물건이나 서비스를 사고파는 곳이에요. 전통 시장처럼 눈에 보이는 시장도 있고, 인터넷 쇼핑이나 일자리를 구하는 곳처럼 눈에 보이지 않는 시장도 있어요.\n\n| 가계 → 기업 | 기업 → 가계 |\n|---|---|\n| 일(노동력)을 제공해요 | 일한 대가로 임금(소득)을 줘요 |\n| 물건값·서비스 요금을 내요 | 물건과 서비스를 만들어 팔아요 |\n\n가계는 기업에서 일해 번 소득으로 기업이 만든 물건을 사고, 기업은 가계가 낸 돈으로 다시 임금을 주고 생산을 해요. 이렇게 **둘은 서로 의존하며** 경제가 돌아가게 해요.\n\n> 💡 어느 한쪽이 어려워지면 다른 쪽도 영향을 받아요. 가계가 물건을 덜 사면 기업의 판매가 줄고, 기업이 어려워지면 일자리와 가계의 소득이 줄 수 있어요.',
-      easy: '물레방아를 떠올려 보세요. 물이 바퀴를 돌리고, 돌아간 바퀴가 다시 물을 퍼 올려요.\n\n가계와 기업도 이렇게 돌아요. 가계는 일해 주고 돈을 받고, 그 돈으로 기업의 물건을 사요. 기업은 그 돈으로 다시 사람에게 임금을 줘요.',
+      easy: '두 사람이 공을 주고받는 놀이를 떠올려 보세요. 한 사람이 던진 공을 다른 사람이 받아 다시 던져 주니, 공이 멈추지 않고 계속 오가요.\n\n가계와 기업도 이렇게 주고받아요. 가계는 일해 주고 돈을 받고, 그 돈으로 기업의 물건을 사요. 기업은 그 돈으로 다시 사람에게 임금을 줘요.',
       fig: { type: 'svg', alt: '가계와 기업 사이에 노동력과 임금, 물건과 물건값이 화살표로 오가는 그림', svg: '<svg viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="60" width="70" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="2"/><text x="45" y="87" font-size="15" text-anchor="middle" fill="currentColor">가계</text><rect x="220" y="60" width="70" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="2"/><text x="255" y="87" font-size="15" text-anchor="middle" fill="currentColor">기업</text><path d="M80 66 Q150 20 220 66" fill="none" stroke="var(--fig-1)" stroke-width="2"/><polygon points="220,66 208,62 213,54" fill="var(--fig-1)"/><text x="150" y="30" font-size="11" text-anchor="middle" fill="currentColor">일(노동력), 물건값</text><path d="M220 98 Q150 144 80 98" fill="none" stroke="var(--fig-2)" stroke-width="2"/><polygon points="80,98 92,102 87,110" fill="var(--fig-2)"/><text x="150" y="150" font-size="11" text-anchor="middle" fill="currentColor">임금(소득), 물건·서비스</text></svg>' },
       check: {
         type: 'choice',
@@ -293,12 +293,13 @@ Tutor.registerUnit({
       title: '판매액과 비용으로 이윤 구하기',
       make: function (R) {
         var shops = [
-          { shop: '빵집', item: '빵' }, { shop: '꽃가게', item: '꽃다발' }, { shop: '문구점', item: '공책' },
-          { shop: '과일 가게', item: '과일 상자' }, { shop: '화분 가게', item: '화분' },
+          // lo·hi: 한 개 값의 범위(천 원 단위) — 물건마다 실제와 비슷한 값이 나오게
+          { shop: '빵집', item: '빵', lo: 2, hi: 5 }, { shop: '꽃가게', item: '꽃다발', lo: 10, hi: 30 }, { shop: '문구점', item: '공책', lo: 1, hi: 3 },
+          { shop: '과일 가게', item: '과일 상자', lo: 10, hi: 30 }, { shop: '화분 가게', item: '화분', lo: 5, hi: 20 },
         ];
         var s = R.pick(shops);
         var n = R.int(4, 20) * 10;
-        var price = R.int(2, 15) * 1000;
+        var price = R.int(s.lo, s.hi) * 1000;
         var sales = n * price;
         var cost = Math.round(sales * R.int(55, 85) / 100 / 1000) * 1000;
         var profit = sales - cost;

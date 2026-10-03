@@ -28,7 +28,7 @@ Tutor.registerUnit({
     },
     {
       title: '철자가 바뀌는 비교하는 말',
-      body: "어떤 말은 -er을 붙일 때 **철자가 조금 바뀌어요.**\n\n1. **모음 하나 + 자음 하나**로 끝나는 짧은 말은 마지막 자음을 **한 번 더** 쓰고 -er을 붙여요: big → **bigger**, hot → **hotter**, thin → **thinner**\n2. **자음 + y**로 끝나는 말은 y를 **i**로 바꾸고 -er을 붙여요: heavy → **heavier**, easy → **easier**, happy → **happier**\n\n> ⚠️ tall, long, fast처럼 끝에 자음이 두 개 있는 말은 자음을 겹쳐 쓰지 않아요. tall → taller (talller ✗)",
+      body: "어떤 말은 -er을 붙일 때 **철자가 조금 바뀌어요.**\n\n1. **모음 하나 + 자음 하나**로 끝나는 짧은 말은 마지막 자음을 **한 번 더** 쓰고 -er을 붙여요: big → **bigger**, hot → **hotter**, thin → **thinner** (단, w로 끝나는 말은 겹쳐 쓰지 않아요: slow → slower)\n2. **자음 + y**로 끝나는 말은 y를 **i**로 바꾸고 -er을 붙여요: heavy → **heavier**, easy → **easier**, happy → **happier**\n\n> ⚠️ tall, long, fast처럼 끝에 자음이 두 개 있는 말은 자음을 겹쳐 쓰지 않아요. tall → taller (talller ✗)",
       easy: "big을 소리 내어 읽어 보세요. 가운데 모음 i가 짧게 소리 나지요? 이런 짧은 말은 끝 글자 g를 **하나 더** 붙여 짧은 소리를 지켜 줘요: big → bigger\n\nheavy처럼 y로 끝나면 y가 꼬리표 앞에서 i로 옷을 갈아입어요: heavy → heavier",
       check: {
         type: 'choice',
@@ -220,7 +220,7 @@ Tutor.registerUnit({
         { a: 'old', why: 'How old는 나이를 묻는 말이에요. B는 키를 말했어요.' },
       ],
       hint: 'B의 대답이 키·무게·나이 중 무엇인지 살펴보세요.',
-      explain: 'B가 "160센티미터야."라고 키를 말했으니 A는 "How tall is your brother?"(형[오빠]은 키가 얼마야?)라고 물었어요.',
+      explain: 'B가 "160센티미터야."라고 키를 말했으니 A는 "How tall is your brother?"(네 형[오빠, 남동생]은 키가 얼마야?)라고 물었어요.',
     },
     {
       id: 'p11', level: 2, type: 'choice', concept: 3,
@@ -306,12 +306,12 @@ Tutor.registerUnit({
       answer: 0,
       why: [
         '',
-        '누나(언니)는 138 cm, B는 150 cm예요. 더 큰 사람은 B 자신이에요.',
+        'sister(B의 누나·언니 또는 여동생)는 138 cm, B는 150 cm예요. 더 큰 사람은 B 자신이에요.',
         'Who로 묻는 말에는 Yes/No로 답하지 않아요.',
-        'A가 비교한 것은 B와 B의 누나(언니)예요. A(you)와 비교한 것이 아니에요.',
+        'A가 비교한 것은 B와 B의 sister예요. A(you)와 비교한 것이 아니에요.',
       ],
       hint: 'B가 말한 두 사람의 키를 비교해 보세요.',
-      explain: 'B는 150 cm, B의 누나(언니)는 138 cm예요. B가 더 크니 "I am."(내가 더 커.)이라고 답해요.',
+      explain: 'B는 150 cm, B의 sister(누나·언니 또는 여동생)는 138 cm예요. B가 더 크니 "I am."(내가 더 커.)이라고 답해요.',
     },
   ],
 

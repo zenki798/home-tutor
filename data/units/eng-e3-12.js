@@ -116,9 +116,9 @@
           type: 'choice',
           q: '가상의 일기 예보예요. **대구**의 날씨로 알맞은 것은 무엇일까요?',
           fig: forecast([['인천', 'sunny'], ['대구', 'snowy'], ['광주', 'cloudy']]),
-          choices: ["It's snowy.", "It's sunny.", "It's cloudy."],
+          choices: ["It's snowy.", "It's sunny.", "It's rainy."],
           answer: 0,
-          why: ['', '해 그림은 인천이에요. 대구는 구름에서 눈송이가 떨어지는 그림이에요.', '구름만 있는 그림은 광주예요. 대구는 구름 아래에 눈송이가 있어요.'],
+          why: ['', '해 그림은 인천이에요. 대구는 구름에서 눈송이가 떨어지는 그림이에요.', '대구의 그림은 빗방울이 아니라 동그란 눈송이예요. 비가 아니라 눈이 와요.'],
           explain: "대구에는 구름에서 눈송이가 떨어지는 그림이 있어요. 눈이 오는 날씨는 **It's snowy.**예요.",
         },
       },
@@ -208,7 +208,10 @@
         q: "그림을 보고 빈칸에 알맞은 날씨 낱말을 써 보세요.\n\nIt's [[........]].",
         fig: one('rainy'),
         answer: ['rainy', 'raining'],
-        wrong: [{ a: 'rain', why: 'rain은 "비"예요. 날씨를 말할 때는 끝에 y를 붙여 rainy라고 해요.' }],
+        wrong: [
+          { a: 'rain', why: 'rain은 "비"예요. 날씨를 말할 때는 끝에 y를 붙여 rainy라고 해요.' },
+          { a: 'cloudy', why: '구름만 있는 그림이 아니에요. 구름에서 빗방울이 떨어지니 비가 오는 날씨, rainy예요.' },
+        ],
         explain: "구름에서 빗방울이 떨어지니 비가 오는 날씨예요. **It's rainy.**라고 해요. 지금 비가 내리고 있다는 뜻으로 It's raining.이라고 해도 맞아요.",
       },
       {
@@ -264,17 +267,17 @@
     advanced: [
       {
         id: 'a1', level: 3, type: 'choice', concept: 3,
-        q: '가상의 일기 예보예요. 이날 **우산을 챙겨야 하는** 곳은 어디일까요?',
+        q: '가상의 일기 예보예요. 이날 **비가 와서 우산을 챙겨야 하는** 곳은 어디일까요?',
         fig: forecast([['서울', 'snowy'], ['대전', 'sunny'], ['부산', 'rainy']]),
         choices: ['부산', '서울', '대전'],
         answer: 0,
-        why: ['', '서울은 눈송이 그림이에요. 눈이 오는 날은 Wear your coat.처럼 따뜻하게 입어요.', '대전은 해 그림이라 맑아요.'],
+        why: ['', '서울은 빗방울이 아니라 동그란 눈송이 그림이에요. 비가 아니라 눈이 와요(It\'s snowy.).', '대전은 해 그림이라 맑아요.'],
         hint: '빗방울이 떨어지는 그림을 찾아보세요.',
         explain: "부산에는 빗방울 그림이 있어 비가 와요(It's rainy.). 그래서 부산에서는 **Take your umbrella.**라고 말해요.",
       },
       {
         id: 'a2', level: 3, type: 'choice', concept: 1,
-        q: "하윤이의 말을 읽고 물음에 답하세요.\n\nHayun: How's the weather? It's sunny. It's hot.\n\n하윤이가 사는 곳의 날씨는 어떨까요?",
+        q: "하윤이의 말을 읽고 물음에 답하세요.\n\nHayun: It's sunny today. It's hot.\n\n하윤이가 사는 곳의 날씨는 어떨까요?",
         choices: ['맑고 더워요.', '맑고 추워요.', '흐리고 더워요.', '눈이 오고 추워요.'],
         answer: 0,
         why: ['', 'hot은 "더운"이에요. "추운"은 cold예요.', 'sunny는 "맑은"이에요. "흐린"은 cloudy예요.', 'sunny는 맑은 날씨, hot은 더운 날씨예요.'],
@@ -283,11 +286,11 @@
       },
       {
         id: 'a3', level: 3, type: 'short', concept: 3,
-        q: "엄마의 말을 읽고 빈칸에 알맞은 낱말을 써 보세요.\n\nMom: It's cold. It's snowing a lot. Wear your [[........]].",
-        answer: ['coat', 'jacket'],
+        q: "엄마의 말을 읽고 빈칸에 알맞은 옷 이름을 영어로 써 보세요.\n\nMom: It's cold. It's snowing a lot. Wear your [[........]].",
+        answer: ['coat', 'jacket', 'sweater', 'jumper', 'parka'],
         wrong: [{ a: 'umbrella', why: 'umbrella(우산)는 입는 것이 아니에요. wear(입다) 뒤에는 입는 것이 와요.' }],
         hint: 'wear는 "입다"예요. 추울 때 입는 것을 떠올려 보세요.',
-        explain: '춥고 눈이 많이 와요. wear(입다) 뒤에는 입는 것이 오니 **coat**(외투)를 써서 Wear your coat.라고 해요.',
+        explain: '춥고 눈이 많이 와요. wear(입다) 뒤에는 입는 것이 오니 **coat**(외투)를 써서 Wear your coat.라고 해요. jacket(재킷)처럼 추울 때 입는 다른 옷 이름도 맞아요.',
       },
       {
         id: 'a4', level: 3, type: 'ox', concept: 3,
@@ -341,7 +344,10 @@
           var name = R.pick(names);
           var correct = "It's " + k[0] + '.';
           var reason = {};
-          var wrongs = kinds.filter(function (x) { return x[0] !== k[0]; }).map(function (x) {
+          // 비·눈 그림에도 구름이 있으므로, 그때는 It's cloudy.를 오답으로 내지 않는다(정답이 둘처럼 보인다).
+          var wrongs = kinds.filter(function (x) {
+            return x[0] !== k[0] && !(x[0] === 'cloudy' && (k[0] === 'rainy' || k[0] === 'snowy'));
+          }).map(function (x) {
             var s = "It's " + x[0] + '.';
             reason[s] = '그림과 맞지 않아요. 그림을 보면 ' + k[1] + '.';
             return s;
@@ -376,7 +382,7 @@
             return {
               type: 'short', concept: 3,
               q: head + ' Take your [[........]].',
-              answer: ['umbrella'],
+              answer: ['umbrella', 'raincoat'],
               wrong: [{ a: 'coat', why: '비가 와요. take(챙기다) 뒤에는 비를 막아 주는 우산(umbrella)이 와요.' }],
               hint: '비를 막으려면 무엇을 챙겨야 할까요?',
               explain: '엄마의 첫 말은 "' + w[1] + '."라는 뜻이에요. 그래서 우산을 챙기라고 **Take your umbrella.**라고 말해요.',
@@ -385,7 +391,7 @@
           return {
             type: 'short', concept: 3,
             q: head + ' Wear your [[........]].',
-            answer: ['coat', 'jacket'],
+            answer: ['coat', 'jacket', 'sweater', 'jumper', 'parka'],
             wrong: [{ a: 'umbrella', why: 'wear는 "입다"예요. 우산은 입는 것이 아니에요. 추울 때 입는 외투를 써요.' }],
             hint: 'wear는 "입다"예요. 추울 때 입는 것을 떠올려 보세요.',
             explain: '엄마의 첫 말은 "' + w[1] + '."라는 뜻이에요. 그래서 외투를 입으라고 **Wear your coat.**라고 말해요.',

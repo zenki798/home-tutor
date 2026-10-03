@@ -183,8 +183,11 @@ Tutor.registerUnit({
     {
       id: 'p10', level: 2, type: 'short', concept: 4,
       q: "글을 읽고 물음에 답하세요.\n\n> Hello. I'm Daniel. I'm twelve years old. I'm from Kenya. I like running.\n\nDaniel은 몇 살인가요? 글에 나온 영어 낱말로 쓰세요.",
-      answer: ['twelve', 'twelve years old'],
-      wrong: [{ a: 'Kenya', why: "출신 나라를 썼어요. 나이는 I'm ○○ years old. 문장에 있어요." }],
+      answer: ['twelve', 'twelve years old', "I'm twelve years old", 'I am twelve years old'],
+      wrong: [
+        { a: 'Kenya', why: "출신 나라를 썼어요. 나이는 I'm ○○ years old. 문장에 있어요." },
+        { a: '12', why: '나이는 맞게 찾았어요. 숫자 대신 글에 나온 영어 낱말 twelve로 써요.' },
+      ],
       hint: 'years old가 들어 있는 문장을 찾아보세요.',
       explain: "I'm twelve years old.라고 했으니 Daniel은 twelve(12)살이에요.",
     },

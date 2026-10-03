@@ -29,7 +29,7 @@ Tutor.registerUnit({
     {
       title: "줄임말 I'll과 부정 won't",
       body: "말할 때는 will을 줄여 쓰는 일이 많아요. 줄인 자리에는 **'**(어퍼스트로피)를 찍어요.\n\n| 원래 | 줄임말 |\n|---|---|\n| I will | **I'll** |\n| you will | you'll |\n| he will / she will | he'll / she'll |\n| we will | we'll |\n| will not | **won't** |\n\n'~하지 않을 거예요'라고 할 때는 **will not**이나 **won't**를 써요.\n\n- I **won't** stay home this summer. 나는 이번 여름에 집에만 있지 않을 거야.\n\n계획을 물을 때는 Will you ~?라고 해요. 대답은 **Yes, I will.** / **No, I won't.**\n\n> ⚠️ will not의 줄임말은 willn't가 아니라 **won't**예요. 모양이 특별하니 꼭 기억해요.",
-      easy: "줄임말은 글자 몇 개를 빼고 그 자리에 작은 점 '를 찍은 말이에요.\n\nI + will → I'll (wi가 빠졌어요)\n\nwill not만은 특별해서 won't로 모양이 바뀌어요. '원트'처럼 짧게 말해요.",
+      easy: "줄임말은 글자 몇 개를 빼고 그 자리에 작은 점 '를 찍은 말이에요.\n\nI + will → I'll (wi가 빠졌어요)\n\nwill not만은 특별해서 won't로 모양이 바뀌어요. willn't가 아니니 따로 외워 두세요.",
       check: {
         type: 'short', check: 'text',
         q: '**will not**을 줄여 쓴 말을 쓰세요.',
@@ -189,7 +189,7 @@ Tutor.registerUnit({
     {
       id: 'p8', level: 2, type: 'order', concept: 0,
       q: "우리말에 맞게 순서대로 놓으세요.\n\n'나는 이번 주말에 조부모님 댁을 방문할 거야.'",
-      choices: ['I', 'will', 'visit', 'my grandparents', 'this weekend'],
+      choices: ['I', 'will', 'visit', 'my grandparents', 'this weekend.'],
       answer: [0, 1, 2, 3, 4],
       hint: '누가 → will → 무엇을 한다 → 누구를 → 언제 순서예요.',
       explain: 'I(나는) + will visit(방문할 거야) + my grandparents(조부모님을) + this weekend(이번 주말에). 때를 나타내는 말은 끝에 와요.',
@@ -331,7 +331,7 @@ Tutor.registerUnit({
     },
     {
       q: "won't는 왜 willn't가 아니에요?",
-      a: "옛날 영어에서 will not을 줄여 말하던 소리가 이어져 내려와 won't라는 특별한 모양이 되었어요. 규칙으로 만들 수 없는 말이니 그대로 외워 두세요.",
+      a: "옛날 영어에서는 will을 wol이라고도 썼어요. 그 wol not이 줄어들면서 won't라는 특별한 모양이 되었어요. 지금의 규칙으로는 만들 수 없는 말이니 그대로 외워 두세요.",
     },
     {
       q: '시간을 나타내는 말은 문장 어디에 써요?',

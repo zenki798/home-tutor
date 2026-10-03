@@ -152,8 +152,8 @@ Tutor.registerUnit({
       answer: 0,
       why: [
         '',
-        'was는 지난 일에 써요. 계획을 말하는 be going to에서는 is예요.',
-        'He does를 줄인 말은 없어요. He\'s는 He is를 줄인 말이에요.',
+        'He\'s는 He was를 줄인 말이 아니에요. was는 지난 일에 쓰고, 계획을 말하는 be going to에서는 is예요.',
+        'He\'s는 He does를 줄인 말이 아니에요. 이 문장의 He\'s는 He is를 줄인 말이에요.',
       ],
       explain: "He's는 He is를 줄인 말이에요. 한 사람(he)이 주어라서 is를 써요. \"그는 삼촌 댁에 갈 거예요.\"",
     },
@@ -373,7 +373,7 @@ Tutor.registerUnit({
     { w: 'museum', m: '박물관', ex: 'They are going to visit the science museum.', exm: '그들은 과학관에 갈 거예요.' },
     { w: 'hiking', m: '등산, 걷기 여행', ex: "Let's go hiking next Sunday.", exm: '다음 일요일에 등산 가자.' },
     { w: 'practice', m: '연습하다', ex: 'She is going to practice the violin.', exm: '그녀는 바이올린을 연습할 거예요.' },
-    { w: 'vacation', m: '방학, 휴가', ex: "I'm going to learn swimming during the vacation.", exm: '나는 방학 동안 수영을 배울 거예요.' },
+    { w: 'vacation', m: '방학, 휴가', ex: "I'm going to visit Jeju during the vacation.", exm: '나는 방학 동안 제주에 갈 거예요.' },
     { w: 'winter', m: '겨울', ex: 'We are going to go skiing this winter.', exm: '우리는 이번 겨울에 스키를 타러 갈 거예요.' },
   ],
 });

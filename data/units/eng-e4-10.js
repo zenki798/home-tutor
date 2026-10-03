@@ -29,7 +29,7 @@ Tutor.registerUnit({
     {
       title: '-ing 붙이기 ① 그냥 붙이기, e 빼고 붙이기',
       body: '대부분의 동작 낱말은 끝에 **ing를 그냥 붙여요**.\n\n| 낱말 | -ing 꼴 |\n|---|---|\n| read | read**ing** |\n| sing | sing**ing** |\n| sleep | sleep**ing** |\n| play | play**ing** |\n\n그런데 **e로 끝나는 낱말**은 **e를 빼고** ing를 붙여요.\n\n| 낱말 | -ing 꼴 |\n|---|---|\n| danc**e** | danc**ing** |\n| rid**e** | rid**ing** |\n| mak**e** | mak**ing** |\n| writ**e** | writ**ing** |\n\n끝의 e는 소리가 나지 않는 글자라서, ing가 오면 자리를 비켜 주는 거예요.',
-      easy: 'e로 끝나는 낱말에서 e는 "조용한 글자"예요. 소리를 내지 않고 맨 끝에 앉아 있지요.\n\ning가 오면 e가 의자를 내주고 떠나요.\n\ndance → danc + ing → **dancing**\n\n그래서 danceing처럼 e와 i가 나란히 붙는 일은 없어요.',
+      easy: 'e로 끝나는 낱말에서 e는 "조용한 글자"예요. 소리를 내지 않고 맨 끝에 앉아 있지요.\n\ning가 오면 e가 의자를 내주고 떠나요.\n\ndance → danc + ing → **dancing**\n\n그래서 danceing처럼 쓰지 않아요.',
       check: {
         type: 'choice',
         q: '**ride**에 -ing를 붙인 꼴로 바른 것은 무엇일까요?',
@@ -41,7 +41,7 @@ Tutor.registerUnit({
     },
     {
       title: '-ing 붙이기 ② 끝 글자를 한 번 더',
-      body: '**swim, run, sit**처럼 짧은 낱말 가운데 **모음 글자 하나 + 자음 글자 하나**로 끝나는 낱말은 **끝 자음을 한 번 더 쓰고** ing를 붙여요.\n\n| 낱말 | -ing 꼴 |\n|---|---|\n| swi**m** | swi**mm**ing |\n| ru**n** | ru**nn**ing |\n| si**t** | si**tt**ing |\n| cu**t** | cu**tt**ing |\n\n모음 글자는 a, e, i, o, u예요. swim은 끝이 i(모음 하나) + m(자음 하나)이라서 m을 한 번 더 써요.\n\nread는 끝이 ea(모음 둘) + d라서 그냥 ing만 붙여요(reading). sing은 끝이 자음 둘(ng)이라서 그냥 붙여요(singing).',
+      body: '**swim, run, sit**처럼 짧은 낱말 가운데 **모음 글자 하나 + 자음 글자 하나**로 끝나는 낱말은 **끝 자음을 한 번 더 쓰고** ing를 붙여요.\n\n| 낱말 | -ing 꼴 |\n|---|---|\n| swi**m** | swi**mm**ing |\n| ru**n** | ru**nn**ing |\n| si**t** | si**tt**ing |\n| cu**t** | cu**tt**ing |\n\n모음 글자는 a, e, i, o, u예요. swim은 끝이 i(모음 하나) + m(자음 하나)이라서 m을 한 번 더 써요.\n\nread는 끝이 ea(모음 둘) + d라서 그냥 ing만 붙여요(reading). sing은 끝이 자음 둘(ng)이라서 그냥 붙여요(singing).\n\n> ⚠️ 끝 글자가 **w나 y**인 낱말은 한 번 더 쓰지 않아요. play → **playing**, draw → **drawing**',
       easy: '짧은 모음 소리를 지켜 주는 "울타리"를 하나 더 세운다고 생각해 보세요.\n\nswim의 i는 짧은 소리예요. ing만 붙이면 그 소리가 바뀌기 쉬워서, m을 하나 더 세워 i의 짧은 소리를 지켜 줘요.\n\nswim → swi**mm**ing, run → ru**nn**ing, sit → si**tt**ing',
       check: {
         type: 'ox',
@@ -73,7 +73,7 @@ Tutor.registerUnit({
         choices: ['No, I\'m not.', 'Yes, I am.', 'Yes, I\'m.'],
         answer: 0,
         why: ['', 'Yes라고 하면 요리를 하고 있다는 뜻인데, 뒤에서 먹고 있다고 했어요.', 'Yes, I\'m.처럼 줄여서 끝내지 않아요. 그리고 B는 요리가 아니라 먹고 있어요.'],
-        explain: 'B는 뒤에서 I\'m eating.(먹고 있어요.)이라고 했으니 요리는 하고 있지 않아요. 그래서 **No, I\'m not.**이 알맞아요.',
+        explain: 'B는 뒤에서 I\'m eating.(먹고 있어요.)라고 했으니 요리는 하고 있지 않아요. 그래서 **No, I\'m not.**이 알맞아요.',
       },
     },
   ],
@@ -91,7 +91,7 @@ Tutor.registerUnit({
     {
       q: '대화를 읽고 답해 보세요.\n\nMom: Minsu, are you sleeping?\nMinsu: No, I\'m not. I\'m reading a book.\n\n민수는 지금 무엇을 하고 있나요?',
       steps: [
-        'Mom이 Are you sleeping?(자고 있니?)이라고 물었어요.',
+        'Mom이 Are you sleeping?(자고 있니?)라고 물었어요.',
         '민수는 No, I\'m not.이라고 했으니 자고 있지 않아요.',
         '이어서 I\'m reading a book.이라고 했어요. reading은 "읽고 있는"이에요.',
       ],
@@ -204,7 +204,7 @@ Tutor.registerUnit({
         '요리하기(cooking)는 대화에 나오지 않아요.',
       ],
       hint: 'No, I\'m not. 다음 문장을 잘 읽어 보세요.',
-      explain: '준호는 No, I\'m not.(아니요.)이라고 한 뒤 I\'m drawing a picture.(그림을 그리고 있어요.)라고 했어요. 그래서 그림을 그리고 있어요.',
+      explain: '준호는 No, I\'m not.(아니요.)라고 한 뒤 I\'m drawing a picture.(그림을 그리고 있어요.)라고 했어요. 그래서 그림을 그리고 있어요.',
     },
     {
       id: 'p10', level: 2, type: 'short', check: 'text', concept: 2,
@@ -240,7 +240,7 @@ Tutor.registerUnit({
         '',
         'make는 e로 끝나서 e를 빼고 ing를 붙인 making이 바른 꼴이에요.',
         'sit은 t를 한 번 더 쓴 sitting이 바른 꼴이에요.',
-        'play는 그냥 ing를 붙인 playing이 바른 꼴이에요.',
+        'play는 끝 글자가 y라서 한 번 더 쓰지 않고 그냥 ing를 붙인 playing이 바른 꼴이에요.',
       ],
       explain: 'run은 모음 하나(u) + 자음 하나(n)로 끝나는 짧은 낱말이라서 n을 한 번 더 써야 해요. 바른 꼴은 **running**이에요.',
     },
@@ -262,7 +262,7 @@ Tutor.registerUnit({
         { a: 'reading', why: 'reading은 엄마(Mom)가 하고 있는 일이에요. Dad로 시작하는 문장을 다시 보세요.' },
         { a: 'dancing', why: 'dancing은 언니(누나)가 하고 있는 일이에요. Dad로 시작하는 문장을 다시 보세요.' },
       ],
-      explain: 'Dad is cooking.(아빠는 요리를 하고 있어요.)이라고 했으니 답은 **cooking**이에요. Dad is는 He\'s(He is)와 같은 모양이에요.',
+      explain: 'Dad is cooking.(아빠는 요리를 하고 있어요.)라고 했으니 답은 **cooking**이에요. Dad is는 He\'s(He is)와 같은 모양이에요.',
     },
     {
       id: 'a4', level: 3, type: 'choice', concept: 4,
@@ -271,7 +271,7 @@ Tutor.registerUnit({
       answer: 0,
       why: [
         '',
-        'B는 뒤에서 I\'m dancing(춤추고 있어요)이라고 했어요. 춤을 추고 있으니 No가 아니에요.',
+        'B는 뒤에서 I\'m dancing(춤추고 있어요)라고 했어요. 춤을 추고 있으니 No가 아니에요.',
         '문장 끝에서는 I\'m으로 줄여 끝내지 않아요. Yes, I am.이라고 해요.',
         'No라고 하면서 I am이라고 하면 뜻이 맞지 않아요. 아니라면 No, I\'m not.이에요.',
       ],
@@ -294,7 +294,7 @@ Tutor.registerUnit({
     },
     {
       q: 'swim은 m을 두 번 쓰는데 read는 왜 d를 두 번 안 써요?',
-      a: '끝 글자를 한 번 더 쓰는 것은 **모음 글자 하나 + 자음 글자 하나**로 끝나는 짧은 낱말이에요. swim은 i + m이라서 m을 한 번 더 써요. read는 ea처럼 모음 글자가 둘이라서 그냥 ing만 붙여 reading이에요.',
+      a: '끝 글자를 한 번 더 쓰는 것은 **모음 글자 하나 + 자음 글자 하나**로 끝나는 짧은 낱말이에요. swim은 i + m이라서 m을 한 번 더 써요. read는 ea처럼 모음 글자가 둘이라서 그냥 ing만 붙여 reading이에요. play, draw처럼 끝 글자가 y나 w인 낱말도 그냥 ing만 붙여요.',
     },
     {
       q: 'I read a book이랑 I\'m reading a book은 뭐가 달라요?',

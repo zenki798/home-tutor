@@ -380,7 +380,7 @@ Tutor.registerUnit({
           choices: pick.choices,
           answer: pick.answer,
           why: pick.choices.map(function (c) { return c === correct ? '' : reason[c] || ''; }),
-          explain: '시계는 ' + timeKo + '을 가리켜요. 시를 먼저, 분을 나중에 말하니 ' + correct + '. (' + act[0] + ': ' + act[1] + ')',
+          explain: '시계는 ' + timeKo + '을 가리켜요. 시를 먼저, 분을 나중에 말해요: ' + correct + '. (' + act[0] + ': ' + act[1] + ')',
         };
       },
     },

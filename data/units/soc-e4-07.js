@@ -97,7 +97,7 @@ Tutor.registerUnit({
         '문제 찾기: 쉬는 시간마다 공을 두고 다툼이 생겨요.',
         '의견 모으기: "요일별로 모둠이 돌아가며 쓰자.", "공을 하나 더 사자.", "먼저 온 사람이 쓰자." 같은 의견이 나왔어요.',
         '대화와 타협: 공을 더 사려면 돈이 들고, 먼저 온 사람만 쓰면 다툼이 계속된다는 의견이 나왔어요. 서로 양보하여 두 가지 안으로 좁혔어요.',
-        '다수결: 남은 의견이 모이지 않아 투표했더니 "요일별로 모둠이 돌아가며 쓰기"가 가장 많은 표를 받았어요.',
+        '다수결: 남은 의견이 모이지 않아 투표했더니 "요일별로 모둠이 돌아가며 쓰기"가 더 많은 표를 받았어요.',
         '소수 의견 존중과 실천: "공을 하나 더 사자."는 의견은 학생회에 건의하기로 하고, 정한 규칙을 함께 지켜요. 한 달 뒤 잘 지켜지는지 돌아봐요.',
       ],
       answer: '문제 찾기 → 의견 모으기 → 대화와 타협 → 다수결 → 소수 의견 존중·실천·돌아보기 순서로 해결해요.',
@@ -304,7 +304,7 @@ Tutor.registerUnit({
           var mx = Math.max(a, b, c);
           if (c >= 2 && t.filter(function (x) { return x === mx; }).length === 1) { v = t; break; }
         }
-        if (!v) { v = [n - 13, 8, 5]; }
+        if (!v) { v = [n - 10, 6, 4]; }
         var best = v.indexOf(Math.max(v[0], v[1], v[2]));
         return {
           type: 'choice', fixed: true, concept: 3,
@@ -334,7 +334,7 @@ Tutor.registerUnit({
           var mx = Math.max(a, b, c);
           if (c >= 2 && [a, b, c].filter(function (x) { return x === mx; }).length === 1) { v = [a, b, c]; break; }
         }
-        if (!v) { v = [n - 13, 8, 5]; }
+        if (!v) { v = [n - 10, 6, 4]; }
         var m = R.int(0, 2);
         var known = [0, 1, 2].filter(function (i) { return i !== m; });
         var best = v.indexOf(Math.max(v[0], v[1], v[2]));

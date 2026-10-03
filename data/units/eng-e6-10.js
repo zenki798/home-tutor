@@ -88,7 +88,7 @@ Tutor.registerUnit({
     },
     {
       title: '포스터 읽고 중심 내용 찾기',
-      body: '다른 사람의 포스터를 읽을 때는 **중심 내용**, 곧 포스터가 가장 하고 싶은 말을 찾아요.\n\n> **SAVE WATER!**\n> - Turn off the water when you brush your teeth.\n> - Take short showers.\n> - Don\'t play with water.\n\n중심 내용을 찾는 방법\n1. **제목**을 봐요. 제목에 중심 내용이 담겨 있을 때가 많아요. → Save water\n2. **여러 번 나오는 낱말**을 찾아요. → water, showers\n3. 문장들이 **모두 무엇에 대한 것인지** 생각해요. → 모두 물을 아끼는 방법\n\n그래서 이 포스터의 중심 내용은 "물을 아끼자"예요.',
+      body: '다른 사람의 포스터를 읽을 때는 **중심 내용**, 곧 포스터가 가장 하고 싶은 말을 찾아요.\n\n> **SAVE WATER!**\n> - Turn off the water when you brush your teeth.\n> - Take short showers.\n> - Don\'t play with water.\n\n중심 내용을 찾는 방법\n1. **제목**을 봐요. 제목에 중심 내용이 담겨 있을 때가 많아요. → Save water\n2. **여러 번 나오는 낱말**을 찾아요. → water (제목과 두 문장에 나와요)\n3. 문장들이 **모두 무엇에 대한 것인지** 생각해요. → 모두 물을 아끼는 방법\n\n그래서 이 포스터의 중심 내용은 "물을 아끼자"예요.',
       easy: '포스터의 문장들을 하나의 바구니에 담는다고 생각해 보세요. 바구니에 붙일 이름표가 중심 내용이에요.\n\n"양치할 때 물 잠그기", "샤워 짧게 하기", "물장난 하지 않기"를 담은 바구니의 이름표는? → **물 아끼기(Save Water)**',
       check: {
         type: 'choice',
@@ -198,7 +198,7 @@ Tutor.registerUnit({
       q: '빈칸에 알맞은 말을 쓰세요. (줄임말로 써도 되고 두 낱말로 써도 돼요.)\n\n[[빈칸]] throw trash on the street. (길에 쓰레기를 버리지 마세요.)',
       answer: ['Don\'t', 'Do not'],
       wrong: [
-        { a: 'Dont', why: '작은 따옴표(\')를 빠뜨렸어요. Do not을 줄일 때는 o 자리에 따옴표를 찍어 Don\'t로 써요.' },
+        { a: 'Dont', why: '작은따옴표(\')를 빠뜨렸어요. Do not을 줄일 때는 o 자리에 따옴표를 찍어 Don\'t로 써요.' },
         { a: 'Not', why: '영어에서는 Not만 써서 "하지 마"라고 하지 않아요. Don\'t(Do not)를 써요.' },
         { a: 'Doesn\'t', why: 'Doesn\'t는 "그는 ~하지 않아요"처럼 쓰는 말이에요. 하지 말라고 할 때는 Don\'t예요.' },
         { a: 'Let\'s', why: 'Let\'s는 "~하자"예요. 쓰레기를 버리자는 말이 돼요.' },
@@ -221,7 +221,7 @@ Tutor.registerUnit({
         '',
         '물 이야기는 없어요. 세 문장 모두 종이에 대한 말이에요.',
         '밖에서 놀자는 말은 없어요. 제목은 문장 전체를 담아야 해요.',
-        'TV 이야기는 없어요. paper, notebooks가 반복되는 것을 보세요.',
+        'TV 이야기는 없어요. paper가 두 번 나오고, notebooks(공책)도 종이로 만든 물건인 것을 보세요.',
       ],
       hint: '세 문장에 공통으로 나오는 물건은 무엇일까요?',
       explain: '종이 양면 쓰기, 종이 낭비하지 않기, 헌 공책 재활용하기 — 모두 종이를 아끼는 방법이에요. 그래서 제목은 "Save Paper!"가 알맞아요.',
@@ -256,13 +256,13 @@ Tutor.registerUnit({
     {
       id: 'p11', level: 2, type: 'short', concept: 2,
       q: '빈칸에 "끄다"라는 뜻의 말(두 낱말)을 쓰세요.\n\nWe should [[빈칸]] the lights.',
-      answer: ['turn off'],
+      answer: ['turn off', 'switch off'],
       wrong: [
         { a: 'turn on', why: 'turn on은 "켜다"예요. 에너지를 아끼려면 전등을 꺼야(turn off) 해요.' },
         { a: 'turn', why: 'turn만 쓰면 "돌리다"예요. "끄다"는 turn off처럼 off까지 써요.' },
       ],
       hint: '"켜다"는 turn on이에요. 그 반대는?',
-      explain: '"끄다"는 turn off예요. "We should turn off the lights.(우리는 전등을 꺼야 해요.)"',
+      explain: '"끄다"는 turn off예요. "We should turn off the lights.(우리는 전등을 꺼야 해요.)" switch off도 같은 뜻이에요.',
     },
   ],
 
@@ -342,7 +342,7 @@ Tutor.registerUnit({
     },
     {
       q: 'Don\'t는 무슨 말을 줄인 거예요?',
-      a: 'Do not을 줄인 말이에요. o 자리에 작은 따옴표(\')를 찍어 Don\'t라고 써요. "Do not waste paper."와 "Don\'t waste paper."는 뜻이 같아요. 포스터에서는 짧은 Don\'t를 더 많이 써요.',
+      a: 'Do not을 줄인 말이에요. o 자리에 작은따옴표(\')를 찍어 Don\'t라고 써요. "Do not waste paper."와 "Don\'t waste paper."는 뜻이 같아요. 포스터에서는 짧은 Don\'t를 더 많이 써요.',
     },
   ],
 

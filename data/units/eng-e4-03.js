@@ -182,7 +182,7 @@
         q: '빈칸에 알맞은 말을 쓰세요. (침대 위에서 뛰지 마.)\n\n[[Don\'t]] jump on the bed.',
         answer: ['Don\'t', 'Do not'],
         wrong: [
-          { a: 'dont', why: 'Don\'t 에는 n 과 t 사이에 작은 따옴표(\')가 있어요. Do not 을 줄이면서 o 가 빠진 자리예요.' },
+          { a: 'dont', why: 'Don\'t 에는 n 과 t 사이에 작은따옴표(\')가 있어요. Do not 을 줄이면서 o 가 빠진 자리예요.' },
           { a: 'not', why: '하지 말라고 할 때는 Not 이 아니라 Don\'t 로 시작해요.' },
         ],
         explain: '"~하지 마"는 Don\'t 로 시작해요. Don\'t jump on the bed. (Do not jump on the bed. 도 맞아요.)',
@@ -237,8 +237,8 @@
         id: 'p8', level: 1, type: 'short', check: 'text', concept: 0,
         q: 'Do not 을 줄여서 한 낱말로 쓰세요.',
         answer: ['don\'t'],
-        wrong: [{ a: 'dont', why: '빠진 o 자리에 작은 따옴표(\')를 찍어요. don\'t 예요.' }],
-        explain: 'Do not 에서 not 의 o 를 빼고 그 자리에 작은 따옴표를 찍으면 don\'t 가 돼요.',
+        wrong: [{ a: 'dont', why: '빠진 o 자리에 작은따옴표(\')를 찍어요. don\'t 예요.' }],
+        explain: 'Do not 에서 not 의 o 를 빼고 그 자리에 작은따옴표를 찍으면 don\'t 가 돼요.',
       },
       {
         id: 'p9', level: 2, type: 'order', concept: 0,
@@ -379,12 +379,13 @@
             { w: 'run', k: '뛰다', s: ['복도에서 친구가 뛰어가요.', '수영장 옆 젖은 바닥에서 동생이 뛰어요.'] },
             { w: 'eat', k: '먹다', s: ['도서관에서 친구가 과자를 먹으려고 해요.', '컴퓨터실에서 친구가 빵을 먹으려고 해요.'] },
             { w: 'swim', k: '수영하다', s: ['물이 깊은 강에서 친구가 수영하려고 해요.', '수영 금지 표지가 있는 호수에 동생이 들어가려고 해요.'] },
-            { w: 'touch it', k: '만지다', s: ['박물관에서 친구가 오래된 그릇을 만지려고 해요.', '동생이 뜨거운 냄비를 만지려고 해요.'] },
+            { w: 'touch it', k: '그것을 만지다', s: ['박물관에서 친구가 오래된 그릇을 만지려고 해요.', '동생이 뜨거운 냄비를 만지려고 해요.'] },
             { w: 'jump on the bed', k: '침대 위에서 뛰다', s: ['동생이 침대 위에서 펄쩍펄쩍 뛰어요.'] },
           ];
           var act = R.pick(acts);
           var sit = R.pick(act.s);
-          var other = R.pick(acts.filter(function (a) { return a !== act; }));
+          // run 과 jump on the bed 는 우리말로 둘 다 "뛰다"라서 서로의 오답으로 쓰지 않는다
+          var other = R.pick(acts.filter(function (a) { return a !== act && !(/run|jump/.test(a.w) && /run|jump/.test(act.w)); }));
           var polite = R.bool();
           var cap = act.w.charAt(0).toUpperCase() + act.w.slice(1);
           var plain = 'Don\'t ' + act.w + '.';

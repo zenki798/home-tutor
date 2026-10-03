@@ -401,7 +401,7 @@
           var change = parts.join(', ') + '로 하면';
           var noSq = R.F(F0 * a * b, n);
           var wrong = [];
-          if (n !== 1) wrong.push({ a: String(noSq), why: '거리에 반비례한다고 계산했습니다. 전기력은 거리의 **제곱**에 반비례하므로 $' + n + '^2=' + (n * n) + '$으로 나눕니다.' });
+          if (n !== 1) wrong.push({ a: String(noSq), why: '거리에 반비례한다고 계산했습니다. 전기력은 거리의 **제곱**에 반비례하므로 $' + n + '^2=' + (n * n) + '$' + R.josa(n * n, '으로/로') + ' 나눕니다.' });
           if (n !== 1) wrong.push({ a: String(F0 * a * b * n * n), why: '거리의 제곱을 곱했습니다. 거리가 멀어지면 힘은 약해지므로 거리의 제곱으로 나눕니다.' });
           if (a !== 1 && b !== 1) wrong.push({ a: String(R.F(F0 * (a + b), n * n)), why: '전하량의 배수를 더했습니다. 쿨롱 법칙에서 두 전하량은 곱해집니다.' });
           wrong = wrong.filter(function (w) { return Number(R.F(ans, 1)) !== Number(w.a) && String(w.a) !== String(ans); });

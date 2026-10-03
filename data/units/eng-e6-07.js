@@ -86,7 +86,7 @@ Tutor.registerUnit({
       easy: "설문 결과 표는 \"손 들어 보세요!\"를 정리한 거예요.\n\n선생님이 \"매일 운동하는 사람?\" 하고 물었을 때 6명이 손을 들었다면, every day 옆에 6을 써요. 가장 많이 손을 든 줄이 가장 많은 학생의 대답이에요.",
       check: {
         type: 'ox',
-        q: "| 대답 | 학생 수 |\n|---|---|\n| every day | 6 |\n| three times a week | 9 |\n| once a week | 4 |\n\n표를 보면 일주일에 한 번 운동하는 학생은 9명이에요.",
+        q: "**How often do you exercise?**\n\n| 대답 | 학생 수 |\n|---|---|\n| every day | 6 |\n| three times a week | 9 |\n| once a week | 4 |\n\n표를 보면 일주일에 한 번 운동하는 학생은 9명이에요.",
         answer: false,
         explain: 'once a week(일주일에 한 번) 옆의 수는 4예요. 9명은 three times a week(일주일에 세 번)라고 답한 학생 수예요.',
       },
@@ -207,6 +207,7 @@ Tutor.registerUnit({
       wrong: [
         { a: 'for', why: '소리는 비슷하지만 for는 "~을 위해"예요. 수 4는 f-o-u-r예요.' },
         { a: 'fourth', why: 'fourth는 "네 번째"예요. 횟수에는 수 four를 써요.' },
+        { a: '4', why: '숫자 4를 영어 낱말로 써야 해요: four' },
       ],
       hint: '세 번부터는 "수 + times"로 말해요.',
       explain: '세 번부터는 수 + times로 말해요. 네 번은 four times, 일주일에 네 번은 four times a week예요.',
