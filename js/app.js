@@ -1408,6 +1408,11 @@
             m: names + ' 교육과정이 일부 바뀌었어요. ' + koDate(x.when) + '부터 바뀐 교육과정으로 배워요.',
             h: names + ' 교육과정이 일부 개정되었습니다. ' + koDate(x.when) + '부터 개정된 교육과정이 적용됩니다.' });
         var news = '';
+        // 지금 이 과목을 배우는 학생인데 바뀐 교육과정이 닿지 않으면(시행 전에 이 학년을 마친다) 그렇다고 알려 준다
+        if (TI && x.when > today && S.profile && (c.grades || []).indexOf(S.profile.grade) >= 0 && !TI.forCourse(x.n, c, S.profile.grade, today).length) {
+          news += '<p class="cur-status is-before">' + esc(say({ e: '지금 학년은 바뀌기 전 교육과정으로 이 과목을 배워요.', m: '지금 학년은 바뀌기 전 교육과정으로 이 과목을 배워요.',
+            h: '지금 학년은 개정 전 교육과정으로 이 과목을 배웁니다.' })) + '</p>';
+        }
         x.parts.forEach(function (p) {
           news += partStatusHtml(partFor(p, c));
           (Array.isArray(p.newSubjects) ? p.newSubjects : []).forEach(function (ns) {

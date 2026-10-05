@@ -78,6 +78,26 @@ test('시행일이 지나면: 그 단원에 "개정 반영 중", 단원 머리�
   expect(errors).toEqual([]);
 });
 
+test('지금 이 과목을 배우는 학생이 시행 전에 학년을 마치면 "바뀌기 전 교육과정으로 배워요"', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-05T09:00:00'));
+  const later = [{
+    id: 'nec-2027-9', no: '국가교육위원회 고시 제2027-9호', date: '2026-09-01', volumes: ['과학과'],
+    effective: [{ date: '2028-03-01', grades: ['e5', 'e6'] }],
+    parts: [{ name: '과학과', subjects: ['sci'], courses: [], except: [], status: 'manual' }],
+  }];
+  await open(page, { student: STUDENT_B, url: '/#/course/sci-e5', catalogPatch: { notices: later } });
+  const box = page.locator('.cur-news');
+  await expect(box.locator('.cur-line')).toHaveText('2028년 3월부터 과학과 교육과정(배우는 내용)이 바뀌어요.');
+  await expect(box.locator('.cur-status.is-before')).toHaveText('지금 학년은 바뀌기 전 교육과정으로 이 과목을 배워요.');
+  await expect(box.locator('.cur-manual')).toHaveText(MANUAL);
+  // 지금 바뀐 교육과정으로 배우는 학생에게는 붙이지 않는다(새 탭 — 다른 카탈로그)
+  const page2 = await page.context().newPage();
+  await page2.clock.setFixedTime(new Date('2026-10-05T09:00:00'));
+  await open(page2, { student: STUDENT_B, url: '/#/course/sci-e5', catalogPatch: PATCH });
+  await expect(page2.locator('.cur-news .cur-manual')).toHaveText(MANUAL);
+  await expect(page2.locator('.cur-news .cur-status.is-before')).toHaveCount(0);
+});
+
 test('성취기준 변화 없음: 영어(중2)에 "성취기준은 그대로"', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-05T09:00:00'));
   await open(page, { student: STUDENT, url: '/#/course/eng-m', catalogPatch: PATCH });

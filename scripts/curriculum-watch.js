@@ -350,8 +350,9 @@ function noticeIssues(added, problems, analyzed, via) {
       } else if (r.status === 'manual') {
         const key = '[수동 확인 ' + n.id + ' 별책 ' + v + ']';
         const body = [
-          '**' + R.MANUAL_LABEL + '** — ' + n.no + '이 ' + vname + ' 교육과정(별책 ' + v + ')을 바꿨는데, 자동으로 확실하게 반영할 수 없었어요.',
-          '추측해서 반영하지 않고 **기존 교육과정 자료를 그대로** 두었어요. 사이트는 해당 과목에 "' + R.MANUAL_LABEL + '"을 표시해요.',
+          // 고시 번호는 "…호"(받침 없음)로 끝나고, 표시 문구는 "…필요"로 끝난다 → 가 · 를
+          '**' + R.MANUAL_LABEL + '** — ' + n.no + '가 ' + vname + ' 교육과정(별책 ' + v + ')을 바꿨는데, 자동으로 확실하게 반영할 수 없었어요.',
+          '추측해서 반영하지 않고 **기존 교육과정 자료를 그대로** 두었어요. 사이트는 해당 과목에 "' + R.MANUAL_LABEL + '"를 표시해요.',
           '',
           '까닭:',
         ].concat((r.reasons || []).map((s) => '- ' + s))
