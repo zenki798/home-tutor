@@ -68,6 +68,7 @@ function build(opts) {
   const files = mapFiles(dir);
   const courses = [];
   const seen = new Set();
+  const codes = { byCode: new Map(), byPrefix: new Map() }; // 성취기준 코드 → 단원들, 코드 앞부분(학년군+과목) → 과정들
   for (const f of files) {
     let j;
     try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { fail(f + ' 를 읽지 못했어요: ' + e.message); }
@@ -84,6 +85,12 @@ function build(opts) {
         seen.add(u.id);
         const out = { id: u.id, title: u.title, summary: u.summary };
         if (u.sem === 1 || u.sem === 2) out.sem = u.sem;
+        for (const code of u.standards || []) {
+          if (!codes.byCode.has(code)) codes.byCode.set(code, []);
+          codes.byCode.get(code).push({ course: c.id, unit: u.id });
+          const p = codePrefix(code);
+          if (p) { if (!codes.byPrefix.has(p)) codes.byPrefix.set(p, new Set()); codes.byPrefix.get(p).add(c.id); }
+        }
         const unit = loadReady(u.id, opts.unitsDir);
         if (!unit) out.soon = true;
         // 개정 반영 필요: 단원 파일이 지도와 다른 성취기준으로 쓰였다(교육과정이 바뀐 뒤 아직 다시 쓰지 않음)
@@ -105,7 +112,7 @@ function build(opts) {
   const soon = courses.reduce((s, c) => s + c.units.filter((u) => u.soon).length, 0);
   const rev = courses.reduce((s, c) => s + c.units.filter((u) => u.rev).length, 0);
   const meta = loadMeta(dir);
-  const notices = catalogNotices(readNotices(dir), meta, courses);
+  const notices = catalogNotices(readNotices(dir), meta, courses, codes);
   const head = '/* 자동 생성 — node scripts/build-catalog.js (원본: curriculum/*.json). 직접 고치지 않는다.\n' +
     ' * 과정 ' + courses.length + ' · 단원 ' + total + ' (준비 중 ' + soon + (rev ? ' · 개정 반영 중 ' + rev : '') + ')' +
     (notices.length ? ' · 그 뒤 고시 ' + notices.length : '') + ' */\n';
@@ -152,7 +159,34 @@ function relatedUnits(name, subjects, grades, courses) {
   return out.slice(0, 3);
 }
 
-function catalogNotices(list, meta, courses) {
+// 성취기준 코드 앞부분(학년군+과목 약어): [4사06-01] → 4사, [10공수1-01-01] → 10공수1, [12미적Ⅱ-01-01] → 12미적Ⅱ
+function codePrefix(code) {
+  const m = /^\[(\d{1,2})([가-힣]+(?:\([가-힣]+\))?(?:\d|[ⅠⅡⅢⅣ])?)-?\d{2}-\d{2}\]$/.exec(code || '');
+  return m ? m[1] + m[2] : null;
+}
+const BAND_GRADES = { 2: ['e1', 'e2'], 4: ['e3', 'e4'], 6: ['e5', 'e6'], 9: ['m1', 'm2', 'm3'], 10: ['h1'], 12: ['h1', 'h2', 'h3'] };
+
+// 자동 반영된 성취기준 변화(notices.json analysis) → 카탈로그 꼴: 과정·단원에 잇는다
+//   바뀜·빠짐: 그 코드를 쓰는 단원의 과정 / 새로 생김: 같은 코드 앞부분을 쓰는 과정(없으면 이 별책의 과목 중 학년이 맞는 과정)
+function catalogChanges(ch, part, courses, codes) {
+  const out = [];
+  const inPart = (c) => (part.courses.includes(c.id) || (part.subjects.includes(c.subject) && !part.except.includes(c.id)));
+  const forCode = (code) => {
+    const hits = (codes && codes.byCode.get(code)) || [];
+    if (hits.length) return { courses: [...new Set(hits.map((h) => h.course))], units: [...new Set(hits.map((h) => h.unit))] };
+    const p = codePrefix(code);
+    const band = p ? BAND_GRADES[Number(/^\d+/.exec(p)[0])] || [] : [];
+    let cs = p && codes && codes.byPrefix.get(p) ? [...codes.byPrefix.get(p)] : [];
+    if (!cs.length) cs = courses.filter((c) => inPart(c) && c.grades.some((g) => band.includes(g))).map((c) => c.id);
+    return { courses: cs, units: [] };
+  };
+  for (const x of ch.changed || []) out.push(Object.assign({ k: 'chg', code: x.code, from: x.from, to: x.to }, forCode(x.code)));
+  for (const x of ch.added || []) out.push(Object.assign({ k: 'add', code: x.code, text: x.text }, forCode(x.code)));
+  for (const x of ch.removed || []) out.push(Object.assign({ k: 'del', code: x.code, text: x.text }, forCode(x.code)));
+  return out.filter((x) => x.courses.length);
+}
+
+function catalogNotices(list, meta, courses, codes) {
   const covers = meta.covers || {};
   return list.map((n) => {
     const grades = [].concat(...(n.effective || []).map((e) => e.grades));
@@ -165,6 +199,12 @@ function catalogNotices(list, meta, courses) {
         part.newSubjects = v.newSubjects;
         part.related = [].concat(...v.newSubjects.map((s) => relatedUnits(s, part.subjects, grades, courses)))
           .filter((x, i, a) => a.indexOf(x) === i).slice(0, 3);
+      }
+      // 별책 성취기준 비교 결과: applied(자동 반영) · unchanged(성취기준 문장 변화 없음) · manual(교육과정 변경 감지 - 수동 확인 필요)
+      const an = n.analysis && n.analysis.volumes && n.analysis.volumes[v.n];
+      if (an && ['applied', 'unchanged', 'manual'].includes(an.status)) {
+        part.status = an.status;
+        if (an.status === 'applied' && an.changes) part.changes = catalogChanges(an.changes, part, courses, codes);
       }
       parts.push(part);
     }
@@ -188,4 +228,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { build, LEVELS, SUBJECTS, sameStandards, loadMeta, catalogNotices };
+module.exports = { build, LEVELS, SUBJECTS, sameStandards, loadMeta, catalogNotices, catalogChanges, codePrefix };

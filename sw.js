@@ -3,13 +3,13 @@
  * - 화면 파일(html·css·js·카탈로그): 네트워크 우선 → 새 버전을 올리면 다음 실행 때 바로 반영, 연결이 없을 때만 캐시.
  * - 단원 내용(data/units)·검색 색인(data/index): 캐시 우선 + 뒤에서 새로 받아 두기 → 한 번 본 단원은 오프라인에서도.
  * - file:// 에서는 등록하지 않는다(app.js). 캐시 이름에 버전을 붙여, 바뀌면 옛 캐시를 지운다. */
-var VERSION = 'v2';
+var VERSION = 'v3';
 var SHELL_CACHE = 'tutor-shell-' + VERSION;
 var DATA_CACHE = 'tutor-data-' + VERSION;
 var SHELL = [
   './', 'index.html', 'manifest.webmanifest',
   'css/app.css', 'css/mathtext.css',
-  'js/mathlib.js', 'js/mathtext.js', 'js/figures.js', 'js/search.js', 'js/solver.js', 'js/storage.js', 'js/core.js', 'js/app.js',
+  'js/mathlib.js', 'js/mathtext.js', 'js/figures.js', 'js/search.js', 'js/solver.js', 'js/storage.js', 'js/impact.js', 'js/core.js', 'js/app.js',
   'data/catalog.js',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
 ];

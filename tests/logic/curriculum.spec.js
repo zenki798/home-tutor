@@ -168,6 +168,9 @@ test('개정 확인·자동 반영은 Actions 에서 매주, 비밀 없이 기�
   expect(yml).toMatch(/npx playwright test/);
   expect(yml).toContain("steps.test.outcome == 'success'");                   // 테스트 통과 뒤에만 커밋
   expect(yml).toContain('git commit -F tmp/curriculum-watch-commit.txt');     // 바깥 글을 셸 명령에 끼워 넣지 않는다
+  expect(yml).toContain('git add -- curriculum/standards');                   // 자동 반영한 기준 자료
+  expect(yml).toContain('git add -- curriculum/history');                     // 반영 전 보관본·기록(되돌리기)
+  expect(yml).not.toMatch(/git add (\.|-A|--all)(\s|$)/);                     // 정해 둔 경로만(AGENTS.md 규칙 2)
   expect(yml).toContain('gh workflow run pages.yml');
   expect(yml).toContain('--keepalive');
   expect(yml).not.toMatch(/\$\{\{\s*secrets\./);

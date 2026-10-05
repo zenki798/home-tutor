@@ -290,6 +290,22 @@ function loadCatalog(file) {
         E(p + '.effective', '시행일은 [{ date: YYYY-MM-DD, grades: [학년 id…] }] 꼴이에요');
       }
       if (!Array.isArray(n.parts)) E(p + '.parts', 'parts 는 배열이에요');
+      // 별책 성취기준 비교 결과(curriculum-watch → notices.json analysis → build-catalog)
+      (Array.isArray(n.parts) ? n.parts : []).forEach((part, j) => {
+        const pp = p + '.parts[' + j + ']';
+        if (!isObj(part)) { E(pp, '부분은 객체예요'); return; }
+        if (part.status !== undefined && ['applied', 'unchanged', 'manual'].indexOf(part.status) < 0) E(pp + '.status', 'status 는 applied·unchanged·manual 중 하나예요: ' + show(part.status));
+        if (part.changes !== undefined) {
+          if (!Array.isArray(part.changes) || part.status !== 'applied') { E(pp + '.changes', 'changes 는 자동 반영(applied)된 부분의 배열이에요'); return; }
+          part.changes.forEach((x, k) => {
+            const cp = pp + '.changes[' + k + ']';
+            if (!isObj(x) || ['chg', 'add', 'del'].indexOf(x.k) < 0 || !/^\[\d{1,2}[^\]]+\d{2}-\d{2}\]$/.test(String(x.code))) { E(cp, '변화는 { k: chg·add·del, code: [성취기준 코드], … } 꼴이에요'); return; }
+            if (x.k === 'chg' ? !nonEmpty(x.from) || !nonEmpty(x.to) : !nonEmpty(x.text)) E(cp, '바뀐 성취기준 문장이 빠졌어요: ' + x.code);
+            if (!Array.isArray(x.courses) || !x.courses.length) E(cp + '.courses', '이어지는 과정이 없어요: ' + x.code);
+            if (x.units !== undefined && !Array.isArray(x.units)) E(cp + '.units', 'units 는 배열이에요');
+          });
+        }
+      });
     });
   }
 

@@ -164,6 +164,9 @@
   **전체 테스트를 통과해야만** 봇(github-actions)이 커밋·배포한다(contents: write, actions: write — 비밀 없이 기본 토큰). 교육부 보도자료 소식은 이슈만.
   robots.txt 를 지키고(국가교육과정정보센터는 막혀 있어 보지 않는다) 자기 이름을 밝힌다. 커밋 없이 45일이면 유지 커밋(60일 정지 규칙).
   페이지와 학생 기기에는 관계없다(외부 요청 0 유지). 사용자 결정 2026-10-05: AI·별도 자원·사람 없이 규칙으로 자동 안내.
+  같은 작업이 고친 별책의 확정 원문(공식 경로만, 확정 전 문서 제외)을 규칙으로 읽어 `curriculum/standards/` 와 비교하고, **판정 조건을 모두 통과할 때만**
+  반영한다(반영 전 파일은 `curriculum/history/standards/` 에 보관·기록, 되돌리기 가능). 아니면 기존 자료를 두고 "교육과정 변경 감지 - 수동 확인 필요".
+  **추측해서 반영하지 않는다** — 자동화 범위보다 잘못된 교육과정을 주지 않는 것이 먼저다(사용자 지시 2026-10-05, docs/CURRICULUM-REVISION.md).
 - **발견하면 즉시 사용자에게 보고하고**, 키·토큰이면 폐기·재발급을 먼저 권고한다(규칙 2 "이미 올라간 경우").
 
 ## 규칙 7. 학생의 개인정보·학습정보는 절대 다른 사람이 볼 수 없게 (사용자 지시 2026-10-02)
@@ -198,20 +201,25 @@ js/mathtext.js            TutorText — 마크다운 일부 + TeX 일부 → HTM
 js/figures.js             TutorFig — 시계·수직선·분수 모형·좌표평면·도형·그래프 SVG
 js/search.js              TutorSearch — 한국어 검색(질문 답변용)
 js/solver.js              TutorSolver — 계산·방정식 등 수학 질문 풀이
+js/impact.js              TutorImpact — 교육과정 변경이 학생(지금·앞으로의 학년)에게 닿는가(기기 안에서만 계산)
 js/app.js                 화면 동작
 data/catalog.js           교육과정 지도 (학교급·학년·과목·과정·단원 목록)
 data/units/<단원id>.js     단원 내용 (개념·예제·용어·문제·심화·질문) — 단원을 열 때 불러온다
 data/index/<과목>.js       질문 검색용 색인 (scripts/build-index.js 가 만든다, 직접 고치지 않는다)
 curriculum/<과목>.json     교육과정 지도의 원본 (scripts/build-catalog.js 가 data/catalog.js 로 만든다)
 curriculum/meta.json      교육과정 판·이름·기준 고시·별책 이름·다루는 교과(covers). 개정 판은 curriculum/revisions/<판>/, 옛 판은 curriculum/history/<판>/
-curriculum/notices.json   기준 뒤의 교육과정 고시(자동 기록 — scripts/curriculum-watch.js, 직접 고치지 않는다)
+curriculum/notices.json   기준 뒤의 교육과정 고시와 별책 성취기준 판정(analysis) — 자동 기록(scripts/curriculum-watch.js), 직접 고치지 않는다
+curriculum/standards/     별책별 성취기준 기준 자료(공식 원문에서 규칙으로 뽑음, 출처·sha256) — curriculum-standards.js·자동 반영만 고친다
+curriculum/history/standards/ 자동 반영 전 보관본 + standards-log.json(반영·되돌리기 기록)
 retired/units/            교육과정 개정으로 빠진 단원 파일 보관(배포 안 됨)
 tools/content-workflow.js 단원 작성·고쳐 쓰기·독립 검토 워크플로(Claude Code Workflow 도구용)
 docs/ARCHITECTURE.md      모듈 계약·데이터 형식
 docs/CONTENT-GUIDE.md     학습 내용 작성 안내 (문체·문제 유형·검증)
 docs/CURRICULUM-REVISION.md 교육과정 개정 반영 차례(감지 → 비교 → 적용 → 다시 쓰기 → 배포)
 scripts/                  validate-content.js · build-index.js · build-catalog.js · make-icons.js ·
-                          curriculum-diff.js · curriculum-apply.js · curriculum-watch.js(교육과정 개정)
+                          curriculum-diff.js · curriculum-apply.js · curriculum-watch.js · curriculum-standards.js(교육과정 개정)
+scripts/lib/              notices(고시문) · standards(성취기준 읽기·비교) · revision(판정·반영·되돌리기) · sources(공식 경로) ·
+                          hwp · xlsx · zip(문서 읽기) · net(robots.txt·내려받기)
 tests/                    logic · ui · edge
 ```
 

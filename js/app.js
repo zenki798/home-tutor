@@ -30,6 +30,7 @@
 
   var store = Tutor.store;
   var TS = window.TutorStorage || null; // 백업·PIN (js/storage.js). 없으면 그 기능만 막는다
+  var TI = window.TutorImpact || null;  // 교육과정 변경이 학생에게 닿는가(js/impact.js, 기기 안 계산). 없으면 그 안내만 빠진다
 
   /* ================= 설정(글자 크기·테마) — 화면을 그리기 전에 먼저 적용해 깜빡임을 줄인다 ================= */
 
@@ -1318,6 +1319,58 @@
     if (p.length < 3) return String(iso || '');
     return Number(p[0]) + '년 ' + Number(p[1]) + '월' + (withDay || Number(p[2]) !== 1 ? ' ' + Number(p[2]) + '일' : '');
   }
+  /* 별책 성취기준 비교 결과(카탈로그 parts[].status · changes — curriculum-watch 가 매주 자동으로):
+   *   applied: 공식 원문과 비교해 바뀐 성취기준을 자동 반영 / unchanged: 성취기준 문장 변화 없음
+   *   manual: 자동으로 확실히 반영할 수 없어 기존 자료를 그대로 둠 → "교육과정 변경 감지 - 수동 확인 필요" */
+  var MANUAL_LABEL = '교육과정 변경 감지 - 수동 확인 필요';
+  // 이 과정에 닿는 변화(applied 인데 이 과정 변화가 없으면 이 과정에는 unchanged)
+  function partFor(p, c) {
+    var changes = p.status === 'applied' && Array.isArray(p.changes) ?
+      p.changes.filter(function (x) { return isObj(x) && Array.isArray(x.courses) && x.courses.indexOf(c.id) >= 0; }) : [];
+    var status = p.status === 'applied' && !changes.length ? 'unchanged' : (p.status || 'pending');
+    return { p: p, status: status, changes: changes };
+  }
+  // 변화가 닿는지 셀 학생 학년: 학생이 있으면 그 학년, 없으면 이 과정 첫 학년에 있는 학생으로 본다
+  function impactGrade(c) {
+    if (S.profile && TI && TI.ORDER.indexOf(S.profile.grade) >= 0) return S.profile.grade;
+    return (c && c.grades && c.grades[0]) || '';
+  }
+  // 지금 바뀐 성취기준으로 배우고 있는 단원 → { 단원 id: true } ('개정 반영 중' 표시)
+  function changedNowUnits(c) {
+    var out = {};
+    if (!TI || !c) return out;
+    (c.units || []).forEach(function (u) {
+      TI.forUnit(cat(), u.id, c, impactGrade(c), todayIso()).forEach(function (x) { if (x.hit && x.hit.now) out[u.id] = true; });
+    });
+    return out;
+  }
+  function changeItemHtml(x, linkUnits) {
+    var units = linkUnits && Array.isArray(x.units) ? x.units.map(function (id) {
+      var m = Tutor.unitMeta(id);
+      return m && !isSoon(m.unit) ? '<a href="#/unit/' + encodeURIComponent(id) + '/learn">' + esc(E.plain(m.unit.title)) + '</a>' : '';
+    }).filter(Boolean) : [];
+    var body = x.k === 'chg' ? '<span class="chg-to">' + esc(x.to) + '</span><span class="chg-from">(바뀌기 전: ' + esc(x.from) + ')</span>' :
+      x.k === 'add' ? '<span class="chg-tag">새로 생김</span> ' + esc(x.text) : '<span class="chg-tag">빠짐</span> <span class="chg-from">' + esc(x.text) + '</span>';
+    return '<li><span class="chg-code">' + esc(x.code) + '</span> ' + body + (units.length ? '<span class="chg-units">관련 단원: ' + units.join(', ') + '</span>' : '') + '</li>';
+  }
+  function partStatusHtml(fp) {
+    if (fp.status === 'manual') {
+      return '<p class="cur-status is-manual"><span class="badge cur-manual">' + esc(MANUAL_LABEL) + '</span> ' + esc(say({
+        e: '바뀐 내용을 아직 확실하게 확인하지 못해서, 예전 교육과정 그대로 두었어요. 학교 수업과 다르면 학교 선생님 말씀을 따라요.',
+        m: '바뀐 내용을 아직 확실하게 확인하지 못해서 기존 교육과정 그대로 두었어요. 학교 수업과 다르면 학교 선생님 말씀을 따라 주세요.',
+        h: '바뀐 내용을 자동으로 확실하게 확인하지 못해 기존 교육과정 자료를 그대로 두었습니다. 학교 수업과 다른 점은 학교 선생님의 안내를 따르십시오.' })) + '</p>';
+    }
+    if (fp.status === 'applied') {
+      return '<p class="cur-status is-applied"><span aria-hidden="true">✅</span> ' + esc(say({
+        e: '바뀐 성취기준(배울 내용 목표) ' + fp.changes.length + '개를 공식 문서에서 확인했어요.',
+        m: '바뀐 성취기준 ' + fp.changes.length + '개를 공식 문서에서 확인했어요.',
+        h: '바뀐 성취기준 ' + fp.changes.length + '개를 공식 문서에서 확인해 반영했습니다.' })) + '</p>' +
+        '<details class="cur-more cur-chg"><summary>바뀐 성취기준 보기</summary><ul class="chg-list">' +
+        fp.changes.map(function (x) { return changeItemHtml(x, true); }).join('') + '</ul></details>';
+    }
+    if (fp.status === 'unchanged') return '<p class="cur-status">' + esc(say({ e: '이 과목의 성취기준(배울 내용 목표)은 그대로예요.', m: '이 과목의 성취기준은 그대로예요.', h: '이 과목의 성취기준 문장은 바뀌지 않았습니다.' })) + '</p>';
+    return '';
+  }
   function courseNotices(c) {
     var list = cat().notices;
     if (!Array.isArray(list) || !c) return [];
@@ -1356,6 +1409,7 @@
             h: names + ' 교육과정이 일부 개정되었습니다. ' + koDate(x.when) + '부터 개정된 교육과정이 적용됩니다.' });
         var news = '';
         x.parts.forEach(function (p) {
+          news += partStatusHtml(partFor(p, c));
           (Array.isArray(p.newSubjects) ? p.newSubjects : []).forEach(function (ns) {
             var rel = (Array.isArray(p.related) ? p.related : []).map(function (id) {
               var m = Tutor.unitMeta(id);
@@ -1380,6 +1434,45 @@
       }).join('') + '</ul></section>';
   }
 
+  // 단원 머리: 이 단원의 성취기준이 바뀐 고시(자동 반영)가 이 학생에게 닿으면 바뀐 문장을 보여 준다
+  function unitChangeNote(unitId, course) {
+    if (!TI || !course) return '';
+    var list = TI.forUnit(cat(), unitId, course, impactGrade(course), todayIso()).filter(function (x) { return x.hit; });
+    if (!list.length) return '';
+    var now = list.some(function (x) { return x.hit.now; });
+    var first = list.reduce(function (a, x) { return !a || x.hit.year < a.hit.year ? x : a; }, null);
+    var y = first.hit.year;
+    var head = now ? say({ e: '이 단원의 성취기준(배울 내용 목표)이 바뀌었어요.', m: '이 단원의 성취기준이 바뀌었어요.', h: '이 단원의 성취기준이 개정되었습니다.' }) :
+      say({ e: y + '년 3월부터 이 단원의 성취기준(배울 내용 목표)이 바뀌어요.', m: y + '년 3월부터 이 단원의 성취기준이 바뀌어요.', h: y + '년 3월부터 이 단원의 성취기준이 개정됩니다.' });
+    return '<div class="notice cur-unit" role="note"><p><span aria-hidden="true">📢</span> ' + esc(head) + '</p><ul class="chg-list">' +
+      list.map(function (x) { return changeItemHtml(x.change, false); }).join('') + '</ul>' +
+      '<p class="muted small">' + esc(first.notice.no) + ' · ' + esc(say({ e: '단원 설명과 문제는 바뀌기 전 기준이라 조금 다를 수 있어요.',
+        m: '단원 설명과 문제는 바뀌기 전 기준이라 조금 다를 수 있어요.', h: '단원 설명과 문제는 개정 전 기준이므로 일부 다를 수 있습니다.' })) + '</p></div>';
+  }
+
+  // 설정: 이 기기의 학생마다 지금 학년과 앞으로 다닐 학년에 실제로 닿는 교육과정 변경 (기기 안에서만 계산 — js/impact.js)
+  function impactHtml(list) {
+    if (!TI || !Array.isArray(cat().notices) || !cat().notices.length || !list.length) return '';
+    var today = todayIso();
+    var rows = list.map(function (p) {
+      var who = '<p class="imp-name">' + esc(p.name || '이름 없는 학생') + ' <span class="p-meta">' + esc(gradeLabel(p.grade)) + '</span></p>';
+      if (TI.ORDER.indexOf(p.grade) < 0) return '<li class="imp-student">' + who + '<p class="muted">초·중·고 교육과정 변경과는 관계없어요.</p></li>';
+      var items = TI.forStudent(cat(), p.grade, today);
+      if (!items.length) return '<li class="imp-student">' + who + '<p class="muted">지금 학년과 앞으로 다닐 학년에 닿는 교육과정 변경은 없어요.</p></li>';
+      return '<li class="imp-student">' + who + '<ul class="imp-list">' + items.map(function (it) {
+        var when = it.when.now ? '지금 학년(' + gradeLabel(it.when.grade, true) + ')부터' : it.when.year + '년 3월(' + gradeLabel(it.when.grade, true) + ')부터';
+        var st = it.status === 'applied' ? '성취기준 ' + it.changes.length + '개 바뀜(자동 반영)' : it.status === 'manual' ? MANUAL_LABEL : '확인 중';
+        var cs = it.courses.slice(0, 4).map(function (c) { return c.title; }).join(', ') + (it.courses.length > 4 ? ' 외 ' + (it.courses.length - 4) + '개' : '');
+        return '<li class="imp-item is-' + esc(it.status) + '"><span class="imp-when">' + esc(when) + '</span> · ' + esc(it.part.name + ' 교육과정') +
+          ' — <span class="imp-st">' + (it.status === 'manual' ? '<span class="badge cur-manual">' + esc(st) + '</span>' : esc(st)) + '</span>' +
+          '<span class="imp-courses">배우게 될 과목: ' + esc(cs) + '</span><span class="imp-no">' + esc(it.notice.no) + '</span></li>';
+      }).join('') + '</ul></li>';
+    }).join('');
+    return '<section class="set-sec card" aria-labelledby="setCurImpact"><h3 id="setCurImpact">교육과정 변경과 우리 학생</h3>' +
+      '<p class="muted">학생마다 지금 학년과 앞으로 다닐 학년에 실제로 닿는 교육과정 변경만 골랐어요. 계산은 이 기기 안에서만 하고, 이름·학년·기록은 밖으로 보내지 않아요.</p>' +
+      '<ul class="imp-students">' + rows + '</ul></section>';
+  }
+
   // 설정 > 가정교사 정보: 기준 고시 뒤에 나온 교육과정 고시 전부(바뀐 별책 이름까지)
   function noticesInfoHtml() {
     var list = Array.isArray(cat().notices) ? cat().notices.filter(function (n) { return isObj(n) && n.no; }) : [];
@@ -1391,7 +1484,8 @@
     }).join('') + '</ul></li>';
   }
 
-  function unitRow(u, i, prog) {
+  // chg: 이 학생이 지금 바뀐 성취기준으로 배우는 단원(changedNowUnits) — '개정 반영 중'을 붙인다
+  function unitRow(u, i, prog, chg) {
     if (isSoon(u)) {
       /* 준비 중: 보이기만 하고 누를 수 없다 */
       return '<li><div class="unit-row is-soon" data-unit="' + esc(u.id) + '" aria-disabled="true">' +
@@ -1409,7 +1503,7 @@
     return '<li><a class="unit-row status-' + st.key + '" href="#/unit/' + encodeURIComponent(u.id) + '/learn" data-unit="' + esc(u.id) + '">' +
       '<span class="u-num" aria-hidden="true">' + (i + 1) + '</span>' +
       '<span class="u-body"><span class="u-title"><span class="sr-only">' + (i + 1) + '단원 </span>' + E.inline(u.title) +
-      (u.rev ? ' <span class="badge rev-badge" title="새 교육과정에 맞춰 고치는 중">개정 반영 중</span>' : '') + '</span>' +
+      (u.rev || (chg && chg[u.id]) ? ' <span class="badge rev-badge" title="새 교육과정에 맞춰 고치는 중">개정 반영 중</span>' : '') + '</span>' +
       (u.summary ? '<span class="u-sum">' + E.inline(u.summary) + '</span>' : '') +
       (meta.length ? '<span class="u-meta">' + esc(meta.join(' · ')) + '</span>' : '') + '</span>' +
       '<span class="u-status"><span aria-hidden="true">' + st.icon + '</span> ' + st.label + '</span></a></li>';
@@ -1460,7 +1554,8 @@
         '<button type="submit" class="btn primary big wide">문제 풀기 시작</button></form>';
     }
     html += '<h3 class="section-title">단원 ' + units.length + '개' + (later ? ' <span class="count">(준비 중 ' + later + '개)</span>' : '') + '</h3>';
-    html += units.length ? '<ol class="unit-list">' + units.map(function (u, i) { return unitRow(u, i, prog); }).join('') + '</ol>' :
+    var chgNow = changedNowUnits(c);
+    html += units.length ? '<ol class="unit-list">' + units.map(function (u, i) { return unitRow(u, i, prog, chgNow); }).join('') + '</ol>' :
       '<div class="state-box"><p>단원이 아직 준비 중이에요.</p></div>';
 
     return {
@@ -1560,6 +1655,7 @@
           esc(say({ e: '새 교육과정에 맞춰 이 단원을 고치고 있어요. 공부는 그대로 할 수 있지만, 학교에서 배우는 내용과 조금 다를 수 있어요.',
             m: '새 교육과정에 맞춰 이 단원을 고치고 있어요. 공부는 그대로 할 수 있지만, 학교에서 배우는 내용과 조금 다를 수 있어요.',
             h: '새 교육과정에 맞춰 이 단원을 고치는 중입니다. 공부는 그대로 할 수 있지만, 학교에서 배우는 내용과 조금 다를 수 있습니다.' })) + '</p>' : '') +
+        unitChangeNote(unit.id, course) +
         '</div>' +
         '<nav class="unit-tabs" aria-label="단원 메뉴">' + UNIT_TABS.map(function (t) {
           return '<a href="#/unit/' + encodeURIComponent(unit.id) + '/' + t + '" data-tab="' + t + '"' + (t === tab ? ' aria-current="page"' : '') + '>' + TAB_LABELS[t] + '</a>';
@@ -3645,6 +3741,8 @@
         '<li><strong>PC(엣지·크롬)</strong>: 주소창 오른쪽의 설치 아이콘</li></ul>' +
         '<button type="button" class="btn primary" data-act="install"' + (S.installEvent ? '' : ' hidden') + '>지금 앱으로 설치</button>') +
       '<p class="muted small">설치하면 인터넷이 없어도 한 번 본 단원은 다시 볼 수 있어요.</p></section>';
+
+    html += impactHtml(list);
 
     html += '<section class="set-sec card" aria-labelledby="setInfo"><h3 id="setInfo">가정교사 정보</h3><ul class="plain-list">' +
       '<li>AI·서버 없이 이 기기 안에서만 동작해요. 질문·답·별명·기록은 기기 밖으로 나가지 않아요.</li>' +

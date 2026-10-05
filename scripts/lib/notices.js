@@ -74,7 +74,8 @@ function parseBoardList(html) {
 // 글 → 첨부 [{ name, href }]
 function parseAttachments(html) {
   const out = [];
-  const re = /<p>\s*([^<]{1,300}?\.(?:pdf|hwpx|hwp))\s*<\/p>[\s\S]{0,800}?href="([^"]*ND_fileDownload\.do[^"]*)"/gi;
+  // 별책 원문은 zip·xlsx 로 올라올 수도 있다(고시문 고르기는 isCurriculumAttachment 가 따로 한다)
+  const re = /<p>\s*([^<]{1,300}?\.(?:pdf|hwpx|hwp|zip|xlsx))\s*<\/p>[\s\S]{0,800}?href="([^"]*ND_fileDownload\.do[^"]*)"/gi;
   let m;
   while ((m = re.exec(String(html || '')))) out.push({ name: norm(m[1]).replace(/\s+/g, ' ').trim(), href: m[2].replace(/&amp;/g, '&') });
   return out;
@@ -126,7 +127,8 @@ function noticeId(issuer, y, n) {
 function parseNotices(text) {
   const t = norm(text);
   const heads = [];
-  const re = /(^|\n)[ ]*(국가교육위원회|교육부)[ ]*고시[ ]*제[ ]*(\d{4})[ ]*-[ ]*(\d+)[ ]*호[ ]*(?=\n)/g;
+  // 국가법령정보센터 첨부본은 머리글 앞에 "◉" 같은 표가 붙기도 한다
+  const re = /(^|\n)[ ]*(?:[◉●○◎■□▶▷◆◇•※][ ]*)?(국가교육위원회|교육부)[ ]*고시[ ]*제[ ]*(\d{4})[ ]*-[ ]*(\d+)[ ]*호[ ]*(?=\n)/g;
   let m;
   while ((m = re.exec(t))) heads.push({ at: m.index + m[1].length, issuer: m[2], y: m[3], n: m[4] });
   const out = [];

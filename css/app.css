@@ -1041,6 +1041,24 @@ html.no-profile .main { padding-bottom: 2rem; }
 .cur-more summary { cursor: pointer; color: var(--ink-2); font-size: 0.9375rem; }
 .cur-more p { margin: 0.375rem 0 0; color: var(--ink-2); font-size: 0.9375rem; overflow-wrap: anywhere; }
 .cur-info ul { margin: 0.25rem 0 0; padding-left: 1.25rem; }
+/* 별책 성취기준 비교 결과: 자동 반영(applied) · 수동 확인 필요(manual) */
+.cur-status { margin: 0 0 0.375rem; overflow-wrap: anywhere; }
+.cur-manual { display: inline-block; background: var(--warn-wash); color: var(--warn-ink); font-size: 0.8125rem; white-space: normal; }
+.chg-list { margin: 0.375rem 0 0; padding-left: 1.125rem; }
+.chg-list li { margin: 0.25rem 0; overflow-wrap: anywhere; }
+.chg-code { font-weight: 800; white-space: nowrap; }
+.chg-tag { display: inline-block; padding: 0 0.375rem; border-radius: 6px; background: var(--surface-3); font-size: 0.8125rem; font-weight: 800; }
+.chg-from { display: block; color: var(--ink-2); font-size: 0.875rem; }
+.chg-units { display: block; font-size: 0.875rem; }
+.cur-unit { margin: 0.625rem 0 0; }
+.cur-unit p { margin: 0 0 0.25rem; }
+.imp-students { margin: 0; padding: 0; list-style: none; }
+.imp-student + .imp-student { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed var(--line); }
+.imp-name { margin: 0 0 0.25rem; font-weight: 800; }
+.imp-list { margin: 0; padding-left: 1.125rem; }
+.imp-item { margin: 0.375rem 0; overflow-wrap: anywhere; }
+.imp-when { font-weight: 700; }
+.imp-courses, .imp-no { display: block; color: var(--ink-2); font-size: 0.875rem; }
 .teacher-card.is-soon .t-icon { filter: grayscale(0.6); opacity: 0.75; }
 .unit-row.is-soon { background: var(--surface-2); box-shadow: none; border-style: dashed; color: var(--ink-2); cursor: default; }
 .unit-row.is-soon:hover { border-color: var(--line); box-shadow: none; }
