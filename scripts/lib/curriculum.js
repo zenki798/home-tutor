@@ -12,7 +12,9 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const CURRENT = path.join(ROOT, 'curriculum');
 
-function isMapFile(f) { return f.endsWith('.json') && f !== 'meta.json'; }
+// 지도가 아닌 파일: meta.json(판·이름·기준 고시), notices.json(그 뒤 고시 — curriculum-watch 가 자동으로 적는다)
+const NON_MAP = new Set(['meta.json', 'notices.json']);
+function isMapFile(f) { return f.endsWith('.json') && !NON_MAP.has(f); }
 
 function mapFiles(dir) {
   return fs.readdirSync(dir || CURRENT).filter(isMapFile).sort();

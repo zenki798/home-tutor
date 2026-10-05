@@ -1305,6 +1305,92 @@
     return units[0] || null;
   }
 
+  /* ---- 교육과정 소식 (카탈로그 notices) ----
+   * 국가교육위원회가 교육과정을 고치면 scripts/curriculum-watch.js 가 고시문을 자동으로 읽어 curriculum/notices.json 에 적고,
+   * build-catalog 가 카탈로그에 싣는다(사람·AI 없이 매주 GitHub Actions). 화면은 이 과정의 과목·학년이 바뀐 고시만 골라
+   * 이 학생 학년(없으면 과정 학년)의 시행일과 함께 알려 준다. 날짜는 이 기기의 오늘 날짜로 "바뀌어요/바뀌었어요"를 고른다. */
+  function todayIso() {
+    var d = new Date();
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+  function koDate(iso, withDay) {
+    var p = String(iso || '').split('-');
+    if (p.length < 3) return String(iso || '');
+    return Number(p[0]) + '년 ' + Number(p[1]) + '월' + (withDay || Number(p[2]) !== 1 ? ' ' + Number(p[2]) + '일' : '');
+  }
+  function courseNotices(c) {
+    var list = cat().notices;
+    if (!Array.isArray(list) || !c) return [];
+    var g = S.profile && (c.grades || []).indexOf(S.profile.grade) >= 0 ? S.profile.grade : null;
+    var out = [];
+    list.forEach(function (n) {
+      if (!isObj(n) || !Array.isArray(n.parts) || !Array.isArray(n.effective)) return;
+      var parts = n.parts.filter(function (p) {
+        return isObj(p) && ((Array.isArray(p.courses) && p.courses.indexOf(c.id) >= 0) ||
+          (Array.isArray(p.subjects) && p.subjects.indexOf(c.subject) >= 0 && !(Array.isArray(p.except) && p.except.indexOf(c.id) >= 0)));
+      });
+      if (!parts.length) return;
+      var when = null;
+      n.effective.forEach(function (e) {
+        if (!isObj(e) || !Array.isArray(e.grades)) return;
+        var hit = g ? e.grades.indexOf(g) >= 0 : (c.grades || []).some(function (x) { return e.grades.indexOf(x) >= 0; });
+        if (hit && (!when || e.date < when)) when = e.date;
+      });
+      if (when) out.push({ n: n, parts: parts, when: when });
+    });
+    return out;
+  }
+  function courseNoticesHtml(c) {
+    var list = courseNotices(c);
+    if (!list.length) return '';
+    var today = todayIso();
+    var name = cat().curriculum || '교육과정';
+    return '<section class="cur-news" aria-labelledby="curNewsT"><h3 class="cur-news-title" id="curNewsT"><span aria-hidden="true">📢</span> 교육과정 소식</h3><ul class="cur-list">' +
+      list.map(function (x) {
+        var names = x.parts.map(function (p) { return p.name; }).join(' · ');
+        var line = x.when > today ?
+          say({ e: koDate(x.when) + '부터 ' + names + ' 교육과정(배우는 내용)이 바뀌어요.', m: koDate(x.when) + '부터 ' + names + ' 교육과정이 바뀌어요.',
+            h: koDate(x.when) + '부터 ' + names + ' 교육과정이 바뀝니다.' }) :
+          say({ e: names + ' 교육과정(배우는 내용)이 조금 바뀌었어요. ' + koDate(x.when) + '부터 바뀐 교육과정으로 배워요.',
+            m: names + ' 교육과정이 일부 바뀌었어요. ' + koDate(x.when) + '부터 바뀐 교육과정으로 배워요.',
+            h: names + ' 교육과정이 일부 개정되었습니다. ' + koDate(x.when) + '부터 개정된 교육과정이 적용됩니다.' });
+        var news = '';
+        x.parts.forEach(function (p) {
+          (Array.isArray(p.newSubjects) ? p.newSubjects : []).forEach(function (ns) {
+            var rel = (Array.isArray(p.related) ? p.related : []).map(function (id) {
+              var m = Tutor.unitMeta(id);
+              return m && !isSoon(m.unit) ? '<a href="#/unit/' + encodeURIComponent(id) + '/learn">' + esc(E.plain(m.unit.title)) + '</a>' : '';
+            }).filter(Boolean);
+            // say(): 말투 칸 e(초)·m(중)·h(고 이상) — m 이 없으면 중학생에게 h(합니다체)가 간다
+            news += '<p class="cur-new"><span aria-hidden="true">🌱</span> 새로 생기는 과목: ‘' + esc(ns) + '’</p>' +
+              (rel.length ? '<p class="cur-rel">' + esc(say({ e: '지금은 이 단원으로 미리 공부할 수 있어요:', m: '지금은 이 단원으로 미리 공부할 수 있어요:', h: '지금은 이 단원으로 미리 공부할 수 있습니다:' })) + ' ' + rel.join(', ') + '</p>' : '');
+          });
+        });
+        return '<li><p class="cur-line">' + esc(line) + '</p>' + news +
+          '<details class="cur-more"><summary>자세히</summary>' +
+          '<p>' + esc(x.n.no + ' (' + koDate(x.n.date, true) + ')') + '</p>' +
+          '<p>' + esc(say({ e: '이 사이트의 단원은 ' + name + josa(name, '을/를') + ' 바탕으로 만들었어요' + (cat().basis ? '(' + cat().basis + ')' : '') +
+            '. 바뀐 내용이 확인되면 그 단원에 ‘개정 반영 중’이 붙어요. 학교 수업과 다른 점이 있으면 학교 선생님 말씀을 따라 주세요.',
+          m: '이 사이트의 단원은 ' + name + josa(name, '을/를') + ' 바탕으로 만들었어요' + (cat().basis ? '(' + cat().basis + ')' : '') +
+            '. 바뀐 내용이 확인되면 그 단원에 ‘개정 반영 중’이 붙어요. 학교 수업과 다른 점이 있으면 학교 선생님 말씀을 따라 주세요.',
+          h: '이 사이트의 단원은 ' + name + josa(name, '을/를') + ' 바탕으로 만들었습니다' + (cat().basis ? '(' + cat().basis + ')' : '') +
+            '. 바뀐 내용이 확인되면 그 단원에 ‘개정 반영 중’이 표시됩니다. 학교 수업과 다른 점은 학교 선생님의 안내를 따르십시오.' })) + '</p>' +
+          (x.n.url ? '<p><a href="' + esc(x.n.url) + '" target="_blank" rel="noopener noreferrer">고시 원문 보기(국가교육위원회, 새 창)</a></p>' : '') +
+          '</details></li>';
+      }).join('') + '</ul></section>';
+  }
+
+  // 설정 > 가정교사 정보: 기준 고시 뒤에 나온 교육과정 고시 전부(바뀐 별책 이름까지)
+  function noticesInfoHtml() {
+    var list = Array.isArray(cat().notices) ? cat().notices.filter(function (n) { return isObj(n) && n.no; }) : [];
+    if (!list.length) return '';
+    return '<li class="cur-info">그 뒤 바뀐 교육과정 고시(매주 자동으로 확인해요):<ul>' + list.map(function (n) {
+      var vols = Array.isArray(n.volumes) ? n.volumes.join(', ') : '';
+      return '<li>' + esc(n.no + ' (' + koDate(n.date, true) + ')') + (vols ? ' — ' + esc(vols) : '') +
+        (n.url ? ' <a href="' + esc(n.url) + '" target="_blank" rel="noopener noreferrer">원문</a>' : '') + '</li>';
+    }).join('') + '</ul></li>';
+  }
+
   function unitRow(u, i, prog) {
     if (isSoon(u)) {
       /* 준비 중: 보이기만 하고 누를 수 없다 */
@@ -1348,6 +1434,7 @@
 
     var html = bubble(s, para(hello) + (c.note ? '<p class="bubble-note">' + esc(c.note) + '</p>' : ''));
     html += '<h2 class="page-title" tabindex="-1">' + esc(c.title) + '</h2>';
+    html += courseNoticesHtml(c);
     if (!ready.length) {
       html += '<div class="state-box soon-box"><p class="state-icon" aria-hidden="true">🚧</p><p>' + esc(say({
         e: '이 과정의 단원은 선생님이 지금 열심히 만들고 있어요. 조금만 기다려 주세요!',
@@ -3561,7 +3648,9 @@
 
     html += '<section class="set-sec card" aria-labelledby="setInfo"><h3 id="setInfo">가정교사 정보</h3><ul class="plain-list">' +
       '<li>AI·서버 없이 이 기기 안에서만 동작해요. 질문·답·별명·기록은 기기 밖으로 나가지 않아요.</li>' +
-      '<li>학습 내용은 2022 개정 교육과정을 참고해 새로 쓴 것이며, 교과서를 대신하지 않아요.</li>' +
+      '<li>학습 내용은 ' + esc(cat().curriculum || '2022 개정 교육과정') + (cat().basis ? '(' + esc(cat().basis) + ')' : '') + josa(cat().curriculum || '2022 개정 교육과정', '을/를') +
+        ' 참고해 새로 쓴 것이며, 교과서를 대신하지 않아요.</li>' +
+      noticesInfoHtml() +
       '<li>틀린 곳을 찾았나요? <a href="' + ISSUES_URL + '" target="_blank" rel="noopener noreferrer">GitHub 저장소에 알려 주기</a> (새 창에서 열려요)</li>' +
       '<li class="muted">버전 ' + VERSION + (storageOk() ? '' : ' · 이 브라우저에서는 기록을 저장할 수 없어요') + '</li></ul></section>';
 

@@ -159,10 +159,17 @@ test('개정 소식 확인: 교육부 보도자료 목록에서 글 번호·제�
   expect(robotsDisallows('User-agent: Googlebot\nAllow: /\n\nUser-agent: *\nDisallow: /', '/anything')).toBe(true);
 });
 
-test('개정 소식 확인은 Actions 에서 매주, 비밀 없이 기본 토큰으로만 이슈를 연다', () => {
+test('개정 확인·자동 반영은 Actions 에서 매주, 비밀 없이 기본 토큰으로 — 테스트를 통과해야만 올리고 배포한다', () => {
   const yml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'curriculum-watch.yml'), 'utf8');
   expect(yml).toMatch(/schedule:\s*\n\s*- cron: '0 0 \* \* 1'/);
-  expect(yml).toContain('issues: write');
-  expect(yml).toContain('node scripts/curriculum-watch.js --issue');
+  for (const p of ['contents: write', 'issues: write', 'actions: write']) expect(yml).toContain(p);
+  expect(yml).toContain('node scripts/curriculum-watch.js --update --issue');
+  expect(yml).toContain('poppler-utils');                                    // PDF 고시문 읽기
+  expect(yml).toMatch(/npx playwright test/);
+  expect(yml).toContain("steps.test.outcome == 'success'");                   // 테스트 통과 뒤에만 커밋
+  expect(yml).toContain('git commit -F tmp/curriculum-watch-commit.txt');     // 바깥 글을 셸 명령에 끼워 넣지 않는다
+  expect(yml).toContain('gh workflow run pages.yml');
+  expect(yml).toContain('--keepalive');
   expect(yml).not.toMatch(/\$\{\{\s*secrets\./);
+  expect(yml).not.toMatch(/\$\{\{\s*steps\.[^}]*outputs\.(summary|title)/);   // 출력값을 run 안에 직접 넣지 않는다
 });

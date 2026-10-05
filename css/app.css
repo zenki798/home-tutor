@@ -1030,6 +1030,17 @@ html.no-profile .main { padding-bottom: 2rem; }
 /* 교육과정 개정 반영 중인 단원(카탈로그 rev) — 열 수는 있다 */
 .rev-badge { background: var(--warn-wash); color: var(--warn-ink); font-size: 0.75rem; vertical-align: middle; white-space: nowrap; }
 .rev-note { margin: 0.625rem 0 0; }
+
+/* ================= 교육과정 소식 (카탈로그 notices — 국가교육위원회 고시를 자동으로 읽어 과목·학년별로 안내) ================= */
+.cur-news { margin: 0.75rem 0 1rem; padding: 0.75rem 1rem; border: 1px solid var(--line); border-left: 5px solid var(--c, var(--line-strong)); border-radius: 14px; background: var(--surface); }
+.cur-news-title { margin: 0 0 0.375rem; font-size: 1rem; }
+.cur-list { margin: 0; padding: 0; list-style: none; }
+.cur-list > li + li { margin-top: 0.625rem; padding-top: 0.625rem; border-top: 1px dashed var(--line); }
+.cur-line, .cur-new, .cur-rel { margin: 0 0 0.375rem; overflow-wrap: anywhere; }
+.cur-new { font-weight: 700; }
+.cur-more summary { cursor: pointer; color: var(--ink-2); font-size: 0.9375rem; }
+.cur-more p { margin: 0.375rem 0 0; color: var(--ink-2); font-size: 0.9375rem; overflow-wrap: anywhere; }
+.cur-info ul { margin: 0.25rem 0 0; padding-left: 1.25rem; }
 .teacher-card.is-soon .t-icon { filter: grayscale(0.6); opacity: 0.75; }
 .unit-row.is-soon { background: var(--surface-2); box-shadow: none; border-style: dashed; color: var(--ink-2); cursor: default; }
 .unit-row.is-soon:hover { border-color: var(--line); box-shadow: none; }

@@ -20,19 +20,15 @@ const TutorMath = require(path.join(ROOT, 'js', 'mathlib.js'));
 const TutorText = require(path.join(ROOT, 'js', 'mathtext.js'));
 const TutorFig = require(path.join(ROOT, 'js', 'figures.js'));
 
+// 교육과정 지도(curriculum/*.json — meta.json·notices.json 은 빼고): scripts/lib/curriculum.js 와 같은 읽기
 function loadCurriculum() {
   const dir = path.join(ROOT, 'curriculum');
   const units = {};
   const courses = {};
   if (!fs.existsSync(dir)) return { units, courses };
-  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.json'))) {
-    let j;
-    try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { continue; }
-    for (const c of j.courses || []) {
-      courses[c.id] = c;
-      for (const u of c.units || []) units[u.id] = { course: c, unit: u };
-    }
-  }
+  const map = require('./lib/curriculum').loadMap(dir);
+  for (const c of map.courses) courses[c.id] = c;
+  for (const id of Object.keys(map.units)) units[id] = map.units[id];
   return { units, courses };
 }
 

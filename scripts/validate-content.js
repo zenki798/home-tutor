@@ -236,7 +236,7 @@ function loadUnitFile(file, source) {
 
 /* ---------- 카탈로그 (§7.1) ---------- */
 
-const CATALOG_KEYS = ['version', 'curriculum', 'levels', 'subjects', 'courses'];
+const CATALOG_KEYS = ['version', 'curriculum', 'basis', 'levels', 'subjects', 'notices', 'courses'];
 const COURSE_KEYS = ['id', 'subject', 'level', 'grades', 'title', 'note', 'units'];
 // soon: 내용이 아직 없는 단원(화면에 '준비 중'으로 보인다) — build-catalog.js 가 파일 유무로 붙인다
 // rev: 교육과정 개정 뒤 아직 새 성취기준으로 다시 쓰지 않은 단원(화면에 '개정 반영 중') — build-catalog.js 가 성취기준을 견줘 붙인다
@@ -277,6 +277,21 @@ function loadCatalog(file) {
   Object.keys(c).forEach((k) => { if (CATALOG_KEYS.indexOf(k) < 0) W(k, unknownKeyMsg(k, CATALOG_KEYS)); });
   if (!Number.isInteger(c.version) || c.version < 1) E('version', 'version 은 1 이상의 정수예요: ' + show(c.version));
   if (!nonEmpty(c.curriculum)) E('curriculum', "curriculum(교육과정 이름, 예: '2022 개정 교육과정')이 없어요");
+  if (c.basis !== undefined && !nonEmpty(c.basis)) E('basis', "basis(기준 고시, 예: '교육부 고시 제2022-33호')는 글자예요");
+  // 그 뒤 고시(curriculum/notices.json → build-catalog): 화면이 과목·학년별 "교육과정 소식"으로 쓴다
+  if (c.notices !== undefined) {
+    if (!Array.isArray(c.notices)) E('notices', 'notices 는 배열이에요');
+    (Array.isArray(c.notices) ? c.notices : []).forEach((n, i) => {
+      const p = 'notices[' + i + ']';
+      if (!isObj(n) || !nonEmpty(n.id) || !nonEmpty(n.no)) { E(p, '고시는 { id, no, date, effective, parts } 객체예요'); return; }
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(n.date))) E(p + '.date', '고시 날짜는 YYYY-MM-DD 예요: ' + show(n.date));
+      if (n.url !== undefined && !/^https:\/\//.test(String(n.url))) E(p + '.url', '원문 주소는 https:// 로 시작해요');
+      if (!Array.isArray(n.effective) || n.effective.some((e) => !isObj(e) || !/^\d{4}-\d{2}-\d{2}$/.test(String(e.date)) || !Array.isArray(e.grades) || !e.grades.length)) {
+        E(p + '.effective', '시행일은 [{ date: YYYY-MM-DD, grades: [학년 id…] }] 꼴이에요');
+      }
+      if (!Array.isArray(n.parts)) E(p + '.parts', 'parts 는 배열이에요');
+    });
+  }
 
   // 학교급·학년
   if (!Array.isArray(c.levels) || !c.levels.length) E('levels', '학교급(levels) 배열이 없어요');

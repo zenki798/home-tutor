@@ -160,7 +160,10 @@
 - `tests/logic/secrets.spec.js` — 전체 테스트에 포함. 단원 검사(`scripts/lint-unit.js`)도 같은 규칙으로 학습 내용을 본다.
 - `.githooks/pre-commit` — 커밋할 내용에서 발견되면 커밋을 막는다 (`git config core.hooksPath .githooks`).
 - CI(`.github/workflows/pages.yml`) — 배포 전에 검사한다.
-- 교육과정 개정 소식 확인(`.github/workflows/curriculum-watch.yml`) — 매주 교육부 보도자료를 보고 이슈를 연다(비밀 없이 기본 토큰, robots.txt 준수). 페이지와 학생 기기에는 관계없다.
+- 교육과정 개정 확인·자동 반영(`.github/workflows/curriculum-watch.yml`) — 매주 국가교육위원회 법령자료의 고시문을 읽어 `curriculum/notices.json`·카탈로그에 싣고,
+  **전체 테스트를 통과해야만** 봇(github-actions)이 커밋·배포한다(contents: write, actions: write — 비밀 없이 기본 토큰). 교육부 보도자료 소식은 이슈만.
+  robots.txt 를 지키고(국가교육과정정보센터는 막혀 있어 보지 않는다) 자기 이름을 밝힌다. 커밋 없이 45일이면 유지 커밋(60일 정지 규칙).
+  페이지와 학생 기기에는 관계없다(외부 요청 0 유지). 사용자 결정 2026-10-05: AI·별도 자원·사람 없이 규칙으로 자동 안내.
 - **발견하면 즉시 사용자에게 보고하고**, 키·토큰이면 폐기·재발급을 먼저 권고한다(규칙 2 "이미 올라간 경우").
 
 ## 규칙 7. 학생의 개인정보·학습정보는 절대 다른 사람이 볼 수 없게 (사용자 지시 2026-10-02)
@@ -200,7 +203,8 @@ data/catalog.js           교육과정 지도 (학교급·학년·과목·과정
 data/units/<단원id>.js     단원 내용 (개념·예제·용어·문제·심화·질문) — 단원을 열 때 불러온다
 data/index/<과목>.js       질문 검색용 색인 (scripts/build-index.js 가 만든다, 직접 고치지 않는다)
 curriculum/<과목>.json     교육과정 지도의 원본 (scripts/build-catalog.js 가 data/catalog.js 로 만든다)
-curriculum/meta.json      교육과정 판·이름. 개정 판은 curriculum/revisions/<판>/, 옛 판은 curriculum/history/<판>/ (docs/CURRICULUM-REVISION.md)
+curriculum/meta.json      교육과정 판·이름·기준 고시·별책 이름·다루는 교과(covers). 개정 판은 curriculum/revisions/<판>/, 옛 판은 curriculum/history/<판>/
+curriculum/notices.json   기준 뒤의 교육과정 고시(자동 기록 — scripts/curriculum-watch.js, 직접 고치지 않는다)
 retired/units/            교육과정 개정으로 빠진 단원 파일 보관(배포 안 됨)
 tools/content-workflow.js 단원 작성·고쳐 쓰기·독립 검토 워크플로(Claude Code Workflow 도구용)
 docs/ARCHITECTURE.md      모듈 계약·데이터 형식

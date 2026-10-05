@@ -33,6 +33,8 @@ function patchCatalog(patch) {
     c.courses.forEach(function (co) { co.units.forEach(function (u) { if (u.id === id) u.rev = true; }); });
   });
   (patch.courses || []).forEach(function (co) { c.courses.push(co); });
+  if (patch.notices) c.notices = patch.notices; // 그 뒤 교육과정 고시(교육과정 소식)
+  if (patch.basis) c.basis = patch.basis;
   Tutor.registerCatalog(c);
 }
 

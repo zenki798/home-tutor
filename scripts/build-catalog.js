@@ -105,14 +105,71 @@ function build(opts) {
   const soon = courses.reduce((s, c) => s + c.units.filter((u) => u.soon).length, 0);
   const rev = courses.reduce((s, c) => s + c.units.filter((u) => u.rev).length, 0);
   const meta = loadMeta(dir);
+  const notices = catalogNotices(readNotices(dir), meta, courses);
   const head = '/* 자동 생성 — node scripts/build-catalog.js (원본: curriculum/*.json). 직접 고치지 않는다.\n' +
-    ' * 과정 ' + courses.length + ' · 단원 ' + total + ' (준비 중 ' + soon + (rev ? ' · 개정 반영 중 ' + rev : '') + ') */\n';
+    ' * 과정 ' + courses.length + ' · 단원 ' + total + ' (준비 중 ' + soon + (rev ? ' · 개정 반영 중 ' + rev : '') + ')' +
+    (notices.length ? ' · 그 뒤 고시 ' + notices.length : '') + ' */\n';
   const body = 'Tutor.registerCatalog({\n' +
-    '"version":1,"curriculum":' + JSON.stringify(meta.name) + ',\n' +
+    '"version":1,"curriculum":' + JSON.stringify(meta.name) + (meta.basis && meta.basis.no ? ',"basis":' + JSON.stringify(meta.basis.no) : '') + ',\n' +
     '"levels":' + JSON.stringify(LEVELS) + ',\n' +
     '"subjects":' + JSON.stringify(SUBJECTS) + ',\n' +
+    (notices.length ? '"notices":[\n' + notices.map((n) => JSON.stringify(n)).join(',\n') + '\n],\n' : '') +
     '"courses":[\n' + courses.map((c) => JSON.stringify(c)).join(',\n') + '\n]});\n';
-  return { text: head + body, courses: courses.length, total, soon, rev };
+  return { text: head + body, courses: courses.length, total, soon, rev, notices: notices.length };
+}
+
+/* 그 뒤 고시(curriculum/notices.json — scripts/curriculum-watch.js 가 자동으로 적는다) → 카탈로그의 notices
+ * 화면은 과정(과목·학년)마다 맞는 고시를 골라 "교육과정 소식"으로 안내한다(js/app.js courseNotices).
+ *   { id, no, date, url, volumes: [바뀐 별책 이름…], effective: [{ date, grades }],
+ *     parts: [{ name, subjects, courses, except, newSubjects?, related? }] }  ← parts: 이 사이트가 다루는 교과만(meta.covers) */
+function readNotices(dir) {
+  const file = path.join(dir, 'notices.json');
+  if (!fs.existsSync(file)) return [];
+  let j;
+  try { j = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { fail('curriculum/notices.json 을 읽지 못했어요: ' + e.message); }
+  return Array.isArray(j.notices) ? j.notices : [];
+}
+
+// 새 과목과 이어지는 지금 단원: 과목 이름으로 같은 과목·학년 단원의 제목·요약을 찾는다(규칙 검색, js/search.js)
+function relatedUnits(name, subjects, grades, courses) {
+  let S;
+  try { S = require(path.join(ROOT, 'js', 'search.js')); } catch (e) { return []; }
+  const entries = [];
+  for (const c of courses) {
+    if (!subjects.includes(c.subject) || !c.grades.some((g) => grades.includes(g))) continue;
+    for (const u of c.units) {
+      if (u.soon) continue;
+      entries.push({ id: u.id, kind: 'unit', title: u.title, text: u.summary, keywords: [], subject: c.subject, course: c.id, unit: u.id, grade: c.grades[0], ref: { tab: 'concepts', idx: 0 } });
+    }
+  }
+  if (!entries.length) return [];
+  const idx = S.build(entries);
+  const queries = [name].concat(name.split(/\s+/).filter((w) => w.length >= 2 && w !== '생활'));
+  const out = [];
+  for (const q of queries) {
+    for (const r of S.query(idx, q, { limit: 3 })) if (!out.includes(r.entry.id)) out.push(r.entry.id);
+  }
+  return out.slice(0, 3);
+}
+
+function catalogNotices(list, meta, courses) {
+  const covers = meta.covers || {};
+  return list.map((n) => {
+    const grades = [].concat(...(n.effective || []).map((e) => e.grades));
+    const parts = [];
+    for (const v of n.volumes || []) {
+      const cv = covers[String(v.n)];
+      if (!cv) continue;
+      const part = { name: v.name, subjects: cv.subjects || [], courses: cv.courses || [], except: cv.except || [] };
+      if (v.newSubjects && v.newSubjects.length) {
+        part.newSubjects = v.newSubjects;
+        part.related = [].concat(...v.newSubjects.map((s) => relatedUnits(s, part.subjects, grades, courses)))
+          .filter((x, i, a) => a.indexOf(x) === i).slice(0, 3);
+      }
+      parts.push(part);
+    }
+    return { id: n.id, no: n.no, date: n.date, url: n.url, volumes: (n.volumes || []).map((v) => v.name), effective: n.effective || [], parts };
+  });
 }
 
 function main() {
@@ -127,8 +184,8 @@ function main() {
     return;
   }
   fs.writeFileSync(OUT, r.text);
-  console.log('data/catalog.js — 과정 ' + r.courses + ' · 단원 ' + r.total + ' · 준비 중 ' + r.soon + (r.rev ? ' · 개정 반영 중 ' + r.rev : '') + ' · ' + Math.round(r.text.length / 1024) + 'KB');
+  console.log('data/catalog.js — 과정 ' + r.courses + ' · 단원 ' + r.total + ' · 준비 중 ' + r.soon + (r.rev ? ' · 개정 반영 중 ' + r.rev : '') + (r.notices ? ' · 그 뒤 고시 ' + r.notices : '') + ' · ' + Math.round(r.text.length / 1024) + 'KB');
 }
 
 if (require.main === module) main();
-module.exports = { build, LEVELS, SUBJECTS, sameStandards, loadMeta };
+module.exports = { build, LEVELS, SUBJECTS, sameStandards, loadMeta, catalogNotices };
