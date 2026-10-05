@@ -164,9 +164,12 @@
   **전체 테스트를 통과해야만** 봇(github-actions)이 커밋·배포한다(contents: write, actions: write — 비밀 없이 기본 토큰). 교육부 보도자료 소식은 이슈만.
   robots.txt 를 지키고(국가교육과정정보센터는 막혀 있어 보지 않는다) 자기 이름을 밝힌다. 커밋 없이 45일이면 유지 커밋(60일 정지 규칙).
   페이지와 학생 기기에는 관계없다(외부 요청 0 유지). 사용자 결정 2026-10-05: AI·별도 자원·사람 없이 규칙으로 자동 안내.
-  같은 작업이 고친 별책의 확정 원문(공식 경로만, 확정 전 문서 제외)을 규칙으로 읽어 `curriculum/standards/` 와 비교하고, **판정 조건을 모두 통과할 때만**
-  반영한다(반영 전 파일은 `curriculum/history/standards/` 에 보관·기록, 되돌리기 가능). 아니면 기존 자료를 두고 "교육과정 변경 감지 - 수동 확인 필요".
+  같은 작업이 고친 별책의 확정 원문(공식 경로만, 확정 전 문서 제외)을 규칙으로 읽어 사슬의 마지막 판과 비교하고, **판정 조건을 모두 통과할 때만**
+  새 판을 `curriculum/standards/versions/` 에 따로 기록한다 — **지금 시행 판(`curriculum/standards/v*.json`)은 덮어쓰지 않는다**(scheduled/active,
+  학생에게는 그 학년의 시행 학년도부터, 앞 판 보관·해시는 `curriculum/history/standards/`, 되돌리기 가능). 아니면 기존 자료를 두고 "교육과정 변경 감지 - 수동 확인 필요".
   **추측해서 반영하지 않는다** — 자동화 범위보다 잘못된 교육과정을 주지 않는 것이 먼저다(사용자 지시 2026-10-05, docs/CURRICULUM-REVISION.md).
+  수동 확인은 관리자가 공식 원문을 `curriculum/incoming/<고시 id>/`(+ source.txt)에 올리면 `curriculum-recover.yml` 이 끝까지 처리한다(같은 검증·테스트 뒤 커밋·이슈 정리).
+  같은 고시를 두 번 기록하지 않는다(멱등), 파싱이 일부라도 실패하면·학년이 어긋나면·시행일이 두 경로에서 확인되지 않으면 기록하지 않는다(사용자 지시 2026-10-05 안정화).
 - **발견하면 즉시 사용자에게 보고하고**, 키·토큰이면 폐기·재발급을 먼저 권고한다(규칙 2 "이미 올라간 경우").
 
 ## 규칙 7. 학생의 개인정보·학습정보는 절대 다른 사람이 볼 수 없게 (사용자 지시 2026-10-02)
@@ -209,8 +212,10 @@ data/index/<과목>.js       질문 검색용 색인 (scripts/build-index.js 가
 curriculum/<과목>.json     교육과정 지도의 원본 (scripts/build-catalog.js 가 data/catalog.js 로 만든다)
 curriculum/meta.json      교육과정 판·이름·기준 고시·별책 이름·다루는 교과(covers). 개정 판은 curriculum/revisions/<판>/, 옛 판은 curriculum/history/<판>/
 curriculum/notices.json   기준 뒤의 교육과정 고시와 별책 성취기준 판정(analysis) — 자동 기록(scripts/curriculum-watch.js), 직접 고치지 않는다
-curriculum/standards/     별책별 성취기준 기준 자료(공식 원문에서 규칙으로 뽑음, 출처·sha256) — curriculum-standards.js·자동 반영만 고친다
-curriculum/history/standards/ 자동 반영 전 보관본 + standards-log.json(반영·되돌리기 기록)
+curriculum/standards/     별책별 성취기준 기준 자료 = 지금 시행 판(공식 원문에서 규칙으로 뽑음, 출처·sha256) — 자동 반영도 덮어쓰지 않는다
+curriculum/standards/versions/ 확인된 고친 판(고시일·발견일·검증일·시행일·앞 판 해시·내용 해시) — 자동 기록·복구만 만든다
+curriculum/history/standards/ 기록 전 보관본·manifest(파일별 해시 전·후) + standards-log.json(기록·되돌리기, 자료 해시)
+curriculum/incoming/      수동 확인 복구용 공식 원문 올리는 곳(처리 뒤 지워짐, 배포 안 됨)
 retired/units/            교육과정 개정으로 빠진 단원 파일 보관(배포 안 됨)
 tools/content-workflow.js 단원 작성·고쳐 쓰기·독립 검토 워크플로(Claude Code Workflow 도구용)
 docs/ARCHITECTURE.md      모듈 계약·데이터 형식

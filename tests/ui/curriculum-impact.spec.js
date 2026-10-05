@@ -24,10 +24,11 @@ const NOTICES = [
     id: 'nec-2027-2', no: '국가교육위원회 고시 제2027-2호', date: '2026-09-10', url: 'https://www.ne.go.kr/user/bbs/BD_selectBbs.do?q_bbsSn=1016&q_bbsDocNo=3',
     volumes: ['수학과'], effective: [{ date: '2027-03-01', grades: ['m1', 'm2'] }, { date: '2028-03-01', grades: ['m3', 'e5', 'e6'] }],
     parts: [{
-      name: '수학과', subjects: ['math'], courses: [], except: [], status: 'applied',
+      // 새 판으로 기록됐지만 시행 전 학년이 남은 상태(scheduled) — 학생에게는 그 학년의 시행 학년도부터
+      name: '수학과', subjects: ['math'], courses: [], except: [], status: 'scheduled',
       changes: [
-        { k: 'chg', code: '[9수01-02]', from: '옛 성취기준 문장이다.', to: '새로 고친 성취기준 문장이다.', courses: ['math-m2'], units: ['math-m2-01'] },
-        { k: 'add', code: '[9수01-09]', text: '새로 생긴 성취기준이다.', courses: ['math-m2'] },
+        { k: 'chg', code: '[9수01-02]', from: '옛 성취기준 문장이다.', to: '새로 고친 성취기준 문장이다.', courses: ['math-m2'], units: ['math-m2-01'], grades: ['m2'] },
+        { k: 'add', code: '[9수01-09]', text: '새로 생긴 성취기준이다.', courses: ['math-m2'], grades: ['m2'] },
       ],
     }],
   },
@@ -96,6 +97,23 @@ test('지금 이 과목을 배우는 학생이 시행 전에 학년을 마치면
   await open(page2, { student: STUDENT_B, url: '/#/course/sci-e5', catalogPatch: PATCH });
   await expect(page2.locator('.cur-news .cur-manual')).toHaveText(MANUAL);
   await expect(page2.locator('.cur-news .cur-status.is-before')).toHaveCount(0);
+});
+
+test('다른 학년 금지: 중1~3 묶음 과정의 중3 변화는 지금 중2 학생에게 "개정 반영 중"을 붙이지 않고, 중3 이 되는 때를 알린다', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.clock.setFixedTime(new Date('2026-10-05T09:00:00'));
+  const only3 = [{
+    id: 'nec-2026-7', no: '국가교육위원회 고시 제2026-7호', date: '2026-06-01', volumes: ['영어과'],
+    effective: [{ date: '2026-03-01', grades: ['m1', 'm2', 'm3'] }],
+    parts: [{ name: '영어과', subjects: ['eng'], courses: [], except: [], status: 'active',
+      changes: [{ k: 'chg', code: '[9영01-01]', from: '옛 영어 성취기준이다.', to: '새 영어 성취기준이다.', courses: ['eng-m'], units: ['eng-m-01'], grades: ['m3'] }] }],
+  }];
+  await open(page, { student: STUDENT, url: '/#/course/eng-m', catalogPatch: { notices: only3 } });
+  await expect(page.locator('.cur-news .cur-status.is-applied')).toBeVisible();
+  await expect(page.locator('.unit-row[data-unit="eng-m-01"] .rev-badge')).toHaveCount(0); // 중2 인 지금은 아니다
+  await goHash(page, '#/unit/eng-m-01/learn');
+  await expect(page.locator('.cur-unit')).toContainText('2027년 3월부터 이 단원의 성취기준이 바뀌어요.');
+  expect(errors).toEqual([]);
 });
 
 test('성취기준 변화 없음: 영어(중2)에 "성취기준은 그대로"', async ({ page }) => {

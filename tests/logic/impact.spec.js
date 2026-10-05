@@ -97,6 +97,71 @@ test('단원별: 이 단원의 성취기준 변화와 이 학생에게 닿는 �
   expect(I.forUnit(CAT, 'eng-e4-01', COURSES[4], 'e3', TODAY)).toEqual([]);
 });
 
+/* ---------- 안정장치: 미래 판을 일찍·다른 학년에 적용하지 않는다 ---------- */
+
+test('조기 적용 금지: 예약된(scheduled) 판은 그 학년의 시행 학년도 3월 1일 전에는 닿지 않는다 — 전날·당일 경계', () => {
+  const n = {
+    id: 'nec-2027-5', no: '국가교육위원회 고시 제2027-5호', date: '2027-08-01', effective: [{ date: '2028-03-01', grades: ['e1', 'e2'] }],
+    parts: [{ name: '통합교과', subjects: ['life'], courses: [], except: [], status: 'scheduled',
+      changes: [{ k: 'chg', code: '[2바01-01]', from: '옛 문장이다.', to: '새 문장이다.', courses: ['life-e1'], units: ['life-e1-01'], grades: ['e1'] }] }],
+  };
+  const course = { id: 'life-e1', subject: 'life', grades: ['e1'], title: '1학년 통합교과' };
+  const cat = { notices: [n], courses: [course] };
+  // 2027 학년도에 초1 인 학생(다음 학년도에는 초2) — 초1 에만 닿는 변화는 끝까지 닿지 않는다
+  for (const day of ['2027-09-01', '2028-02-28', '2028-02-29']) {
+    expect(I.forStudent(cat, 'e1', day), day).toEqual([]);
+    expect(I.forUnit(cat, 'life-e1-01', course, 'e1', day)[0].hit, day).toBeNull();
+  }
+  // 2028-03-01 에 초1 인 학생부터 닿는다(당일)
+  expect(I.forStudent(cat, 'e1', '2028-03-01').map((x) => [x.status, x.when])).toEqual([['scheduled', { grade: 'e1', year: 2028, now: true }]]);
+  expect(I.forUnit(cat, 'life-e1-01', course, 'e1', '2028-03-01')[0].hit).toEqual({ grade: 'e1', year: 2028, now: true });
+  // 아직 학교에 들어가지 않은(학년 없음) 기기 사용자에게는 아무것도
+  expect(I.forStudent(cat, '', '2028-03-01')).toEqual([]);
+});
+
+test('다른 학년 금지: 변화는 닿는 학년(grades)에만 — 같은 묶음 과정의 다른 학년·지난 학년·다른 학교급에는 닿지 않는다', () => {
+  // 초3·4 묶음 과정인데 이 변화는 초4 에만(코드 학년군 ∩ 과정 학년을 카탈로그가 적어 둔다)
+  const n = {
+    id: 'nec-2026-3', no: '국가교육위원회 고시 제2026-3호', date: '2026-01-10', effective: [{ date: '2026-03-01', grades: ['e1', 'e2', 'e3', 'e4', 'e5', 'e6', 'm1', 'm2', 'm3'] }],
+    parts: [{ name: '사회과', subjects: ['soc'], courses: [], except: [], status: 'active',
+      changes: [{ k: 'chg', code: '[4사06-01]', from: '옛 문장이다.', to: '새 문장이다.', courses: ['soc-34'], units: ['soc-34-06'], grades: ['e4'] }] }],
+  };
+  const soc34 = { id: 'soc-34', subject: 'soc', grades: ['e3', 'e4'], title: '3·4학년 사회' };
+  const cat = { notices: [n], courses: [soc34, { id: 'soc-m-1', subject: 'soc', grades: ['m1'], title: '중학교 사회①' }] };
+  // 지금 초3: 초3 인 지금은 아니고, 초4 가 되는 2027 학년도에
+  expect(I.forStudent(cat, 'e3', TODAY).map((x) => x.when)).toEqual([{ grade: 'e4', year: 2027, now: false }]);
+  expect(I.forUnit(cat, 'soc-34-06', soc34, 'e3', TODAY)[0].hit).toEqual({ grade: 'e4', year: 2027, now: false });
+  // 지금 초4: 지금
+  expect(I.forStudent(cat, 'e4', TODAY)[0].when).toEqual({ grade: 'e4', year: 2026, now: true });
+  // 초5(이미 지남)·중1(다른 학교급)·대학: 없음
+  for (const g of ['e5', 'm1', 'u']) expect(I.forStudent(cat, g, TODAY), g).toEqual([]);
+  // grades 가 없으면(예전 카탈로그) 과정의 모든 학년으로 본다 — 그래서 카탈로그가 늘 grades 를 적는다
+  const old = JSON.parse(JSON.stringify(cat));
+  delete old.notices[0].parts[0].changes[0].grades;
+  expect(I.forStudent(old, 'e3', TODAY)[0].when).toEqual({ grade: 'e3', year: 2026, now: true });
+});
+
+test('학년별 순차 적용: 2025(초1~4·중1·고1) → 2026(초5·6·중2·고2) → 2027(중3·고3) — 학생마다 바뀐 판을 처음 만나는 학년도', () => {
+  const eff = [{ date: '2025-03-01', grades: ['e1', 'e2', 'e3', 'e4', 'm1', 'h1'] }, { date: '2026-03-01', grades: ['e5', 'e6', 'm2', 'h2'] }, { date: '2027-03-01', grades: ['m3', 'h3'] }];
+  const all = ['e1', 'e2', 'e3', 'e4', 'e5', 'e6', 'm1', 'm2', 'm3', 'h1', 'h2', 'h3'];
+  const courses = all.map((g) => ({ id: 'soc-' + g, subject: 'soc', grades: [g], title: g + ' 사회' }));
+  const n = { id: 'nec-2024-3', no: '국가교육위원회 고시 제2024-3호', date: '2024-08-16', effective: eff,
+    parts: [{ name: '사회과', subjects: ['soc'], courses: [], except: [], status: 'scheduled',
+      changes: all.map((g) => ({ k: 'chg', code: '[9사01-01]', from: '옛 문장이다.', to: '새 문장이다.', courses: ['soc-' + g], units: [], grades: [g] })) }] };
+  const cat = { notices: [n], courses };
+  const first = (g, day) => { const r = I.forStudent(cat, g, day); return r.length ? r[0].when : null; };
+  expect(first('e6', '2024-10-01')).toEqual({ grade: 'm1', year: 2025, now: false }); // 중1 은 2025 부터
+  expect(first('m1', '2024-10-01')).toEqual({ grade: 'h1', year: 2027, now: false }); // 중2(2026 시행 전)·중3(2027 시행 전)은 예전 판, 고1 에서 처음
+  expect(first('m2', '2024-10-01')).toEqual({ grade: 'h1', year: 2026, now: false });
+  expect(first('e4', '2025-10-01')).toEqual({ grade: 'e4', year: 2025, now: true });
+  expect(first('e5', '2025-10-01')).toEqual({ grade: 'e6', year: 2026, now: false }); // 초5 는 2026 부터라 이 학생은 초6 에서
+  expect(first('h2', '2026-10-01')).toEqual({ grade: 'h2', year: 2026, now: true });
+  expect(first('h2', '2025-10-01')).toBeNull(); // 고2(2026 시행 전)·고3(2027 시행 전) — 끝까지 예전 판
+  // 한 학생의 학년도별 적용(초5 → 초6 → 중1 …): 해마다 기기의 학년을 올렸다고 보면
+  const byYear = [['e5', '2025-10-01', false], ['e6', '2026-10-01', true], ['m1', '2027-10-01', true]].map(([g, day]) => I.forCourse(n, courses[all.indexOf(g)], g, day, [g]).length > 0);
+  expect(byYear).toEqual([false, true, true]);
+});
+
 test('UMD: 브라우저처럼 실으면 전역 TutorImpact, 네트워크·저장소를 쓰지 않는다', () => {
   const src = fs.readFileSync(FILE, 'utf8');
   const ctx = { self: {} };

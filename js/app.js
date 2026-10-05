@@ -1320,14 +1320,16 @@
     return Number(p[0]) + '년 ' + Number(p[1]) + '월' + (withDay || Number(p[2]) !== 1 ? ' ' + Number(p[2]) + '일' : '');
   }
   /* 별책 성취기준 비교 결과(카탈로그 parts[].status · changes — curriculum-watch 가 매주 자동으로):
-   *   applied: 공식 원문과 비교해 바뀐 성취기준을 자동 반영 / unchanged: 성취기준 문장 변화 없음
-   *   manual: 자동으로 확실히 반영할 수 없어 기존 자료를 그대로 둠 → "교육과정 변경 감지 - 수동 확인 필요" */
+   *   scheduled·active(예전 applied): 공식 원문과 비교해 바뀐 성취기준을 새 판으로 기록 — 학생에게는 그 학년의 시행 학년도부터(js/impact.js)
+   *   unchanged: 성취기준 문장 변화 없음 / manual: 자동으로 확실히 반영할 수 없어 기존 자료를 그대로 둠 → "교육과정 변경 감지 - 수동 확인 필요" */
   var MANUAL_LABEL = '교육과정 변경 감지 - 수동 확인 필요';
-  // 이 과정에 닿는 변화(applied 인데 이 과정 변화가 없으면 이 과정에는 unchanged)
+  function isVerified(s) { return s === 'scheduled' || s === 'active' || s === 'applied'; }
+  // 이 과정에 닿는 변화(확인된 판인데 이 과정 변화가 없으면 이 과정에는 unchanged)
   function partFor(p, c) {
-    var changes = p.status === 'applied' && Array.isArray(p.changes) ?
+    var ok = isVerified(p.status);
+    var changes = ok && Array.isArray(p.changes) ?
       p.changes.filter(function (x) { return isObj(x) && Array.isArray(x.courses) && x.courses.indexOf(c.id) >= 0; }) : [];
-    var status = p.status === 'applied' && !changes.length ? 'unchanged' : (p.status || 'pending');
+    var status = ok ? (changes.length ? 'applied' : 'unchanged') : (p.status || 'pending');
     return { p: p, status: status, changes: changes };
   }
   // 변화가 닿는지 셀 학생 학년: 학생이 있으면 그 학년, 없으면 이 과정 첫 학년에 있는 학생으로 본다
@@ -1466,7 +1468,7 @@
       if (!items.length) return '<li class="imp-student">' + who + '<p class="muted">지금 학년과 앞으로 다닐 학년에 닿는 교육과정 변경은 없어요.</p></li>';
       return '<li class="imp-student">' + who + '<ul class="imp-list">' + items.map(function (it) {
         var when = it.when.now ? '지금 학년(' + gradeLabel(it.when.grade, true) + ')부터' : it.when.year + '년 3월(' + gradeLabel(it.when.grade, true) + ')부터';
-        var st = it.status === 'applied' ? '성취기준 ' + it.changes.length + '개 바뀜(자동 반영)' : it.status === 'manual' ? MANUAL_LABEL : '확인 중';
+        var st = isVerified(it.status) ? '성취기준 ' + it.changes.length + '개 바뀜(자동 반영)' : it.status === 'manual' ? MANUAL_LABEL : '확인 중';
         var cs = it.courses.slice(0, 4).map(function (c) { return c.title; }).join(', ') + (it.courses.length > 4 ? ' 외 ' + (it.courses.length - 4) + '개' : '');
         return '<li class="imp-item is-' + esc(it.status) + '"><span class="imp-when">' + esc(when) + '</span> · ' + esc(it.part.name + ' 교육과정') +
           ' — <span class="imp-st">' + (it.status === 'manual' ? '<span class="badge cur-manual">' + esc(st) + '</span>' : esc(st)) + '</span>' +

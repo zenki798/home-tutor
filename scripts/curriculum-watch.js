@@ -106,7 +106,7 @@ function readJson(file, fallback) {
 //   → { store(바뀐 기록), changed, added: [고시], problems: [{ docNo, title, why }], posts, via, fallbackWhy }
 // 국가교육위원회 경로가 막히거나 모양이 바뀌면 국가법령정보센터(행정규칙 연혁·첨부 고시문)로 같은 고시를 찾는다
 async function collectNotices(opts) {
-  const o = Object.assign({ getText: get, getBuffer, post: net.post, robots: robotsAllowed, sleep: net.sleep }, opts || {});
+  const o = Object.assign({ getText: get, getBuffer, post: net.post, robots: robotsAllowed, sleep: net.sleep, today: new Date().toISOString().slice(0, 10) }, opts || {});
   const meta = o.meta || readJson(META_FILE, {});
   const store = Object.assign({ source: NEC.name, checkedPosts: [], notices: [] }, o.store || readJson(NOTICES_FILE, {}));
   try {
@@ -116,7 +116,7 @@ async function collectNotices(opts) {
     try { law = await X.lawNotices(o, meta); } catch (e2) {
       throw new Error(e.message + ' / 대신 ' + X.LAW.name + '도 읽지 못했어요: ' + e2.message);
     }
-    const merged = N.mergeNotices(store.notices, law.notices, meta);
+    const merged = N.mergeNotices(store.notices, law.notices, meta, { discovered: o.today }); // 발견일(고시일·시행일과 따로)
     const next = { source: store.source, checkedPosts: store.checkedPosts, notices: merged.notices };
     const problems = law.problems.map((p) => ({ docNo: p.where, title: p.title, why: p.why, where: p.where }));
     return { store: next, changed: merged.added.length > 0, checked: [], added: merged.added, problems, posts: [], via: 'law', fallbackWhy: e.message };
@@ -149,7 +149,7 @@ async function collectFromNec(o, meta, store) {
     if (!found) problems.push({ docNo: p.docNo, title: p.title, why: files.length ? '첨부 고시문에서 고시를 읽지 못했어요(문서 모양이 바뀌었을 수 있어요)' : '읽을 수 있는 첨부(hwpx·pdf)가 없어요' });
     checked.push(p.docNo);
   }
-  const merged = N.mergeNotices(store.notices, parsed, meta);
+  const merged = N.mergeNotices(store.notices, parsed, meta, { discovered: o.today }); // 발견일(고시일·시행일과 따로)
   const next = { source: store.source, checkedPosts: store.checkedPosts.concat(checked).sort(), notices: merged.notices };
   return { store: next, changed: checked.length > 0, checked, added: merged.added, problems, posts, via: 'nec' };
 }
@@ -196,45 +196,48 @@ async function analyzeNotices(store, opts) {
   const results = [];
   let changed = false;
   const o2 = Object.assign({}, o); // 한 번 돌 때 국가법령정보센터 연혁은 한 번만 읽는다(sources.lawVersions 가 여기에 담아 둔다)
-  {
-    for (const n of next.notices.slice().sort((a, b) => a.date.localeCompare(b.date))) {
-      const prev = n.analysis;
-      if (prev && prev.status !== 'manual') continue; // 반영·변화 없음·해당 없음은 끝난 일
-      const vols = (n.volumes || []).map((v) => v.n).filter((v) => covers[String(v)]);
-      let rec;
-      if (!vols.length) rec = { status: 'none', note: '이 사이트가 쓰는 교과의 별책은 바뀌지 않았어요' };
-      else {
-        // 사람이 되돌린 별책은 --retry 전까지 그대로 둔다
-        const keep = {};
-        for (const v of vols) {
-          const pv = prev && prev.volumes && prev.volumes[v];
-          if (pv && (pv.rolledBack || pv.status !== 'manual')) keep[v] = pv;
-        }
-        const todo = vols.filter((v) => !keep[v]);
-        const extra = [];
-        if (todo.length && !(n.crossCheck && n.crossCheck.status === 'same')) {
-          const cc = await crossCheck(n, o2);
-          n.crossCheck = cc;
-          if (cc.status === 'differs') extra.push('공식 경로 두 곳의 고시 내용이 달라요: ' + cc.note);
-        }
-        const names = {};
-        for (const v of todo) names[v] = (meta.volumes || {})[v];
-        const found = todo.length ? await X.findVolumeDocs(n, todo, o2, names) : { docs: {}, tried: [] };
-        const volumes = Object.assign({}, keep);
-        for (const v of todo) {
-          volumes[v] = R.judgeVolume({ curDir: o.curDir, store: next, notice: n, volume: v, docs: found.docs[v] || [], at: o.at, apply: o.apply, extraReasons: extra });
-        }
-        rec = { status: R.summarizeStatus(volumes), volumes };
-        if (found.tried.length) rec.tried = found.tried;
-      }
-      const same = prev && JSON.stringify(stripVolatile(prev)) === JSON.stringify(stripVolatile(rec));
-      if (!same) {
-        rec.checked = o.at.slice(0, 10);
-        n.analysis = rec;
-        changed = true;
-      }
-      results.push({ notice: n, status: n.analysis.status, changed: !same });
+  const today = o.at.slice(0, 10);
+  const map = R.mapIndex(o.curDir);
+  for (const n of next.notices.slice().sort((a, b) => a.date.localeCompare(b.date))) {
+    const prev = n.analysis;
+    // 확인이 끝난 고시(기록·변화 없음·해당 없음): 다시 받지 않는다. 시간이 지나 모든 학년이 시행되면 scheduled → active 만 고친다
+    if (prev && prev.status !== 'manual') {
+      let moved = false;
+      for (const v of Object.keys(prev.volumes || {})) if (R.refreshStatus(prev.volumes[v], today)) moved = true;
+      if (moved) { prev.status = R.summarizeStatus(prev.volumes); prev.checked = today; changed = true; }
+      results.push({ notice: n, status: prev.status, changed: moved, refreshed: moved });
+      continue;
     }
+    const vols = (n.volumes || []).map((v) => v.n).filter((v) => covers[String(v)]);
+    let rec;
+    if (!vols.length) rec = { status: 'none', note: '이 사이트가 쓰는 교과의 별책은 바뀌지 않았어요' };
+    else {
+      // 사람이 되돌린 별책은 --retry 전까지 그대로, 이미 확인된 별책도 그대로(시행 상태만 고친다)
+      const keep = {};
+      for (const v of vols) {
+        const pv = prev && prev.volumes && prev.volumes[v];
+        if (pv && (pv.rolledBack || pv.status !== 'manual')) { R.refreshStatus(pv, today); keep[v] = pv; }
+      }
+      const todo = vols.filter((v) => !keep[v]);
+      // 시행일 확인: 두 공식 경로가 같은 말을 해야(same) 기록한다 — 아니면 judgeVolume 이 수동 확인으로 둔다
+      if (todo.length && !(n.crossCheck && n.crossCheck.status === 'same')) n.crossCheck = await crossCheck(n, o2);
+      const names = {};
+      for (const v of todo) names[v] = (meta.volumes || {})[v];
+      const found = todo.length ? await X.findVolumeDocs(n, todo, o2, names) : { docs: {}, tried: [] };
+      const volumes = Object.assign({}, keep);
+      for (const v of todo) {
+        volumes[v] = R.judgeVolume({ curDir: o.curDir, store: next, notice: n, volume: v, docs: found.docs[v] || [], at: o.at, apply: o.apply, cross: n.crossCheck, map });
+      }
+      rec = { status: R.summarizeStatus(volumes), volumes };
+      if (found.tried.length) rec.tried = found.tried;
+    }
+    const same = prev && JSON.stringify(stripVolatile(prev)) === JSON.stringify(stripVolatile(rec));
+    if (!same) {
+      rec.checked = today;
+      n.analysis = rec;
+      changed = true;
+    }
+    results.push({ notice: n, status: n.analysis.status, changed: !same });
   }
   return { store: next, changed, results };
 }
@@ -333,15 +336,18 @@ function noticeIssues(added, problems, analyzed, via) {
     for (const v of Object.keys(vols)) {
       const r = vols[v];
       const vname = ((n.volumes || []).find((y) => String(y.n) === String(v)) || {}).name || ('별책 ' + v);
-      if (r.status === 'applied') {
+      if (R.VERIFIED.includes(r.status) && r.snapshot && !r.already) {
         const key = '[자동 반영 ' + n.id + ' 별책 ' + v + ']';
         const c = r.changes || { added: [], removed: [], changed: [] };
         const body = [
-          n.no + '의 ' + vname + ' 교육과정(별책 ' + v + ') 성취기준을 공식 원문과 비교해 **자동으로 반영**했어요. 모든 판정 조건을 통과했어요.',
+          n.no + '의 ' + vname + ' 교육과정(별책 ' + v + ') 성취기준을 공식 원문과 비교해 **새 판으로 기록**했어요(' + (r.status === 'scheduled' ? '시행 예정 — scheduled' : '시행 중 — active') + '). 모든 판정 조건을 통과했어요.',
+          '지금 시행 판(curriculum/standards/v' + v + '.json)은 그대로이고, 학생에게는 그 학년의 시행 학년도가 되었을 때만 적용돼요.',
           '',
+          '- 고시일 ' + n.date + ' · 발견일 ' + (n.discovered || '-') + ' · 시행: ' + (n.effective || []).map((e) => e.date + ' ' + e.grades.join(',')).join(' / '),
           '- 원문: ' + r.source.url + ' (' + r.source.file + ', sha256 ' + String(r.source.sha256).slice(0, 12) + '…)',
+          '- 새 판: curriculum/' + r.version.file + ' (sha256 ' + String(r.version.sha256).slice(0, 12) + '…), 비교한 앞 판: curriculum/' + (r.prev ? r.prev.file : '-'),
           '- 추가 ' + c.added.length + ' · 삭제 ' + c.removed.length + ' · 변경 ' + c.changed.length,
-          '- 반영 전 보관본: curriculum/' + r.snapshot + ' (되돌리기: `node scripts/curriculum-standards.js --rollback ' + r.snapshot.split('/').pop() + '`)',
+          '- 보관본: curriculum/' + r.snapshot + ' (되돌리기: `node scripts/curriculum-standards.js --rollback ' + r.snapshot.split('/').pop() + '`)',
           '',
         ].concat(c.added.slice(0, 30).map((s) => '+ ' + s.code + ' ' + s.text))
           .concat(c.removed.slice(0, 30).map((s) => '- ' + s.code + ' ' + s.text))
@@ -419,18 +425,20 @@ async function main() {
       const a = await analyzeNotices(r.store, { apply: update });
       for (const x of a.results) {
         const vols = (x.notice.analysis && x.notice.analysis.volumes) || {};
-        const line = Object.keys(vols).map((v) => '별책 ' + v + ' ' + ({ applied: '자동 반영', unchanged: '성취기준 변화 없음', manual: R.MANUAL_LABEL }[vols[v].status] || vols[v].status)).join(', ');
+        const line = Object.keys(vols).map((v) => '별책 ' + v + ' ' + ({ scheduled: '새 판 기록(시행 예정)', active: '새 판 기록(시행 중)', applied: '자동 반영', unchanged: '성취기준 변화 없음', manual: R.MANUAL_LABEL }[vols[v].status] || vols[v].status)).join(', ');
         console.log((x.changed ? '* ' : '  ') + x.notice.no + ': ' + (line || '이 사이트 교과와 관계없음'));
         for (const v of Object.keys(vols)) (vols[v].reasons || []).slice(0, 2).forEach((s) => console.log('    - ' + s));
       }
       if (update && (r.changed || a.changed)) {
         writeNotices(a.store);
-        const applied = a.results.filter((x) => x.changed && x.status === 'applied');
+        const applied = a.results.filter((x) => x.changed && !x.refreshed && R.VERIFIED.includes(x.status));
         const manual = a.results.filter((x) => x.changed && x.status === 'manual');
+        const refreshed = a.results.filter((x) => x.refreshed);
         fs.mkdirSync(path.dirname(COMMIT_MSG_FILE), { recursive: true });
         const title = r.added.length ? '교육과정 고시 자동 반영: ' + r.added.map((n) => n.no).join(', ') :
-          applied.length ? '성취기준 자동 반영: ' + applied.map((x) => x.notice.no).join(', ') :
-          manual.length ? '교육과정 변경 감지(수동 확인 필요): ' + manual.map((x) => x.notice.no).join(', ') : '교육과정 법령자료 확인 기록';
+          applied.length ? '성취기준 새 판 기록: ' + applied.map((x) => x.notice.no).join(', ') :
+          manual.length ? '교육과정 변경 감지(수동 확인 필요): ' + manual.map((x) => x.notice.no).join(', ') :
+          refreshed.length ? '교육과정 판 시행 상태 갱신(scheduled → active): ' + refreshed.map((x) => x.notice.no).join(', ') : '교육과정 법령자료 확인 기록';
         fs.writeFileSync(COMMIT_MSG_FILE, title + '\n\n' + (r.added.map((n) => '- ' + summary(n)).concat(a.results.filter((x) => x.changed).map((x) => '- ' + x.notice.no + ': ' + x.status)).join('\n') || '- 새 고시 없음(확인한 글만 기록)') + '\n');
         setOutput('changed', 'true');
       }

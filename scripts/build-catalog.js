@@ -171,19 +171,27 @@ const BAND_GRADES = { 2: ['e1', 'e2'], 4: ['e3', 'e4'], 6: ['e5', 'e6'], 9: ['m1
 function catalogChanges(ch, part, courses, codes) {
   const out = [];
   const inPart = (c) => (part.courses.includes(c.id) || (part.subjects.includes(c.subject) && !part.except.includes(c.id)));
+  // 학년: 코드 학년군과 과정 학년이 겹치는 과정에만 잇고, 이 변화가 닿는 학년(grades)을 함께 적는다(다른 학년에 붙지 않게)
+  const gradesOf = (id) => ((courses.find((c) => c.id === id) || {}).grades || []);
   const forCode = (code) => {
-    const hits = (codes && codes.byCode.get(code)) || [];
-    if (hits.length) return { courses: [...new Set(hits.map((h) => h.course))], units: [...new Set(hits.map((h) => h.unit))] };
     const p = codePrefix(code);
     const band = p ? BAND_GRADES[Number(/^\d+/.exec(p)[0])] || [] : [];
-    let cs = p && codes && codes.byPrefix.get(p) ? [...codes.byPrefix.get(p)] : [];
-    if (!cs.length) cs = courses.filter((c) => inPart(c) && c.grades.some((g) => band.includes(g))).map((c) => c.id);
-    return { courses: cs, units: [] };
+    const fits = (id) => gradesOf(id).some((g) => band.includes(g));
+    const hits = ((codes && codes.byCode.get(code)) || []).filter((h) => fits(h.course));
+    let cs;
+    let units = [];
+    if (hits.length) { cs = [...new Set(hits.map((h) => h.course))]; units = [...new Set(hits.map((h) => h.unit))]; }
+    else {
+      cs = p && codes && codes.byPrefix.get(p) ? [...codes.byPrefix.get(p)].filter(fits) : [];
+      if (!cs.length) cs = courses.filter((c) => inPart(c) && c.grades.some((g) => band.includes(g))).map((c) => c.id);
+    }
+    const grades = [...new Set([].concat(...cs.map((id) => gradesOf(id).filter((g) => band.includes(g)))))];
+    return { courses: cs, units, grades };
   };
   for (const x of ch.changed || []) out.push(Object.assign({ k: 'chg', code: x.code, from: x.from, to: x.to }, forCode(x.code)));
   for (const x of ch.added || []) out.push(Object.assign({ k: 'add', code: x.code, text: x.text }, forCode(x.code)));
   for (const x of ch.removed || []) out.push(Object.assign({ k: 'del', code: x.code, text: x.text }, forCode(x.code)));
-  return out.filter((x) => x.courses.length);
+  return out.filter((x) => x.courses.length && x.grades.length);
 }
 
 function catalogNotices(list, meta, courses, codes) {
@@ -200,11 +208,13 @@ function catalogNotices(list, meta, courses, codes) {
         part.related = [].concat(...v.newSubjects.map((s) => relatedUnits(s, part.subjects, grades, courses)))
           .filter((x, i, a) => a.indexOf(x) === i).slice(0, 3);
       }
-      // 별책 성취기준 비교 결과: applied(자동 반영) · unchanged(성취기준 문장 변화 없음) · manual(교육과정 변경 감지 - 수동 확인 필요)
+      // 별책 성취기준 비교 결과: scheduled(새 판 기록, 시행 전 학년이 남음) · active(모든 학년 시행) · unchanged(성취기준 문장 변화 없음)
+      // · manual(교육과정 변경 감지 - 수동 확인 필요). 예전 기록의 applied 는 active 로 읽는다.
+      // 학생에게 적용할지는 화면이 학년별 시행일과 학생 학년으로 정한다(js/impact.js) — 여기 상태만 보고 적용하지 않는다.
       const an = n.analysis && n.analysis.volumes && n.analysis.volumes[v.n];
-      if (an && ['applied', 'unchanged', 'manual'].includes(an.status)) {
-        part.status = an.status;
-        if (an.status === 'applied' && an.changes) part.changes = catalogChanges(an.changes, part, courses, codes);
+      if (an && ['scheduled', 'active', 'applied', 'unchanged', 'manual'].includes(an.status)) {
+        part.status = an.status === 'applied' ? 'active' : an.status;
+        if (['scheduled', 'active'].includes(part.status) && an.changes) part.changes = catalogChanges(an.changes, part, courses, codes);
       }
       parts.push(part);
     }
