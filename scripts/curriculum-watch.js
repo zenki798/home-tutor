@@ -173,7 +173,7 @@ async function collectNotices(opts) {
   }
   const merged = N.mergeNotices(store.notices, parsed, meta);
   const next = { source: store.source, checkedPosts: store.checkedPosts.concat(checked).sort(), notices: merged.notices };
-  return { store: next, changed: checked.length > 0, added: merged.added, problems, posts };
+  return { store: next, changed: checked.length > 0, checked, added: merged.added, problems, posts };
 }
 
 function writeNotices(store) {
@@ -297,7 +297,7 @@ async function main() {
   if (!args.includes('--html')) {
     try {
       const r = await collectNotices();
-      console.log(NEC.name + ': 글 ' + r.posts.length + '건, 새로 읽은 교육과정 글 ' + (r.changed ? r.store.checkedPosts.length : 0) + '건, 새 고시 ' + r.added.length + '건');
+      console.log(NEC.name + ': 글 ' + r.posts.length + '건, 새로 읽은 교육과정 글 ' + r.checked.length + '건, 새 고시 ' + r.added.length + '건');
       r.added.forEach((n) => console.log('+ ' + summary(n)));
       r.problems.forEach((p) => console.log('! 읽지 못함 #' + p.docNo + ' ' + p.title + ' — ' + p.why));
       if (args.includes('--update') && r.changed) {

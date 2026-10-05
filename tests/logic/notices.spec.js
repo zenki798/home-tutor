@@ -247,6 +247,7 @@ test('새 고시 모으기(가짜 인터넷): 오래된 글부터 첨부를 읽�
   expect(r.problems).toEqual([]);
   expect(r.changed).toBe(true);
   expect(r.store.checkedPosts).toEqual(['20240927163706792', '20260121102419070']);
+  expect(r.checked).toEqual(['20240927163706792', '20260121102419070']); // 이번에 새로 읽은 글
   expect(r.store.notices[0].url).toBe(W.NEC.view('20240927163706792'));
   expect(net.calls.some((u) => /q_fileId=a1|q_fileId=a4/.test(u))).toBe(false);   // 2015·특수교육 첨부는 받지 않는다
   expect(net.calls.some((u) => u.includes('20260518112211473'))).toBe(false);       // 교육과정이 아닌 글은 열지 않는다
@@ -254,6 +255,7 @@ test('새 고시 모으기(가짜 인터넷): 오래된 글부터 첨부를 읽�
   const net2 = fakeNet({ [W.NEC.origin + W.NEC.list]: BOARD_HTML });
   const r2 = await W.collectNotices(Object.assign({ meta: META, store: r.store }, net2));
   expect(r2.changed).toBe(false);
+  expect(r2.checked).toEqual([]);
   expect(r2.added).toEqual([]);
   expect(net2.calls).toEqual([W.NEC.origin + W.NEC.list]);                           // 목록 한 번만
 
