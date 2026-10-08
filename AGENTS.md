@@ -207,6 +207,7 @@ js/search.js              TutorSearch — 한국어 검색(질문 답변용)
 js/solver.js              TutorSolver — 계산·방정식 등 수학 질문 풀이
 js/impact.js              TutorImpact — 교육과정 변경이 학생(지금·앞으로의 학년)에게 닿는가(기기 안에서만 계산)
 js/review.js              TutorReview — 복습 일정(오답노트의 다음 복습 날: 틀리면 다음 날, 맞히면 3일 뒤 — 기기 안에서만 계산)
+js/summary.js             TutorSummary — 보호자용 학습 요약(지금 학생 한 명의 최근 7·30일 — 기기 안에서만 계산, 복사 글에 별명 없음)
 js/app.js                 화면 동작
 data/catalog.js           교육과정 지도 (학교급·학년·과목·과정·단원 목록)
 data/units/<단원id>.js     단원 내용 (개념·예제·용어·문제·심화·질문) — 단원을 열 때 불러온다

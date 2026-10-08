@@ -31,7 +31,7 @@
 `index.html` 이 싣는 순서 (모두 `defer` 없는 일반 스크립트, body 끝):
 
 ```
-js/mathlib.js → js/mathtext.js → js/figures.js → js/search.js → js/solver.js → js/storage.js → js/impact.js → js/review.js → js/core.js → data/catalog.js → js/app.js
+js/mathlib.js → js/mathtext.js → js/figures.js → js/search.js → js/solver.js → js/storage.js → js/impact.js → js/review.js → js/summary.js → js/core.js → data/catalog.js → js/app.js
 ```
 
 단원 내용(`data/units/<id>.js`)과 검색 색인(`data/index/<과목>-<학교급>.js`)은 필요할 때 `Tutor.loadScript` 로 싣는다.
@@ -405,7 +405,8 @@ Tutor.registerUnit({
 | `#/ask/<subject>` | 과목 선생님에게 질문 (대화창) |
 | `#/notes` | 오답노트 (위에 오늘 복습할 문제 수·다음 복습 날, 문제마다 다음 복습 날) |
 | `#/review` | 오늘의 복습 — 다음 복습 날이 된 오답을 한 번에 10문제까지 (§10) |
-| `#/stats` | 학습 기록 |
+| `#/stats` | 학습 기록 (아래에 "보호자용 학습 요약" 링크) |
+| `#/summary` | 보호자용 학습 요약 — 지금 학생의 최근 7일·30일, 인쇄·글로 복사 (§12) |
 | `#/settings` | 글자 크기·화면 테마·학생 관리·기록 지우기 |
 
 `<html data-state="loading|ready|error">` — 첫 화면이 다 그려지면 `ready`. 테스트가 이것을 기다린다.
@@ -537,3 +538,24 @@ TutorReview.label(due, today) → '오늘' | '내일' | '모레' | '10월 11일'
 - 저장: `p.<id>.reports`(§9.2) — 같은 단원·종류·ref 를 다시 알리면 하나로 고친다. 메모는 제어 문자를 빼고 200자, 화면에는 글자로만 넣는다. 서버·외부 요청 없음.
 - 설정의 **틀린 곳 알림**(지금 학생 것만): 목록·하나씩 지우기·모두 지우기(확인)·[글로 복사하기](클립보드, 안 되면 글을 보여 주고 직접 복사).
   복사하는 글에는 날짜·과목·단원(id)·종류·ref·이유·메모·내용 앞부분만 — **별명 같은 학생 정보는 넣지 않는다.** 백업에 함께 들어간다(`DATA_KINDS`).
+
+---
+
+## 12. 보호자용 학습 요약 (`js/summary.js` — `TutorSummary`, 2026-10-08)
+
+지금 학생 **한 명**의 기록(`attempts`·`days`·`progress`·`notes`·`reports`)만 받아 이 기기 안에서 요약한다. 다른 학생 기록은 받지도 않는다. 순수 함수.
+
+```
+TutorSummary.build(input, { today, period: 7|30, unitInfo(unitId) → { subject, subjectName, title } | null, due })
+  → { from, to, period, studyDays, solved, correct, rate, checks, checksOk,
+      daily: [{ date, n, c }] (기간의 모든 날), bySubject: [{ subject, name, n, c, rate }] (많이 푼 순),
+      units, strong(3문제 이상·80% 이상, 최대 3), weak(3문제 이상·60% 미만, 최대 3), causes(최대 3, 같으면 최근 것),
+      studied(개념을 본 단원 — progress.last 가 기간 안, 최대 5), studiedCount, notes, due, reports,
+      partial(풀이 기록 2000개가 다 차서 기간 앞부분이 빠졌을 수 있음) }
+TutorSummary.toText(summary, { grade }) → 글로 복사할 요약 (학년만 — 별명은 넣지 않는다)
+```
+
+- 푼 문제(`solved`)는 level 1 이상, 이해 확인(`checks`)은 level 0 — 날짜별 막대(`daily`)는 둘 다 센다.
+- 화면 `#/summary`(기록 화면 아래 링크): 기간 고르기(7·30일, 메모리에만 — 저장 안 함)·숫자 4칸·날짜별 막대(30일은 일주일마다 날짜)·과목별·단원·자주 틀린 까닭·
+  오답노트·복습·틀린 곳 알림·개념을 공부한 단원, [인쇄하기](`@media print` — 막대·버튼을 숨기고 맨 위에 '가정교사 · 날짜 기준')·[글로 복사하기].
+  문서 제목은 '학습 요약 · 가정교사'(별명 없음 — 인쇄 머리글에 남지 않게). PIN 이 걸린 학생은 PIN 을 맞혀야 연다(다른 화면과 같다).

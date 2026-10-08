@@ -320,6 +320,7 @@
     first: true,
     quiz: null,
     review: null,    // 지금 하는 '오늘의 복습' (§10)
+    sumPeriod: 7,    // 보호자용 학습 요약의 기간(7·30일, §12) — 저장하지 않는다
     chats: {},       // 이번에 연 대화(서식 그대로). 저장은 p.<id>.chat 에 글자만 (§9.2)
     unitUI: {},
     search: {},      // 색인 이름 → Promise<검색 색인>
@@ -789,7 +790,7 @@
       return;
     }
     S.profile = currentProfile();
-    var needsProfile = ['home', 'course', 'unit', 'quiz', 'ask', 'notes', 'stats', 'review'];
+    var needsProfile = ['home', 'course', 'unit', 'quiz', 'ask', 'notes', 'stats', 'review', 'summary'];
     if (!S.profile) {
       /* 지금 학생에게 PIN이 걸려 있으면 PIN을 맞혀야 그 학생의 화면·기록을 보여 준다 (§9.4) */
       var locked = lockedCurrent();
@@ -3811,6 +3812,9 @@
         return '<li class="tile"><span class="tile-label">' + esc(t[0]) + '</span><span class="tile-value">' + esc(t[1]) + '</span></li>';
       }).join('') + '</ul>';
     html += recentStatsHtml();
+    if (window.TutorSummary) {
+      html += '<p class="sum-link"><a class="btn" href="#/summary"><span aria-hidden="true">👪</span> 보호자용 학습 요약 (최근 7일·30일)</a></p>';
+    }
     html += '<h3 class="section-title">과정별 진도</h3>';
     html += courses.length ? '<ul class="course-stats">' + courses.map(function (c) {
       var s = subjectOf(c.subject);
@@ -3832,6 +3836,132 @@
     }).join('') + '</ul>' : '<div class="state-box"><p>최근 공부한 단원이 없어요.</p></div>';
     html += '<p class="muted small">기록은 이 기기에만 저장되고 다른 사람과 비교하지 않아요.</p>';
     return { title: '기록', tab: 'stats', back: '#/home', html: html };
+  };
+
+  /* ================= 보호자용 학습 요약 (§12, js/summary.js) =================
+   * 지금 학생 한 명의 기록으로만 만든다(다른 학생 기록은 읽지 않는다). 최근 7일(기본)·30일. 인쇄·글로 복사(별명 없이). */
+  function summaryOf(period) {
+    var list = notesList();
+    return window.TutorSummary.build({
+      attempts: attemptsList(), days: daysList(), progress: progressAll(), notes: list, reports: reportsList(),
+    }, {
+      today: todayStr(), period: period, due: reviewDue(list).length,
+      unitInfo: function (id) {
+        var m = Tutor.unitMeta(id);
+        if (!m) return null;
+        var s = subjectOf(m.course.subject);
+        return { subject: s.id, subjectName: s.name, title: E.plain(m.unit.title) };
+      },
+    });
+  }
+  function summaryBodyHtml(s) {
+    var html = '<p class="sum-range">' + esc(mdText(s.from) + ' ~ ' + mdText(s.to)) + ' <span class="muted">(최근 ' + s.period + '일)</span></p>';
+    html += '<ul class="stat-tiles sum-tiles">' + [
+      ['공부한 날', s.studyDays + '일'], ['푼 문제', s.solved + '개'], ['정답률', s.rate === null ? '–' : s.rate + '%'], ['이해 확인', s.checks + '개'],
+    ].map(function (t) {
+      return '<li class="tile"><span class="tile-label">' + esc(t[0]) + '</span><span class="tile-value">' + esc(t[1]) + '</span></li>';
+    }).join('') + '</ul>';
+    if (!s.solved && !s.checks) {
+      html += '<div class="state-box"><p>이 기간에 푼 문제가 없어요.</p><p class="muted">문제를 풀면 날짜별·과목별로 여기에 모여요.</p></div>';
+    } else {
+      var max = Math.max.apply(null, s.daily.map(function (d) { return d.n; }).concat([1]));
+      var last = s.daily.length - 1;
+      html += '<section class="sum-sec card" aria-labelledby="sumDaysT"><h3 id="sumDaysT">날짜별 푼 문제</h3>' +
+        '<ol class="sum-days' + (s.period > 7 ? ' is-long' : '') + '">' + s.daily.map(function (d, i) {
+          var label = mdText(d.date) + ' ' + d.n + '문제' + (d.n ? ' (' + d.c + '문제 맞힘)' : '');
+          var show = s.period <= 7 || (last - i) % 7 === 0; // 30일은 오늘부터 일주일마다 날짜
+          return '<li aria-label="' + esc(label) + '"><span class="sd-n" aria-hidden="true">' + (d.n || '') + '</span>' +
+            '<span class="sd-bar" aria-hidden="true"><span class="sd-fill" style="height:' + Math.round((100 * d.n) / max) + '%"></span></span>' +
+            '<span class="sd-d" aria-hidden="true">' + (show ? Number(d.date.slice(5, 7)) + '/' + Number(d.date.slice(8, 10)) : '') + '</span></li>';
+        }).join('') + '</ol></section>';
+      if (s.bySubject.length) {
+        html += '<section class="sum-sec card" aria-labelledby="sumSubjT"><h3 id="sumSubjT">과목별</h3><ul class="sum-subjects">' + s.bySubject.map(function (x) {
+          var sj = subjectOf(x.subject);
+          return '<li class="' + subjClass(x.subject) + '"><span class="ss-name"><span aria-hidden="true">' + esc(sj.icon || '') + '</span> ' + esc(x.name) + '</span>' +
+            progressBar(x.rate || 0, '') + '<span class="ss-num">' + x.n + '문제 · 정답률 ' + x.rate + '%</span></li>';
+        }).join('') + '</ul></section>';
+      }
+      var unitLi = function (u) {
+        return '<li><a href="#/unit/' + encodeURIComponent(u.unit) + '/learn">' + esc(u.title) + '</a> <span class="muted small">' + u.n + '문제 · 정답률 ' + u.rate + '%</span></li>';
+      };
+      if (s.strong.length || s.weak.length) {
+        html += '<section class="sum-sec card" aria-labelledby="sumUnitT"><h3 id="sumUnitT">단원</h3>' +
+          (s.strong.length ? '<h4>잘한 단원</h4><ul class="sum-strong">' + s.strong.map(unitLi).join('') + '</ul>' : '') +
+          (s.weak.length ? '<h4>더 연습하면 좋은 단원</h4><ul class="sum-weak">' + s.weak.map(unitLi).join('') + '</ul>' : '') +
+          '<p class="muted small">이 기간에 ' + window.TutorSummary.MIN_UNIT + '문제 이상 푼 단원만 견주었어요.</p></section>';
+      }
+      if (s.causes.length) {
+        html += '<section class="sum-sec card" aria-labelledby="sumCauseT"><h3 id="sumCauseT">자주 틀린 까닭</h3><ol class="sum-causes cause-list">' +
+          s.causes.map(function (c) { return '<li><span class="cause-text">' + esc(c.text) + '</span> <span class="badge">' + c.n + '번</span></li>'; }).join('') +
+          '</ol></section>';
+      }
+    }
+    html += '<section class="sum-sec card sum-review" aria-labelledby="sumRevT"><h3 id="sumRevT">오답노트 · 복습</h3>' +
+      '<p>오답노트 ' + s.notes + '문제 · 오늘 복습할 문제 ' + s.due + '개 · 틀린 곳 알림 ' + s.reports + '건</p>' +
+      '<p class="muted small">틀린 문제는 다음 날, 맞힌 문제는 3일 뒤에 ‘오늘의 복습’으로 다시 나와요.</p></section>';
+    if (s.studied.length) {
+      html += '<section class="sum-sec card" aria-labelledby="sumStudT"><h3 id="sumStudT">개념을 공부한 단원</h3><ul class="sum-studied">' + s.studied.map(function (u) {
+        return '<li><a href="#/unit/' + encodeURIComponent(u.unit) + '/learn">' + esc(u.title) + '</a> <span class="muted small">개념 ' + (u.cards ? u.seen + '/' + u.cards : u.seen) + '장</span></li>';
+      }).join('') + '</ul>' + (s.studiedCount > s.studied.length ? '<p class="muted small">그 밖에 ' + (s.studiedCount - s.studied.length) + '단원</p>' : '') + '</section>';
+    }
+    if (s.partial) html += '<p class="notice small">풀이 기록이 많아서 기간 앞부분은 빠졌을 수 있어요.</p>';
+    return html;
+  }
+
+  VIEWS.summary = function () {
+    var p = S.profile;
+    if (!window.TutorSummary) {
+      return { title: '학습 요약', tab: 'stats', back: '#/stats', html: '<div class="state-box"><p>요약 기능 파일(js/summary.js)을 불러오지 못했어요.</p></div>' };
+    }
+    var period = S.sumPeriod === 30 ? 30 : 7;
+    return {
+      title: '학습 요약', tab: 'stats', back: '#/stats', cls: 'summary-page',
+      html: '<p class="sum-print-head">가정교사 · ' + esc(koDate(todayIso(), true)) + ' 기준</p>' +
+        '<h2 class="page-title" tabindex="-1">보호자용 학습 요약</h2>' +
+        '<p class="sum-who"><span class="p-avatar" aria-hidden="true">' + esc(avatarChar(p)) + '</span><strong>' + esc(p.name || '이름 없는 학생') + '</strong>' +
+        '<span class="p-meta">' + esc(gradeLabel(p.grade)) + '</span></p>' +
+        '<fieldset class="seg sum-period"><legend class="sr-only">기간</legend><div class="seg-row">' +
+        [[7, '최근 7일'], [30, '최근 30일']].map(function (o) {
+          return '<label class="seg-opt"><input type="radio" name="sumPeriod" value="' + o[0] + '"' + (o[0] === period ? ' checked' : '') + '><span>' + o[1] + '</span></label>';
+        }).join('') + '</div></fieldset>' +
+        '<div class="sum-body">' + summaryBodyHtml(summaryOf(period)) + '</div>' +
+        '<div class="action-row sum-actions"><button type="button" class="btn" data-act="sum-print">인쇄하기</button>' +
+        '<button type="button" class="btn" data-act="sum-copy">글로 복사하기</button></div>' +
+        '<textarea class="text-input sum-text" readonly rows="8" aria-label="복사할 요약" hidden></textarea>' +
+        '<p class="done-msg sum-done" role="status"></p>' +
+        '<p class="muted small sum-note">이 기기에 저장된 이 학생의 기록으로만 만들었어요. 어디로도 보내지 않아요. 복사하는 글에는 별명을 넣지 않아요.</p>',
+      mount: function (page) {
+        page.addEventListener('change', function (e) {
+          if (e.target.name !== 'sumPeriod') return;
+          S.sumPeriod = e.target.value === '30' ? 30 : 7;
+          $('.sum-body', page).innerHTML = summaryBodyHtml(summaryOf(S.sumPeriod));
+          var ta = $('.sum-text', page);
+          ta.hidden = true;
+          ta.value = '';
+          $('.sum-done', page).textContent = '';
+          announce('최근 ' + S.sumPeriod + '일 요약으로 바꿨어요.');
+        });
+        page.addEventListener('click', function (e) {
+          var b = e.target.closest('[data-act]');
+          if (!b) return;
+          var act = b.getAttribute('data-act');
+          if (act === 'sum-print') {
+            try { window.print(); } catch (err) { warn('인쇄 창을 열지 못했습니다', err); }
+          } else if (act === 'sum-copy') {
+            var text = window.TutorSummary.toText(summaryOf(S.sumPeriod === 30 ? 30 : 7), { grade: gradeLabel(S.profile.grade) });
+            var ta = $('.sum-text', page);
+            var dm = $('.sum-done', page);
+            ta.value = text;
+            ta.hidden = false;
+            copyText(text).then(function (ok) {
+              dm.textContent = ok ? '복사했어요. 메일이나 메시지에 붙여 넣을 수 있어요.' : '자동으로 복사하지 못했어요. 아래 글을 직접 복사해 주세요.';
+              announce(dm.textContent);
+              if (!ok) { ta.focus(); ta.select(); }
+            });
+          }
+        });
+      },
+    };
   };
 
   /* ================= 설정 ================= */
