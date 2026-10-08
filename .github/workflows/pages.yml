@@ -43,8 +43,9 @@ jobs:
       - name: 의존성 설치
         run: npm ci
 
+      # chromium(데스크톱·안드로이드 화면) + webkit(아이폰·아이패드 사파리와 같은 엔진, 2026-10-08)
       - name: 브라우저 설치
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       # 학습 내용 검사(정답·형식·문제 생성기)부터 — 실패하면 어디가 틀렸는지 바로 보이게
       - name: 학습 내용 검사

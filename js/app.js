@@ -4156,10 +4156,15 @@
 
   /* ================= 설정 ================= */
 
+  /* 사파리(WebKit)는 단추를 눌러도 그 단추로 초점을 옮기지 않는다(본문 영역 #main 으로 간다) —
+   * 확인 창을 닫은 뒤 초점을 돌려줄 곳으로, 방금(1초 안에) 누른 단추·링크를 먼저 쓴다(init 이 기억한다) */
+  var lastPressed = null;
+  var lastPressedAt = 0;
   function confirmBox(opt) {
     return new Promise(function (resolve) {
       var host = doc.getElementById('modal-root');
-      var prev = doc.activeElement;
+      var fresh = lastPressed && Date.now() - lastPressedAt < 1000 && doc.body.contains(lastPressed);
+      var prev = fresh ? lastPressed : doc.activeElement;
       var id = nextId('dlg');
       host.innerHTML = '<div class="modal-backdrop"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="' + id + '-t" aria-describedby="' + id + '-d">' +
         '<h2 class="modal-title" id="' + id + '-t">' + esc(opt.title) + '</h2><p id="' + id + '-d">' + esc(opt.body) + '</p>' +
@@ -4964,6 +4969,11 @@
     });
     window.addEventListener('hashchange', render);
     initInstall();
+    /* 마지막에 누른 단추·링크(사파리는 눌러도 초점이 옮겨지지 않는다 — confirmBox 가 닫힌 뒤 초점을 돌려줄 곳) */
+    doc.addEventListener('click', function (e) {
+      var t = e.target && e.target.closest ? e.target.closest('button, a[href], input, select, textarea') : null;
+      if (t) { lastPressed = t; lastPressedAt = Date.now(); }
+    }, true);
     /* 읽어 주기(§13): 이 기기 안의 목소리를 찾고, 어느 화면의 🔊 버튼이든 여기서 받는다 */
     initSpeech();
     doc.addEventListener('click', function (e) {

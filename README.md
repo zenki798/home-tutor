@@ -117,7 +117,7 @@ tests/                         Playwright 테스트
 # 그냥 index.html 을 열어도 됩니다 (서버 불필요)
 
 npm install
-npx playwright install chromium
+npx playwright install chromium webkit   # webkit = 아이폰·아이패드 사파리와 같은 엔진 시험
 node scripts/validate-content.js   # 학습 내용 검사 (정답·형식·문제 생성기)
 npx playwright test                # 전체 테스트
 ```

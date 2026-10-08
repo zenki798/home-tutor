@@ -18,7 +18,7 @@
 | F3 | 보호자 학습 요약 — 지금 학생만, 7일·30일, 날짜별·과목별·단원별·자주 틀린 원인·복습·알림, 인쇄·글로 복사 — js/summary.js, `#/summary`, 시험 logic 5·UI 6(×2) | ✅ 전체 848 passed(6.1m) | (이 커밋) |
 | F4 | 읽어 주기 — 기기 안 목소리(localService)만, 개념·예제·문제·해설, 초등 1~3학년은 기본 켬(학생별 설정 prefs) — js/speech.js(수식을 한국어로), 시험 logic 5·UI 8(×2) | ✅ 전체 869 passed(4.1m) | (이 커밋) |
 | F5 | 새 학년 안내 — 3월 1일이 지나면 "새 학년이 되었나요?"(학년 올리기·그대로 두기, 학년도마다 한 번) — profiles 의 gradeAt·gradeAsk, 시험 UI 8(×2)·백업 1 | ✅ 전체 886 passed(5.7m) | (이 커밋) |
-| F6 | 아이폰(WebKit) 화면 시험 — Playwright webkit 프로젝트, CI 에도 webkit 설치 | 예정 | |
+| F6 | 아이폰(WebKit) 화면 시험 — Playwright `iphone` 프로젝트(iPhone 13, 화면 시험 162개 — 크롬 전용 3·file:// 3 제외), CI 3곳에 webkit 설치. 사파리에서 확인 창을 닫으면 초점이 누른 단추로 돌아오지 않던 것 고침 | ✅ 전체 1048 passed(12.7m) | (이 커밋) |
 
 ## 지난 일 (2026-10-05 까지)
 
