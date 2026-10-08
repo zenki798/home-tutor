@@ -574,6 +574,26 @@ test.describe('checkAnswer', () => {
     expect(mark({ type: 'short', check: 'number', unit: 'cm', answer: '12' }, 'cm')).toBe('F');
   });
 
+  test("short 'number': 답을 문장처럼 써도(답은 … 입니다 · 약 … · …쯤 · …요) 수만 보고 채점", () => {
+    const man = { type: 'short', check: 'number', unit: '만 원', answer: '80' };
+    expect(['답은 80만 원입니다.', '약 80만 원', '80만 원 정도요', '정답: 80', '80만원쯤', '80이요', '대략 80만 원이에요', '답 80'].map((s) => mark(man, s)))
+      .toEqual(Array(8).fill('T'));
+    expect(['답은 81만 원입니다', '약 8만 원', '80원입니다'].map((s) => mark(man, s))).toEqual(['F', 'F', 'F']);
+    expect(mark({ type: 'short', check: 'number', unit: 'cm', answer: '12' }, '12 cm예요')).toBe('T');
+  });
+
+  test('readable: 학생 답을 그 문제의 채점 방식(수·모음·식)으로 읽을 수 있는가 — 화면이 "다시 써 주세요" 안내에 쓴다', () => {
+    const num = { type: 'short', check: 'number', unit: 'cm', answer: '12' };
+    expect(['12', '12 cm', '1 2/3', '답은 13 cm입니다', '', '   '].map((s) => M.readable(num, s))).toEqual([true, true, true, true, true, true]);
+    expect(['12 m', '2와 3 사이', '모르겠어요', '12cm가 넘어요'].map((s) => M.readable(num, s))).toEqual([false, false, false, false]);
+    const set = { type: 'short', check: 'set', answer: ['1', '2', '3'] };
+    expect([M.readable(set, '1, 2, 3'), M.readable(set, '3 2'), M.readable(set, '1, 2, 셋')]).toEqual([true, true, false]);
+    const ex = { type: 'short', check: 'expr', answer: '2x+1' };
+    expect([M.readable(ex, '2x+1'), M.readable(ex, 'y=3x-1'), M.readable(ex, '2x+'), M.readable(ex, '((x+1)')]).toEqual([true, true, false, false]);
+    // 글 답·보기 문제는 늘 읽을 수 있다(채점이 판단)
+    expect([M.readable({ type: 'short', answer: '사과' }, '바나나 12'), M.readable({ type: 'choice', answer: 1 }, 3)]).toEqual([true, true]);
+  });
+
   test("short 'number': 문제 글에 ±가 있으면 앞에 붙여 쓴 ±는 떼고 본다 — 없으면 답이 둘이라 틀림", () => {
     const moe = { type: 'short', check: 'number', unit: '%p', answer: '4.9', q: '오차 범위는 ±몇 %p일까요?' };
     expect(['±4.9', '± 4.9%p', '+-4.9', '4.9'].map((s) => mark(moe, s))).toEqual(Array(4).fill('T'));
@@ -611,6 +631,18 @@ test.describe('checkAnswer', () => {
     expect(mark({ type: 'short', check: 'set', answer: ['1+√2', '1-√2'] }, 'x = 1 + √2, x = 1 - √2')).toBe('T');
     expect(mark({ type: 'short', check: 'set', answer: ['-3', '0.5'] }, '1/2, -3')).toBe('T');
     expect(mark({ type: 'short', check: 'set', answer: [2, 3] }, '3 2')).toBe('T');
+  });
+
+  test("short 'set': 문제에 단위가 있으면 원소마다 붙여 쓴 단위를 뗀다(3 N, 11 N · 38.9%, 45.1%) — 다른 단위는 틀림", () => {
+    const f = { type: 'short', check: 'set', unit: 'N', answer: ['3', '11'] };
+    expect(['3 N, 11 N', '3N과 11N', '11 N, 3 N', '3, 11', '3 N 또는 11 N'].map((s) => mark(f, s))).toEqual(Array(5).fill('T'));
+    expect(['3 nm, 11 nm', '3 N', '3 N, 12 N'].map((s) => mark(f, s))).toEqual(['F', 'F', 'F']);
+    const pct = { type: 'short', check: 'set', unit: '%', answer: ['38.9', '45.1'] };
+    expect(['38.9%, 45.1%', '38.9 %, 45.1 %', '38.9퍼센트, 45.1퍼센트', '45.1, 38.9'].map((s) => mark(pct, s))).toEqual(Array(4).fill('T'));
+    expect(mark(pct, '38.9%p, 45.1%p')).toBe('F'); // %p 는 % 가 아니다
+    expect(mark({ type: 'short', check: 'set', unit: 'cm', answer: ['2', '-2'] }, '±2 cm')).toBe('T');
+    // 단위가 없는 모음 문제는 예전 그대로('2 or 3' 의 o 를 단위로 보지 않는다)
+    expect(mark({ type: 'short', check: 'set', unit: '°', answer: ['2', '3'] }, '2 or 3')).toBe('T');
   });
 
   test('절대 throw 하지 않는다 (이상한 문제·입력은 correct:false)', () => {

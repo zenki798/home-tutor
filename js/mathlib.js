@@ -1085,20 +1085,30 @@
     return s;
   }
 
-  // 'number' 채점용: 단위·끝 문장부호·'x=' 를 뗀다
+  // 답을 문장처럼 쓴 꼴(2026-10-09): 끝 '쯤·정도'·'입니다·이에요·예요·이요·요', 앞 '답은·정답:·답'·'약·대략' — 떼고 수만 본다
+  var ANS_TAIL_RE = /\s*(?:쯤|정도)?\s*(?:입니다|이에요|예요|이요|요)?$/;
+  var ANS_LEAD_RE = /^(?:(?:정답|답)\s*(?:은|는|:|=)?\s*)?(?:약|대략)?\s*/;
+
+  // 'number' 채점용: 끝 문장부호·말끝·단위·앞말·'x=' 를 뗀다
   function cleanNumberInput(x, unit) {
     var s = trim(prenorm(show(x))).replace(END_PUNCT_RE, '');
-    s = stripUnit(trim(s), unit);
+    s = trim(trim(s).replace(ANS_TAIL_RE, ''));
+    s = stripUnit(s, unit);
+    s = trim(s.replace(ANS_LEAD_RE, ''));
     return trim(s.replace(/^[a-z]\s*=\s*/i, ''));
   }
 
   var PM_LEAD_RE = /^(±|\+\s*\/?\s*-)\s*/;   // ± +- +/-
 
-  function checkNumber(problem, input) {
+  // 학생이 쓴 수 답을 읽을 글로: 위 정리 + 문제 글이 '±'를 이미 보이면('오차 범위는 ±몇 %p') 앞에 붙여 쓴 ±는 뗀다 — 그 밖에는 답이 둘이라 틀린 답
+  function numberInput(problem, input) {
     var s = cleanNumberInput(input, problem.unit);
-    // 문제 글이 '±'를 이미 보이면('오차 범위는 ±몇 %p') 앞에 붙여 쓴 ±는 뗀다 — 그 밖에는 답이 둘이라 틀린 답
     if (PM_LEAD_RE.test(s) && typeof problem.q === 'string' && problem.q.indexOf('±') >= 0) s = s.replace(PM_LEAD_RE, '');
-    var v = parseNumberAnswer(s);
+    return s;
+  }
+
+  function checkNumber(problem, input) {
+    var v = parseNumberAnswer(numberInput(problem, input));
     if (!v) return false;
     var answers = toList(problem.answer);
     for (var i = 0; i < answers.length; i++) {
@@ -1187,12 +1197,26 @@
     return false;
   }
 
+  function reEsc(s) { return s.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&'); }
+
+  // 모음 답에서 수 바로 뒤에 붙여 쓴 단위를 뗀다('3 N, 11 N' → '3, 11') — 단위 글자 사이 공백은 있어도 없어도,
+  // 단위 뒤에 글자·숫자가 이어지면 다른 단위라 그대로 둔다('3 nm' 의 n, '2 or 3' 의 o)
+  function stripSetUnits(x, unit) {
+    if (unit === undefined || unit === null || unit === '' || typeof x !== 'string') return x;
+    var s = prenorm(x).toLowerCase(), vs = unitVariants(unit);
+    for (var i = 0; i < vs.length; i++) {
+      var pat = Array.from(vs[i]).map(reEsc).join('\\s*');
+      s = s.replace(new RegExp('(\\d)\\s*' + pat + '(?![a-z0-9^])', 'g'), '$1');
+    }
+    return s;
+  }
+
   function checkSet(problem, input) {
-    var mine = parseSetList(show(input));
+    var mine = parseSetList(stripSetUnits(show(input), problem.unit));
     if (!mine) return false;
     var want = [], answers = toList(problem.answer);
     for (var i = 0; i < answers.length; i++) {
-      var part = parseSetList(answers[i]);
+      var part = parseSetList(stripSetUnits(answers[i], problem.unit));
       if (!part) return false;
       want = want.concat(part);
     }
@@ -1266,6 +1290,24 @@
       case 'expr': return checkExpr(problem, input);
       case 'set': return checkSet(problem, input);
       default: return checkText(problem, input);
+    }
+  }
+
+  // 학생 답을 그 문제의 채점 방식(수·모음·식)으로 읽을 수 있는가 — 값이 맞는지는 따지지 않는다. 화면이 채점 전에
+  // '수로 읽지 못했어요 — 다시 써 주세요' 안내에 쓴다(2026-10-09). 글 답·보기 문제·빈 답·판단할 수 없을 때는 true(막지 않는다)
+  function readable(problem, input) {
+    try {
+      if (!problem || typeof problem !== 'object' || problem.type !== 'short' || isEmptyInput(input) || Array.isArray(input)) return true;
+      var kind = problem.check || 'text', s = show(input);
+      if (kind !== 'number' && kind !== 'set' && kind !== 'expr') return true;
+      var ok = false;
+      try { ok = checkShortOne(problem, kind, s); } catch (e3) { ok = false; }   // 정답이면 읽을 수 있다(식으로 못 읽어도 글자가 같은 정답)
+      if (ok) return true;
+      if (kind === 'number') return !!parseNumberAnswer(numberInput(problem, s));
+      if (kind === 'set') { try { return !!parseSetList(stripSetUnits(s, problem.unit)); } catch (e2) { return false; } }
+      try { parseExpr(cleanExprText(s)); return true; } catch (e1) { return false; }
+    } catch (e) {
+      return true;
     }
   }
 
@@ -1363,6 +1405,7 @@
     normText: normText,
     parseNumberAnswer: parseNumberAnswer,
     checkAnswer: checkAnswer,
+    readable: readable,       // (problem, input) → 그 채점 방식으로 읽을 수 있는가(값은 따지지 않음)
     answerText: answerText,
     // 조사 고르기 (ARCHITECTURE §2.3)
     josa: josa

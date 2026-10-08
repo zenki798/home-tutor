@@ -235,6 +235,14 @@
       }
       return fallbackCheck(p, input);
     },
+    /* 그 문제의 채점 방식(수·모음·식)으로 읽을 수 있는 답인가 — 엔진이 없거나 판단할 수 없으면 true(막지 않는다) */
+    readable: function (p, input) {
+      var TM = engine('TutorMath');
+      if (TM && typeof TM.readable === 'function') {
+        try { return TM.readable(p, input) !== false; } catch (e) { report(e); }
+      }
+      return true;
+    },
     answerText: function (p) {
       var TM = engine('TutorMath');
       if (TM && typeof TM.answerText === 'function') {
@@ -571,6 +579,16 @@
     if (!why) return '';
     var t = E.plain(why).replace(/\s+/g, ' ').trim();
     return t.length > 200 ? t.slice(0, 199) + '…' : t;
+  }
+  /* 불러온 단원의 k번째 개념 카드 이름(서식 없이) — 아직 안 불러왔거나 없으면 '' */
+  function conceptTitleOf(unitId, k) {
+    var u = Object.prototype.hasOwnProperty.call(Tutor.units, unitId) ? Tutor.units[unitId] : null;
+    var c = u && Array.isArray(u.concepts) ? u.concepts[k] : null;
+    return c && c.title ? E.plain(c.title) : '';
+  }
+  /* 홈의 "이어서 공부하기": '개념 3/4 · ‘일차부등식 풀기’부터' (이름을 모르면 '개념 3/4부터') */
+  function nextCardText(k, n, title) {
+    return '개념 ' + (k + 1) + '/' + n + (title ? ' · ‘' + title + '’' : '') + '부터';
   }
   function subjectOfUnit(unitId) {
     var meta = Tutor.unitMeta(unitId);
@@ -1471,7 +1489,7 @@
       /* 어디부터 이어지는지(§17): 안 본 첫 개념 카드 — 다 봤으면 문제 풀기로 */
       var rp = unitProg(progressAll(), rec);
       var where = '#/unit/' + encodeURIComponent(rec) + '/learn';
-      var nextText = '';
+      var nextText = '', fillAttr = '';
       if (rp.cards) {
         var nk = 0;
         while (nk < rp.cards && rp.seen.indexOf(nk) >= 0) nk++;
@@ -1479,13 +1497,16 @@
           nextText = '개념 카드 다 봄 · 문제 풀기';
           where = '#/unit/' + encodeURIComponent(rec) + '/practice';
         } else if (nk > 0) {
-          nextText = '개념 ' + (nk + 1) + '/' + rp.cards + '부터';
+          /* 다음 카드 이름: 단원 파일이 이미 있으면 바로, 없으면 화면을 그린 뒤 불러와 채운다(못 불러오면 번호만) */
+          var nt = conceptTitleOf(rec, nk);
+          nextText = nextCardText(nk, rp.cards, nt);
+          if (!nt) fillAttr = ' data-fill="' + esc(rec) + '" data-card="' + nk + '" data-of="' + rp.cards + '"';
         }
       }
       html += '<a class="continue-card ' + subjClass(rs.id) + '" href="' + where + '">' +
         '<span class="cc-icon" aria-hidden="true">▶</span><span class="cc-text"><span class="cc-label">이어서 공부하기</span>' +
         '<span class="cc-unit">' + esc(E.plain(meta.unit.title)) + '</span><span class="cc-course">' + esc(rs.icon || '') + ' ' + esc(meta.course.title) + '</span>' +
-        (nextText ? '<span class="cc-next">' + esc(nextText) + '</span>' : '') + '</span></a>';
+        (nextText ? '<span class="cc-next"' + fillAttr + '>' + esc(nextText) + '</span>' : '') + '</span></a>';
     }
 
     /* 풀다 만 예상문제(§15) */
@@ -1524,6 +1545,15 @@
     return {
       title: '가정교사', tab: 'home', back: all ? '#/home' : null, html: html,
       mount: function (page) {
+        /* 이어서 공부하기의 다음 카드 이름(§17) — 단원 파일을 불러와 채운다. 못 불러오면 번호만 둔다 */
+        var fill = $('.cc-next[data-fill]', page);
+        if (fill) {
+          var fid = fill.getAttribute('data-fill'), fk = Number(fill.getAttribute('data-card')), fof = Number(fill.getAttribute('data-of'));
+          Tutor.loadUnit(fid).then(function () {
+            var t = conceptTitleOf(fid, fk);
+            if (t && fill.isConnected) fill.textContent = nextCardText(fk, fof, t);
+          }, function () { /* 번호만 */ });
+        }
         /* 새 학년 안내 (§14) */
         page.addEventListener('click', function (e) {
           var b = e.target.closest('[data-act="grade-up"], [data-act="grade-keep"]');
@@ -2617,6 +2647,20 @@
     expr: '식은 2x+1 처럼 써요. 거듭제곱은 x^2 처럼 써요.',
   };
 
+  /* 수·모음 답은 수가 있을 때, 식 답은 한글 없이 수·영문자가 있을 때만 "값을 쓰려던 답"으로 본다 — 그때만 읽지 못하면 다시 써 달라고 한다 */
+  function meantAsValue(p, val) {
+    var s = String(val === null || val === undefined ? '' : val);
+    if (p.check === 'number' || p.check === 'set') return /\d/.test(s);
+    if (p.check === 'expr') return /[0-9A-Za-z]/.test(s) && !/[가-힣]/.test(s);
+    return false;
+  }
+  function unreadableText(p) {
+    if (p.check === 'set') return '답을 읽지 못했어요. 수를 쉼표(,)로 나눠 써 주세요. 예: 2, 3';
+    if (p.check === 'expr') return '식을 읽지 못했어요. 괄호 짝과 기호를 확인해 주세요. 예: 2x+1, x^2';
+    return '답을 수로 읽지 못했어요. 수만 써 주세요(분수는 3/4, 대분수는 1 2/3).' +
+      (p.unit ? ' 단위를 쓴다면 ‘' + E.plain(String(p.unit)) + '’처럼 써 주세요.' : '');
+  }
+
   function givenText(p, input) {
     if (p.type === 'choice') return E.plain((p.choices || [])[input]);
     if (p.type === 'ox') return input ? 'O' : 'X';
@@ -2796,6 +2840,13 @@
       var res = E.check(p, val);
       if (res.empty) {
         showMsg(type === 'short' ? '답을 입력해 주세요.' : type === 'order' ? '항목을 눌러 순서를 정해 주세요.' : '답을 골라 주세요.');
+        if (input) input.focus();
+        return;
+      }
+      /* 수·식 답인데 읽을 수 없으면('2와 3 사이'·'12 m') 채점하지 않고 다시 써 달라고 한다 — 맞는 수를 쓰고도 오답으로 남지 않게.
+         수가 하나도 없는 답('모르겠어요')은 그대로 채점한다(막히지 않게) */
+      if (type === 'short' && !res.correct && meantAsValue(p, val) && !E.readable(p, val)) {
+        showMsg(unreadableText(p));
         if (input) input.focus();
         return;
       }

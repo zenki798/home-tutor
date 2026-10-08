@@ -62,13 +62,20 @@ test('주소로 카드를 고르면(개념 카드에서 보기 ›) 이어 보�
   await expect(page.locator('#cvResume')).toHaveCount(0);
 });
 
-test('홈의 "이어서 공부하기"가 어디부터인지 알린다: 안 본 첫 카드부터 · 다 봤으면 문제 풀기로', async ({ page }) => {
+test('홈의 "이어서 공부하기"가 어디부터인지 알린다: 안 본 첫 카드(이름까지)부터 · 다 봤으면 문제 풀기로', async ({ page }) => {
   const recent = { ['tutor.p.' + STUDENT.id + '.recent']: ['math-m2-01'] };
-  await open(page, { student: true, storage: Object.assign({}, prog([0, 1]), recent), url: '/#/home' });
+  const calls = await open(page, { student: true, storage: Object.assign({}, prog([0, 1]), recent), url: '/#/home' });
   const card = page.locator('.continue-card').first();
   await expect(card).toContainText('일차부등식');
-  await expect(card.locator('.cc-next')).toHaveText('개념 3/4부터');
+  // 단원 파일을 아직 안 불러왔으면 불러와 다음 카드 이름을 채운다
+  await expect(card.locator('.cc-next')).toHaveText('개념 3/4 · ‘일차부등식 풀기’부터');
+  expect(calls.units).toEqual(['math-m2-01']);
   await expect(card).toHaveAttribute('href', '#/unit/math-m2-01/learn');
+  // 이미 불러온 단원이면 처음부터 이름까지(다시 부르지 않는다)
+  await goHash(page, '#/stats');
+  await goHash(page, '#/home');
+  await expect(page.locator('.continue-card').first().locator('.cc-next')).toHaveText('개념 3/4 · ‘일차부등식 풀기’부터');
+  expect(calls.units).toEqual(['math-m2-01']);
   // 다 본 단원
   await page.evaluate(([k]) => { Tutor.store.set(k, { 'math-m2-01': { seen: [0, 1, 2, 3], cards: 4, solved: 0, correct: 0, best: 0, last: 1 } }); },
     ['p.' + STUDENT.id + '.progress']);
@@ -76,6 +83,18 @@ test('홈의 "이어서 공부하기"가 어디부터인지 알린다: 안 본 �
   await page.evaluate(() => { location.hash = '#/home'; });
   await expect(page.locator('.continue-card').first().locator('.cc-next')).toHaveText('개념 카드 다 봄 · 문제 풀기');
   await expect(page.locator('.continue-card').first()).toHaveAttribute('href', '#/unit/math-m2-01/practice');
+});
+
+test('홈의 다음 카드 이름: 단원 파일을 불러오지 못하면 번호만 그대로(오류 없이)', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  const recent = { ['tutor.p.' + STUDENT.id + '.recent']: ['math-m2-01'] };
+  const calls = await open(page, { student: true, storage: Object.assign({}, prog([0, 1]), recent), url: '/#/home', failUnits: ['math-m2-01'] });
+  await expect.poll(() => calls.units.length).toBe(1);
+  const next = page.locator('.continue-card').first().locator('.cc-next');
+  await expect(next).toHaveText('개념 3/4부터');
+  await expect(page.locator('html')).toHaveAttribute('data-state', 'ready');
+  expect(errors).toEqual([]);
 });
 
 test('아직 개념 카드를 한 장도 보지 않은 단원은 "어디부터"를 따로 쓰지 않는다', async ({ page }) => {

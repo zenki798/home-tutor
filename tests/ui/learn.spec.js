@@ -123,6 +123,32 @@ test('이해 확인: 카드를 읽고 바로 푼다 — 틀리면 이유·해설
   expect(errors).toEqual([]);
 });
 
+test('수 답을 읽지 못하면 채점하지 않고 다시 써 달라고 한다 · 문장처럼 쓴 답은 읽는다 · 수가 없는 답은 그대로 채점', async ({ page }) => {
+  await open(page, { student: true, url: '/#/unit/math-m2-01/learn?card=2' });
+  const box = page.locator('.concept-card:visible .check-box');
+  const input = box.locator('.short-input');
+  // 수는 있는데 수로 읽을 수 없는 답 → 채점하지 않는다(진도·오답 기록 없음)
+  await input.fill('2와 3 사이');
+  await input.press('Enter');
+  await expect(box.locator('.pw-msg')).toBeVisible();
+  await expect(box.locator('.pw-msg')).toContainText('수로 읽지 못했어요');
+  await expect(box.locator('.feedback')).toBeHidden();
+  await expect(input).toBeFocused();
+  await expect(input).toBeEnabled();
+  expect((((await readStore(page, 'p.p-test-a.progress')) || {})['math-m2-01'] || {}).checked || []).toEqual([]);
+  expect((await readStore(page, 'p.p-test-a.attempts')) || []).toEqual([]);
+  // 수가 하나도 없는 답("모르겠어요")은 다시 쓰라고 하지 않고 그대로 채점한다(막히지 않게) — 안내는 사라진다
+  await input.fill('모르겠어요');
+  await input.press('Enter');
+  await expect(box.locator('.feedback')).toHaveClass(/is-bad/);
+  await expect(box.locator('.pw-msg')).toBeHidden();
+  // 문장처럼 쓴 답은 수만 보고 채점
+  await box.getByRole('button', { name: '한 번 더 풀기' }).click();
+  await box.locator('.short-input').fill('답은 2입니다');
+  await box.locator('.short-input').press('Enter');
+  await expect(box.locator('.feedback')).toHaveClass(/is-ok/);
+});
+
 test('기초 다지기 학생은 쉬운 설명을 먼저 본다', async ({ page }) => {
   const easy = { id: 'p-easy', name: '', avatar: '🐰', level: 'mid', grade: 'm2', pace: 'easy', created: 1 };
   await open(page, { student: easy, url: '/#/unit/math-m2-01/learn' });
