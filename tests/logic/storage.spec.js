@@ -321,6 +321,17 @@ test.describe('백업 내용 검사(validatePayload)', () => {
     p.data['p.pa.reports'] = { not: 'array' };
     expect(V(p).ok).toBe(false);
   });
+  test('학년을 정한 때(gradeAt)·새 학년 안내에 답한 학년도(gradeAsk)는 남기고, 이상한 값은 버린다', () => {
+    const p = ok();
+    p.profiles[0].gradeAt = 1790000000000;
+    p.profiles[0].gradeAsk = 2027;
+    expect(V(p).payload.profiles[0]).toMatchObject({ gradeAt: 1790000000000, gradeAsk: 2027 });
+    p.profiles[0].gradeAt = 'x';
+    p.profiles[0].gradeAsk = 99999;
+    const c = V(p).payload.profiles[0];
+    expect(c.gradeAt).toBeUndefined();
+    expect(c.gradeAsk).toBeUndefined();
+  });
 });
 
 test.describe('복원', () => {

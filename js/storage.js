@@ -597,6 +597,9 @@
     out.avatar = cleanText(p.avatar, 8);
     if (PACES.indexOf(p.pace) >= 0) out.pace = p.pace;
     if (typeof p.created === 'number' && isFinite(p.created)) out.created = p.created;
+    // 새 학년 안내(app.js): 학년을 정한 때, 그 안내에 '그대로 두기'로 답한 학년도
+    if (typeof p.gradeAt === 'number' && isFinite(p.gradeAt)) out.gradeAt = p.gradeAt;
+    if (Number.isInteger(p.gradeAsk) && p.gradeAsk >= 2000 && p.gradeAsk <= 2999) out.gradeAsk = p.gradeAsk;
     if (p.lock !== undefined && p.lock !== null) {
       if (!validLock(p.lock)) return null;
       out.lock = { v: 1, salt: p.lock.salt, iter: p.lock.iter, hash: p.lock.hash };

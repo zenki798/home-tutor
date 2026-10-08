@@ -461,7 +461,7 @@ tutor.settings   { fontScale, theme }
 
 | 키 | 내용 |
 |---|---|
-| `profiles` | `[{ id, name(별명·선택), avatar, level, grade, pace, created, lock? }]` — `lock` 은 PIN 해시(§9.4) |
+| `profiles` | `[{ id, name(별명·선택), avatar, level, grade, pace, created, gradeAt?, gradeAsk?, lock? }]` — `lock` 은 PIN 해시(§9.4), `gradeAt`·`gradeAsk` 는 새 학년 안내(§14) |
 | `current` | 지금 학생 id |
 | `settings` | `{ fontScale, theme, installHint }` (기기 공통) |
 | `p.<id>.progress` | 단원별 진도 `{ [unitId]: { seen[], checked[], cards, solved, correct, best, last } }` |
@@ -578,3 +578,14 @@ TutorSpeech.pickVoice(voices) → voice | null   이 기기 안(localService)의
 - 화면(app.js): `speakBtn(fn, 이름)` — 누를 때 fn() 의 서식 글을 읽는다(같은 버튼을 다시 누르면 멈춤, `aria-pressed`). 개념 카드(`.cc-tools`: 제목·(기초 다지기면 쉬운 설명)·본문),
   예제(`.ex-tools`: 문제와 지금까지 펼친 풀이), 문제(`.pw-tools` '문제 읽어 주기': 문제 + 화면에 보인 순서의 보기 번호), 채점 뒤 해설('해설 읽어 주기': 정답·왜 틀렸을까·해설).
   다른 화면으로 가면 멈춘다(`render` 가 `speechSynthesis.cancel`). 빠르기: 천천히 0.85 · 보통 1. 읽어 주기를 지원하지 않는 브라우저에서는 버튼을 만들지 않는다.
+
+---
+
+## 14. 새 학년 안내 (2026-10-08)
+
+- 한국 학년도는 3월 1일에 시작한다(`TutorImpact.schoolYear`). 학생(초1~고3)의 `gradeAt`(학년을 정한 때 — 없으면 `created`)의 학년도가 지금 학년도보다 앞이고,
+  `gradeAsk`(그 안내에 '그대로 두기'로 답한 학년도)가 지금 학년도가 아니면 홈 맨 위에 "🌸 새 학년이 되었나요?" 카드(`.grade-up`).
+- [○학년으로 올리기] → `grade`·`level`(초6 → 중1 처럼 학교급도)·`gradeAt` 를 고친다. [그대로 두기] → `gradeAsk` = 지금 학년도. [다른 학년 고르기] → `#/setup?change=1`.
+  고3 은 올리기 대신 대학교·성인을 고를 수 있다고 알린다. 대학교·성인 학생에게는 묻지 않는다.
+- 학년 바꾸기(`#/setup?change=1`)·새 학생은 `gradeAt` 을 그때로 적는다. 2026-03-01 보다 앞선 시각은 알 수 없는 값으로 보고 묻지 않는다(가정교사가 나오기 전 — 시험용 가짜 프로필 등).
+  백업은 두 칸을 그대로 옮긴다(`cleanProfile`).

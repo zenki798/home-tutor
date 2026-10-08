@@ -1227,7 +1227,8 @@
 
     if (change) {
       var list = profiles();
-      list.forEach(function (p) { if (p.id === S.profile.id) { p.level = L.id; p.grade = G.id; } });
+      // gradeAt: 학년을 정한 때 — 새 학년 안내가 이번 학년도에는 다시 묻지 않게(§14)
+      list.forEach(function (p) { if (p.id === S.profile.id) { p.level = L.id; p.grade = G.id; p.gradeAt = Date.now(); delete p.gradeAsk; } });
       store.set('profiles', list);
       S.profile = currentProfile();
       S.quiz = null;
@@ -1254,7 +1255,7 @@
         var name = $('#nick', page).value.replace(/\s+/g, ' ').trim().slice(0, 12);
         var p = {
           id: newProfileId(), name: name, avatar: radioVal(form, 'avatar') || nextAvatar(),
-          level: L.id, grade: G.id, pace: radioVal(form, 'pace') || 'normal', created: Date.now(),
+          level: L.id, grade: G.id, pace: radioVal(form, 'pace') || 'normal', created: Date.now(), gradeAt: Date.now(),
         };
         var list = profiles();
         list.push(p);
@@ -1289,6 +1290,37 @@
     }).join('') + '</ul>';
   }
 
+  /* ---- 새 학년 안내 (§14) ---- 한국 학년도는 3월 1일에 시작한다(js/impact.js schoolYear).
+   * 학년을 정한 때(gradeAt, 없으면 만든 날)의 학년도가 지금보다 앞이면 "새 학년이 되었나요?" — 그대로 두면 그 학년도에는 다시 묻지 않는다(gradeAsk). */
+  var GRADE_FLOOR = new Date(2026, 2, 1).getTime(); // 이보다 앞선 시각은 알 수 없는 값으로 본다(가정교사가 나오기 전 — 시험용 가짜 프로필 등)
+  function gradeUpInfo(p) {
+    if (!p || !TI || typeof TI.schoolYear !== 'function' || !Array.isArray(TI.ORDER)) return null;
+    var i = TI.ORDER.indexOf(p.grade);
+    if (i < 0) return null; // 대학교·성인
+    var setAt = typeof p.gradeAt === 'number' && isFinite(p.gradeAt) ? p.gradeAt : p.created;
+    if (typeof setAt !== 'number' || !isFinite(setAt) || setAt < GRADE_FLOOR) return null;
+    var nowYear = TI.schoolYear(todayStr());
+    if (TI.schoolYear(todayStr(new Date(setAt))) >= nowYear || p.gradeAsk === nowYear) return null;
+    return { year: nowYear, next: TI.ORDER[i + 1] || null };
+  }
+  function gradeUpHtml(p, info) {
+    var cur = gradeLabel(p.grade);
+    var nx = info.next ? gradeLabel(info.next) : '';
+    return '<section class="grade-up card" aria-labelledby="gradeUpT"><h3 id="gradeUpT"><span aria-hidden="true">🌸</span> 새 학년이 되었나요?</h3>' +
+      '<p>' + esc(say({
+        e: info.year + '학년도가 시작됐어요. 지금 학년은 ‘' + cur + '’' + josa(cur, '으로/로') + ' 되어 있어요.',
+        m: info.year + '학년도가 시작됐어요. 지금 학년은 ‘' + cur + '’' + josa(cur, '으로/로') + ' 되어 있어요.',
+        h: info.year + '학년도가 시작되었습니다. 지금 학년은 ‘' + cur + '’' + josa(cur, '으로/로') + ' 되어 있습니다.',
+      })) + '</p>' +
+      (info.next ? '' : '<p>' + esc(say({ m: '고등학교를 마쳤다면 ‘다른 학년 고르기’에서 대학교(교양·기초)나 성인을 고를 수 있어요.',
+        h: '고등학교를 마쳤다면 ‘다른 학년 고르기’에서 대학교(교양·기초)나 성인을 고를 수 있습니다.' })) + '</p>') +
+      '<div class="form-actions">' +
+      (info.next ? '<button type="button" class="btn primary" data-act="grade-up" data-g="' + esc(info.next) + '">' + esc(nx + josa(nx, '으로/로') + ' 올리기') + '</button>' : '') +
+      '<button type="button" class="btn ghost" data-act="grade-keep">그대로 두기</button>' +
+      '<a class="btn ghost" href="#/setup?change=1">다른 학년 고르기</a></div>' +
+      '<p class="muted small">학년이 맞아야 교육과정이 바뀔 때 알맞게 알려 줄 수 있어요.</p></section>';
+  }
+
   VIEWS.home = function (r) {
     var p = S.profile;
     var gi = gradeInfo(p.grade);
@@ -1306,6 +1338,9 @@
       html += '<div class="state-box"><p>학년 정보를 찾을 수 없어요.</p><a class="btn primary" href="#/setup?change=1">학년 다시 고르기</a></div>';
       return { title: '가정교사', tab: 'home', html: html };
     }
+
+    var up = all ? null : gradeUpInfo(p);
+    if (up) html += gradeUpHtml(p, up);
 
     /* 이어서 공부하기: 최근에 연 단원 중 지금 열 수 있는 것 (준비 중으로 바뀐 단원은 건너뛴다) */
     var rec = recentList().filter(function (id) { var m0 = Tutor.unitMeta(id); return m0 && !isSoon(m0.unit); })[0];
@@ -1347,7 +1382,35 @@
     if (!storageOk()) {
       html += '<p class="notice">이 브라우저에서는 기록을 저장할 수 없어요. 창을 닫으면 진도가 지워져요.</p>';
     }
-    return { title: '가정교사', tab: 'home', back: all ? '#/home' : null, html: html };
+    return {
+      title: '가정교사', tab: 'home', back: all ? '#/home' : null, html: html,
+      mount: function (page) {
+        /* 새 학년 안내 (§14) */
+        page.addEventListener('click', function (e) {
+          var b = e.target.closest('[data-act="grade-up"], [data-act="grade-keep"]');
+          var me = S.profile;
+          if (!b || !me) return;
+          if (b.getAttribute('data-act') === 'grade-up') {
+            var g = b.getAttribute('data-g');
+            var ng = gradeInfo(g);
+            if (!ng) return;
+            updateProfile(me.id, function (x) { x.grade = g; x.level = ng.level.id; x.gradeAt = Date.now(); delete x.gradeAsk; });
+            S.quiz = null;
+            S.review = null;
+            announce(gradeLabel(g) + josa(gradeLabel(g), '으로/로') + ' 바꿨어요.');
+            render();
+          } else {
+            var info = gradeUpInfo(me);
+            if (info) updateProfile(me.id, function (x) { x.gradeAsk = info.year; });
+            var box = b.closest('.grade-up');
+            if (box && box.parentNode) box.parentNode.removeChild(box);
+            announce('이번 학년도에는 다시 묻지 않을게요.');
+            var t = $('.page-title', page);
+            if (t) t.focus();
+          }
+        });
+      },
+    };
   };
 
   /* ================= 과정 화면 ================= */
