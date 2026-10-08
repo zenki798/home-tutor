@@ -15,8 +15,8 @@
 | ~~W3~~ ✅ | soc-u-psych#1~3(4·4·2) · sci-u-bio#1~2(4·4) — 10-08 밤 끝(58곳 고침) |
 | ~~W4~~ ✅ | sci-u-bio 09~10(2) · sci-u-chem#1~3(4·4·2) · sci-u-phy 01~04(4) — 10-08 밤 끝(51곳 고침) |
 | ~~W5~~ ✅ | sci-u-phy 05~10(4·2) · kor-a-literacy#1~3(4·4·2) — 10-09 새벽 끝(53곳 고침) |
-| W6 | kor-a-spell#1~3(4·4·2) · math-a-basic#1~2(4·4) — 다음 차례(`content-jobs.js --run 5` 첫 묶음과 같음) |
-| W7 | math-a-basic#3(2) · math-a-life#1~3(4·4·2) · eng-a-basic#1(4) |
+| ~~W6~~ ✅ | kor-a-spell#1~3(4·4·2) · math-a-basic#1~2(4·4) — 10-09 새벽 끝(61곳 고침) |
+| W7 | math-a-basic 09~10(2) · math-a-life#1~3(4·4·2) · eng-a-basic 01~04(4) — 다음 차례(`content-jobs.js --run 5` 첫 묶음과 같음) |
 | W8 | eng-a-basic#2~3(4·4) · eng-a-talk#1~3(4·4·2) |
 | W9 | soc-a-law#1~3(4·4·2) · hist-a-korea#1(2) · sci-a-life#1(4) |
 | W10 | sci-a-life#2~3(4·2) |
