@@ -574,6 +574,37 @@ test.describe('checkAnswer', () => {
     expect(mark({ type: 'short', check: 'number', unit: 'cm', answer: '12' }, 'cm')).toBe('F');
   });
 
+  test("short 'number': 과학 표기(1.0×10^3 · 1.2×10⁻³ · 3*10^8 · 1.2e-3 · 10^4)도 값으로 읽는다 — 위첨자 10³ 은 103 이 아니라 1000", () => {
+    const k = { type: 'short', check: 'number', answer: '1000' };
+    expect(['1.0×10^3', '1×10³', '1.0 × 10^{3}', '1e3', '1.0E+3', '10^3', '10³', '1.0*10^3', '1.0x10^3', '1.0 \\times 10^{3}', '$1.0\\times10^{3}$'].map((s) => mark(k, s)))
+      .toEqual(Array(11).fill('T'));
+    expect(['2×10^3', '1.0×103', '10^4', '103', '1.0×10^'].map((s) => mark(k, s))).toEqual(['F', 'F', 'F', 'F', 'F']);
+    const milli = { type: 'short', check: 'number', answer: '0.0012' };
+    expect(['1.2×10^-3', '1.2×10⁻³', '1.2e-3', '1.2 × 10^(-3)', '12×10^-4'].map((s) => mark(milli, s))).toEqual(Array(5).fill('T'));
+    const c = { type: 'short', check: 'number', unit: 'm/s', answer: '300000000' };
+    expect(['3×10^8 m/s', '3.0×10⁸', '3.0 × 10⁸ m/s'].map((s) => mark(c, s))).toEqual(Array(3).fill('T'));
+    expect(M.parseNumberAnswer('10²').valueOf()).toBe(100);
+    expect(M.parseNumberAnswer('1×10^99')).toBeNull(); // 정확한 분수로 담을 수 없는 지수는 읽지 않는다(던지지 않음)
+    // 단위가 '× 10⁸ m/s' 처럼 10의 거듭제곱으로 시작하면 그 배수까지 쓴 값도 정답
+    const light = { type: 'short', check: 'number', unit: '× 10⁸ m/s', answer: '3' };
+    expect(['3', '3 × 10⁸ m/s', '3×10^8', '300000000', '3.0×10⁸ m/s'].map((s) => mark(light, s))).toEqual(Array(5).fill('T'));
+    expect(['3×10^9', '30', '0.3'].map((s) => mark(light, s))).toEqual(['F', 'F', 'F']);
+    expect(mark({ type: 'short', check: 'number', unit: '× 10⁻¹⁹ J', answer: '1.6' }, '1.6×10^-19')).toBe('T');
+  });
+
+  test("short 'number': 우리말 큰 수(15만·1억 2천만·2만 5천·1.5만·3천)를 값으로 읽는다 — 단위가 '만 원'이면 예전처럼 그 단위의 수", () => {
+    const won = { type: 'short', check: 'number', unit: '원', answer: '150000' };
+    expect(['15만 원', '15만원', '15만', '150,000원', '150000', '답은 15만 원입니다'].map((s) => mark(won, s))).toEqual(Array(6).fill('T'));
+    expect(['16만 원', '15천 원', '1만5000'].map((s) => mark(won, s))).toEqual(['F', 'F', 'F']);
+    const big = { type: 'short', check: 'number', unit: '원', answer: '120000000' };
+    expect(['1억 2천만', '1억2천만 원', '12000만', '1.2억'].map((s) => mark(big, s))).toEqual(Array(4).fill('T'));
+    expect(['2만 5천', '2.5만', '25000', '2만5천'].map((s) => mark({ type: 'short', check: 'number', answer: '25000' }, s))).toEqual(Array(4).fill('T'));
+    expect(mark({ type: 'short', check: 'number', unit: '만 원', answer: '80' }, '80만 원')).toBe('T'); // 단위가 '만 원' — 그 단위로 80
+    expect(M.parseNumberAnswer('3천').valueOf()).toBe(3000);
+    expect(M.parseNumberAnswer('천만').valueOf()).toBe(10000000);
+    expect([M.parseNumberAnswer('만'), M.parseNumberAnswer('3만만'), M.parseNumberAnswer('만3')]).toEqual([null, null, null]);
+  });
+
   test("short 'number': 답을 문장처럼 써도(답은 … 입니다 · 약 … · …쯤 · …요) 수만 보고 채점", () => {
     const man = { type: 'short', check: 'number', unit: '만 원', answer: '80' };
     expect(['답은 80만 원입니다.', '약 80만 원', '80만 원 정도요', '정답: 80', '80만원쯤', '80이요', '대략 80만 원이에요', '답 80'].map((s) => mark(man, s)))

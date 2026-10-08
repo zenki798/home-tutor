@@ -1006,10 +1006,62 @@
 
   // ½ 같은 분수 글자를 'a b/c' 꼴로 풀고 NFKC (전각 숫자 등)
   function prenorm(s) {
-    return String(s).replace(VULGAR_RE, function (m, w, ch) {
+    return supPow(String(s)).replace(VULGAR_RE, function (m, w, ch) {
       var p = vulgarParts(ch);
       return (w ? w + ' ' : '') + p[0] + '/' + p[1];
     }).normalize('NFKC').replace(MINUS_RE, '-').replace(/\u2044/g, '/');
+  }
+
+  // 수 바로 뒤의 위첨자 지수는 NFKC 가 보통 숫자로 바꾸기 전에 '^' 꼴로: 10³ → 10^3(예전에는 103), 10⁻³ → 10^-3 (2026-10-09)
+  var SUP_CHARS = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁺': '+', '⁻': '-' };
+  var SUP_POW_RE = /(\d)([⁺⁻]?[⁰¹²³⁴-⁹]+)/g;
+  function supPow(s) {
+    return s.replace(SUP_POW_RE, function (m, d, sup) {
+      return d + '^' + sup.replace(/[\s\S]/g, function (c) { return SUP_CHARS[c] || c; });
+    });
+  }
+
+  // 과학 표기(2026-10-09): 1.2×10^-3 · 3*10^8 · 1.0x10^{3} · 1.0\times10^{3} · 10^4 · 1.2e-3 — 지수는 ±15 까지(정확한 분수로 담을 수 있게)
+  var SCI_MUL_RE = /^([+-]?\d+(?:\.\d+)?)\s*(?:×|x|\*|·|⋅|\\times|\\cdot)\s*10\s*\^\s*[({]?\s*([+-]?\d{1,3})\s*[)}]?$/i;
+  var SCI_POW_RE = /^([+-]?)10\s*\^\s*[({]?\s*([+-]?\d{1,3})\s*[)}]?$/;
+  var SCI_E_RE = /^([+-]?\d+(?:\.\d+)?)e([+-]?\d{1,3})$/i;
+  function sciValue(mant, pow) {
+    var n = Number(pow);
+    if (!(Math.abs(n) <= 15)) return null;
+    var v = from(mant), p = F(Math.pow(10, Math.abs(n)), 1);
+    return n >= 0 ? v.mul(p) : v.div(p);
+  }
+
+  // 우리말 큰 수(2026-10-09): '15만' '1억 2천만' '2만 5천' '1.5만' '3천' '천만' — 만·억·조 묶음 안에서 천·백·십을 더한다
+  var KO_BIG = { '조': 1e12, '억': 1e8, '만': 1e4 }, KO_SMALL = { '천': 1000, '백': 100, '십': 10 };
+  var KO_NUM_RE = /^[+-]?[\d.조억만천백십]+$/, KO_TOKEN_RE = /(\d+(?:\.\d+)?)?([조억만천백십])?/g;
+  function parseKoNumber(t) {
+    var s = String(t).replace(/[\s,]/g, ''), neg = false;
+    // 수가 없으면 '천만'·'백만' 처럼 작은 단위 + 큰 단위일 때만('만' 하나는 읽지 않는다)
+    if (!KO_NUM_RE.test(s) || !(/\d/.test(s) || /[천백십][조억만]/.test(s))) return null;
+    if (s.charAt(0) === '+' || s.charAt(0) === '-') { neg = s.charAt(0) === '-'; s = s.slice(1); }
+    var total = F(0, 1), section = F(0, 1), pos = 0, lastBig = Infinity, m;
+    while (pos < s.length) {
+      KO_TOKEN_RE.lastIndex = pos;
+      m = KO_TOKEN_RE.exec(s);
+      if (!m || m.index !== pos || !m[0]) return null;
+      pos += m[0].length;
+      var num = m[1] !== undefined ? from(m[1]) : null, u = m[2];
+      if (u && KO_SMALL[u]) section = section.add((num || F(1, 1)).mul(KO_SMALL[u]));          // 천·백·십 (앞 수가 없으면 1)
+      else if (u) {                                                                             // 만·억·조: 큰 단위는 줄어드는 차례로만
+        if (KO_BIG[u] >= lastBig) return null;
+        var head = num ? section.add(num) : section;
+        if (head.eq(0)) return null;                                                            // 앞에 수가 없는 '만'('만3')은 읽지 않는다
+        total = total.add(head.mul(KO_BIG[u]));
+        section = F(0, 1);
+        lastBig = KO_BIG[u];
+      } else if (num) {
+        if (pos < s.length) return null;                                                        // 단위 없는 수는 맨 끝에만('2만 5000')
+        section = section.add(num);
+      }
+    }
+    var v = total.add(section);
+    return neg ? v.neg() : v;
   }
 
   function mixedOf(sign, whole, num, den) {
@@ -1029,6 +1081,8 @@
       var t = trim(prenorm(s)).replace(END_PUNCT_RE, ''), m;
       t = trim(t);
       if ((m = /^\$(.*)\$$/.exec(t))) t = trim(m[1]);                                   // $…$
+      if ((m = SCI_MUL_RE.exec(t)) || (m = SCI_E_RE.exec(t))) return sciValue(m[1], m[2]);   // 1.2×10^-3 · 1.2e-3
+      if ((m = SCI_POW_RE.exec(t))) return sciValue(m[1] + '1', m[2]);                    // 10^4
       if ((m = /^([+-]?)\s*(\d+)?\s*\\d?frac\s*\{\s*(\d+)\s*\}\s*\{\s*(\d+)\s*\}$/.exec(t))) {
         return mixedOf(m[1], m[2], m[3], m[4]);                                          // \frac{3}{4}, 1\frac{1}{2}
       }
@@ -1038,6 +1092,8 @@
       if ((m = /^([+-]?)\s*(\d+)\s*\uBD84\uC758\s*(\d+)$/.exec(t))) return mixedOf(m[1], '', m[3], m[2]);
       // 1과 2/3, 2와 1/2
       if ((m = /^([+-]?)\s*(\d+)\s*[\uACFC\uC640]\s*(\d+)\s*\/\s*(\d+)$/.exec(t))) return mixedOf(m[1], m[2], m[3], m[4]);
+      // 15\uB9CC \u00B7 1\uC5B5 2\uCC9C\uB9CC \u00B7 2\uB9CC 5\uCC9C
+      if (/[\uC870\uC5B5\uB9CC\uCC9C\uBC31\uC2ED]/.test(t)) return parseKoNumber(t);
       return from(t);
     } catch (e) {
       return null;
@@ -1057,6 +1113,8 @@
     if (base === '%p') list.push('퍼센트포인트', '%포인트', '포인트');          // 퍼센트포인트 %포인트 포인트
     var words = base.split(' ');
     if (words.length > 1 && words[0]) list.push(words[0]);
+    var pm = UNIT_POW_RE.exec(base);
+    if (pm) list.push(pm[0]);   // '× 10⁻¹⁹ J' 의 거듭제곱 부분만 써도: '1.6×10^-19' → 1.6 (지수가 커서 값으로는 견줄 수 없을 때도)
     var out = [];
     for (var i = 0; i < list.length; i++) {
       var v = prenorm(list[i]).toLowerCase().replace(/\s+/g, '');
@@ -1107,14 +1165,25 @@
     return s;
   }
 
+  // 단위가 '× 10⁸ m/s' 처럼 10의 거듭제곱으로 시작하면: 그 배수까지 쓴 값(3×10^8 · 300000000)도 정답 값과 견준다
+  var UNIT_POW_RE = /^(?:×|x|\*)\s*10\s*\^\s*[({]?\s*([+-]?\d{1,2})\s*[)}]?/i;
+  function unitScale(unit) {
+    var m = typeof unit === 'string' ? UNIT_POW_RE.exec(trim(prenorm(unit))) : null;
+    var k = m ? Number(m[1]) : 0;
+    if (!m || !(Math.abs(k) <= 15)) return null;
+    var p = F(Math.pow(10, Math.abs(k)), 1);
+    return function (f) { return k >= 0 ? f.mul(p) : f.div(p); };
+  }
+
   function checkNumber(problem, input) {
     var v = parseNumberAnswer(numberInput(problem, input));
     if (!v) return false;
-    var answers = toList(problem.answer);
+    var answers = toList(problem.answer), scale = unitScale(problem.unit);
     for (var i = 0; i < answers.length; i++) {
       var a = answers[i];
       var f = typeof a === 'string' ? parseNumberAnswer(cleanNumberInput(a, problem.unit)) : parseNumberAnswer(a);
       if (f && f.eq(v)) return true;
+      try { if (f && scale && scale(f).eq(v)) return true; } catch (e) { /* 너무 큰 수 — 그 비교만 건너뛴다 */ }
     }
     return false;
   }
