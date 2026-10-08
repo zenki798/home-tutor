@@ -31,7 +31,7 @@
 `index.html` 이 싣는 순서 (모두 `defer` 없는 일반 스크립트, body 끝):
 
 ```
-js/mathlib.js → js/mathtext.js → js/figures.js → js/search.js → js/solver.js → js/storage.js → js/core.js → data/catalog.js → js/app.js
+js/mathlib.js → js/mathtext.js → js/figures.js → js/search.js → js/solver.js → js/storage.js → js/impact.js → js/review.js → js/core.js → data/catalog.js → js/app.js
 ```
 
 단원 내용(`data/units/<id>.js`)과 검색 색인(`data/index/<과목>-<학교급>.js`)은 필요할 때 `Tutor.loadScript` 로 싣는다.
@@ -403,7 +403,8 @@ Tutor.registerUnit({
 | `#/unit/<unitId>/<tab>` | 단원: 탭 `learn`(개념) · `examples`(예제) · `practice`(문제) · `advanced`(심화) · `ask`(질문) |
 | `#/quiz/<unitId 또는 courseId>` | 예상문제 풀이 (한 문제씩, 바로 채점·해설, 끝나면 점수) |
 | `#/ask/<subject>` | 과목 선생님에게 질문 (대화창) |
-| `#/notes` | 오답노트 |
+| `#/notes` | 오답노트 (위에 오늘 복습할 문제 수·다음 복습 날, 문제마다 다음 복습 날) |
+| `#/review` | 오늘의 복습 — 다음 복습 날이 된 오답을 한 번에 10문제까지 (§10) |
 | `#/stats` | 학습 기록 |
 | `#/settings` | 글자 크기·화면 테마·학생 관리·기록 지우기 |
 
@@ -463,7 +464,7 @@ tutor.settings   { fontScale, theme }
 | `current` | 지금 학생 id |
 | `settings` | `{ fontScale, theme, installHint }` (기기 공통) |
 | `p.<id>.progress` | 단원별 진도 `{ [unitId]: { seen[], checked[], cards, solved, correct, best, last } }` |
-| `p.<id>.notes` | 오답노트 `[{ key, unit, problem(사본), given, cause(오답 원인), concept, at, wrongCount, rightStreak }]` |
+| `p.<id>.notes` | 오답노트 `[{ key, unit, problem(사본), given, cause(오답 원인), concept, at, wrongCount, rightStreak, due(다음 복습 날 'YYYY-MM-DD', §10) }]` |
 | `p.<id>.attempts` | 최근 풀이 기록(최대 2000개) `[{ t, unit, pid|gen, level, ok, cause? }]` |
 | `p.<id>.stats` | 학습 통계(날짜별 푼 수·맞힌 수, 과목별 합계) |
 | `p.<id>.recent` · `p.<id>.days` | 최근 단원, 공부한 날 |
@@ -499,3 +500,26 @@ tutor.settings   { fontScale, theme }
 - 주소(#/…)·문서 제목·서비스 워커 캐시에 학생 별명·답·기록을 넣지 않는다(캐시는 앱 파일만).
 - 화면에 다른 학생의 기록을 보여 주지 않는다(학생 고르기 화면에는 별명·아바타만).
 - 공용 컴퓨터 안내: "공부를 마치면 [이 기기에서 기록 지우기]" (설정).
+
+---
+
+## 10. 복습 일정 (`js/review.js` — `TutorReview`, 2026-10-08)
+
+오답노트의 문제를 며칠 뒤에 다시 낸다. **틀리면 다음 날, 한 번 맞히면 3일 뒤**, 두 번 연속 맞히면 오답노트에서 뺀다(예전 규칙 그대로).
+이 기기 안에서만 계산하고, 날짜는 그 기기의 날짜를 `'YYYY-MM-DD'` 글자로만 다룬다. DOM 을 쓰지 않는 순수 함수다.
+
+```
+TutorReview.AFTER_WRONG = 1 · AFTER_RIGHT = 3 · CLEAR_STREAK = 2
+TutorReview.isDay(s) · addDays(iso, n) · dayOf(ms)          날짜 글자 검사·더하기(시간대 무관)·그 기기의 날짜
+TutorReview.dueOf(note) → 'YYYY-MM-DD'    note.due, 없으면 틀린 날(at) 다음 날, 그것도 없으면 '1970-01-01'(바로)
+TutorReview.isDue(note, today) · firstDue(today)          새로 틀린 문제의 다음 복습 날 = 다음 날
+TutorReview.dueList(notes, today) → note[]               오늘 복습할 것 — 복습 날이 오래된 것부터, 같으면 먼저 틀린 것부터
+TutorReview.dueCount(notes, today) · nextDue(notes, today) → { date, n } | null   오늘 뒤의 가장 이른 복습 날과 그날 문제 수
+TutorReview.answer(note, correct, today) → { cleared, due, streak }   채점 뒤 note 를 그 자리에서 고친다(맞힘: rightStreak+1·3일 뒤 / 틀림: wrongCount+1·다음 날)
+TutorReview.label(due, today) → '오늘' | '내일' | '모레' | '10월 11일'
+```
+
+- 화면: 예상문제에서 틀리면 `addNote` 가 `due` = 다음 날. 오답노트의 '다시 풀기'와 '오늘의 복습'이 같은 채점 저장(`gradeNote`)을 쓴다.
+  홈에 오늘 복습할 문제가 있으면 "📅 오늘의 복습" 카드, 오답노트 위에 문제 수와 [복습 시작](없으면 다음 복습 날), 문제마다 "다음 복습 …".
+- `#/review` 는 한 번에 10문제까지(오래된 복습 날부터) 내고, 다른 화면에 다녀와도 이어서 푼다(메모리의 `S.review`). 결과에 맞힌 문제·뺀 문제·내일 다시 볼 문제·남은 복습.
+- `js/review.js` 가 없으면 복습 안내만 빠지고 오답노트는 예전처럼 동작한다(두 번 연속 맞히면 뺀다).

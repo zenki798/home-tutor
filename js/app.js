@@ -31,6 +31,7 @@
   var store = Tutor.store;
   var TS = window.TutorStorage || null; // 백업·PIN (js/storage.js). 없으면 그 기능만 막는다
   var TI = window.TutorImpact || null;  // 교육과정 변경이 학생에게 닿는가(js/impact.js, 기기 안 계산). 없으면 그 안내만 빠진다
+  var TR = window.TutorReview || null;  // 복습 일정(js/review.js). 없으면 오답노트만 예전처럼 쓴다
 
   /* ================= 설정(글자 크기·테마) — 화면을 그리기 전에 먼저 적용해 깜빡임을 줄인다 ================= */
 
@@ -318,6 +319,7 @@
     replacing: false,
     first: true,
     quiz: null,
+    review: null,    // 지금 하는 '오늘의 복습' (§10)
     chats: {},       // 이번에 연 대화(서식 그대로). 저장은 p.<id>.chat 에 글자만 (§9.2)
     unitUI: {},
     search: {},      // 색인 이름 → Promise<검색 색인>
@@ -385,6 +387,7 @@
     store.set('current', id);
     S.profile = currentProfile();
     S.quiz = null;
+    S.review = null;
     S.chats = {};
   }
   function newProfileId() { return 'p' + Date.now().toString(36) + Math.floor(Math.random() * 1679616).toString(36); }
@@ -479,11 +482,13 @@
     return p;
   }
 
-  /* cause: 그때 보여 준 오답 진단(글자만), concept: 그 문제가 연습하는 개념 카드 번호 (§9.2) */
+  /* cause: 그때 보여 준 오답 진단(글자만), concept: 그 문제가 연습하는 개념 카드 번호 (§9.2)
+   * due: 다음 복습 날 — 틀리면 다음 날 '오늘의 복습'에 다시 나온다(§10) */
   function addNote(item, given, cause) {
     var list = notesList();
     var found = null;
     var concept = typeof item.p.concept === 'number' ? item.p.concept : null;
+    var due = TR ? TR.firstDue(todayStr()) : null;
     for (var i = 0; i < list.length; i++) if (list[i].key === item.key) found = list[i];
     if (found) {
       found.wrongCount = num(found.wrongCount) + 1;
@@ -493,13 +498,67 @@
       found.problem = packProblem(item.p);
       found.cause = cause || '';
       found.concept = concept;
+      if (due) found.due = due;
     } else {
-      list.unshift({
+      var fresh = {
         key: item.key, unit: item.unit, problem: packProblem(item.p), given: given, at: Date.now(),
         wrongCount: 1, rightStreak: 0, gen: item.gen || null, src: item.src, cause: cause || '', concept: concept,
-      });
+      };
+      if (due) fresh.due = due;
+      list.unshift(fresh);
     }
     saveNotes(list.slice(0, 300));
+  }
+
+  /* ---- 복습 일정 (§10, js/review.js) ----
+   * 틀리면 다음 날, 한 번 맞히면 3일 뒤에 '오늘의 복습'으로 다시 낸다. 두 번 연속 맞히면 오답노트에서 뺀다. */
+  var REVIEW_MAX = 10; // 한 번에 낼 복습 문제 수
+  function reviewDue(list) { return TR ? TR.dueList(list || notesList(), todayStr()) : []; }
+  function nextReviewText(list) {
+    var nx = TR ? TR.nextDue(list || notesList(), todayStr()) : null;
+    return nx ? '다음 복습: ' + TR.label(nx.date, todayStr()) + ' · ' + nx.n + '문제' : '';
+  }
+  function mdText(iso) { return Number(String(iso).slice(5, 7)) + '월 ' + Number(String(iso).slice(8, 10)) + '일'; }
+  /* 오답노트 항목을 다시 푼 결과를 저장한다 — 오답노트의 '다시 풀기'와 오늘의 복습이 함께 쓴다.
+   *   → { note, cleared(두 번 연속 맞혀 뺐는지), due(다음 복습 날) } — 그새 지워진 항목이면 null */
+  function gradeNote(key, prob, res) {
+    var list = notesList();
+    var idx = -1;
+    for (var i = 0; i < list.length; i++) if (list[i].key === key) { idx = i; break; }
+    if (idx < 0) return null;
+    var n = list[idx];
+    updateProgress(n.unit, function (u) { u.solved += 1; if (res.correct) u.correct += 1; });
+    logItem({ unit: n.unit, src: n.src || (n.gen ? 'gen' : 'bank'), gen: n.gen, p: prob }, res);
+    var out;
+    if (TR) {
+      out = TR.answer(n, res.correct, todayStr());
+    } else if (res.correct) { // 복습 일정 파일이 없을 때: 예전 규칙만
+      n.rightStreak = num(n.rightStreak) + 1;
+      out = { cleared: n.rightStreak >= 2, due: null };
+    } else {
+      n.wrongCount = num(n.wrongCount) + 1;
+      n.rightStreak = 0;
+      out = { cleared: false, due: null };
+    }
+    if (!res.correct) {
+      n.given = res.given;
+      n.at = Date.now();
+      n.cause = causeText(res.why);
+    }
+    if (out.cleared) list.splice(idx, 1);
+    saveNotes(list);
+    return { note: n, cleared: out.cleared, due: out.due };
+  }
+  /* 오답노트 위: 오늘 복습할 문제 수와 [복습 시작], 없으면 다음 복습 날 */
+  function reviewSlotHtml(list) {
+    if (!TR || !list.length) return '';
+    var n = reviewDue(list).length;
+    if (n) {
+      return '<section class="review-box card" aria-label="오늘의 복습"><p class="rb-text"><span aria-hidden="true">📅</span> 오늘 복습할 문제 <strong>' + n + '개</strong></p>' +
+        '<a class="btn primary" href="#/review">복습 시작</a></section>';
+    }
+    var nx = nextReviewText(list);
+    return nx ? '<p class="review-next muted">' + esc(nx) + '</p>' : '';
   }
 
   /* ---- 학습 기록 (학습 연속성에 필요한 만큼만, §9.2) ----
@@ -730,7 +789,7 @@
       return;
     }
     S.profile = currentProfile();
-    var needsProfile = ['home', 'course', 'unit', 'quiz', 'ask', 'notes', 'stats'];
+    var needsProfile = ['home', 'course', 'unit', 'quiz', 'ask', 'notes', 'stats', 'review'];
     if (!S.profile) {
       /* 지금 학생에게 PIN이 걸려 있으면 PIN을 맞혀야 그 학생의 화면·기록을 보여 준다 (§9.4) */
       var locked = lockedCurrent();
@@ -1079,6 +1138,7 @@
       store.remove('current');
       S.profile = null;
       S.quiz = null;
+      S.review = null;
       S.chats = {};
     }
     return rest;
@@ -1251,6 +1311,15 @@
       html += '<a class="continue-card ' + subjClass(rs.id) + '" href="#/unit/' + encodeURIComponent(rec) + '/learn">' +
         '<span class="cc-icon" aria-hidden="true">▶</span><span class="cc-text"><span class="cc-label">이어서 공부하기</span>' +
         '<span class="cc-unit">' + esc(E.plain(meta.unit.title)) + '</span><span class="cc-course">' + esc(rs.icon || '') + ' ' + esc(meta.course.title) + '</span></span></a>';
+    }
+
+    /* 오늘의 복습: 다음 복습 날이 된 오답이 있으면 (§10) */
+    var dueN = all ? 0 : reviewDue().length;
+    if (dueN) {
+      html += '<a class="review-card" href="#/review"><span class="rc-icon" aria-hidden="true">📅</span>' +
+        '<span class="rc-text"><span class="rc-label">오늘의 복습</span><span class="rc-sub">' + esc(say({
+          e: '틀렸던 문제를 다시 풀어 봐요!', m: '틀렸던 문제를 다시 풀어 볼까요?', h: '틀렸던 문제를 다시 풀어 봅시다.',
+        })) + '</span></span><span class="rc-count">' + dueN + '문제</span></a>';
     }
 
     if (!all) {
@@ -3277,11 +3346,13 @@
       byKey[gk].notes.push(n);
     });
     var html = bubble(TUTOR, para(say({
-      e: '틀린 문제를 다시 풀어 봐요. 두 번 연속으로 맞히면 오답노트에서 빠져요.',
-      m: '틀린 문제를 다시 풀어 봐요. 두 번 연속으로 맞히면 오답노트에서 빠져요.',
-      h: '틀린 문제를 다시 풀어 봅시다. 두 번 연속으로 맞히면 오답노트에서 빠집니다.',
+      e: '틀린 문제를 다시 풀어 봐요. 두 번 연속으로 맞히면 오답노트에서 빠져요. 틀린 문제는 다음 날, 맞힌 문제는 3일 뒤에 ‘오늘의 복습’으로 다시 알려 줄게요.',
+      m: '틀린 문제를 다시 풀어 봐요. 두 번 연속으로 맞히면 오답노트에서 빠져요. 틀린 문제는 다음 날, 맞힌 문제는 3일 뒤에 ‘오늘의 복습’으로 다시 알려 줄게요.',
+      h: '틀린 문제를 다시 풀어 봅시다. 두 번 연속으로 맞히면 오답노트에서 빠집니다. 틀린 문제는 다음 날, 맞힌 문제는 3일 뒤에 ‘오늘의 복습’으로 다시 안내합니다.',
     })));
+    var today = todayStr();
     html += '<h2 class="page-title" tabindex="-1">오답노트 <span class="count" id="notesCount">' + (list.length ? list.length + '문제' : '') + '</span></h2>';
+    html += '<div class="review-slot">' + reviewSlotHtml(list) + '</div>';
     if (!list.length) {
       html += '<div class="state-box"><p class="state-icon" aria-hidden="true">📒</p><p>틀린 문제가 없어요. 문제를 풀다가 틀리면 여기에 모여요.</p></div>';
     }
@@ -3293,7 +3364,8 @@
             '<div class="note-q"><div class="rich">' + E.render(p.q) + '</div>' + E.fig(p.fig) + '</div>' +
             '<p class="note-meta">틀린 횟수 ' + Math.max(1, num(n.wrongCount)) + '번' +
             (num(n.rightStreak) ? ' · 연속 맞힘 ' + num(n.rightStreak) + '번' : '') +
-            (n.given ? ' · 내 답: ' + esc(n.given) : '') + '</p>' +
+            (n.given ? ' · 내 답: ' + esc(n.given) : '') +
+            (TR ? ' · 다음 복습 ' + esc(TR.label(TR.dueOf(n), today)) : '') + '</p>' +
             /* 그때 보여 준 오답 진단 (글자로만) — 같은 실수를 기억하게 */
             (typeof n.cause === 'string' && n.cause ? '<p class="note-cause"><span class="fb-label">틀린 까닭</span> ' + esc(n.cause) + '</p>' : '') +
             '<div class="note-solve"></div><p class="note-status" role="status"></p>' +
@@ -3312,9 +3384,11 @@
           return null;
         }
         function refreshCount() {
-          var c = notesList().length;
+          var l = notesList();
           var el = $('#notesCount', page);
-          if (el) el.textContent = c ? c + '문제' : '';
+          if (el) el.textContent = l.length ? l.length + '문제' : '';
+          var slot = $('.review-slot', page);
+          if (slot) slot.innerHTML = reviewSlotHtml(l);
         }
         page.addEventListener('click', function (e) {
           var b = e.target.closest('[data-act]');
@@ -3361,33 +3435,20 @@
                 return { unitId: nt.unit, idx: idx, onSimilar: function () { similarFromNote(nt, prob.level === 3 ? 3 : (prob.level === 2 ? 2 : 1)); } };
               },
               onGraded: function (res, after) {
-                var cur = findNote(key);
-                if (!cur) return;
-                var n = cur.note;
-                updateProgress(n.unit, function (u) { u.solved += 1; if (res.correct) u.correct += 1; });
-                logItem({ unit: n.unit, src: n.src || (n.gen ? 'gen' : 'bank'), gen: n.gen, p: prob }, res);
-                if (res.correct) {
-                  n.rightStreak = num(n.rightStreak) + 1;
-                  if (n.rightStreak >= 2) {
-                    cur.list.splice(cur.i, 1);
-                    saveNotes(cur.list);
-                    status.textContent = '✔ 두 번 연속 맞혔어요! 오답노트에서 뺐어요.';
-                    li.classList.add('cleared');
-                    after.innerHTML = '';
-                    refreshCount();
-                    return;
-                  }
-                  saveNotes(cur.list);
-                  status.textContent = '✔ ' + n.rightStreak + '번 맞힘 — 한 번 더 맞히면 오답노트에서 빠져요.';
-                } else {
-                  n.wrongCount = num(n.wrongCount) + 1;
-                  n.rightStreak = 0;
-                  n.given = res.given;
-                  n.at = Date.now();
-                  n.cause = causeText(res.why);
-                  saveNotes(cur.list);
-                  status.textContent = '✘ 아쉬워요. 해설을 보고 다시 풀어 봐요.';
+                var g = gradeNote(key, prob, res);
+                if (!g) return;
+                if (g.cleared) {
+                  status.textContent = '✔ 두 번 연속 맞혔어요! 오답노트에서 뺐어요.';
+                  li.classList.add('cleared');
+                  after.innerHTML = '';
+                  refreshCount();
+                  return;
                 }
+                var next = g.due && TR ? ' 다음 복습 ' + TR.label(g.due, todayStr()) + '.' : '';
+                status.textContent = res.correct ?
+                  '✔ ' + g.note.rightStreak + '번 맞힘 — 한 번 더 맞히면 오답노트에서 빠져요.' + next :
+                  '✘ 아쉬워요. 해설을 보고 다시 풀어 봐요.' + next;
+                refreshCount();
                 after.innerHTML = '<button type="button" class="btn small primary" data-act="retry">한 번 더 풀기</button>';
                 $('button', after).focus();
               },
@@ -3399,6 +3460,133 @@
       },
     };
   };
+
+  /* ================= 오늘의 복습 (§10) ================= */
+
+  /* 한 번의 복습: 오늘 복습할 오답 가운데 오래된 것부터 REVIEW_MAX 개. 다른 화면에 다녀와도 이어서, 다 풀었거나 날이 바뀌면 새로 */
+  function newReview() {
+    var keys = reviewDue().slice(0, REVIEW_MAX).map(function (n) { return n.key; });
+    return { day: todayStr(), pid: S.profile ? S.profile.id : '', keys: keys, total: keys.length, i: 0, results: [], done: false };
+  }
+
+  VIEWS.review = function () {
+    var rv = S.review;
+    if (!rv || rv.done || rv.day !== todayStr() || !S.profile || rv.pid !== S.profile.id) S.review = newReview();
+    return {
+      title: '오늘의 복습', tab: 'notes', back: '#/notes', cls: 'review-page',
+      html: '<h2 class="sr-only page-title" tabindex="-1">오늘의 복습</h2><div class="review" id="review"></div>',
+      focus: '.pq',
+      mount: function (page) { drawReview($('#review', page), false); },
+    };
+  };
+
+  function drawReview(host, focus) {
+    var rv = S.review;
+    var list = notesList();
+    if (!rv.total) {
+      var nx = nextReviewText(list);
+      host.innerHTML = '<div class="state-box"><p class="state-icon" aria-hidden="true">📅</p>' +
+        (list.length ? '<p>' + esc(say({ e: '오늘 복습할 문제가 없어요. 잘하고 있어요!', m: '오늘 복습할 문제가 없어요.', h: '오늘 복습할 문제가 없습니다.' })) + '</p>' +
+          (nx ? '<p class="muted">' + esc(nx) + '</p>' : '') :
+          '<p>' + esc(say({ m: '복습할 문제가 없어요.', h: '복습할 문제가 없습니다.' })) + '</p><p class="muted">' +
+          esc(say({ m: '문제를 풀다 틀리면 다음 날 여기서 다시 풀어요.', h: '문제를 풀다 틀리면 다음 날 여기서 다시 풉니다.' })) + '</p>') +
+        '<a class="btn primary" href="#/notes">오답노트 보기</a></div>';
+      return;
+    }
+    if (rv.done) { drawReviewResult(host, focus); return; }
+    /* 그새 오답노트에서 지운 문제는 건너뛴다 */
+    var note = null;
+    while (rv.i < rv.total) {
+      for (var k = 0; k < list.length; k++) if (list[k].key === rv.keys[rv.i]) { note = list[k]; break; }
+      if (note) break;
+      rv.i += 1;
+    }
+    if (!note) {
+      rv.done = true;
+      if (!rv.results.filter(Boolean).length) rv.total = 0; // 낼 문제가 모두 지워졌다 — 빈 안내로
+      drawReview(host, focus);
+      return;
+    }
+    var prob = unpackProblem(JSON.parse(JSON.stringify(note.problem)));
+    var meta = Tutor.unitMeta(note.unit);
+    var s = subjectOf(meta ? meta.course.subject : '');
+    host.innerHTML = (rv.i === 0 ? bubble(TUTOR, para(say({
+      e: '전에 틀렸던 문제를 다시 풀어 봐요. 맞히면 3일 뒤에 한 번 더 확인하고, 두 번 연속 맞히면 오답노트에서 빠져요.',
+      m: '전에 틀렸던 문제를 다시 풀어 봐요. 맞히면 3일 뒤에 한 번 더 확인하고, 두 번 연속 맞히면 오답노트에서 빠져요.',
+      h: '전에 틀렸던 문제를 다시 풀어 봅시다. 맞히면 3일 뒤에 한 번 더 확인하고, 두 번 연속 맞히면 오답노트에서 빠집니다.',
+    }))) : '') +
+      '<div class="quiz-head"><p class="quiz-count review-count"><span class="sr-only">복습 문제 </span><strong>' + (rv.i + 1) + '</strong> / ' + rv.total + '</p>' +
+      '<span class="badge review-unit">' + esc(s.icon ? s.icon + ' ' : '') + esc(s.name) + ' · ' + esc(meta ? E.plain(meta.unit.title) : note.unit) + '</span></div>' +
+      '<div class="pbar quiz-bar" aria-hidden="true"><span class="pbar-fill" style="width:' + Math.round((100 * rv.i) / rv.total) + '%"></span></div>' +
+      '<div class="pw-host ' + subjClass(s.id) + '"></div>';
+    var key = note.key;
+    var w = problemWidget(prob, {
+      more: function () {
+        var idx = typeof prob.concept === 'number' ? prob.concept : null;
+        if (!note.gen && idx === null) return null;
+        return { unitId: note.unit, idx: idx, onSimilar: function () { similarFromNote(note, prob.level === 3 ? 3 : (prob.level === 2 ? 2 : 1)); } };
+      },
+      onGraded: function (res, after) {
+        var g = gradeNote(key, prob, res);
+        rv.results[rv.i] = { correct: res.correct, cleared: !!(g && g.cleared) };
+        var line = !g ? '' : g.cleared ? say({ m: '✔ 두 번 연속 맞혔어요! 오답노트에서 뺐어요.', h: '✔ 두 번 연속 맞혔습니다. 오답노트에서 뺐습니다.' }) :
+          res.correct ? (g.due ? say({
+            m: '✔ 맞혔어요! ' + TR.AFTER_RIGHT + '일 뒤(' + mdText(g.due) + ')에 한 번 더 볼게요.',
+            h: '✔ 맞혔습니다. ' + TR.AFTER_RIGHT + '일 뒤(' + mdText(g.due) + ')에 한 번 더 확인합니다.' }) : '✔ 맞혔어요!') :
+            say({ e: '✘ 괜찮아요. 해설을 읽어 보고 내일 다시 풀어 봐요.', m: '✘ 괜찮아요. 내일 다시 볼게요.', h: '✘ 내일 다시 풀어 봅시다.' });
+        var last = rv.i >= rv.total - 1;
+        after.innerHTML = (line ? '<p class="review-status" role="status">' + esc(line) + '</p>' : '') +
+          '<button type="button" class="btn primary big wide review-next-btn">' + (last ? '결과 보기' : '다음 문제 ›') + '</button>';
+        var nb = $('.review-next-btn', after);
+        nb.addEventListener('click', function () {
+          if (S.review !== rv) return;
+          rv.i += 1;
+          if (rv.i >= rv.total) rv.done = true;
+          drawReview(host, true);
+        });
+        nb.focus();
+      },
+    });
+    $('.pw-host', host).appendChild(w.el);
+    if (focus) {
+      window.scrollTo(0, 0);
+      w.focus();
+    } else {
+      setTimeout(function () { if (doc.body.contains(w.el)) w.focus(); }, 0);
+    }
+  }
+
+  function drawReviewResult(host, focus) {
+    var rv = S.review;
+    var done = rv.results.filter(Boolean);
+    var right = done.filter(function (r) { return r.correct; }).length;
+    var cleared = done.filter(function (r) { return r.cleared; }).length;
+    var left = reviewDue().length;
+    var msg = right === done.length ? say({ e: '모두 맞혔어요! 잘 기억하고 있네요.', m: '모두 맞혔어요! 잘 기억하고 있어요.', h: '모두 맞혔습니다. 잘 기억하고 있습니다.' }) :
+      say({ e: '괜찮아요. 틀린 문제는 내일 다시 나와요. 해설을 한 번 더 읽어 두면 좋아요.', m: '틀린 문제는 내일 다시 나와요. 해설을 한 번 더 읽어 두면 좋아요.',
+        h: '틀린 문제는 내일 다시 나옵니다. 해설을 한 번 더 읽어 두면 좋습니다.' });
+    host.innerHTML = bubble(TUTOR, para(msg)) +
+      '<section class="result card review-result" aria-labelledby="rvTitle"><h2 class="page-title" id="rvTitle" tabindex="-1">복습 결과</h2>' +
+      '<p class="score"><strong>' + right + '</strong><span> / ' + done.length + '</span></p>' +
+      '<p class="score-sub">' + esc(say({ m: done.length + '문제를 복습했어요.', h: done.length + '문제를 복습했습니다.' })) + '</p>' +
+      '<ul class="review-sum"><li>맞힌 문제 ' + right + '개</li><li>오답노트에서 뺀 문제 ' + cleared + '개</li><li>내일 다시 볼 문제 ' + (done.length - right) + '개</li></ul>' +
+      (left ? '<p class="review-left">남은 복습 ' + left + '문제</p>' : '') + '</section>' +
+      '<div class="action-row result-actions">' +
+      (left ? '<button type="button" class="btn primary big" data-act="review-more">이어서 복습하기</button>' : '') +
+      '<a class="btn big" href="#/notes">오답노트 보기</a><a class="btn big ghost" href="#/home">처음으로</a></div>';
+    var more = $('[data-act="review-more"]', host);
+    if (more) {
+      more.addEventListener('click', function () {
+        S.review = newReview();
+        drawReview(host, true);
+      });
+    }
+    if (focus) {
+      window.scrollTo(0, 0);
+      var t = $('#rvTitle', host);
+      if (t) t.focus({ preventScroll: true });
+    }
+  }
 
   /* ================= 기록 ================= */
 
@@ -3546,6 +3734,7 @@
     removePrefix('p.' + p.id + '.');
     S.chats = {};
     S.quiz = null;
+    S.review = null;
   }
 
   /* 학생 정보 고치기 (profiles 안의 한 명) */
@@ -3978,6 +4167,7 @@
               return TS.restoreBackup(store, payload, { mode: mode });
             }).then(function (r) {
               S.quiz = null;
+              S.review = null;
               S.chats = {};
               S.unitUI = {};
               if (mode === 'replace') { S.unlocked = {}; S.pinFails = {}; applySettings(getSettings()); }
@@ -4002,6 +4192,7 @@
         function resetSession() {
           S.profile = null;
           S.quiz = null;
+          S.review = null;
           S.chats = {};
           S.unitUI = {};
           S.unlocked = {};

@@ -543,6 +543,31 @@ html.no-profile .main { padding-bottom: 2rem; }
 .cc-unit { font-size: 1.0625rem; font-weight: 800; }
 .cc-course { font-size: 0.875rem; color: var(--ink-2); }
 
+/* 오늘의 복습 (홈 카드 · 오답노트 위 상자) */
+.review-card {
+  display: flex; align-items: center; gap: 0.875rem; margin: 0.625rem 0 0.25rem; padding: 0.875rem 1rem;
+  border: 1px solid var(--ok-line); border-radius: var(--radius); background: var(--ok-wash);
+  color: var(--ink); text-decoration: none;
+}
+.review-card:hover { box-shadow: var(--shadow-2); }
+.rc-icon {
+  flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%;
+  display: grid; place-items: center; background: var(--surface); font-size: 1.375rem; line-height: 1;
+}
+.rc-text { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.rc-label { font-size: 0.8125rem; font-weight: 800; color: var(--ok); }
+.rc-sub { font-size: 1.0625rem; font-weight: 800; }
+.rc-count { flex: none; font-weight: 800; color: var(--ok); }
+.review-box {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.625rem 1rem;
+  margin: 0 0 1rem; border-left: 5px solid var(--ok);
+}
+.review-box .rb-text { margin: 0; font-weight: 700; }
+.review-next { margin: 0 0 1rem; font-size: 0.9375rem; }
+.review-status { margin: 0.25rem 0 0.75rem; font-weight: 800; color: var(--c-ink); }
+.review-sum { list-style: none; margin: 0.5rem 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 1rem; color: var(--ink-2); }
+.review-left { margin: 0.625rem 0 0; font-weight: 800; color: var(--ok); }
+
 .teacher-grid { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)); }
 .teacher-card {
   display: flex; align-items: center; gap: 0.875rem; height: 100%; padding: 1rem;
