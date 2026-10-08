@@ -197,7 +197,7 @@ TutorText.check(src) → string[]     문제점 목록 (닫히지 않은 $, 모�
 - 함수 이름(곧은 글씨): `\sin \cos \tan \log \ln \lim \max \min \exp \det`
 - 큰 연산자: `\sum_{k=1}^{n}`, `\int_{a}^{b}`, `\lim_{x \to 0}` (아래·위에 붙임), `\prod`
 - 꾸밈: `\overline{AB}`(선분), `\overrightarrow{AB}`, `\vec{a}`, `\hat{p}`, `\bar{x}`, `\widehat{AB}`(호)
-- 글자: `\text{원}`, `\mathrm{cm}`, `\mathbf{v}`
+- 글자: `\text{원}`, `\mathrm{cm}`, `\mathbf{v}` — `\mathrm{…}` 안에 첨자·명령이 있으면(`\mathrm{m/s^2}`·`\mathrm{kg\cdot m/s^2}`·`\mathrm{CO_2}`·`\mathrm{k\Omega}`) 그 안을 수식으로 읽고 글자만 곧게 그린다(2026-10-09 — 예전에는 "m/s^2" 로 글자째 보였다). 첨자·명령이 없으면 예전처럼 글자 그대로
 - 순열·조합: `{}_{n}\mathrm{P}_{r}`, `{}_{n}\mathrm{C}_{r}`, `\binom{n}{r}`
 - 괄호 크기: `\left( \right)`, `\left[ \right]`, `\left\{ \right\}`, `\left| \right|`, `\left. \right.` (크기만 맞춤)
 - 공백: `\,` `\;` `\quad` `\ `
@@ -606,6 +606,9 @@ TutorSpeech.pickVoice(voices) → voice | null   이 기기 안(localService)의
   다른 화면으로 가면 멈춘다(`render` 가 `speechSynthesis.cancel`). 빠르기: 천천히 0.85 · 보통 1. 읽어 주기를 지원하지 않는 브라우저에서는 버튼을 만들지 않는다.
 
 ---
+
+- 수식은 왼쪽부터 `$` 짝을 지어 나눈다(붙어 있는 `$a$$b$` 도 화면처럼 두 수식, `$$…$$` 는 한 수식). 이온 전하·한쪽 극한 첨자(`Na^+`·`Ca^{2+}`·`a^-`)는 "Na 플러스"·"Ca 2플러스"·"a 마이너스",
+  별표 첨자는 "스타", n제곱근의 지수 안 수식도 말로. 빈칸 `___`·`_at` 의 밑줄은 "빈칸"(2026-10-08 — 전체 단원 글 83,825개를 읽어 주기 글로 바꿔 수식 명령이 남는 곳 251 → 9, 남은 9곳은 "x^2 처럼 입력"처럼 글자 그대로가 맞는 안내).
 
 ## 14. 새 학년 안내 (2026-10-08)
 

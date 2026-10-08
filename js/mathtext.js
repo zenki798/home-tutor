@@ -264,6 +264,15 @@
     return this.parseCommand(t);
   };
 
+  // \mathrm{…} 안을 수식으로 읽었을 때: 변수 글자를 모두 곧게(기울이지 않게) — 첨자·묶음 안까지
+  function uprightVars(x) {
+    if (!x || typeof x !== 'object') return x;
+    if (Array.isArray(x)) { for (var i = 0; i < x.length; i++) uprightVars(x[i]); return x; }
+    if (x.type === 'var') x.upright = true;
+    for (var k in x) if (hasOwn(x, k) && x[k] && typeof x[k] === 'object') uprightVars(x[k]);
+    return x;
+  }
+
   function isAstArg(a) {
     var one = a.type === 'group' ? a.items.filter(function (x) { return x.type !== 'ws'; }) : [a];
     return one.length === 1 && one[0].type === 'op' && (one[0].raw === '*' || one[0].v === '∗');
@@ -313,7 +322,20 @@
       return { type: 'sqrt', index: index, rad: this.parseArg('\\sqrt 의 안') };
     }
     if (hasOwn(ACCENT, v)) return { type: 'accent', kind: ACCENT[v], body: this.parseArg('\\' + v + ' 의 안') };
-    if (hasOwn(TEXTCMD, v)) return { type: 'styled', style: TEXTCMD[v], text: this.rawGroup('\\' + v) };
+    if (hasOwn(TEXTCMD, v)) {
+      this.skipWs();
+      var ot = this.peek();
+      var base = ot && ot.t === '{' ? ot.at + 1 : 0;
+      var raw = this.rawGroup('\\' + v);
+      // \mathrm{m/s^2}·\mathrm{N\cdot m}·\mathrm{CO_2}: 안에 첨자·명령이 있으면 수식으로 읽고 글자만 곧게 — 예전에는 글자째("m/s^2") 보였다.
+      // 첨자·명령이 없는 \mathrm{cm} 같은 것은 예전처럼 글자 그대로
+      if (v === 'mathrm' && /[\^_\\]/.test(raw)) {
+        var inner = parseTex(raw);
+        for (var ie = 0; ie < inner.errors.length; ie++) this.err(inner.errors[ie].msg, base + inner.errors[ie].at);
+        return { type: 'group', items: uprightVars(inner.items) };
+      }
+      return { type: 'styled', style: TEXTCMD[v], text: raw };
+    }
     if (v === 'left') return this.parseLeftRight(t);
     if (v === 'right') {
       this.err('\\right 의 짝 \\left 가 없어요', t.at);

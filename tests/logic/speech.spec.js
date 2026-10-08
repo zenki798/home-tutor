@@ -53,6 +53,24 @@ test('빼기와 음수, 부등호, 거듭제곱·근호·도·퍼센트·선분'
   expect(say('부등식이란?\n\n수나 식의 크기')).toBe('부등식이란? 수나 식의 크기');
 });
 
+test('붙어 있는 수식 $a$$b$ 는 화면처럼 두 수식, $$…$$ 는 한 수식 · 빈칸 밑줄 · n제곱근 지수 · 이온 전하', () => {
+  // 화학 반응식처럼 수식 둘이 붙어 있어도 $ 짝이 어긋나지 않는다(예전에는 뒤 수식들이 글자째 읽혔다)
+  const ion = say('- (−)극: $\\mathrm{Na}^{+}$$+e^{-}\\rightarrow \\mathrm{Na}$ (금속 나트륨이 생긴다)\n- (+)극: $2\\mathrm{Cl}^{-}\\rightarrow \\mathrm{Cl}_{2}+2e^{-}$');
+  expect(ion).not.toMatch(/[$\\{}^]/);
+  expect(ion).toContain('Na 플러스 더하기 e 마이너스');
+  expect(ion).toContain('Cl 마이너스');
+  expect(say('$a$$b$')).toBe('a b');
+  expect(say('식 $$x^2$$ 입니다')).toBe('식 x 제곱 입니다');
+  expect(say('$\\mathrm{Ca}^{2+}$')).toBe('Ca 2플러스');
+  expect(say('가격은 \\$5')).toBe('가격은 달러5');
+  // 빈칸: ___ 와 남은 _ 는 '빈칸', __밑줄__ 은 글만
+  expect(say('The number of visitors ___ increasing.')).toBe('The number of visitors 빈칸 increasing.');
+  expect(say('_at 낱말')).toBe('빈칸 at 낱말');
+  expect(say('__밑줄__ 글')).toBe('밑줄 글');
+  // n제곱근의 지수 안 수식도 말로
+  expect(say('$\\sqrt[2\\times3]{5}$')).toBe('2 곱하기 3제곱근 5');
+});
+
 test('마크다운: 굵게·밑줄·빈칸·목록·인용·표는 글만, 그림 글자(이모지)는 읽지 않는다', () => {
   expect(say('**용질**이에요. [[빈칸]] 에 알맞은 말')).toBe('용질이에요. 빈칸 에 알맞은 말');
   expect(say('__밑줄__ 친 말')).toBe('밑줄 친 말');

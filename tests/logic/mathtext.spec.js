@@ -194,6 +194,23 @@ test.describe('TeX → 교과서 모양 (구조)', () => {
     expect(tex('x_1^2')).toContain('<span class="mt-supsub"><span class="mt-sup">2</span><span class="mt-sub">1</span></span>');
     expect(tex('x^2_1')).toContain('<span class="mt-supsub"><span class="mt-sup">2</span><span class="mt-sub">1</span></span>');
   });
+  test('\\mathrm{…} 안의 첨자·명령은 수식으로 읽고 글자는 곧게(m/s²·kg·m/s²·CO₂·kΩ) — 단순한 \\mathrm{cm} 은 예전처럼 글자 그대로', () => {
+    // 예전에는 \mathrm{m/s^2} 가 "m/s^2" 로 글자째 보였다(일반물리·고등 물리 단원)
+    expect(tex('~mathrm{m/s^2}')).toContain('<span class="mt-up">m</span>/<span class="mt-up">s</span><span class="mt-sup">2</span>');
+    expect(tex('~mathrm{CO_2}')).toContain('<span class="mt-up">C</span><span class="mt-up">O</span><span class="mt-sub">2</span>');
+    for (const x of ['m/s^2', 'kg~cdot m/s^2', 'g/cm^{3}', 'N~cdot m', 'k~Omega']) {
+      const h = tex('9.8~mathrm{' + x + '}');
+      expect(h, x).not.toMatch(/mt-v|\^|\\|cdot|Omega/); // 기울인 변수도, 글자째 남은 명령도 없다
+    }
+    expect(T.plain(S('$~mathrm{m/s^2}$'))).toBe('m/s²');
+    expect(T.plain(S('$~mathrm{kg~cdot m/s^2}$'))).toBe('kg·m/s²');
+    expect(T.plain(S('$~mathrm{CO_2}$'))).toBe('CO₂');
+    expect(T.plain(S('$~mathrm{k~Omega}$'))).toBe('kΩ');
+    expect(tex('~mathrm{cm}')).toContain('<span class="mt-text mt-rm">cm</span>'); // 예전 그대로
+    expect(T.check(S('$9.8~mathrm{m/s^2}$'))).toEqual([]);
+    // 안쪽 오류도 그 자리로 알린다
+    expect(T.check(S('$~mathrm{m^}$')).join(' ')).toMatch(/첨자/);
+  });
   test('별표 첨자 x^*·P^{*}·x^{\\ast} 는 곱하기(×)가 아니라 별표(∗) — 첨자가 아닌 * 는 예전처럼 ×', () => {
     const star = '<span class="mt-sup"><span class="mt-ord">∗</span></span>';
     expect(tex('x^*')).toContain(star);

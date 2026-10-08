@@ -65,6 +65,8 @@
     var e = exp.replace(/\s+/g, '');
     if (e === '\\circ' || e === '°') return base + '도';
     if (e === '*' || e === '\\ast') return base + ' 스타'; // x^* — 별표 첨자(리만 합의 x*, 경제학의 P*)
+    var chg = /^(\d*)([+−-])$/.exec(e);                    // 이온 전하·한쪽 극한: Na^+ → Na 플러스, Ca^{2+} → Ca 2플러스, a^- → a 마이너스
+    if (chg) return base + ' ' + chg[1] + (chg[2] === '+' ? '플러스' : '마이너스');
     if (e === '2') return base + ' 제곱';
     if (e === '3') return base + ' 세제곱';
     return base + '의 ' + texWords(exp).trim() + '제곱';
@@ -95,7 +97,8 @@
           if (s.charAt(k) === '[') { var close = s.indexOf(']', k); nth = s.slice(k + 1, close); k = close + 1; }
           var g = group(s, skipSpace(s, k));
           i = g.end;
-          out += (nth === '3' ? '세제곱근 ' : nth ? nth + '제곱근 ' : '루트 ') + texWords(g.body).trim();
+          var nthWords = nth ? clean(opWords(texWords(nth))) : ''; // 지수 안의 수식도 말로(2\times3 → 2 곱하기 3)
+          out += (nth === '3' ? '세제곱근 ' : nth ? nthWords + '제곱근 ' : '루트 ') + texWords(g.body).trim();
         } else if (name === 'text' || name === 'mathrm' || name === 'mathbf' || name === 'textbf' || name === 'mathit') {
           var t = group(s, skipSpace(s, i));
           i = t.end;
@@ -205,17 +208,24 @@
     if (src === null || src === undefined) return '';
     var s = String(src).replace(/\r\n?/g, '\n');
     s = s.replace(/\[\[\?\]\]/g, ' 물음표 ').replace(/\[\[[^\]]*\]\]/g, ' 빈칸 ');
-    // 수식 $…$ (\$ 는 달러 글자)
+    // 수식 $…$·$$…$$ (\$ 는 달러 글자) — 왼쪽부터 짝을 짓는다: 붙어 있는 $a$$b$ 도 화면처럼 두 수식
     var parts = [];
-    var re = /(^|[^\\])\$([^$]+)\$/g;
     var last = 0;
-    var m;
-    while ((m = re.exec(s))) {
-      var start = m.index + m[1].length;
-      parts.push({ text: s.slice(last, start) });
-      parts.push({ math: m[2] });
-      last = start + m[2].length + 2;
-      re.lastIndex = last;
+    var pos = 0;
+    var isDollar = function (k) { return s.charAt(k) === '$' && (k === 0 || s.charAt(k - 1) !== '\\'); };
+    var nextDollar = function (k) { while (k < s.length && !isDollar(k)) k++; return k < s.length ? k : -1; };
+    while (pos < s.length) {
+      if (!isDollar(pos)) { pos++; continue; }
+      var display = isDollar(pos + 1);
+      var from = pos + (display ? 2 : 1);
+      var close = nextDollar(from);
+      if (display && close >= 0 && !isDollar(close + 1)) display = false; // $$ 로 닫히지 않으면 줄 안 수식 둘로 본다
+      if (!display) { from = pos + 1; close = nextDollar(from); }
+      if (close < 0) break; // 닫는 $ 가 없다 — 남은 글은 그대로
+      parts.push({ text: s.slice(last, pos) });
+      parts.push({ math: s.slice(from, close) });
+      last = close + (display ? 2 : 1);
+      pos = last;
     }
     parts.push({ text: s.slice(last) });
     var out = parts.map(function (p) {
@@ -226,7 +236,9 @@
           if (/^[\s|:-]+$/.test(line)) return '';
           return line.split('|').map(function (c) { return c.trim(); }).filter(Boolean).join(', ');
         })
-        .replace(/\*\*|__/g, '');
+        .replace(/_{3,}/g, ' 빈칸 ')   // ___ 은 빈칸
+        .replace(/\*\*|__/g, '')        // 굵게·밑줄 표시
+        .replace(/_/g, ' 빈칸 ');       // 남은 _ 도 빈칸(_at, c_t)
       return opWords(t);
     }).join('');
     // 그림 글자(이모지)·보이지 않는 이음 글자는 읽지 않는다
