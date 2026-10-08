@@ -186,10 +186,11 @@
 - 실제 학생 데이터(백업 파일·내보낸 기록·스크린샷)를 저장소에 넣지 않는다. 테스트는 가상의 이름(민수·지아 등)과 더미 데이터만 쓴다.
 - 이 원칙을 바꾸는 기능(동기화·계정 등)은 사용자 결정 없이 넣지 않는다.
 
-## 지금 진행 중인 작업 (2026-10-02)
+## 지금 진행 중인 작업 (2026-10-08 — 처음 2026-10-02)
 
-- **전 과목 단원(약 1,000개)을 여러 에이전트가 동시에 쓰고 있다** (`data/units/*.js`). 내용 작성 워크플로가 끝날 때까지
-  단원 파일이 카탈로그(`data/catalog.js`)와 맞지 않거나 일부만 있는 것은 **작성 중이기 때문**이다.
+- **지금 상태와 다음 일은 루트의 `PROGRESS.md`(한 장) → `NEXT_TASK.md`(다음 작업·재개 방법) → `DECISIONS.md` · `TEST_RESULTS.md` 에 있다**(사용자 지시 2026-10-08 "자율개발·자동복구"). 작업 단위마다 고친다.
+- **남은 대학·성인 단원을 여러 에이전트가 워크플로로 쓰고 있다** (`data/units/*.js`, 한 번에 작업 5개). 워크플로가 끝날 때까지
+  단원 파일이 카탈로그(`data/catalog.js`)와 맞지 않거나 일부만 있는 것은 **작성 중이기 때문**이다. 물결이 끝나면 `node scripts/after-wave.js`.
 - 그래서 내용 작성 담당이 아닌 작업(화면·엔진·검사기·통합 점검)은 **`data/units/` 의 파일을 지우거나, 옮기거나, 고치지 않는다.**
   카탈로그·내용 검사가 그 때문에 실패하면 고치려 하지 말고 **보고만** 한다. 화면 테스트는 `tests/fixtures/` 의 가짜 데이터로 한다.
 - 학습 내용 형식에 가정교사 흐름 칸이 더해졌다(이해 확인 `check`, 오답 분석 `concept`·`why`·`wrong`, 학생 수준 `pace`) — `docs/ARCHITECTURE.md` §7.4.
@@ -227,7 +228,8 @@ tools/content-workflow.js 단원 작성·고쳐 쓰기·독립 검토 워크플�
 docs/ARCHITECTURE.md      모듈 계약·데이터 형식
 docs/CONTENT-GUIDE.md     학습 내용 작성 안내 (문체·문제 유형·검증)
 docs/CURRICULUM-REVISION.md 교육과정 개정 반영 차례(감지 → 비교 → 적용 → 다시 쓰기 → 배포)
-scripts/                  validate-content.js · build-index.js · build-catalog.js · make-icons.js ·
+PROGRESS.md · NEXT_TASK.md · DECISIONS.md · TEST_RESULTS.md   지금 상태 · 다음 작업과 재개 방법 · 설계 결정 · 시험 결과(2026-10-08 — 자세한 날짜별 기록은 docs/PROGRESS.md)
+scripts/                  validate-content.js · build-index.js · build-catalog.js · make-icons.js · after-wave.js(물결 뒤 정리) · content-jobs.js(준비 중 단원 → 워크플로 작업) ·
                           curriculum-diff.js · curriculum-apply.js · curriculum-watch.js · curriculum-standards.js(교육과정 개정)
 scripts/lib/              notices(고시문) · standards(성취기준 읽기·비교) · revision(판정·반영·되돌리기) · sources(공식 경로) ·
                           hwp · xlsx · zip(문서 읽기) · net(robots.txt·내려받기)

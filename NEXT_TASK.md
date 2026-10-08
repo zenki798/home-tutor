@@ -1,0 +1,51 @@
+# NEXT_TASK — 다음 작업과 재개 방법 (가정교사)
+
+> 새 세션은 `PROGRESS.md`(지금 상태 한 장) → 이 파일 → `docs/PROGRESS.md`(날짜별 자세한 기록) 순서로 읽고, **실제 상태(git·파일)와 대조한 뒤** 이어 간다.
+> 마지막 갱신: 2026-10-08 (사용자 지시 "자율개발·자동복구", 기한 2026-10-10)
+
+## 1. 바로 다음 작업
+
+**남은 대학·성인 158단원 작성 + 독립 검토** — 워크플로를 한 번에 작업 5개(작성 5 + 검토 5 = 에이전트 10명)씩, 모두 10번.
+다음 묶음은 늘 `node scripts/content-jobs.js --run 5` 의 **첫 묶음**이다(끝낸 단원은 '준비 중'이 아니어서 목록에서 빠진다).
+
+| 묶음 | 작업 (과정#n · 단원 수) |
+|---|---|
+| W1 | math-u-calc#1(4) · math-u-linalg#1(4) · math-u-stat#1(4) · eng-u-grammar#1(2) · eng-u-toeic#1(4) |
+| W2 | eng-u-toeic#2(4) · eng-u-toeic#3(2) · soc-u-econ#1~3(4·4·2) |
+| W3 | soc-u-psych#1~3(4·4·2) · sci-u-bio#1~2(4·4) |
+| W4 | sci-u-bio#3(2) · sci-u-chem#1~3(4·4·2) · sci-u-phy#1(4) |
+| W5 | sci-u-phy#2~3(4·2) · kor-a-literacy#1~3(4·4·2) |
+| W6 | kor-a-spell#1~3(4·4·2) · math-a-basic#1~2(4·4) |
+| W7 | math-a-basic#3(2) · math-a-life#1~3(4·4·2) · eng-a-basic#1(4) |
+| W8 | eng-a-basic#2~3(4·4) · eng-a-talk#1~3(4·4·2) |
+| W9 | soc-a-law#1~3(4·4·2) · hist-a-korea#1(2) · sci-a-life#1(4) |
+| W10 | sci-a-life#2~3(4·2) |
+
+## 2. 묶음 하나를 하는 차례
+
+1. 시작 전: `git status --short` 가 깨끗한지(앞 묶음이 커밋됐는지), 다른 워크플로가 돌고 있지 않은지 본다. **워크플로는 한 번에 하나.**
+2. 워크플로: Claude Code 의 Workflow 도구에 `tools/content-workflow.js` 내용을 script 로,
+   args `{ "root": "<이 폴더 절대경로>", "tag": "W1 …", "jobs": [위 묶음의 작업 문자열 5개] }`.
+   (2026-10-08 실행본은 작성자·검토자에게 "작업10 폴더 안에서만, 작업10 의 AGENTS.md 를 따른다"는 한 줄을 더했다.)
+3. 워크플로가 도는 동안: `data/units/` 를 고치지 않고, 전체 시험·`scripts/after-wave.js` 를 돌리지 않는다.
+4. 끝나면 차례로:
+   - `node scripts/after-wave.js` — 끊긴 파일을 `tmp/partial-units/` 로, 카탈로그·색인 다시 만들기, 내용 검사(오류 0 이어야 한다)
+   - 화면 문제 풀이 점검(이 PC 의 `tmp/quiz-scan.js <단원id…>` — 없으면 건너뛰고 기록)
+   - `npx playwright test` — 전체 통과(약 11~13분)
+   - 검토 결과(고친 곳·남은 의문)를 `tmp/<묶음>-review.json` 에 남기고, `docs/PROGRESS.md`·`PROGRESS.md`·`TEST_RESULTS.md` 를 고친다
+   - 단원 파일·`data/catalog.js`·`data/index/*` ·문서를 **이름을 적어** `git add` → 커밋(작성자 noreply, 훅이 비밀정보 검사) → `git fetch` 후 `git push`(CI 가 시험을 통과하면 배포)
+
+## 3. 묶음이 끝난 뒤의 다음 일 (우선순위 — 사용자 지시 2026-10-08)
+
+1. (1순위 점검) 학생 기록 분리·저장·백업 복원 회귀가 없는지 — 새 기능의 기록(오답노트 due·reports·prefs·gradeAt)이 백업·학생 삭제·기록 지우기와 맞는지 시험이 덮는다(`tests/logic/storage.spec.js`, `tests/ui/backup.spec.js`)
+2. (2순위) 검토자들이 남긴 의문(대학 35단원 24건 — `tmp/r1-review.json`, 그 전 약 1,150건 — `tmp/*-review.json`)을 확인 가능한 것부터 처리
+3. (2순위) 내용 검사 경고 8건(값이 같은 보기 3·보기 2개짜리 이해 확인 4·선형대수 생성기 1/300 실패) 확인
+4. (3순위) 교육과정 수동 확인 3건은 공식 원문 파일이 있어야 한다(사람 일 — `docs/CURRICULUM-REVISION.md`)
+
+## 4. 복구할 때 주의
+
+- 세션이 워크플로 도중에 끊기면: 미커밋 단원 파일이 남아 있을 수 있다. 같은 세션이면 Workflow 의 `resumeFromRunId` 로 이어 가고,
+  새 세션이면 `node scripts/after-wave.js` 로 끊긴 파일을 치운 뒤 시험 → 커밋하고, 그 묶음의 남은 단원은 다음 묶음에 다시 들어간다(`content-jobs.js` 가 다시 뽑는다).
+- 같은 PC 에서 다른 세션이 작업9(점검 프로그램)의 Electron 시험을 돌리면 PC 가 느려진다. 속도 시험은 `perf` 프로젝트에서 마지막에, 여러 번 재어 가장 빠른 값으로 판정한다.
+- 사용량 한도가 풀려도 저절로 다시 시작되지 않는다 — 새 세션에서 이 파일의 차례대로 다시 시작한다. 한도를 우회하거나 다른 계정을 쓰지 않는다.
+- 위험·비용 작업(개인정보 전송·유료 API·데이터 삭제·인증정보 변경)은 사용자 승인 없이 하지 않는다. 배포(push)는 2026-10-08 사용자 승인 범위(전체 시험·비밀정보 검사 통과 뒤).
