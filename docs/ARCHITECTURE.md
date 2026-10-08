@@ -134,7 +134,8 @@ TutorMath.exactValue(str) → Frac|null        변수 없이 + - × ÷ 거듭제
 
 ```
 TutorMath.normText(s) → string     비교용: NFKC, 앞뒤·중간 공백 제거, 소문자, 끝의 마침표·물음표 제거,
-                                   '−'·'–'→'-', '×'→'*', '÷'→'/', '²'→'^2', '³'→'^3', 따옴표 통일
+                                   '−'·'–'→'-', '×'→'*', '÷'→'/', '²'→'^2', '³'→'^3', 따옴표 통일,
+                                   가운뎃점 통일(한글 자판 ㆍ·‧·∙·⋅·・ → ·)과 수 사이의 마침표도 가운뎃점(5.18 = 5·18, 3.1 = 3·1 — 양쪽을 똑같이 바꾼다, 2026-10-09)
 TutorMath.parseNumberAnswer(s) → Frac|null
                                    '3/4' '-0.25' '1 2/3' '1과 2/3' '4분의 3'(=3/4) '1,000' '+5' '½' 을 읽는다
                                    과학 표기도: '1.2×10^-3' '1.2×10⁻³' '3*10^8' '1.0\times10^{3}' '1.2e-3' '10^4' (지수 ±15 까지 — 정확한 분수로).
@@ -208,7 +209,7 @@ TutorText.check(src) → string[]     문제점 목록 (닫히지 않은 $, 모�
 - 함수 이름(곧은 글씨): `\sin \cos \tan \log \ln \lim \max \min \exp \det`
 - 큰 연산자: `\sum_{k=1}^{n}`, `\int_{a}^{b}`, `\lim_{x \to 0}` (아래·위에 붙임), `\prod`
 - 꾸밈: `\overline{AB}`(선분), `\overrightarrow{AB}`, `\vec{a}`, `\hat{p}`, `\bar{x}`, `\widehat{AB}`(호)
-- 글자: `\text{원}`, `\mathrm{cm}`, `\mathbf{v}` — `\mathrm{…}` 안에 첨자·명령이 있으면(`\mathrm{m/s^2}`·`\mathrm{kg\cdot m/s^2}`·`\mathrm{CO_2}`·`\mathrm{k\Omega}`) 그 안을 수식으로 읽고 글자만 곧게 그린다(2026-10-09 — 예전에는 "m/s^2" 로 글자째 보였다). 첨자·명령이 없으면 예전처럼 글자 그대로. `\mathrm{A'B}` 처럼 수식 안의 `'` 는 프라임(A′B — 기하의 점), `\text{…}` 안의 `'` 는 작은따옴표 그대로
+- 글자: `\text{원}`, `\mathrm{cm}`, `\mathbf{v}` — `\mathrm{…}` 안에 첨자·명령이 있으면(`\mathrm{m/s^2}`·`\mathrm{kg\cdot m/s^2}`·`\mathrm{CO_2}`·`\mathrm{k\Omega}`) 그 안을 수식으로 읽고 글자만 곧게 그린다(2026-10-09 — 예전에는 "m/s^2" 로 글자째 보였다). 첨자·명령이 없으면 예전처럼 글자 그대로. `\mathrm{A'B}` 처럼 수식 안의 `'` 는 프라임(A′B — 기하의 점), `\text{…}` 안의 `'` 는 작은따옴표 그대로. `\text{…}` 안의 `\%` `\$` `\&` `\#` `\_` `\{` `\}` 는 그 글자로 보인다(2026-10-09 — 예전에는 백슬래시째 '물가 상승률(\%)')
 - 순열·조합: `{}_{n}\mathrm{P}_{r}`, `{}_{n}\mathrm{C}_{r}`, `\binom{n}{r}`
 - 괄호 크기: `\left( \right)`, `\left[ \right]`, `\left\{ \right\}`, `\left| \right|`, `\left. \right.` (크기만 맞춤)
 - 공백: `\,` `\;` `\quad` `\ `
@@ -253,7 +254,7 @@ TutorFig.textWidth(글자, 크기) → px   글자 폭 어림 — 시험·점검
 ## 5. `js/search.js` — `TutorSearch` (질문 답변의 "찾기")
 
 ```
-TutorSearch.normalize(s) → string          NFKC·소문자·문장부호 제거
+TutorSearch.normalize(s) → string          NFKC·소문자·문장부호 제거 — 수 사이 가운뎃점·마침표는 붙인다(6·25 = 6.25 = 625, 5.18 = 518 — 마침표는 2026-10-09)
 TutorSearch.tokenize(s) → string[]         낱말로 나누고 조사·어미를 뗀다 (은/는/이/가/을/를/의/에/에서/로/으로/와/과/도/만/이란/란/
                                            이에요/예요/인가요/인지/하는/하면/해요/뭐야/뭐예요 …), 묻는 말(무엇, 어떻게, 왜, 알려줘 …)은 버린다
 TutorSearch.build(entries) → index         entries: 아래 색인 항목 배열
