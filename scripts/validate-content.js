@@ -489,13 +489,18 @@ function extraProblemChecks(p, base, where, report) {
   // 값이 같은 보기 (정답 1/2 와 오답 2/4 → 정답이 둘). 형태를 묻는 문제면 괜찮으므로 경고
   // — 문제 글이 형태를 묻으면(대분수·가분수·진분수·기약분수·약분·통분·꼴·형태) 값이 같아도 정답이 하나라서 경고하지 않는다(2026-10-08)
   const FORM_Q = /대분수|가분수|진분수|기약분수|약분|통분|꼴|형태/;
+  // — "크기가 다른(아닌) 것은?"처럼 하나만 다른 것을 고르는 문제는 같은 값의 오답이 일부러 여럿이다.
+  //   정답이 그 같은 값 묶음에 들지 않으면 정답은 하나라서 경고하지 않는다(2026-10-09)
+  const ODD_Q = /(다른|아닌|틀린)\s*(것|분수|수|값|식|하나)|(다른|아닌|틀린)\s*(것은|분수는|수는|값은|식은)/;
   if ((p.type === 'choice' || p.type === 'order') && Array.isArray(p.choices) && !(p.type === 'choice' && isStr(p.q) && FORM_Q.test(p.q))) {
     const vals = p.choices.map(choiceNumber);
+    const oddOne = p.type === 'choice' && isStr(p.q) && ODD_Q.test(p.q.replace(/\*\*|__/g, '')) && typeof p.answer === 'number';
     outer:
     for (let i = 0; i < vals.length; i++) {
       if (!vals[i]) continue;
       for (let j = i + 1; j < vals.length; j++) {
         if (vals[j] && vals[i].eq(vals[j])) {
+          if (oddOne && i !== p.answer && j !== p.answer && !(vals[p.answer] && vals[p.answer].eq(vals[i]))) continue;
           report(base + '.choices', '값이 같은 보기가 있어요: [' + i + '] ' + show(p.choices[i], 30) + ' = [' + j + '] ' + show(p.choices[j], 30) +
             (p.type === 'choice' ? ' — 형태(기약분수·대분수 등)를 묻는 문제가 아니면 정답이 둘이 돼요' : ' — 크기 순서를 정할 수 없어요'), 'warning', 'same-value');
           break outer;

@@ -207,6 +207,10 @@ test.describe('TeX → 교과서 모양 (구조)', () => {
     expect(T.plain(S('$~mathrm{CO_2}$'))).toBe('CO₂');
     expect(T.plain(S('$~mathrm{k~Omega}$'))).toBe('kΩ');
     expect(tex('~mathrm{cm}')).toContain('<span class="mt-text mt-rm">cm</span>'); // 예전 그대로
+    // 수식 안의 ' 는 프라임(기하의 점 A′) — \text{…} 안의 ' 는 작은따옴표 그대로
+    expect(tex("~mathrm{A'B}")).toContain('<span class="mt-text mt-rm">A′B</span>');
+    expect(T.plain(S("$~mathrm{A'B'}$"))).toBe('A′B′');
+    expect(tex("~text{it's}")).toContain("it&#39;s");
     expect(T.check(S('$9.8~mathrm{m/s^2}$'))).toEqual([]);
     // 안쪽 오류도 그 자리로 알린다
     expect(T.check(S('$~mathrm{m^}$')).join(' ')).toMatch(/첨자/);
@@ -418,6 +422,11 @@ test.describe('평문 plain (검색·aria-label)', () => {
 });
 
 test.describe('검사 check', () => {
+  test('깨진 글자(U+FFFD)는 오류 — 글을 옮기다 망가진 자리(2026-10-09 단원 검토에서 찾음)', () => {
+    const errs = T.check('기준 세기 $I_0$' + String.fromCharCode(0xFFFD) + '으로 나눕니다');
+    expect(errs.join(' ')).toContain('깨진 글자(U+FFFD)');
+    expect(T.check('기준 세기 $I_0$으로 나눕니다')).toEqual([]);
+  });
   // 실제 교과 문장 (초등 → 대학, 여러 과목). ~ 는 백슬래시
   const OK = [
     '사과 3개와 배 2개가 있어요. 과일은 모두 몇 개일까요?',

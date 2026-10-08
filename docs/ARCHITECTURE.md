@@ -161,7 +161,7 @@ TutorText.render(src) → HTML        블록 서식까지 (문단·목록·표·
 TutorText.inline(src) → HTML        한 줄 서식만 (보기·버튼 안 글자) — 블록 문법은 글자 그대로
 TutorText.tex(texSrc) → HTML        수식 하나
 TutorText.plain(src) → string       검색·aria-label 용 평문. \frac{3}{4} → 3/4, x^{2} → x², \sqrt{2} → √2
-TutorText.check(src) → string[]     문제점 목록 (닫히지 않은 $, 모르는 명령, 중괄호 짝, 표 칸 수 불일치 …). 정상이면 []
+TutorText.check(src) → string[]     문제점 목록 (닫히지 않은 $, 모르는 명령, 중괄호 짝, 표 칸 수 불일치, 깨진 글자 U+FFFD …). 정상이면 []
 ```
 
 **안전:** 입력의 모든 글자를 HTML 이스케이프한다. 입력에 HTML 태그를 쓰면 글자 그대로 보인다(태그로 해석하지 않는다).
@@ -197,7 +197,7 @@ TutorText.check(src) → string[]     문제점 목록 (닫히지 않은 $, 모�
 - 함수 이름(곧은 글씨): `\sin \cos \tan \log \ln \lim \max \min \exp \det`
 - 큰 연산자: `\sum_{k=1}^{n}`, `\int_{a}^{b}`, `\lim_{x \to 0}` (아래·위에 붙임), `\prod`
 - 꾸밈: `\overline{AB}`(선분), `\overrightarrow{AB}`, `\vec{a}`, `\hat{p}`, `\bar{x}`, `\widehat{AB}`(호)
-- 글자: `\text{원}`, `\mathrm{cm}`, `\mathbf{v}` — `\mathrm{…}` 안에 첨자·명령이 있으면(`\mathrm{m/s^2}`·`\mathrm{kg\cdot m/s^2}`·`\mathrm{CO_2}`·`\mathrm{k\Omega}`) 그 안을 수식으로 읽고 글자만 곧게 그린다(2026-10-09 — 예전에는 "m/s^2" 로 글자째 보였다). 첨자·명령이 없으면 예전처럼 글자 그대로
+- 글자: `\text{원}`, `\mathrm{cm}`, `\mathbf{v}` — `\mathrm{…}` 안에 첨자·명령이 있으면(`\mathrm{m/s^2}`·`\mathrm{kg\cdot m/s^2}`·`\mathrm{CO_2}`·`\mathrm{k\Omega}`) 그 안을 수식으로 읽고 글자만 곧게 그린다(2026-10-09 — 예전에는 "m/s^2" 로 글자째 보였다). 첨자·명령이 없으면 예전처럼 글자 그대로. `\mathrm{A'B}` 처럼 수식 안의 `'` 는 프라임(A′B — 기하의 점), `\text{…}` 안의 `'` 는 작은따옴표 그대로
 - 순열·조합: `{}_{n}\mathrm{P}_{r}`, `{}_{n}\mathrm{C}_{r}`, `\binom{n}{r}`
 - 괄호 크기: `\left( \right)`, `\left[ \right]`, `\left\{ \right\}`, `\left| \right|`, `\left. \right.` (크기만 맞춤)
 - 공백: `\,` `\;` `\quad` `\ `

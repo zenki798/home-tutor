@@ -334,7 +334,8 @@
         for (var ie = 0; ie < inner.errors.length; ie++) this.err(inner.errors[ie].msg, base + inner.errors[ie].at);
         return { type: 'group', items: uprightVars(inner.items) };
       }
-      return { type: 'styled', style: TEXTCMD[v], text: raw };
+      // \mathrm{A'B}: 수식 안의 ' 는 프라임(′) — 기하의 점 A′ (글자 명령 \text{…} 안의 ' 는 그대로 작은따옴표)
+      return { type: 'styled', style: TEXTCMD[v], text: v === 'mathrm' ? raw.replace(/'/g, '′') : raw };
     }
     if (v === 'left') return this.parseLeftRight(t);
     if (v === 'right') {
@@ -1144,6 +1145,9 @@
       errs.push(where(s, cm.index) + ': 보이지 않는 제어 문자(코드 ' + cm[0].charCodeAt(0) + ')가 있어요 — JS 문자열에서 TeX 명령의 ' +
         '백슬래시를 하나만 쓰면 \\f(폼피드)·\\t(탭) 같은 글자가 돼요. \\\\frac 처럼 두 번 쓰세요');
     }
+    // 깨진 글자(U+FFFD — 글을 옮기다 망가진 자리)는 화면에 �로 보인다
+    var bad = s.indexOf('�');
+    if (bad >= 0) errs.push(where(s, bad) + ': 깨진 글자(U+FFFD)가 있어요 — 그 자리의 글자를 다시 써 주세요');
     splitMath(s).forEach(function (g) {
       if (g.t === 'unclosed') {
         errs.push(where(s, g.at) + ': 닫히지 않은 $ 가 있어요 — 수식은 $…$ 로 감싸고, 달러 글자는 \\$ 로 써요');
