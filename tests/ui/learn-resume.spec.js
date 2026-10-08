@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { open, goHash, readStore, STUDENT } = require('./helpers');
+const { open, goHash, readStore, waitReady, STUDENT, STUDENT_B } = require('./helpers');
 
 /*
  * 개념 카드 이어 보기 (docs/ARCHITECTURE.md §17 — 3순위 '중단된 학습 이어하기'): 단원을 다시 열면
@@ -84,4 +84,29 @@ test('아직 개념 카드를 한 장도 보지 않은 단원은 "어디부터"�
   await expect(page.locator('.continue-card').first()).toContainText('일차부등식');
   await expect(page.locator('.continue-card .cc-next')).toHaveCount(0);
   await expect(page.locator('.continue-card').first()).toHaveAttribute('href', '#/unit/math-m2-01/learn');
+});
+
+test('학생을 바꾸면 앞 학생이 보던 카드 위치가 다음 학생에게 이어지지 않는다(다음 학생의 진도에 섞이지 않음) · 다른 탭에서 바꿔도', async ({ page }) => {
+  const B = STUDENT_B.id;
+  const storage = Object.assign({}, prog([0, 1]));
+  await open(page, { student: [STUDENT, STUDENT_B], storage, url: '/#/unit/math-m2-01/learn' });
+  expect(await visibleCard(page)).toEqual([2]); // 앞 학생: 이어 보기로 셋째 카드
+  await page.locator('[data-act="next"]').click();
+  expect(await visibleCard(page)).toEqual([3]);
+  // 학생 고르기 화면에서 다른 학생으로
+  await goHash(page, '#/');
+  await page.locator('.profile-card', { hasText: STUDENT_B.name }).click();
+  await waitReady(page);
+  await goHash(page, '#/unit/math-m2-01/learn');
+  expect(await visibleCard(page)).toEqual([0]); // 다음 학생은 아직 안 본 단원 — 첫 카드부터
+  await expect(page.locator('#cvResume')).toHaveCount(0);
+  await expect.poll(async () => ((await readStore(page, 'p.' + B + '.progress')) || {})['math-m2-01'].seen).toEqual([0]);
+  // 다른 탭에서 앞 학생으로 바꾼 것처럼(저장소의 지금 학생만 바뀜) — 다음 화면부터 그 학생의 상태로
+  await page.locator('[data-act="next"]').click(); // 다음 학생: 둘째 카드
+  await page.evaluate((id) => { Tutor.store.set('current', id); }, STUDENT.id);
+  await goHash(page, '#/home'); // 같은 주소로는 다시 그리지 않으니 다른 화면을 거쳐
+  await goHash(page, '#/unit/math-m2-01/learn');
+  // 앞 학생은 네 카드를 다 봤다 → 첫 카드부터(다음 학생이 보던 둘째 카드가 이어지지 않는다)
+  expect(await visibleCard(page)).toEqual([0]);
+  await expect(page.locator('#cvResume')).toHaveCount(0);
 });

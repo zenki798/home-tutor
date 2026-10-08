@@ -161,3 +161,33 @@ test('한 번에 10문제까지 내고, 남은 복습은 이어서 푼다', asyn
   const notes = await readStore(page, 'p.p-test-a.notes');
   expect(notes.filter((n) => n.due === '2026-10-11').length).toBe(10);
 });
+
+test('복습 결과: 또 틀린 문제의 개념 카드를 "다시 볼 개념"으로(단원 파일을 싣고 제목을 보인다), 누르면 그 카드로', async ({ page }) => {
+  const A1 = note('math-m2-01#p6', 'math-m2-01', Object.assign({}, OX, { concept: 1 }), { due: '2026-10-08' });
+  await open(page, { student: true, storage: withNotes([A1]), url: '/#/review' });
+  const box = page.locator('.review');
+  await box.locator('.ox-btn[data-v="true"]').click(); // 틀린 답
+  await box.locator('.pw-submit').click();
+  await expect(box.locator('.feedback')).toHaveClass(/is-bad/);
+  await box.getByRole('button', { name: '결과 보기' }).click();
+  const sec = page.locator('section[aria-labelledby="rvAgainTitle"]');
+  await expect(sec.getByRole('heading', { name: '다시 볼 개념' })).toBeVisible();
+  await expect(sec.locator('a')).toHaveText(['부등식의 성질']);
+  await expect(sec.locator('a')).toHaveAttribute('href', '#/unit/math-m2-01/learn?card=1');
+  await expect(sec).toContainText('틀린 문제 1개');
+  await sec.locator('a').click();
+  await waitReady(page);
+  const shown = await page.evaluate(() => Array.from(document.querySelectorAll('.concept-card')).filter((c) => !c.hidden).map((c) => Number(c.getAttribute('data-i'))));
+  expect(shown).toEqual([1]);
+});
+
+test('복습 결과: 다 맞혔거나 개념 번호가 없는 문제뿐이면 "다시 볼 개념"이 없다', async ({ page }) => {
+  await open(page, { student: true, storage: withNotes([A]), url: '/#/review' }); // A 는 개념 번호가 없다
+  const box = page.locator('.review');
+  await box.locator('.ox-btn[data-v="true"]').click();
+  await box.locator('.pw-submit').click();
+  await box.getByRole('button', { name: '결과 보기' }).click();
+  await expect(page.locator('.review-result')).toBeVisible();
+  await page.waitForTimeout(200);
+  await expect(page.locator('.again-box')).toHaveCount(0);
+});

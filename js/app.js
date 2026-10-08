@@ -795,6 +795,23 @@
       return;
     }
     S.profile = currentProfile();
+    /* 학생이 바뀌었으면(이 화면의 학생 고르기든, 다른 탭에서 바꾼 것이든) 화면이 기억하던 앞 학생의 상태를 버린다 —
+     * 풀던 예상문제·복습·대화·보던 개념 카드 위치가 다음 학생에게 이어져 그 학생의 기록에 섞이지 않게(1순위 학생별 분리) */
+    var pidNow = S.profile ? S.profile.id : '';
+    if (S.statePid !== pidNow) {
+      if (S.statePid !== undefined) {
+        S.quiz = null;
+        S.review = null;
+        S.chats = {};
+        S.unitUI = {};
+      }
+      S.statePid = pidNow;
+    }
+    /* 기록 지키기(§9.7): 학생 기록이 생기면 한 번, 브라우저에 기록을 지워지지 않게 요청한다 */
+    if (S.profile && !KEEP.asked && storageOk()) {
+      KEEP.asked = true;
+      keepCheck(keepAutoAsk());
+    }
     var needsProfile = ['home', 'course', 'unit', 'quiz', 'ask', 'notes', 'stats', 'review', 'summary'];
     if (!S.profile) {
       /* 지금 학생에게 PIN이 걸려 있으면 PIN을 맞혀야 그 학생의 화면·기록을 보여 준다 (§9.4) */
@@ -3389,6 +3406,29 @@
     });
   }
 
+  /* 다시 볼 개념(§18): 틀린 문제들의 [{ unit: 단원 id, c: 개념 카드 번호 }] → 많이 틀린 차례(같으면 먼저 틀린 차례)로 5개까지.
+   * 단원이 실려 있어야 제목을 안다(없으면 뺀다). 틀린 것이 없으면 '' */
+  function againBoxHtml(wrongs, titleId) {
+    var again = {}, order = 0;
+    wrongs.forEach(function (w) {
+      var u = w && w.unit ? Tutor.units[w.unit] : null;
+      if (!u || typeof w.c !== 'number' || w.c < 0 || !Array.isArray(u.concepts) || !u.concepts[w.c]) return;
+      var k = u.id + '#' + w.c;
+      if (!again[k]) again[k] = { u: u, i: w.c, n: 0, at: order++ };
+      again[k].n += 1;
+    });
+    var list = Object.keys(again).map(function (k) { return again[k]; })
+      .sort(function (a, b) { return b.n - a.n || a.at - b.at; }).slice(0, 5);
+    if (!list.length) return '';
+    var manyUnits = list.some(function (x) { return x.u.id !== list[0].u.id; });
+    return '<section class="again-box" aria-labelledby="' + titleId + '"><h3 class="section-title" id="' + titleId + '">다시 볼 개념</h3>' +
+      '<p class="muted small">' + esc(say({ e: '틀린 문제와 이어진 개념 카드예요. 한 번 더 보고 다시 풀어 봐요.', m: '틀린 문제와 이어진 개념 카드예요. 한 번 더 보고 다시 풀어 봐요.', h: '틀린 문제와 이어진 개념 카드입니다. 한 번 더 보고 다시 풀어 봅시다.' })) + '</p>' +
+      '<ul class="again-list">' + list.map(function (x) {
+        return '<li class="card again-item"><a class="link again-link" href="#/unit/' + encodeURIComponent(x.u.id) + '/learn?card=' + x.i + '">' + E.inline(x.u.concepts[x.i].title) + '</a>' +
+          '<span class="muted small">' + (manyUnits ? esc(E.plain(x.u.title)) + ' · ' : '') + '틀린 문제 ' + x.n + '개</span></li>';
+      }).join('') + '</ul></section>';
+  }
+
   function drawResult(host, focus) {
     var q = S.quiz;
     var total = q.items.length;
@@ -3406,26 +3446,9 @@
       '<p class="score-sub">' + total + '문제 중 ' + right + '문제를 맞혔어요 · ' + pct + '점</p>' +
       progressBar(pct, '') + '</section>';
     /* 다시 볼 개념(§18 — 오답 분석·복습 추천): 틀린 문제가 묶인 개념 카드를 많이 틀린 차례로, 그 카드로 바로 간다 */
-    var again = {}, order = 0;
-    wrong.forEach(function (w) {
-      var ci = w.it.p && typeof w.it.p.concept === 'number' ? w.it.p.concept : -1;
-      var u = w.it.unit ? Tutor.units[w.it.unit] : null;
-      if (ci < 0 || !u || !Array.isArray(u.concepts) || !u.concepts[ci]) return;
-      var k = u.id + '#' + ci;
-      if (!again[k]) again[k] = { u: u, i: ci, n: 0, at: order++ };
-      again[k].n += 1;
-    });
-    var againList = Object.keys(again).map(function (k) { return again[k]; })
-      .sort(function (a, b) { return b.n - a.n || a.at - b.at; }).slice(0, 5);
-    var manyUnits = againList.some(function (x) { return x.u.id !== againList[0].u.id; });
-    if (againList.length) {
-      html += '<section class="again-box" aria-labelledby="againTitle"><h3 class="section-title" id="againTitle">다시 볼 개념</h3>' +
-        '<p class="muted small">' + esc(say({ e: '틀린 문제와 이어진 개념 카드예요. 한 번 더 보고 다시 풀어 봐요.', m: '틀린 문제와 이어진 개념 카드예요. 한 번 더 보고 다시 풀어 봐요.', h: '틀린 문제와 이어진 개념 카드입니다. 한 번 더 보고 다시 풀어 봅시다.' })) + '</p>' +
-        '<ul class="again-list">' + againList.map(function (x) {
-          return '<li class="card again-item"><a class="link again-link" href="#/unit/' + encodeURIComponent(x.u.id) + '/learn?card=' + x.i + '">' + E.inline(x.u.concepts[x.i].title) + '</a>' +
-            '<span class="muted small">' + (manyUnits ? esc(E.plain(x.u.title)) + ' · ' : '') + '틀린 문제 ' + x.n + '개</span></li>';
-        }).join('') + '</ul></section>';
-    }
+    html += againBoxHtml(wrong.map(function (w) {
+      return { unit: w.it.unit, c: w.it.p && typeof w.it.p.concept === 'number' ? w.it.p.concept : -1 };
+    }), 'againTitle');
     if (wrong.length) {
       html += '<section class="wrong-box"><h3 class="section-title">틀린 문제 ' + wrong.length + '개</h3><ol class="wrong-list">' + wrong.map(function (w) {
         return '<li class="card"><div class="rich">' + E.render(w.it.p.q) + '</div>' +
@@ -4129,7 +4152,7 @@
       },
       onGraded: function (res, after) {
         var g = gradeNote(key, prob, res);
-        rv.results[rv.i] = { correct: res.correct, cleared: !!(g && g.cleared) };
+        rv.results[rv.i] = { correct: res.correct, cleared: !!(g && g.cleared), unit: note.unit, c: typeof prob.concept === 'number' ? prob.concept : -1 };
         var line = !g ? '' : g.cleared ? say({ m: '✔ 두 번 연속 맞혔어요! 오답노트에서 뺐어요.', h: '✔ 두 번 연속 맞혔습니다. 오답노트에서 뺐습니다.' }) :
           res.correct ? (g.due ? say({
             m: '✔ 맞혔어요! ' + TR.AFTER_RIGHT + '일 뒤(' + mdText(g.due) + ')에 한 번 더 볼게요.',
@@ -4172,9 +4195,20 @@
       '<p class="score-sub">' + esc(say({ m: done.length + '문제를 복습했어요.', h: done.length + '문제를 복습했습니다.' })) + '</p>' +
       '<ul class="review-sum"><li>맞힌 문제 ' + right + '개</li><li>오답노트에서 뺀 문제 ' + cleared + '개</li><li>내일 다시 볼 문제 ' + (done.length - right) + '개</li></ul>' +
       (left ? '<p class="review-left">남은 복습 ' + left + '문제</p>' : '') + '</section>' +
+      '<div class="again-host"></div>' +
       '<div class="action-row result-actions">' +
       (left ? '<button type="button" class="btn primary big" data-act="review-more">이어서 복습하기</button>' : '') +
       '<a class="btn big" href="#/notes">오답노트 보기</a><a class="btn big ghost" href="#/home">처음으로</a></div>';
+    /* 다시 볼 개념(§18): 복습에서도 또 틀린 문제의 개념 카드 — 제목을 보이려고 그 단원을 싣고 채운다 */
+    var wrongs = done.filter(function (r) { return !r.correct; });
+    var needUnits = [];
+    wrongs.forEach(function (r) {
+      if (r.unit && typeof r.c === 'number' && r.c >= 0 && !Tutor.units[r.unit] && needUnits.indexOf(r.unit) < 0 && Tutor.unitMeta(r.unit)) needUnits.push(r.unit);
+    });
+    Promise.all(needUnits.map(function (id) { return Tutor.loadUnit(id).then(null, function () { return null; }); })).then(function () {
+      var ah = $('.again-host', host);
+      if (ah && ah.isConnected) ah.innerHTML = againBoxHtml(wrongs, 'rvAgainTitle');
+    });
     var more = $('[data-act="review-more"]', host);
     if (more) {
       more.addEventListener('click', function () {
@@ -4694,6 +4728,7 @@
     html += '<section class="set-sec card" id="backup" aria-labelledby="setBackup"><h3 id="setBackup">학습 기록 옮기기</h3>' +
       '<p class="muted">다른 기기로 기록을 옮기거나 따로 보관할 때 써요. 백업 파일은 암호로 잠가서 암호를 모르면 아무도 열 수 없어요. 파일은 어디로도 보내지 않고 이 기기에 내려받아요.</p>' +
       (reason ? '<p class="notice small">' + esc(reason) + ' 그래서 지금은 백업을 만들거나 열 수 없어요.</p>' : '') +
+      (storageOk() ? keepHtml() : '') +
       '<form class="bk-export bk-part" novalidate><fieldset class="bk-fs"' + (reason ? ' disabled' : '') + '><legend class="bk-title">내보내기</legend>' +
       '<fieldset class="seg"><legend>누구의 기록을 내보낼까요?</legend><div class="seg-row">' +
       '<label class="seg-opt"><input type="radio" name="bkScope" value="me"' + (cur ? ' checked' : ' disabled') + '><span>지금 학생' + (cur ? ' (' + esc(cur.name || '이름 없음') + ')' : '') + '</span></label>' +
@@ -4763,6 +4798,41 @@
         function busyOn(form, on) {
           $$('button', form).forEach(function (b) { b.disabled = on; });
         }
+
+        /* 기록 지키기(§9.7): 지금 상태를 다시 물어 바뀌었으면 고쳐 그리고, 쓰는 공간을 채운다 */
+        function keepUsage() {
+          var u = $('#keepUsage', page);
+          var sm = navigator.storage;
+          if (!u || !sm || typeof sm.estimate !== 'function') return;
+          Promise.resolve().then(function () { return sm.estimate(); }).then(function (est) {
+            if (est && typeof est.usage === 'number' && est.usage > 0) {
+              u.textContent = '이 사이트가 이 기기에 쓰는 공간: 약 ' + sizeText(est.usage) + ' (한 번 본 단원 내용의 사본 포함)';
+            }
+          }, function () { /* 모르면 비워 둔다 */ });
+        }
+        function drawKeep() {
+          var box = $('.keep-box', page);
+          if (!box) return;
+          var tmp = doc.createElement('div');
+          tmp.innerHTML = keepHtml();
+          box.parentNode.replaceChild(tmp.firstChild, box);
+          keepUsage();
+        }
+        if ($('.keep-box', page)) {
+          var keepBefore = KEEP.state;
+          keepCheck(false).then(function (stt) { if (stt !== keepBefore) drawKeep(); else keepUsage(); });
+        }
+        page.addEventListener('click', function (e) {
+          var kb = e.target.closest('[data-act="keep-ask"]');
+          if (!kb) return;
+          kb.disabled = true;
+          keepCheck(true).then(function (stt) {
+            drawKeep();
+            var st2 = $('#keepState', page);
+            if (st2) { st2.setAttribute('tabindex', '-1'); st2.focus(); }
+            announce(stt === 'persisted' ? '이제 브라우저가 학습 기록을 지켜 줘요.' : '브라우저가 요청을 받아 주지 않았어요. 백업 파일을 만들어 두세요.');
+          });
+        });
         /* 고른 백업 파일 이름 (글자로만 넣는다) */
         function showFileName() {
           var fin = $('#bkFile', page);
@@ -5189,6 +5259,51 @@
     };
   };
 
+  /* ================= 기록 지키기 (ARCHITECTURE §9.7 — 1순위 데이터 보호) =================
+   * 브라우저는 기기 저장 공간이 모자라면 사이트 기록을 지울 수 있다(아이폰 사파리는 7일 넘게 열지 않은 사이트의 기록도).
+   * 학생 기록이 생기면 브라우저에 "지우지 말아 달라"(navigator.storage.persist)고 한 번 요청한다 — 크롬·엣지·사파리는 묻지 않고
+   * 스스로 정하고, 파이어폭스는 창을 띄워 물어서 저절로는 하지 않는다(설정의 단추로). 설정에서 지금 상태·쓰는 공간을 보이고 백업을 권한다. */
+  var KEEP = { state: 'unknown', asked: false }; // state: 'persisted' | 'best-effort' | 'unsupported' | 'unknown'
+  function keepCheck(ask) {
+    var sm = navigator.storage;
+    if (!sm || typeof sm.persisted !== 'function') {
+      KEEP.state = 'unsupported';
+      return Promise.resolve(KEEP.state);
+    }
+    return Promise.resolve().then(function () { return sm.persisted(); }).then(function (yes) {
+      if (yes || !ask || typeof sm.persist !== 'function') return yes;
+      return sm.persist();
+    }).then(function (yes) {
+      KEEP.state = yes ? 'persisted' : 'best-effort';
+      return KEEP.state;
+    }, function () {
+      KEEP.state = 'unsupported';
+      return KEEP.state;
+    });
+  }
+  function keepAutoAsk() { return !/Firefox\//.test(navigator.userAgent || ''); }
+  // 아이폰·아이패드 사파리 '브라우저'(홈 화면에 추가한 앱이 아닌) — 아이패드는 Mac 처럼 밝혀서 터치 지점 수로 가려낸다
+  function iosBrowser() {
+    var ua = navigator.userAgent || '';
+    var ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    return ios && !APP_MODE;
+  }
+  function keepHtml() {
+    // 이 화면에서 백업을 쓸 수 없으면(암호화 기능 없음) 백업을 권하지 않는다
+    var canBackup = !cryptoReason();
+    var msg = KEEP.state === 'persisted' ? '이 브라우저는 이 기기의 학습 기록을 지우지 않고 지켜 주고 있어요.' :
+      KEEP.state === 'best-effort' ? '기기 저장 공간이 모자라면 브라우저가 학습 기록을 지울 수 있어요.' + (canBackup ? ' 가끔 아래에서 백업 파일을 만들어 두세요.' : '') :
+        canBackup ? '가끔 아래에서 백업 파일을 만들어 두면 기기를 바꾸거나 기록이 지워져도 되살릴 수 있어요.' : '';
+    return '<div class="keep-box">' + (msg ? '<p class="keep-state" id="keepState">' + esc(msg) + '</p>' : '') +
+      (KEEP.state === 'best-effort' ? '<button type="button" class="btn small" data-act="keep-ask">기록을 지켜 달라고 요청하기</button>' : '') +
+      (iosBrowser() ? '<p class="notice small keep-ios">아이폰·아이패드 사파리에서는 7일 넘게 열지 않은 사이트의 기록이 지워질 수 있어요. ' +
+        (canBackup ? '홈 화면에 추가해서 쓰거나 백업 파일을 만들어 두세요.' : '홈 화면에 추가해서 쓰세요.') + '</p>' : '') +
+      '<p class="muted small keep-usage" id="keepUsage"></p></div>';
+  }
+  function sizeText(n) {
+    return n >= 1048576 ? (Math.round(n / 104857.6) / 10) + 'MB' : Math.max(1, Math.round(n / 1024)) + 'KB';
+  }
+
   /* ================= 기록 저장 문제 (ARCHITECTURE §9.6 — 1순위 데이터 보호) =================
    * 이 기기에 기록을 쓰지 못하면(저장 공간 부족 등) 저장소(js/storage.js)가 값을 메모리에 둔 채 잠시 뒤 저절로 다시 쓴다.
    * 그동안 화면 위에 알린다: 공간을 비우면 저절로(또는 '지금 다시 저장하기'로) 저장되고, 창을 닫기 전에 설정의 백업으로
@@ -5262,7 +5377,7 @@
     var ipad = /iPad/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     var ios = ipad || /iPhone|iPod/.test(ua);
     if (ios && window.isSecureContext && location.protocol !== 'file:') {
-      showInstall('앱처럼 쓰려면: 사파리 ' + (ipad ? '오른쪽 위' : '아래쪽') + ' 공유 버튼(□↑) → ‘홈 화면에 추가’', false);
+      showInstall('앱처럼 쓰려면: 사파리 ' + (ipad ? '오른쪽 위' : '아래쪽') + ' 공유 버튼(□↑) → ‘홈 화면에 추가’ · 홈 화면에 추가하면 학습 기록도 오래 남아요.', false);
     }
   }
 
