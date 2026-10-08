@@ -1352,6 +1352,9 @@
         '<span class="cc-unit">' + esc(E.plain(meta.unit.title)) + '</span><span class="cc-course">' + esc(rs.icon || '') + ' ' + esc(meta.course.title) + '</span></span></a>';
     }
 
+    /* 풀다 만 예상문제(§15) */
+    if (!all) html += quizResumeCardHtml();
+
     /* 오늘의 복습: 다음 복습 날이 된 오답이 있으면 (§10) */
     var dueN = all ? 0 : reviewDue().length;
     if (dueN) {
@@ -3006,6 +3009,93 @@
     return q;
   }
 
+  /* ---- 예상문제 이어 풀기 (§15, 2026-10-08) ----
+   * 새로고침하거나 휴대폰이 뒤에 있던 탭을 다시 불러와도 풀던 곳부터: 그 학생의 p.<id>.quiz 에 낸 문제(사본)·답·순서를 둔다(한 칸).
+   * 답을 하나라도 한 뒤에만 남기고, 다 풀면 지운다. 일주일이 지난 것은 버린다. 백업에는 넣지 않는다(잠깐의 상태). */
+  var QUIZ_KEEP_MS = 7 * 86400000;
+  function saveQuizState(q) {
+    if (!q || S.quiz !== q) return;
+    if (q.done || !q.answers.some(Boolean)) { if (q.done) store.remove(pk('quiz')); return; }
+    store.set(pk('quiz'), {
+      v: 1, key: q.key, at: Date.now(), title: q.title, i: q.i, total: q.total, retry: !!q.retry,
+      items: q.items.map(function (it) {
+        return { p: packProblem(it.p), unit: it.unit, src: it.src, gen: it.gen || null, key: it.key, extra: !!it.extra };
+      }),
+      answers: q.answers.map(function (a) { return a ? { correct: !!a.correct, given: String(a.given || '') } : null; }),
+      ad: q.adaptive ? { level: q.level, okRun: q.okRun, badRun: q.badRun, fromBank: q.fromBank, fromGen: q.fromGen, tries: q.gst ? q.gst.tries : 0 } : null,
+    });
+    /* 바로 저장한다(모아 쓰기 40ms 를 기다리지 않음) — 사파리는 답한 직후 페이지가 닫히면 밀린 쓰기를 끝내 주지 않았다.
+       같은 번에 이 답의 풀이 기록·진도·오답노트도 함께 저장된다 */
+    flushStore();
+  }
+  /* 저장해 둔 이어 풀기 기록(맞는 꼴이고 일주일 안이면) — 없으면 null */
+  function storedQuiz() {
+    var s = readObj(pk('quiz'));
+    if (s.v !== 1 || typeof s.key !== 'string' || s.key.indexOf('#/quiz/') !== 0 || !Array.isArray(s.items) || !s.items.length || !Array.isArray(s.answers)) return null;
+    if (Date.now() - num(s.at) > QUIZ_KEEP_MS) return null;
+    return s;
+  }
+  /* 같은 주소의 새 문제지(q)에 저장해 둔 문제·답을 되살린다. 단원 묶음이 다르거나 모양이 틀리면 되살리지 않는다 */
+  function restoreQuiz(q) {
+    var s = storedQuiz();
+    if (!s) {
+      if (isObj(store.get(pk('quiz'), null))) store.remove(pk('quiz')); // 오래되었거나 망가진 기록
+      return false;
+    }
+    if (s.key !== q.key) return false;
+    var items = [];
+    for (var k = 0; k < s.items.length; k++) {
+      var it = s.items[k];
+      if (!isObj(it) || !isObj(it.p) || typeof it.p.type !== 'string' || typeof it.key !== 'string' || q.unitIds.indexOf(it.unit) < 0) return false;
+      items.push({
+        p: unpackProblem(JSON.parse(JSON.stringify(it.p))), unit: it.unit, src: it.src === 'gen' || it.src === 'vocab' ? it.src : 'bank',
+        gen: typeof it.gen === 'string' ? it.gen : null, key: it.key, extra: !!it.extra,
+      });
+    }
+    q.items = items;
+    q.answers = s.answers.slice(0, items.length).map(function (a) {
+      return isObj(a) ? { correct: !!a.correct, given: typeof a.given === 'string' ? a.given : '' } : undefined;
+    });
+    q.i = clamp(Math.floor(num(s.i)), 0, items.length - 1);
+    q.total = Math.max(items.length, Math.floor(num(s.total)));
+    q.retry = !!s.retry;
+    if (q.retry) q.adaptive = false;
+    if (q.adaptive && isObj(s.ad)) {
+      ['level', 'okRun', 'badRun', 'fromBank', 'fromGen'].forEach(function (f) { if (typeof s.ad[f] === 'number') q[f] = s.ad[f]; });
+      /* 이미 낸 문제는 다시 내지 않는다 */
+      var used = {};
+      items.forEach(function (x) {
+        used[x.key] = 1;
+        if (q.gst) q.gst.seen[x.src === 'vocab' ? 'vocab|' + x.p.q : problemSig(x.p)] = 1;
+      });
+      if (q.gst) q.gst.tries = Math.max(q.gst.tries, Math.floor(num(s.ad.tries)));
+      (q.levels || []).forEach(function (l) { if (q.pools[l]) q.pools[l].bank = q.pools[l].bank.filter(function (b) { return !used[b.key]; }); });
+    }
+    q.resumed = true;
+    /* 답한 문제에서 [다음 문제]를 누르기 전에 닫혔으면 다음 문제로 */
+    if (q.answers[q.i]) advanceQuiz(q);
+    return true;
+  }
+  /* 다음 문제로 (맞춤 난이도면 그때 한 문제를 더 고른다). 더 없으면 끝 */
+  function advanceQuiz(q) {
+    q.i += 1;
+    if (q.i >= q.items.length && q.adaptive && q.items.length < q.total) {
+      var nx = drawNext(q);
+      if (nx) q.items.push(nx);
+      else q.total = q.items.length; // 낼 문제가 더 없으면 여기서 끝
+    }
+    if (q.i >= q.items.length) finishQuiz();
+  }
+  function quizResumeCardHtml() {
+    var s = storedQuiz();
+    if (!s) return '';
+    var answered = s.answers.filter(function (a) { return isObj(a); }).length;
+    var total = Math.max(s.items.length, Math.floor(num(s.total)));
+    return '<a class="continue-card quiz-resume-card" href="' + esc(s.key) + '"><span class="cc-icon" aria-hidden="true">✎</span>' +
+      '<span class="cc-text"><span class="cc-label">풀던 예상문제 이어 풀기</span><span class="cc-unit">' + esc(String(s.title || '예상문제')) + '</span>' +
+      '<span class="cc-course">' + answered + ' / ' + total + '문제 풀었어요</span></span></a>';
+  }
+
   /* 예상문제 시작은 언제나 새 seed 를 주소에 담는다 — 끝난 문제를 다시 시작해도 새 문제가 나오고, 새로고침하면 같은 문제로 이어진다 */
   function startQuiz(id, params) {
     go('#/quiz/' + encodeURIComponent(id) + qs(Object.assign({}, params, { seed: newSeed() })));
@@ -3048,6 +3138,7 @@
           back: course ? '#/course/' + encodeURIComponent(course.id) : '#/unit/' + encodeURIComponent(units[0].id) + '/' + (lv === '3' ? 'advanced' : 'practice'),
           subject: s.id,
         });
+        restoreQuiz(S.quiz); // 같은 문제지를 풀다 닫혔으면 그 자리부터(§15)
       }
       var q = S.quiz;
       return {
@@ -3067,6 +3158,9 @@
       return;
     }
     if (q.done) { drawResult(host, focus); return; }
+    saveQuizState(q); // 이어 풀기(§15) — 답을 하나라도 한 뒤부터
+    var resumeNote = q.resumed ? say({ m: '지난번에 풀던 곳부터 이어서 풀어요.', h: '지난번에 풀던 곳부터 이어서 풉니다.' }) : '';
+    q.resumed = false;
     var item = q.items[q.i];
     var p = item.p;
     var total = q.total;
@@ -3080,6 +3174,7 @@
       (q.retry ? '<span class="badge retry-badge">다시 풀기</span>' : '') + '</div>' +
       '<div class="pbar quiz-bar" aria-hidden="true"><span class="pbar-fill" style="width:' + Math.round((100 * q.i) / Math.max(1, total)) + '%"></span></div>' +
       (q.note && q.i === 0 ? '<p class="notice small">' + esc(q.note) + '</p>' : '') +
+      (resumeNote ? '<p class="notice small resume-note" role="status">' + esc(resumeNote) + '</p>' : '') +
       (levelNote ? '<p class="notice small level-note" role="status">' + esc(levelNote) + '</p>' : '') +
       '<div class="pw-host"></div>';
     var w = problemWidget(p, {
@@ -3102,17 +3197,12 @@
       },
       onGraded: function (res, after) {
         onQuizAnswer(item, res);
+        saveQuizState(q);
         var last = q.i >= q.total - 1;
         after.innerHTML = '<button type="button" class="btn primary big wide quiz-next">' + (last ? '결과 보기' : '다음 문제 ›') + '</button>';
         var nb = $('.quiz-next', after);
         nb.addEventListener('click', function () {
-          q.i += 1;
-          if (q.i >= q.items.length && q.adaptive && q.items.length < q.total) {
-            var nx = drawNext(q);
-            if (nx) q.items.push(nx);
-            else q.total = q.items.length; // 낼 문제가 더 없으면 여기서 끝
-          }
-          if (q.i >= q.items.length) finishQuiz();
+          advanceQuiz(q);
           drawQuiz(host, true);
         });
         nb.focus();
@@ -3142,6 +3232,7 @@
   function finishQuiz() {
     var q = S.quiz;
     q.done = true;
+    store.remove(pk('quiz')); // 다 풀었다 — 이어 풀기 기록을 지운다(§15)
     if (q.retry) return;
     var per = {};
     q.items.forEach(function (it, i) {
@@ -4212,8 +4303,16 @@
   }
 
   /* 그 학생의 기록(p.<id>.*: 진도·오답노트·풀이 기록·통계·대화…)을 모두 지운다. 학생은 남는다 */
+  /* 학습 기록만 지운다(진도·오답노트·풀이 기록·통계·대화·최근 단원·공부한 날·이어 풀기). 그 학생의 선택(읽어 주기 — prefs)과
+   * 아직 전하지 않은 틀린 곳 알림(reports — 설정에 따로 지우는 단추)은 남긴다(2026-10-08). 학생을 지울 때는 deleteProfile 이 모두 지운다 */
+  var KEEP_ON_CLEAR = ['prefs', 'reports'];
   function clearProfileData(p) {
-    removePrefix('p.' + p.id + '.');
+    var pre = 'p.' + p.id + '.';
+    var keep = {};
+    KEEP_ON_CLEAR.forEach(function (k) { var v = store.get(pre + k, null); if (v !== null) keep[k] = v; });
+    removePrefix(pre);
+    Object.keys(keep).forEach(function (k) { store.set(pre + k, keep[k]); });
+    flushStore();
     S.chats = {};
     S.quiz = null;
     S.review = null;
@@ -4421,7 +4520,7 @@
 
     if (cur) {
       html += '<section class="set-sec card" aria-labelledby="setClear"><h3 id="setClear">기록 지우기</h3>' +
-        '<p class="muted">‘' + esc(cur.name || '이름 없는 학생') + '’의 진도·오답노트·풀이 기록·대화를 모두 지워요. 학생 이름은 남아요.</p>' +
+        '<p class="muted">‘' + esc(cur.name || '이름 없는 학생') + '’의 진도·오답노트·복습 일정·풀이 기록·대화를 모두 지워요. 학생 이름과 읽어 주기 설정과 틀린 곳 알림은 남아요.</p>' +
         '<button type="button" class="btn danger" data-act="clear">이 학생 기록 지우기</button><p class="set-msg" role="status"></p></section>';
     }
 
@@ -4793,7 +4892,7 @@
           } else if (act === 'clear') {
             confirmBox({
               title: '기록을 지울까요?',
-              body: '‘' + (cur.name || '이름 없는 학생') + '’의 진도·오답노트·풀이 기록·대화가 모두 지워져요. 되돌릴 수 없어요.',
+              body: '‘' + (cur.name || '이름 없는 학생') + '’의 진도·오답노트·복습 일정·풀이 기록·대화가 모두 지워져요. 되돌릴 수 없어요.',
               ok: '지우기', danger: true,
             }).then(function (yes) {
               if (!yes) return;
