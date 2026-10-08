@@ -144,6 +144,9 @@ TutorMath.checkAnswer(problem, input) → { correct: bool, empty: bool }
    problem.type === 'short'   input: 문자열. problem.check 로 채점 (없으면 'text')
        'text'   normText(input) 이 정답(들) 중 하나의 normText 와 같다
        'number' 단위(problem.unit)·공백을 떼고 parseNumberAnswer 로 읽어 정답(들) 중 하나와 값이 같다
+                단위는 글자 사이 공백과 상관없이 끝에서 뗀다('80만원' = '80만 원'). 여러 낱말 단위는 앞 낱말만 써도 된다('7번째'·'80만'·'16π' —
+                뒤 낱말만은 아니다: '80원' ≠ 80만 원). 도 ↔ ° ↔ °C·℃·°F, %p ↔ 퍼센트포인트·포인트(%p 를 % 로 쓰면 틀림).
+                문제 글에 ± 가 있으면 앞에 붙여 쓴 ± 는 뗀다(2026-10-09)
        'expr'   exprEqual(input, 정답)  (정답이 여러 개면 하나라도)
        'set'    input 을 ',' '또는' 'or' '와' '과' 공백으로 나눠 수의 모음으로 읽고, 정답 모음과 (순서 무관) 같다
    빈 입력은 { correct: false, empty: true }
