@@ -470,7 +470,7 @@ Tutor.registerUnit({
             explain: '(평행사변형의 넓이) = (밑변) × (높이) = $' + base + '\\times' + h + '=' + P + '$, 곧 ' + P + ' cm²예요. 옆 변 ' + side + ' cm는 높이가 아니에요.',
           };
         }
-        var bb = R.int(4, 20), hh = R.int(3, 16);
+        var bb = R.int(4, 20), hh = R.int(3, Math.min(16, 2 * bb - 1)); // 높이는 밑변의 2배 안쪽 — 아주 길쭉하면 그림에 높이를 적을 자리가 없다
         if ((bb * hh) % 2 === 1) hh += 1; // 넓이가 자연수가 되게
         var x = R.int(1, bb - 1), T = bb * hh / 2;
         return {
@@ -489,7 +489,8 @@ Tutor.registerUnit({
       title: '마름모와 사다리꼴의 넓이',
       make: function (R) {
         if (R.bool()) {
-          var d1 = 2 * R.int(2, 10), d2 = R.int(3, 18); // 한 대각선을 짝수로: 넓이가 자연수
+          // 한 대각선을 짝수로: 넓이가 자연수. 두 대각선은 2배 안쪽 — 아주 납작하면 그림에 길이를 적을 자리가 없다
+          var d1 = 2 * R.int(2, 10), d2 = R.int(Math.max(3, Math.ceil(d1 / 2)), Math.min(18, d1 * 2));
           if (d1 === d2) d2 += 1;
           var M = d1 * d2 / 2;
           var wr = [{ a: String(d1 * d2), why: '2로 나누는 것을 빠뜨렸어요. 마름모는 두 대각선을 가로·세로로 하는 직사각형의 반이에요.' }];

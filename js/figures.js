@@ -1208,16 +1208,16 @@
     var ys = [P0[1], P0[1] + q * u[1], P0[1] + q * (u[1] + v[1]), P0[1] + q * v[1]];
     return { x1: Math.min.apply(null, xs), y1: Math.min.apply(null, ys), x2: Math.max.apply(null, xs), y2: Math.max.apply(null, ys) };
   }
-  // 선분 a-b 가 상자 r(둘레로 pad 만큼 넓혀)를 지나는가 (Liang–Barsky)
-  function segHitsRect(a, b, r, pad) {
+  // 선분 a-b 가 상자 r(둘레로 pad 만큼 넓혀) 안을 지나는 길이 — 지나지 않으면 -1 (Liang–Barsky)
+  function segInRect(a, b, r, pad) {
     var dx = b[0] - a[0], dy = b[1] - a[1], t0 = 0, t1 = 1;
     var p = [-dx, dx, -dy, dy], q = [a[0] - (r.x1 - pad), (r.x2 + pad) - a[0], a[1] - (r.y1 - pad), (r.y2 + pad) - a[1]];
     for (var i = 0; i < 4; i++) {
-      if (p[i] === 0) { if (q[i] < 0) return false; continue; }
+      if (p[i] === 0) { if (q[i] < 0) return -1; continue; }
       var t = q[i] / p[i];
-      if (p[i] < 0) { if (t > t1) return false; if (t > t0) t0 = t; } else { if (t < t0) return false; if (t < t1) t1 = t; }
+      if (p[i] < 0) { if (t > t1) return -1; if (t > t0) t0 = t; } else { if (t < t0) return -1; if (t < t1) t1 = t; }
     }
-    return true;
+    return (t1 - t0) * Math.sqrt(dx * dx + dy * dy);
   }
   // 직각 표시(작은 사각형): 꼭짓점 P0 에서 u·v 방향으로 q 만큼
   function rightMark(P0, u, v, q, cls) {
@@ -1254,6 +1254,7 @@
 
     // 보조선(높이·대각선 …): 선을 모두 먼저 그리고 이름은 그다음에 — 변·다른 보조선·직각 표시·먼저 놓은 이름과 가장 덜 겹치는 자리로.
     // 후보는 선의 가운데부터 양 끝 쪽으로(0.5 → 0.4·0.6 → …), 오른쪽(또는 위) 먼저. 겹칠 것이 없으면 예전 자리(가운데 오른쪽) 그대로.
+    // 어디든 겹치면(아주 길쭉한 도형) 이름 상자 안을 지나는 선이 가장 짧은 자리 — 다른 대각선 한가운데보다 변 귀퉁이를 조금 스치는 쪽.
     var SEG = segs.map(function (g) { return [tr(g.from), tr(g.to)]; }), taken = [];
     segs.forEach(function (g, gi) {
       var A = SEG[gi][0], B = SEG[gi][1];
@@ -1285,9 +1286,9 @@
         [nrm, [-nrm[0], -nrm[1]]].forEach(function (d, side) {
           var c = placeOut(A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t, d, txt0, 13, 4);
           var r = textRect(c[0], c[1], txt0, 13), sc = Math.ceil(ti / 2) * 0.2 + side * 0.15;
-          EDGES.forEach(function (E) { if (segHitsRect(E[0], E[1], r, 1)) sc += 10; });
-          SEG.forEach(function (E, j) { if (j !== gi && segHitsRect(E[0], E[1], r, 1)) sc += 10; });
-          taken.forEach(function (q) { if (overlap(r, q, 2)) sc += 20; });
+          EDGES.forEach(function (E) { var len = segInRect(E[0], E[1], r, 1); if (len >= 0) sc += 4 + len; });
+          SEG.forEach(function (E, j) { var len = j === gi ? -1 : segInRect(E[0], E[1], r, 1); if (len >= 0) sc += 4 + len; });
+          taken.forEach(function (q) { if (overlap(r, q, 2)) sc += 60; });
           if (!best || sc < best.sc) best = { sc: sc, c: c };
         });
       });

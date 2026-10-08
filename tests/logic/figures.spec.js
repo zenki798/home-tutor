@@ -38,12 +38,12 @@ function segLabelHits(svg) {
   const num = (a, k) => Number((new RegExp('\\s' + k + '="(-?[\\d.]+)"').exec(a) || [])[1]);
   const lines = [];
   for (const m of svg.matchAll(/<line\b([^>]*)\/>/g)) {
-    if (/class="fig-seg"/.test(m[1])) lines.push([[num(m[1], 'x1'), num(m[1], 'y1')], [num(m[1], 'x2'), num(m[1], 'y2')]]);
+    if (/class="fig-seg"/.test(m[1])) lines.push([[num(m[1], 'x1'), num(m[1], 'y1')], [num(m[1], 'x2'), num(m[1], 'y2')], '보조선']);
   }
   for (const m of svg.matchAll(/<path\b([^>]*)\/>/g)) {
     if (!/class="fig-shape"/.test(m[1])) continue;
     const pts = [.../\sd="([^"]*)"/.exec(m[1])[1].matchAll(/[ML](-?[\d.]+) (-?[\d.]+)/g)].map((q) => [Number(q[1]), Number(q[2])]);
-    pts.forEach((p, i) => lines.push([p, pts[(i + 1) % pts.length]]));
+    pts.forEach((p, i) => lines.push([p, pts[(i + 1) % pts.length], '변']));
   }
   const boxes = texts(svg, 'fig-seg-label').map((t) => {
     const size = num(t.attrs, 'font-size'), w = F.textWidth(t.text, size);
@@ -62,7 +62,7 @@ function segLabelHits(svg) {
   };
   const out = [];
   boxes.forEach((r, i) => {
-    if (lines.some(([a, b]) => cross(a, b, r))) out.push(r.text + ' × 선');
+    for (const kind of ['보조선', '변']) if (lines.some(([a, b, k]) => k === kind && cross(a, b, r))) out.push(r.text + ' × ' + kind);
     boxes.forEach((q, j) => { if (j > i && r.x1 < q.x2 && q.x1 < r.x2 && r.y1 < q.y2 && q.y1 < r.y2) out.push(r.text + ' × ' + q.text); });
   });
   return out;
@@ -393,6 +393,12 @@ test.describe('도형·그래프·수 모형', () => {
     const lab = texts(para, 'fig-seg-label')[0];
     expect(lab.x).toBeGreaterThan(Number(seg[1]));
     expect(Math.abs(lab.y - (Number(seg[2]) + Number(seg[3])) / 2)).toBeLessThan(0.6);
+  });
+
+  test('다각형: 어디에 두어도 겹치는 길쭉한 마름모 — 대각선 이름은 다른 대각선 한가운데가 아니라 변 귀퉁이를 조금 스치는 자리로', () => {
+    const svg = F.render({ type: 'polygon', points: [[0, 8], [4, 0], [8, 8], [4, 16]],
+      segments: [{ from: [0, 8], to: [8, 8], dashed: true, label: '8 cm' }, { from: [4, 0], to: [4, 16], dashed: true, label: '16 cm' }] });
+    expect(segLabelHits(svg).filter((h) => !/× 변$/.test(h))).toEqual([]);
   });
 
   test('다각형은 임의 단위를 자동 축척한다 (비율 유지)', () => {
