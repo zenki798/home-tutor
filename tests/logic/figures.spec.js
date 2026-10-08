@@ -33,6 +33,41 @@ function viewBox(svg) { return rootAttr(svg, 'viewBox').split(/\s+/).map(Number)
 function countClass(svg, cls) {
   return (svg.match(/class="([^"]*)"/g) || []).filter((c) => c.slice(7, -1).split(' ').indexOf(cls) >= 0).length;
 }
+/* 보조선 이름표(fig-seg-label)가 도형의 변(fig-shape)·보조선(fig-seg)을 가로지르거나 서로 겹치는 곳 — 엔진과 같은 글자 폭 어림으로 */
+function segLabelHits(svg) {
+  const num = (a, k) => Number((new RegExp('\\s' + k + '="(-?[\\d.]+)"').exec(a) || [])[1]);
+  const lines = [];
+  for (const m of svg.matchAll(/<line\b([^>]*)\/>/g)) {
+    if (/class="fig-seg"/.test(m[1])) lines.push([[num(m[1], 'x1'), num(m[1], 'y1')], [num(m[1], 'x2'), num(m[1], 'y2')]]);
+  }
+  for (const m of svg.matchAll(/<path\b([^>]*)\/>/g)) {
+    if (!/class="fig-shape"/.test(m[1])) continue;
+    const pts = [.../\sd="([^"]*)"/.exec(m[1])[1].matchAll(/[ML](-?[\d.]+) (-?[\d.]+)/g)].map((q) => [Number(q[1]), Number(q[2])]);
+    pts.forEach((p, i) => lines.push([p, pts[(i + 1) % pts.length]]));
+  }
+  const boxes = texts(svg, 'fig-seg-label').map((t) => {
+    const size = num(t.attrs, 'font-size'), w = F.textWidth(t.text, size);
+    return { text: t.text, x1: t.x - w / 2, x2: t.x + w / 2, y1: t.y - size * 0.5, y2: t.y + size * 0.5 };
+  });
+  // 선분이 상자를 지나는가 (Liang–Barsky)
+  const cross = (a, b, r) => {
+    const dx = b[0] - a[0], dy = b[1] - a[1], p = [-dx, dx, -dy, dy], q = [a[0] - r.x1, r.x2 - a[0], a[1] - r.y1, r.y2 - a[1]];
+    let t0 = 0, t1 = 1;
+    for (let i = 0; i < 4; i++) {
+      if (p[i] === 0) { if (q[i] < 0) return false; continue; }
+      const t = q[i] / p[i];
+      if (p[i] < 0) { if (t > t1) return false; if (t > t0) t0 = t; } else { if (t < t0) return false; if (t < t1) t1 = t; }
+    }
+    return true;
+  };
+  const out = [];
+  boxes.forEach((r, i) => {
+    if (lines.some(([a, b]) => cross(a, b, r))) out.push(r.text + ' × 선');
+    boxes.forEach((q, j) => { if (j > i && r.x1 < q.x2 && q.x1 < r.x2 && r.y1 < q.y2 && q.y1 < r.y2) out.push(r.text + ' × ' + q.text); });
+  });
+  return out;
+}
+
 function texts(svg, cls) {
   const out = [];
   const re = /<text\b([^>]*)>([^<]*)<\/text>/g;
@@ -337,6 +372,27 @@ test.describe('도형·그래프·수 모형', () => {
     expect(countClass(svg, 'fig-right')).toBe(1);
     expect(texts(svg, 'fig-seg-label').map((t) => t.text)).toEqual(['3cm']);
     expect(svg).toMatch(/fill-opacity="0.14"/);
+  });
+
+  test('다각형: 보조선 이름은 변·다른 보조선·다른 이름과 겹치지 않는 자리로 (마름모의 두 대각선 · 변 가까운 높이) — 겹치지 않던 이름은 예전 자리', () => {
+    // 마름모: 두 대각선이 가운데서 만나, 두 이름이 가운데에 포개지고 다른 대각선을 가로지르던 것
+    const rhombus = { type: 'polygon', points: [[0, 4], [5, 8], [10, 4], [5, 0]],
+      segments: [{ from: [0, 4], to: [10, 4], dashed: true, label: '10 cm' }, { from: [5, 8], to: [5, 0], dashed: true, label: '8 cm' }] };
+    // 높이가 오른쪽 변 가까이: 오른쪽에 두면 변을 가로지르던 것
+    const tri = { type: 'polygon', points: [[0, 0], [4, 0], [3, 8]], sides: ['4 cm', null, null],
+      segments: [{ from: [3, 8], to: [3, 0], dashed: true, right: true, label: '8 cm' }] };
+    for (const spec of [rhombus, tri]) {
+      expect(F.check(spec)).toEqual([]);
+      expect(segLabelHits(F.render(spec))).toEqual([]);
+    }
+    expect(texts(F.render(rhombus), 'fig-seg-label').map((t) => t.text).sort()).toEqual(['10 cm', '8 cm']);
+    // 겹칠 것이 없으면 예전처럼 선의 오른쪽 가운데(평행사변형의 높이)
+    const para = F.render({ type: 'polygon', points: [[0, 0], [6, 0], [8, 3], [2, 3]],
+      segments: [{ from: [2, 3], to: [2, 0], dashed: true, label: '3cm', right: true }] });
+    const seg = /<line\b[^>]*x1="([\d.]+)" y1="([\d.]+)" x2="[\d.]+" y2="([\d.]+)"[^>]*class="fig-seg"/.exec(para);
+    const lab = texts(para, 'fig-seg-label')[0];
+    expect(lab.x).toBeGreaterThan(Number(seg[1]));
+    expect(Math.abs(lab.y - (Number(seg[2]) + Number(seg[3])) / 2)).toBeLessThan(0.6);
   });
 
   test('다각형은 임의 단위를 자동 축척한다 (비율 유지)', () => {

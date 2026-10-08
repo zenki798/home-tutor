@@ -1202,6 +1202,23 @@
     }
     return d;
   }
+  // 직각 표시가 차지하는 상자 (rightMark 와 같은 네 점)
+  function markRect(P0, u, v, q) {
+    var xs = [P0[0], P0[0] + q * u[0], P0[0] + q * (u[0] + v[0]), P0[0] + q * v[0]];
+    var ys = [P0[1], P0[1] + q * u[1], P0[1] + q * (u[1] + v[1]), P0[1] + q * v[1]];
+    return { x1: Math.min.apply(null, xs), y1: Math.min.apply(null, ys), x2: Math.max.apply(null, xs), y2: Math.max.apply(null, ys) };
+  }
+  // 선분 a-b 가 상자 r(둘레로 pad 만큼 넓혀)를 지나는가 (Liang–Barsky)
+  function segHitsRect(a, b, r, pad) {
+    var dx = b[0] - a[0], dy = b[1] - a[1], t0 = 0, t1 = 1;
+    var p = [-dx, dx, -dy, dy], q = [a[0] - (r.x1 - pad), (r.x2 + pad) - a[0], a[1] - (r.y1 - pad), (r.y2 + pad) - a[1]];
+    for (var i = 0; i < 4; i++) {
+      if (p[i] === 0) { if (q[i] < 0) return false; continue; }
+      var t = q[i] / p[i];
+      if (p[i] < 0) { if (t > t1) return false; if (t > t0) t0 = t; } else { if (t < t0) return false; if (t < t1) t1 = t; }
+    }
+    return true;
+  }
   // 직각 표시(작은 사각형): 꼭짓점 P0 에서 u·v 방향으로 q 만큼
   function rightMark(P0, u, v, q, cls) {
     return P('M' + pt(P0[0] + q * u[0], P0[1] + q * u[1]) + 'L' + pt(P0[0] + q * (u[0] + v[0]), P0[1] + q * (u[1] + v[1])) +
@@ -1235,8 +1252,11 @@
       return { u: u, v: v, w: w, angle: reflex ? 2 * PI - small : small, minEdge: Math.min(dist(P0, A), dist(P0, B)) };
     });
 
-    (s.segments || []).forEach(function (g) {
-      var A = tr(g.from), B = tr(g.to);
+    // 보조선(높이·대각선 …): 선을 모두 먼저 그리고 이름은 그다음에 — 변·다른 보조선·직각 표시·먼저 놓은 이름과 가장 덜 겹치는 자리로.
+    // 후보는 선의 가운데부터 양 끝 쪽으로(0.5 → 0.4·0.6 → …), 오른쪽(또는 위) 먼저. 겹칠 것이 없으면 예전 자리(가운데 오른쪽) 그대로.
+    var SEG = segs.map(function (g) { return [tr(g.from), tr(g.to)]; }), taken = [];
+    segs.forEach(function (g, gi) {
+      var A = SEG[gi][0], B = SEG[gi][1];
       o.push(L(A[0], A[1], B[0], B[1], { stroke: 'cur', w: g.dashed ? 1.4 : 1.8, dash: g.dashed ? '5 4' : null, cls: 'fig-seg' }));
       box.add(A[0], A[1]).add(B[0], B[1]);
       if (g.right) {
@@ -1250,15 +1270,28 @@
           var e1 = unit(ex, ey);
           if (!insidePoly(B[0] + 5 * (u0[0] + e1[0]), B[1] + 5 * (u0[1] + e1[1]), V)) e1 = [-e1[0], -e1[1]];
           o.push(rightMark(B, u0, e1, 9));
+          taken.push(markRect(B, u0, e1, 9));
           break;
         }
       }
-      if (hasLabel(g.label)) {
-        var M = [(A[0] + B[0]) / 2, (A[1] + B[1]) / 2], e = unit(B[0] - A[0], B[1] - A[1]), nrm = [e[1], -e[0]];
-        if (nrm[0] < -1e-6 || (Math.abs(nrm[0]) <= 1e-6 && nrm[1] > 0)) nrm = [-nrm[0], -nrm[1]];   // 오른쪽(또는 위)으로
-        var txt0 = labelText(g.label), c0 = placeOut(M[0], M[1], nrm, txt0, 13, 4);
-        pen.text(c0[0], c0[1], txt0, { size: 13, cls: 'fig-seg-label' });
-      }
+    });
+    var EDGES = V.map(function (v, i) { return [v, V[(i + 1) % n]]; });
+    segs.forEach(function (g, gi) {
+      if (!hasLabel(g.label)) return;
+      var A = SEG[gi][0], B = SEG[gi][1], e = unit(B[0] - A[0], B[1] - A[1]), nrm = [e[1], -e[0]];
+      if (nrm[0] < -1e-6 || (Math.abs(nrm[0]) <= 1e-6 && nrm[1] > 0)) nrm = [-nrm[0], -nrm[1]];   // 오른쪽(또는 위) 먼저
+      var txt0 = labelText(g.label), best = null;
+      [0.5, 0.4, 0.6, 0.3, 0.7, 0.2, 0.8].forEach(function (t, ti) {
+        [nrm, [-nrm[0], -nrm[1]]].forEach(function (d, side) {
+          var c = placeOut(A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t, d, txt0, 13, 4);
+          var r = textRect(c[0], c[1], txt0, 13), sc = Math.ceil(ti / 2) * 0.2 + side * 0.15;
+          EDGES.forEach(function (E) { if (segHitsRect(E[0], E[1], r, 1)) sc += 10; });
+          SEG.forEach(function (E, j) { if (j !== gi && segHitsRect(E[0], E[1], r, 1)) sc += 10; });
+          taken.forEach(function (q) { if (overlap(r, q, 2)) sc += 20; });
+          if (!best || sc < best.sc) best = { sc: sc, c: c };
+        });
+      });
+      taken.push(pen.text(best.c[0], best.c[1], txt0, { size: 13, cls: 'fig-seg-label' }));
     });
 
     (s.angles || []).forEach(function (a) {
@@ -1753,6 +1786,7 @@
     describe: describe,      // spec → 그림 설명 글 (aria-label)
     compile: compile,        // 그래프 식 → (x) => 수 (못 읽으면 throw)
     size: size,              // render 결과 → { w, h } 원래 크기(px)
+    textWidth: textWidth,    // (글자, 크기) → 글자 폭 어림(px) — 시험·점검 도구가 이름표 겹침을 잴 때 엔진과 같은 어림을 쓰게
     types: TYPES.slice()     // 쓸 수 있는 type 목록
   };
 });
