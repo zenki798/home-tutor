@@ -1046,25 +1046,41 @@
 
   function toList(a) { return Array.isArray(a) ? a : [a]; }
 
-  // 단위 변형: 'cm²' → cm², cm2(NFKC), cm^2 / '°' ↔ '도' / '%' ↔ '퍼센트'
+  // 단위 변형(입력처럼 NFKC·소문자·공백 없음): 'cm²' → cm2, cm^2 / '°' ↔ '도' / '°C'·'℃' ↔ '도' / '%' ↔ '퍼센트' / '%p' ↔ '퍼센트포인트'
+  // 여러 낱말 단위는 앞 낱말만 써도 된다: '7번째'(번째 달) '80만'(만 원) '16π'(π cm²) — 뒤 낱말만은 아니다('80원' 은 80만 원이 아니다)
   function unitVariants(unit) {
-    var u = String(unit), list = [u, prenorm(u), u.replace(/\u00B2/g, '^2').replace(/\u00B3/g, '^3')];
-    if (u === '\u00B0' || u === '\uB3C4') list.push('\u00B0', '\uB3C4', '\u02DA', '\u00BA');
-    if (u === '%') list.push('\uD37C\uC13C\uD2B8', '\uD504\uB85C');
+    var u = String(unit), base = trim(prenorm(u).toLowerCase()).replace(/\s+/g, ' ');
+    var list = [u, base, u.replace(/²/g, '^2').replace(/³/g, '^3')];
+    if (base === '°' || base === '도') list.push('°', '도', '˚', 'º', '°c', '°f');   // ° 도 ˚ º °C °F (℃·℉ 는 NFKC 로 °c·°f)
+    if (base === '°c' || base === '°f') list.push('도', '˚' + base.slice(1), 'º' + base.slice(1));   // 25도 = 25°C
+    if (base === '%') list.push('퍼센트', '프로');                                                        // 퍼센트 프로
+    if (base === '%p') list.push('퍼센트포인트', '%포인트', '포인트');          // 퍼센트포인트 %포인트 포인트
+    var words = base.split(' ');
+    if (words.length > 1 && words[0]) list.push(words[0]);
     var out = [];
     for (var i = 0; i < list.length; i++) {
-      var v = trim(list[i]).toLowerCase();
+      var v = prenorm(list[i]).toLowerCase().replace(/\s+/g, '');
       if (v && out.indexOf(v) < 0) out.push(v);
     }
     return out.sort(function (x, y) { return y.length - x.length; });   // 긴 것부터
+  }
+
+  // low 의 끝이 v(공백 없음)와 같으면 — 사이의 공백은 건너뛴다('80만 원' = '80만원') — v 가 시작하는 자리, 아니면 -1
+  function unitStart(low, v) {
+    var i = low.length;
+    for (var j = v.length - 1; j >= 0; j--) {
+      do { i--; } while (i >= 0 && /\s/.test(low.charAt(i)));
+      if (i < 0 || low.charAt(i) !== v.charAt(j)) return -1;
+    }
+    return i;
   }
 
   function stripUnit(s, unit) {
     if (unit === undefined || unit === null || unit === '') return s;
     var low = s.toLowerCase(), vs = unitVariants(unit);
     for (var i = 0; i < vs.length; i++) {
-      var v = vs[i];
-      if (low.length > v.length && low.slice(-v.length) === v) return trim(low.slice(0, low.length - v.length));
+      var k = unitStart(low, vs[i]);
+      if (k > 0 && trim(low.slice(0, k))) return trim(low.slice(0, k));
     }
     return s;
   }
@@ -1076,8 +1092,13 @@
     return trim(s.replace(/^[a-z]\s*=\s*/i, ''));
   }
 
+  var PM_LEAD_RE = /^(±|\+\s*\/?\s*-)\s*/;   // ± +- +/-
+
   function checkNumber(problem, input) {
-    var v = parseNumberAnswer(cleanNumberInput(input, problem.unit));
+    var s = cleanNumberInput(input, problem.unit);
+    // 문제 글이 '±'를 이미 보이면('오차 범위는 ±몇 %p') 앞에 붙여 쓴 ±는 뗀다 — 그 밖에는 답이 둘이라 틀린 답
+    if (PM_LEAD_RE.test(s) && typeof problem.q === 'string' && problem.q.indexOf('±') >= 0) s = s.replace(PM_LEAD_RE, '');
+    var v = parseNumberAnswer(s);
     if (!v) return false;
     var answers = toList(problem.answer);
     for (var i = 0; i < answers.length; i++) {

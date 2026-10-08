@@ -87,11 +87,13 @@ function checkUnit(unit, ctx) {
       const min = p.type === 'order' ? 3 : (where === 'check' ? 2 : 3);
       if (c.length < min || c.length > (p.type === 'order' ? 6 : 5)) err(path + '.choices', '보기 수가 알맞지 않아요: ' + c.length + '개');
       const seen = new Set();
+      // 띄어쓰기를 묻는 문제는 공백만 다른 보기가 서로 다른 보기다 — 공백을 지우지 않고 견준다(2026-10-09)
+      const spacingQ = typeof p.q === 'string' && /(띄어|붙여)\s*(쓰|쓴|쓸|씀|써|썼)/.test(p.q);
       c.forEach((x, i) => {
         if (!nonEmpty(x)) err(path + '.choices[' + i + ']', '빈 보기');
         else {
           rich(path + '.choices[' + i + ']', x);
-          const k = T.plain(x).replace(/\s+/g, '');
+          const k = spacingQ ? T.plain(x).replace(/\s+/g, ' ').trim() : T.plain(x).replace(/\s+/g, '');
           if (seen.has(k)) err(path + '.choices[' + i + ']', '같은 보기가 두 번 있어요: ' + x);
           seen.add(k);
         }

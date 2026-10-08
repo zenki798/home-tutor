@@ -553,6 +553,34 @@ test.describe('checkAnswer', () => {
     expect(mark({ type: 'short', check: 'number', unit: '°', answer: '30' }, '30도')).toBe('T');
   });
 
+  test("short 'number': 단위를 붙여 쓰거나(80만원) 앞 낱말만 쓰거나(7번째) 도·℃·포인트로 써도 정답 — 뒤 낱말만(80원)·다른 단위는 틀림", () => {
+    const man = { type: 'short', check: 'number', unit: '만 원', answer: '80' };
+    expect(['80만 원', '80만원', '80 만 원', '80만', '80'].map((s) => mark(man, s))).toEqual(Array(5).fill('T'));
+    expect(['80원', '800000원', '80만 명'].map((s) => mark(man, s))).toEqual(['F', 'F', 'F']);
+    const nth = { type: 'short', check: 'number', unit: '번째 달', answer: '7' };
+    expect(['7번째 달', '7번째달', '7번째', '7'].map((s) => mark(nth, s))).toEqual(Array(4).fill('T'));
+    expect(mark(nth, '7달')).toBe('F');
+    const pi = { type: 'short', check: 'number', unit: 'π cm²', answer: '16' };
+    expect(['16π cm²', '16πcm²', '16π', '16'].map((s) => mark(pi, s))).toEqual(Array(4).fill('T'));
+    expect(mark(pi, '16 cm²')).toBe('F'); // π 를 빼면 다른 값
+    const c = { type: 'short', check: 'number', unit: '°C', answer: '25' };
+    expect(['25°C', '25 ℃', '25도', '25 도', '25˚C', '25'].map((s) => mark(c, s))).toEqual(Array(6).fill('T'));
+    expect(mark({ type: 'short', check: 'number', unit: '℃', answer: '10' }, '10도')).toBe('T');
+    expect(mark({ type: 'short', check: 'number', unit: '도', answer: '-40' }, '-40°C')).toBe('T');
+    expect(mark({ type: 'short', check: 'number', unit: '°', answer: '30' }, '30˚')).toBe('T');
+    const pp = { type: 'short', check: 'number', unit: '%p', answer: '4.9' };
+    expect(['4.9%p', '4.9 %p', '4.9퍼센트포인트', '4.9퍼센트 포인트', '4.9%포인트', '4.9포인트'].map((s) => mark(pp, s))).toEqual(Array(6).fill('T'));
+    expect(mark(pp, '4.9%')).toBe('F'); // %와 %p 는 다르다
+    expect(mark({ type: 'short', check: 'number', unit: 'cm', answer: '12' }, 'cm')).toBe('F');
+  });
+
+  test("short 'number': 문제 글에 ±가 있으면 앞에 붙여 쓴 ±는 떼고 본다 — 없으면 답이 둘이라 틀림", () => {
+    const moe = { type: 'short', check: 'number', unit: '%p', answer: '4.9', q: '오차 범위는 ±몇 %p일까요?' };
+    expect(['±4.9', '± 4.9%p', '+-4.9', '4.9'].map((s) => mark(moe, s))).toEqual(Array(4).fill('T'));
+    expect(mark(moe, '±5')).toBe('F');
+    expect(mark({ type: 'short', check: 'number', answer: '2', q: '양수인 해를 쓰세요.' }, '±2')).toBe('F');
+  });
+
   test("short 'number': 분수·소수·대분수는 값이 같으면 정답", () => {
     expect(mark({ type: 'short', check: 'number', answer: '1/2' }, '0.5')).toBe('T');
     expect(mark({ type: 'short', check: 'number', answer: ['3/4'] }, '6/8')).toBe('T');

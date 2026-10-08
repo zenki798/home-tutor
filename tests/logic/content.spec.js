@@ -95,6 +95,22 @@ test('값이 같은 보기 검사: 값만 묻는 문제는 경고하고, 형태(
   expect(same([p('z5', '크기가 다른 분수는 무엇일까요?', ['$\\frac{1}{2}$', '$\\frac{2}{4}$', '$\\frac{3}{4}$'])])).toHaveLength(1);
 });
 
+test('같은 보기 검사: 띄어쓰기를 묻는 문제는 공백만 다른 보기를 서로 다른 보기로 본다 — 그 밖의 문제는 공백을 빼고 견준다', () => {
+  const fs = require('fs');
+  const { validateUnitFile } = require(path.join(ROOT, 'scripts', 'validate-content.js'));
+  const file = path.join(ROOT, 'tests', 'fixtures', 'units', 'math-m2-01.js');
+  const add = (extra) => 'var __reg = Tutor.registerUnit; Tutor.registerUnit = function (u) { u.practice = u.practice.concat(' +
+    JSON.stringify(extra) + '); __reg(u); };\n' + fs.readFileSync(file, 'utf8');
+  const p = (id, q, choices) => ({ id, level: 1, type: 'choice', q, choices, answer: 0, why: ['', '띄어 쓴 자리가 달라요.', '붙여 쓴 자리가 달라요.'],
+    explain: '보기를 하나씩 따져 봐요. 그래서 첫째 보기가 답이에요.', concept: 0 });
+  const dup = (extra) => validateUnitFile(file, { source: add(extra), seeds: 3, catalog: null })
+    .errors.filter((e) => /같은 보기가 두 번/.test(e.msg)).map((e) => e.path);
+  const CH = ['먹을 만큼 덜어 먹자', '먹을만큼 덜어 먹자', '먹을 만큼 덜어먹자'];
+  expect(dup([p('z1', '띄어쓰기가 바른 문장은 무엇일까요?', CH)])).toEqual([]);
+  expect(dup([p('z2', '다음 중 바르게 붙여 쓴 것은?', CH)])).toEqual([]);
+  expect(dup([p('z3', '뜻이 맞는 문장은 무엇일까요?', CH)]).length).toBeGreaterThan(0);
+});
+
 test('그림 지시 검사: "다음 그림을 보고"인데 그림이 없으면 경고, 인용 지문 속 이야기·그림 편지·줄기와 잎 그림은 그림 지시가 아니다', () => {
   const fs = require('fs');
   const { validateUnitFile } = require(path.join(ROOT, 'scripts', 'validate-content.js'));
