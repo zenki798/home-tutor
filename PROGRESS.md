@@ -2,32 +2,32 @@
 
 > 사용자 지시(2026-10-08 "자율개발·자동복구", 기한 2026-10-10)에 따라 작업 단위마다 고친다. 날짜별 자세한 기록은 `docs/PROGRESS.md`.
 > 함께 보는 문서: `NEXT_TASK.md`(다음 작업·재개 방법) · `DECISIONS.md`(설계 결정) · `TEST_RESULTS.md`(시험 결과·미해결 문제).
-> 마지막 갱신: 2026-10-09 새벽 (W7 뒤)
+> 마지막 갱신: 2026-10-09 새벽 (W8 뒤)
 
 ## 1. 마지막 완료 작업
-- **W7 성인 16단원 작성 + 독립 검토**(성인 기초 수학 09~10·생활 수학 01~10·성인 기초 영어 01~04, 워크플로 35분): 검토자가 44곳 고침, 남은 의문 50건(tmp/w7-review.json),
-  내용 검사 오류 0·경고 0(1009단원), 휴대폰 폭 예상문제 점검 192문제 문제 0.
-- 채점: 수 답의 단위를 너그럽게(80만원·7번째·25도·퍼센트포인트·문제 글의 ±) · 단원 검사: 띄어쓰기 문제의 보기는 공백까지 견줌.
-- 전체 시험 **1175 passed**(15.9m).
+- **W8 성인 18단원 작성 + 독립 검토**(성인 기초 영어 문법 05~12·생활 영어 표현 01~10, 워크플로 36분): 검토자가 70곳 고침, 남은 의문 29건(tmp/w8-review.json),
+  내용 검사 오류 0·경고 0(1027단원), 휴대폰 폭 예상문제 점검 216문제 문제 0.
+- 채점: 문장처럼 쓴 수 답·모음 답의 단위, 읽지 못한 답은 다시 써 달라고 · 홈 이어서 공부하기에 다음 카드 이름 · 그림 보조선 이름 자리(겹침 69 → 8).
+- 전체 시험 **1185 passed**(10.7m).
 
 ## 2. 현재 진행 중인 작업
-- 위 내용 커밋·push → 다음 묶음 **W8**(성인 기초 영어 05~12 · 생활 영어 01~10, 18단원) 워크플로.
+- 위 내용 커밋·push → 다음 묶음 **W9**(생활 법률·경제 01~10 · 한국사 09~10 · 생활 속 과학 01~04, 16단원) 워크플로.
 
 ## 3. 최근에 고친 파일
-- 채점·검사기: `js/mathlib.js`(단위·±) · `scripts/lib/unit-checks.js`(띄어쓰기 보기)
-- 시험: `tests/logic/mathlib.spec.js`·`content.spec.js`
-- 단원: 새 16개(`math-a-basic-09~10`·`math-a-life-01~10`·`eng-a-basic-01~04`), `data/catalog.js`·`data/index/*`
-- 문서: `docs/ARCHITECTURE.md`(채점 단위)·`docs/CONTENT-GUIDE.md`(단위·띄어쓰기 보기)·`DECISIONS.md`·이 파일·`NEXT_TASK.md`·`TEST_RESULTS.md`·`docs/PROGRESS.md`
+- 엔진·화면: `js/mathlib.js`(문장 답·모음 답 단위·readable) · `js/app.js`(다시 써 달라는 안내·홈 다음 카드 이름) · `js/figures.js`(보조선 이름 자리)
+- 시험: `tests/logic/mathlib.spec.js`·`figures.spec.js` · `tests/ui/learn.spec.js`·`learn-resume.spec.js`
+- 단원: 새 18개(`eng-a-basic-05~12`·`eng-a-talk-01~10`), `data/catalog.js`·`data/index/*`
+- 문서: `README.md`·`docs/ARCHITECTURE.md`·`docs/CONTENT-GUIDE.md`·`DECISIONS.md`·이 파일·`NEXT_TASK.md`·`TEST_RESULTS.md`·`docs/PROGRESS.md`
 
 ## 4. 시험 결과
-- 마지막 전체 시험: **1175 passed(15.9m)** — 자세히는 `TEST_RESULTS.md`.
+- 마지막 전체 시험: **1185 passed(10.7m)** — 자세히는 `TEST_RESULTS.md`.
 
 ## 5. 남아 있는 문제
-- 성인 40단원 '준비 중'(W8~W10), 검토자 의문(대부분 "확인했고 그대로 둠"), 공공 위기 상담 번호(심리학 10) 사용자 확인 바람,
+- 성인 22단원 '준비 중'(W9~W10), 검토자 의문(대부분 "확인했고 그대로 둠"), 공공 위기 상담 번호(심리학 10) 사용자 확인 바람,
   교육과정 수동 확인 3건(원문 필요), 아이폰 실제 기기 확인, 검색 색인 속도 시험이 같은 PC 부하에 흔들림(여섯 번 중 가장 빠른 값 1.03초로 통과, 한도 1.5초) — 자세히는 `TEST_RESULTS.md`.
 
 ## 6. 다음에 실행할 명령과 작업
-- `node scripts/content-jobs.js --run 5` 의 첫 묶음으로 W8 워크플로 → `node scripts/after-wave.js` → `QW=360 node tmp/quiz-scan.js <W8 단원…>` → `npx playwright test` → 커밋·push. 차례는 `NEXT_TASK.md` 2절.
+- `node scripts/content-jobs.js --run 5` 의 첫 묶음으로 W9 워크플로 → `node scripts/after-wave.js` → `QW=360 node tmp/quiz-scan.js <W9 단원…>` → `npx playwright test` → 커밋·push. 차례는 `NEXT_TASK.md` 2절.
 
 ## 7. 복구 시 주의사항
 - 워크플로가 도는 동안에는 `data/units/` 를 고치거나 전체 시험을 돌리지 않는다. 화면 코드(app.js·css)는 전체 시험이 도는 동안 고치지 않는다(시험 도중 섞인다).

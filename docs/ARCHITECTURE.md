@@ -146,10 +146,14 @@ TutorMath.checkAnswer(problem, input) → { correct: bool, empty: bool }
        'number' 단위(problem.unit)·공백을 떼고 parseNumberAnswer 로 읽어 정답(들) 중 하나와 값이 같다
                 단위는 글자 사이 공백과 상관없이 끝에서 뗀다('80만원' = '80만 원'). 여러 낱말 단위는 앞 낱말만 써도 된다('7번째'·'80만'·'16π' —
                 뒤 낱말만은 아니다: '80원' ≠ 80만 원). 도 ↔ ° ↔ °C·℃·°F, %p ↔ 퍼센트포인트·포인트(%p 를 % 로 쓰면 틀림).
-                문제 글에 ± 가 있으면 앞에 붙여 쓴 ± 는 뗀다(2026-10-09)
+                문제 글에 ± 가 있으면 앞에 붙여 쓴 ± 는 뗀다. 답을 문장처럼 써도 수만 본다: 앞 '답은·정답:·답'·'약·대략', 끝 '쯤·정도'·'입니다·이에요·예요·요'
+                ('답은 80만 원입니다' = 80) (2026-10-09)
        'expr'   exprEqual(input, 정답)  (정답이 여러 개면 하나라도)
        'set'    input 을 ',' '또는' 'or' '와' '과' 공백으로 나눠 수의 모음으로 읽고, 정답 모음과 (순서 무관) 같다
+                문제에 unit 이 있으면 원소마다 수 바로 뒤에 붙여 쓴 단위를 뗀다('3 N, 11 N' → 3, 11 · '38.9%, 45.1%') — 단위 뒤에 글자·숫자가 이어지면 다른 단위라 그대로('3 nm')
    빈 입력은 { correct: false, empty: true }
+TutorMath.readable(problem, input) → bool   그 채점 방식(number·set·expr)으로 읽을 수 있는 답인가 — 값은 따지지 않는다.
+                                   글 답·보기 문제·빈 답·판단할 수 없을 때는 true. 화면이 채점 전에 '다시 써 주세요' 안내에 쓴다(2026-10-09)
 TutorMath.answerText(problem) → string     화면에 보일 정답 문구 (choice 면 보기 내용, ox 면 'O'/'X', short 면 첫 정답)
 ```
 
@@ -216,6 +220,7 @@ TutorText.check(src) → string[]     문제점 목록 (닫히지 않은 $, 모�
 ```
 TutorFig.render(spec) → '<svg …>'    viewBox 있음, role="img", aria-label(spec.alt 또는 자동 설명), 선·글자는 currentColor
 TutorFig.check(spec) → string[]      형식 오류 목록. 정상이면 []
+TutorFig.textWidth(글자, 크기) → px   글자 폭 어림 — 시험·점검 도구가 이름표 겹침을 엔진과 같은 어림으로 잴 때
 ```
 
 학습 내용의 `fig` 칸에 아래 중 하나를 넣는다. 모든 그림은 `alt`(그림 설명, 선택)를 받는다.
@@ -226,7 +231,7 @@ TutorFig.check(spec) → string[]      형식 오류 목록. 정상이면 []
 | `numberline` | `min`, `max`, `step`(눈금), `labelEvery`(기본 1칸마다), `points: [{x, label?, open?}]`, `ranges: [{from, to, fromOpen?, toOpen?}]`(부등식 범위, from/to 에 `-Infinity`/`Infinity` 허용) , `arrows: [{from, to, label?}]`(덧셈 뛰어 세기) | 수직선 |
 | `fraction` | `shape`: `'bar'`\|`'circle'`, `n`(색칠 수), `d`(전체 칸 수), `whole`(여러 개일 때 묶음 수, 기본 1) | 분수 모형 |
 | `coord` | `xmin xmax ymin ymax`(기본 -5~5), `grid`(기본 true), `points: [{x, y, label?}]`, `fns: [{expr: '2x+1', from?, to?, label?}]`, `segments: [{from:[x,y], to:[x,y], dashed?}]` | 좌표평면·그래프 |
-| `polygon` | `points: [[x,y],…]`(임의 단위, 자동 맞춤), `labels`(꼭짓점 이름), `sides`(변 옆 글: 문자열 또는 null), `angles: [{at: i, label, right?}]`, `fill?` | 다각형 |
+| `polygon` | `points: [[x,y],…]`(임의 단위, 자동 맞춤), `labels`(꼭짓점 이름), `sides`(변 옆 글: 문자열 또는 null), `angles: [{at: i, label, right?}]`, `segments: [{from, to, dashed?, label?, right?}]`(높이·대각선 같은 보조선 — 이름은 변·다른 보조선·직각 표시·먼저 놓은 이름과 가장 덜 겹치는 자리로: 가운데부터 양 끝 쪽, 오른쪽(위) 먼저, 2026-10-09), `fill?` | 다각형 |
 | `circle` | `r`(글: 반지름 표시), `showCenter`, `showRadius`, `showDiameter`, `label` | 원 |
 | `angle` | `deg`(0~360), `label?`, `showArc`(기본 true) | 각 |
 | `bars` | `labels`, `values`, `unit?`, `title?`, `horizontal?` | 막대그래프 |
@@ -557,6 +562,8 @@ TutorReview.label(due, today) → '오늘' | '내일' | '모레' | '10월 11일'
 
 ## 11. 틀린 곳 알리기 (2026-10-08 — 사용자 결정: 그 기기에만 모은다)
 
+- 채점 전 안내(2026-10-09): 빈 답이면 '답을 입력해 주세요', 수·모음·식 답인데 읽을 수 없으면(수가 들어 있는 '2와 3 사이'·'12 m', 식의 괄호 짝이 틀림)
+  채점하지 않고 '답을 수로 읽지 못했어요 …' 안내(`.pw-msg`)와 입력칸 초점 — 맞는 수를 쓰고도 오답으로 남지 않게. 수가 하나도 없는 답('모르겠어요')은 그대로 채점한다(막히지 않게).
 - 버튼: 문제 위젯은 **채점한 뒤**(`problemWidget(p, { report: { unit, kind: 'problem', ref, q } })` — 예상문제·오답노트·오늘의 복습·개념 카드의 이해 확인),
   개념 카드(`kind: 'concept', ref: 'c<번호>'`)·예제(`kind: 'example', ref: 'ex<번호>'`)는 늘. 이해 확인 문제의 ref 는 `check-<카드 번호>`.
   문제 ref: 문제은행은 문제 번호, 생성기 문제는 `g-<생성기>-<seed>`(같은 문제를 다시 만들 수 있다), 낱말 문제는 `v-<seed>`.
@@ -651,7 +658,8 @@ TutorSpeech.pickVoice(voices) → voice | null   이 기기 안(localService)의
   새 저장 칸은 없다 — 이미 있는 "본 카드" 기록을 쓴다. 안 본 카드가 없으면(다 봄) 또는 하나도 안 봤으면 첫 카드부터.
 - 이어 보일 때는 말풍선이 "지난번에 본 다음인 ‘…’부터"로 바뀌고, 카드 위에 안내와 [처음부터 보기](`#cvResume`)가 뜬다. 같은 때에 다른 탭에 다녀오면 보던 카드 그대로(안내 없음).
 - 주소로 카드를 고르면(`?card=` — 오답노트·예상문제의 "개념 카드에서 보기 ›") 그 카드가 먼저다. 시험: `tests/ui/learn-resume.spec.js`.
-- 홈의 "이어서 공부하기" 카드도 어디부터인지 적는다("개념 3/4부터"). 개념 카드를 다 봤으면 "개념 카드 다 봄 · 문제 풀기"로, 누르면 문제 탭으로 간다.
+- 홈의 "이어서 공부하기" 카드도 어디부터인지 적는다("개념 3/4 · ‘일차부등식 풀기’부터"). 카드 이름은 단원 파일에만 있어서, 아직 안 불러온 단원이면
+  화면을 먼저 "개념 3/4부터"로 그린 뒤 단원 파일을 불러와 채운다(못 불러오면 번호만 — 오류 없음). 개념 카드를 다 봤으면 "개념 카드 다 봄 · 문제 풀기"로, 누르면 문제 탭으로 간다.
 
 ## 18. 다시 볼 개념 (2026-10-08 — 사용자 지시 2순위 '오답 분석 및 복습 추천')
 
