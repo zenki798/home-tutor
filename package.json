@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "playwright test",
-    "test:logic": "playwright test --project=logic",
+    "test:logic": "playwright test --project=logic --project=perf --no-deps",
     "validate": "node scripts/validate-content.js",
     "build:catalog": "node scripts/build-catalog.js",
     "build:index": "node scripts/build-index.js",
