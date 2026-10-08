@@ -564,7 +564,7 @@
   }
 
   /* ---- 학습 기록 (학습 연속성에 필요한 만큼만, §9.2) ----
-   * attempts: 최근 풀이 2000개 { t, unit, pid | gen, level, ok, cause? }   (level 0 = 개념 카드의 이해 확인)
+   * attempts: 최근 풀이 2000개 { t, unit, pid | gen, level, ok, cause?, c? }   (level 0 = 개념 카드의 이해 확인, c = 묶인 개념 카드 번호)
    * stats:    { days: { 'YYYY-MM-DD': { n, c } } (최근 400일), subjects: { 과목: { n, c } } } */
   var MAX_ATTEMPTS = 2000;
   function causeText(why) {
@@ -583,6 +583,7 @@
     var a = { t: Date.now(), unit: String(rec.unit || ''), level: num(rec.level), ok: !!rec.ok };
     if (rec.gen) a.gen = String(rec.gen); else a.pid = String(rec.pid || '');
     if (rec.cause) a.cause = rec.cause;
+    if (typeof rec.c === 'number' && rec.c >= 0 && Math.floor(rec.c) === rec.c) a.c = rec.c;
     var list = readArr(pk('attempts'));
     list.push(a);
     if (list.length > MAX_ATTEMPTS) list = list.slice(list.length - MAX_ATTEMPTS);
@@ -606,6 +607,7 @@
     logAttempt({
       unit: item.unit, level: item.p.level || 1, ok: res.correct, cause: res.correct ? '' : causeText(res.why),
       gen: item.src === 'gen' || item.src === 'vocab' ? item.gen : null, pid: item.p.id,
+      c: item.p && typeof item.p.concept === 'number' ? item.p.concept : null,
     });
   }
   function attemptsList() {
@@ -1449,9 +1451,24 @@
     var meta = rec ? Tutor.unitMeta(rec) : null;
     if (meta && !all) {
       var rs = subjectOf(meta.course.subject);
-      html += '<a class="continue-card ' + subjClass(rs.id) + '" href="#/unit/' + encodeURIComponent(rec) + '/learn">' +
+      /* 어디부터 이어지는지(§17): 안 본 첫 개념 카드 — 다 봤으면 문제 풀기로 */
+      var rp = unitProg(progressAll(), rec);
+      var where = '#/unit/' + encodeURIComponent(rec) + '/learn';
+      var nextText = '';
+      if (rp.cards) {
+        var nk = 0;
+        while (nk < rp.cards && rp.seen.indexOf(nk) >= 0) nk++;
+        if (nk >= rp.cards) {
+          nextText = '개념 카드 다 봄 · 문제 풀기';
+          where = '#/unit/' + encodeURIComponent(rec) + '/practice';
+        } else if (nk > 0) {
+          nextText = '개념 ' + (nk + 1) + '/' + rp.cards + '부터';
+        }
+      }
+      html += '<a class="continue-card ' + subjClass(rs.id) + '" href="' + where + '">' +
         '<span class="cc-icon" aria-hidden="true">▶</span><span class="cc-text"><span class="cc-label">이어서 공부하기</span>' +
-        '<span class="cc-unit">' + esc(E.plain(meta.unit.title)) + '</span><span class="cc-course">' + esc(rs.icon || '') + ' ' + esc(meta.course.title) + '</span></span></a>';
+        '<span class="cc-unit">' + esc(E.plain(meta.unit.title)) + '</span><span class="cc-course">' + esc(rs.icon || '') + ' ' + esc(meta.course.title) + '</span>' +
+        (nextText ? '<span class="cc-next">' + esc(nextText) + '</span>' : '') + '</span></a>';
     }
 
     /* 풀다 만 예상문제(§15) */
@@ -2089,7 +2106,7 @@
           var w = problemWidget(c.check, {
             report: { unit: unit.id, kind: 'problem', ref: 'check-' + i, q: c.check.q },
             onGraded: function (res, after) {
-              logAttempt({ unit: unit.id, pid: 'check-' + i, level: 0, ok: res.correct, cause: res.correct ? '' : causeText(res.why) });
+              logAttempt({ unit: unit.id, pid: 'check-' + i, level: 0, ok: res.correct, cause: res.correct ? '' : causeText(res.why), c: i });
               if (res.correct) {
                 markChecked(unit, i);
                 var badge = $('#chk-' + i + ' .ok-badge', sec);
@@ -4213,7 +4230,24 @@
     return html + '</section>';
   }
 
+  /* 다시 볼 개념(§18): 최근 30일 동안 두 번 이상 틀린 개념 카드 — 학생이 보는 기록 화면에 3개까지 */
+  function statsAgainHtml() {
+    if (!window.TutorSummary) return '';
+    var list = (summaryOf(30).concepts || []).slice(0, 3);
+    if (!list.length) return '';
+    return '<section class="again-box stats-again" aria-labelledby="stAgainT"><h3 class="section-title" id="stAgainT">다시 볼 개념</h3>' +
+      '<p class="muted small">' + esc(say({ e: '최근 30일 동안 두 번 이상 틀린 개념 카드예요. 다시 보고 문제를 풀어 봐요.', m: '최근 30일 동안 두 번 이상 틀린 개념 카드예요. 다시 보고 문제를 풀어 봐요.', h: '최근 30일 동안 두 번 이상 틀린 개념 카드입니다. 다시 보고 문제를 풀어 봅시다.' })) + '</p>' +
+      '<ul class="again-list">' + list.map(function (x) {
+        return '<li class="card again-item"><a class="link again-link" href="#/unit/' + encodeURIComponent(x.unit) + '/learn?card=' + x.c + '">' + esc(x.title || '개념 ' + (x.c + 1)) + '</a>' +
+          '<span class="muted small">' + esc(x.unitTitle) + ' · 틀린 문제 ' + x.wrong + '개</span></li>';
+      }).join('') + '</ul></section>';
+  }
+
   VIEWS.stats = function () {
+    // 다시 볼 개념의 제목은 단원 파일에 있다 — 그 단원을 먼저 싣고 그린다
+    return window.TutorSummary ? loadConceptUnits(30).then(statsView) : statsView();
+  };
+  function statsView() {
     var prog = progressAll();
     var days = daysList();
     var streak = streakOf(days);
@@ -4238,6 +4272,7 @@
         return '<li class="tile"><span class="tile-label">' + esc(t[0]) + '</span><span class="tile-value">' + esc(t[1]) + '</span></li>';
       }).join('') + '</ul>';
     html += recentStatsHtml();
+    html += statsAgainHtml();
     if (window.TutorSummary) {
       html += '<p class="sum-link"><a class="btn" href="#/summary"><span aria-hidden="true">👪</span> 보호자용 학습 요약 (최근 7일·30일)</a></p>';
     }
@@ -4262,7 +4297,7 @@
     }).join('') + '</ul>' : '<div class="state-box"><p>최근 공부한 단원이 없어요.</p></div>';
     html += '<p class="muted small">기록은 이 기기에만 저장되고 다른 사람과 비교하지 않아요.</p>';
     return { title: '기록', tab: 'stats', back: '#/home', html: html };
-  };
+  }
 
   /* ================= 보호자용 학습 요약 (§12, js/summary.js) =================
    * 지금 학생 한 명의 기록으로만 만든다(다른 학생 기록은 읽지 않는다). 최근 7일(기본)·30일. 인쇄·글로 복사(별명 없이). */
@@ -4272,6 +4307,11 @@
       attempts: attemptsList(), days: daysList(), progress: progressAll(), notes: list, reports: reportsList(),
     }, {
       today: todayStr(), period: period, due: reviewDue(list).length,
+      conceptTitle: function (id, c) {
+        var u = Tutor.units[id];
+        var x = u && Array.isArray(u.concepts) ? u.concepts[c] : null;
+        return x ? E.plain(x.title) : null;
+      },
       unitInfo: function (id) {
         var m = Tutor.unitMeta(id);
         if (!m) return null;
@@ -4279,6 +4319,13 @@
         return { subject: s.id, subjectName: s.name, title: E.plain(m.unit.title) };
       },
     });
+  }
+  /* 자주 틀린 개념의 제목은 단원 파일에 있다 — 아직 싣지 않은 단원만 먼저 싣는다(실패하면 '개념 n'으로) */
+  function loadConceptUnits(period) {
+    var s = summaryOf(period);
+    var ids = [];
+    (s.concepts || []).forEach(function (x) { if (!Tutor.units[x.unit] && ids.indexOf(x.unit) < 0 && Tutor.unitMeta(x.unit)) ids.push(x.unit); });
+    return Promise.all(ids.map(function (id) { return Tutor.loadUnit(id).then(null, function () { return null; }); }));
   }
   function summaryBodyHtml(s) {
     var html = '<p class="sum-range">' + esc(mdText(s.from) + ' ~ ' + mdText(s.to)) + ' <span class="muted">(최근 ' + s.period + '일)</span></p>';
@@ -4316,6 +4363,13 @@
           (s.weak.length ? '<h4>더 연습하면 좋은 단원</h4><ul class="sum-weak">' + s.weak.map(unitLi).join('') + '</ul>' : '') +
           '<p class="muted small">이 기간에 ' + window.TutorSummary.MIN_UNIT + '문제 이상 푼 단원만 견주었어요.</p></section>';
       }
+      if (s.concepts && s.concepts.length) {
+        html += '<section class="sum-sec card" aria-labelledby="sumConT"><h3 id="sumConT">자주 틀린 개념</h3><ol class="sum-concepts">' +
+          s.concepts.map(function (x) {
+            return '<li><a href="#/unit/' + encodeURIComponent(x.unit) + '/learn?card=' + x.c + '">' + esc(x.title || '개념 ' + (x.c + 1)) + '</a>' +
+              ' <span class="muted small">' + esc(x.unitTitle) + ' · 틀린 문제 ' + x.wrong + '개</span></li>';
+          }).join('') + '</ol><p class="muted small">이 기간에 ' + window.TutorSummary.MIN_CONCEPT + '번 이상 틀린 개념 카드예요. 누르면 그 카드를 다시 볼 수 있어요.</p></section>';
+      }
       if (s.causes.length) {
         html += '<section class="sum-sec card" aria-labelledby="sumCauseT"><h3 id="sumCauseT">자주 틀린 까닭</h3><ol class="sum-causes cause-list">' +
           s.causes.map(function (c) { return '<li><span class="cause-text">' + esc(c.text) + '</span> <span class="badge">' + c.n + '번</span></li>'; }).join('') +
@@ -4340,6 +4394,9 @@
       return { title: '학습 요약', tab: 'stats', back: '#/stats', html: '<div class="state-box"><p>요약 기능 파일(js/summary.js)을 불러오지 못했어요.</p></div>' };
     }
     var period = S.sumPeriod === 30 ? 30 : 7;
+    return loadConceptUnits(period).then(function () { return summaryView(p, period); });
+  };
+  function summaryView(p, period) {
     return {
       title: '학습 요약', tab: 'stats', back: '#/stats', cls: 'summary-page',
       html: '<p class="sum-print-head">가정교사 · ' + esc(koDate(todayIso(), true)) + ' 기준</p>' +
@@ -4360,12 +4417,16 @@
         page.addEventListener('change', function (e) {
           if (e.target.name !== 'sumPeriod') return;
           S.sumPeriod = e.target.value === '30' ? 30 : 7;
-          $('.sum-body', page).innerHTML = summaryBodyHtml(summaryOf(S.sumPeriod));
-          var ta = $('.sum-text', page);
-          ta.hidden = true;
-          ta.value = '';
-          $('.sum-done', page).textContent = '';
-          announce('최근 ' + S.sumPeriod + '일 요약으로 바꿨어요.');
+          var want = S.sumPeriod;
+          loadConceptUnits(want).then(function () {
+            if (S.sumPeriod !== want || !page.isConnected) return; // 그새 또 바꿨거나 화면을 떠났다
+            $('.sum-body', page).innerHTML = summaryBodyHtml(summaryOf(want));
+            var ta = $('.sum-text', page);
+            ta.hidden = true;
+            ta.value = '';
+            $('.sum-done', page).textContent = '';
+            announce('최근 ' + want + '일 요약으로 바꿨어요.');
+          });
         });
         page.addEventListener('click', function (e) {
           var b = e.target.closest('[data-act]');
@@ -4388,7 +4449,7 @@
         });
       },
     };
-  };
+  }
 
   /* ================= 설정 ================= */
 

@@ -466,7 +466,7 @@ tutor.settings   { fontScale, theme }
 | `settings` | `{ fontScale, theme, installHint }` (기기 공통) |
 | `p.<id>.progress` | 단원별 진도 `{ [unitId]: { seen[], checked[], cards, solved, correct, best, last } }` |
 | `p.<id>.notes` | 오답노트 `[{ key, unit, problem(사본), given, cause(오답 원인), concept, at, wrongCount, rightStreak, due(다음 복습 날 'YYYY-MM-DD', §10) }]` |
-| `p.<id>.attempts` | 최근 풀이 기록(최대 2000개) `[{ t, unit, pid|gen, level, ok, cause? }]` |
+| `p.<id>.attempts` | 최근 풀이 기록(최대 2000개) `[{ t, unit, pid|gen, level, ok, cause?, c? }]` — `c` 는 그 문제가 묶인 개념 카드 번호(문제의 `concept`, 이해 확인은 그 카드, 2026-10-08부터) |
 | `p.<id>.stats` | 학습 통계(날짜별 푼 수·맞힌 수, 과목별 합계) |
 | `p.<id>.recent` · `p.<id>.days` | 최근 단원, 공부한 날 |
 | `p.<id>.chat` | 최근 질문 대화(과목별 최대 30개) — 학습 연속성에 필요한 만큼만 |
@@ -559,16 +559,18 @@ TutorReview.label(due, today) → '오늘' | '내일' | '모레' | '10월 11일'
 지금 학생 **한 명**의 기록(`attempts`·`days`·`progress`·`notes`·`reports`)만 받아 이 기기 안에서 요약한다. 다른 학생 기록은 받지도 않는다. 순수 함수.
 
 ```
-TutorSummary.build(input, { today, period: 7|30, unitInfo(unitId) → { subject, subjectName, title } | null, due })
+TutorSummary.build(input, { today, period: 7|30, unitInfo(unitId) → { subject, subjectName, title } | null, due, conceptTitle(unitId, c) → 제목 | null })
   → { from, to, period, studyDays, solved, correct, rate, checks, checksOk,
       daily: [{ date, n, c }] (기간의 모든 날), bySubject: [{ subject, name, n, c, rate }] (많이 푼 순),
       units, strong(3문제 이상·80% 이상, 최대 3), weak(3문제 이상·60% 미만, 최대 3), causes(최대 3, 같으면 최근 것),
+      concepts(자주 틀린 개념 — 풀이 기록의 c 로 개념 카드마다 센다, 기간에 2번 이상 틀린 것, 많이 틀린 차례·같으면 최근, 최대 5: { unit, c, n, wrong, title, unitTitle }),
       studied(개념을 본 단원 — progress.last 가 기간 안, 최대 5), studiedCount, notes, due, reports,
       partial(풀이 기록 2000개가 다 차서 기간 앞부분이 빠졌을 수 있음) }
 TutorSummary.toText(summary, { grade }) → 글로 복사할 요약 (학년만 — 별명은 넣지 않는다)
 ```
 
-- 푼 문제(`solved`)는 level 1 이상, 이해 확인(`checks`)은 level 0 — 날짜별 막대(`daily`)는 둘 다 센다.
+- 푼 문제(`solved`)는 level 1 이상, 이해 확인(`checks`)은 level 0 — 날짜별 막대(`daily`)는 둘 다 센다. 자주 틀린 개념도 둘 다 센다.
+- 자주 틀린 개념의 제목은 단원 파일에 있어서, 요약 화면은 그 단원을 먼저 싣고 그린다(실패하면 '개념 n'). 누르면 그 카드로(`?card=`). 글로 복사에도 넣는다. 2026-10-08 전 기록에는 c 가 없어 세지 않는다.
 - 화면 `#/summary`(기록 화면 아래 링크): 기간 고르기(7·30일, 메모리에만 — 저장 안 함)·숫자 4칸·날짜별 막대(30일은 일주일마다 날짜)·과목별·단원·자주 틀린 까닭·
   오답노트·복습·틀린 곳 알림·개념을 공부한 단원, [인쇄하기](`@media print` — 막대·버튼을 숨기고 맨 위에 '가정교사 · 날짜 기준')·[글로 복사하기].
   문서 제목은 '학습 요약 · 가정교사'(별명 없음 — 인쇄 머리글에 남지 않게). PIN 이 걸린 학생은 PIN 을 맞혀야 연다(다른 화면과 같다).
@@ -632,9 +634,11 @@ TutorSpeech.pickVoice(voices) → voice | null   이 기기 안(localService)의
   새 저장 칸은 없다 — 이미 있는 "본 카드" 기록을 쓴다. 안 본 카드가 없으면(다 봄) 또는 하나도 안 봤으면 첫 카드부터.
 - 이어 보일 때는 말풍선이 "지난번에 본 다음인 ‘…’부터"로 바뀌고, 카드 위에 안내와 [처음부터 보기](`#cvResume`)가 뜬다. 같은 때에 다른 탭에 다녀오면 보던 카드 그대로(안내 없음).
 - 주소로 카드를 고르면(`?card=` — 오답노트·예상문제의 "개념 카드에서 보기 ›") 그 카드가 먼저다. 시험: `tests/ui/learn-resume.spec.js`.
+- 홈의 "이어서 공부하기" 카드도 어디부터인지 적는다("개념 3/4부터"). 개념 카드를 다 봤으면 "개념 카드 다 봄 · 문제 풀기"로, 누르면 문제 탭으로 간다.
 
 ## 18. 다시 볼 개념 (2026-10-08 — 사용자 지시 2순위 '오답 분석 및 복습 추천')
 
 - 예상문제 결과 화면은 틀린 문제를 보여 줄 뿐 아니라, 틀린 문제가 묶인 **개념 카드**(문제의 `concept` 번호)를 모아 "다시 볼 개념"으로 보인다 —
   많이 틀린 차례로(같으면 먼저 틀린 차례로) 5개까지, 카드마다 "틀린 문제 n개", 여러 단원을 섞은 문제지면 단원 이름도. 누르면 그 카드로 바로 간다(`#/unit/<id>/learn?card=n` — §17 의 이어 보기보다 먼저).
 - 개념 번호가 없는 문제(낱말 문제 등)는 세지 않는다. 다 맞히면 이 칸이 없다. 기기 안 계산이고 저장하는 것은 없다. 시험: `tests/ui/quiz-again.spec.js`.
+- 학생이 보는 기록 화면(`#/stats`)에도 "다시 볼 개념"을 3개까지 — 최근 30일 동안 두 번 이상 틀린 개념 카드(보호자용 요약 §12 의 `concepts` 와 같은 계산, 풀이 기록의 `c`). 시험: `tests/ui/summary.spec.js`.

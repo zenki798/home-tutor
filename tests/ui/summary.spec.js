@@ -144,3 +144,49 @@ test('PIN 이 걸린 학생은 PIN 을 맞혀야 요약을 볼 수 있다', asyn
   await waitReady(page);
   await expect(page.locator('.sum-body .tile').nth(1)).toContainText('9개');
 });
+
+test('자주 틀린 개념: 2번 이상 틀린 개념 카드를 제목과 함께(단원 파일을 먼저 싣는다), 글로 복사에도 넣고, 누르면 그 카드로 간다', async ({ page }) => {
+  await stubClipboard(page);
+  const id = STUDENT.id;
+  const recs = records(id);
+  recs['tutor.p.' + id + '.attempts'] = ATTEMPTS.concat([
+    att(10, 7, 'math-m2-01', false, { c: 1 }),
+    att(10, 8, 'math-m2-01', false, { c: 1, level: 0, pid: 'check-1' }), // 이해 확인도 센다
+    att(10, 8, 'math-m2-01', false, { c: 2 }),                          // 한 번만 틀림 — 넣지 않는다
+  ]);
+  await open(page, { student: true, storage: recs, url: '/#/summary' });
+  const sec = page.locator('section[aria-labelledby="sumConT"]');
+  await expect(sec.getByRole('heading', { name: '자주 틀린 개념' })).toBeVisible();
+  const links = sec.locator('a');
+  await expect(links).toHaveCount(1);
+  await expect(links.first()).toHaveText('부등식의 성질'); // 요약을 바로 열어도 단원 파일을 싣고 제목을 보인다
+  await expect(links.first()).toHaveAttribute('href', '#/unit/math-m2-01/learn?card=1');
+  await expect(sec).toContainText('일차부등식 · 틀린 문제 2개');
+  await page.getByRole('button', { name: '글로 복사하기' }).click();
+  await expect.poll(() => page.evaluate(() => window.__copied[0] || '')).toContain('자주 틀린 개념\n- 부등식의 성질 · 일차부등식 (틀린 문제 2개)');
+  await links.first().click();
+  await waitReady(page);
+  const shown = await page.evaluate(() => Array.from(document.querySelectorAll('.concept-card')).filter((c) => !c.hidden).map((c) => Number(c.getAttribute('data-i'))));
+  expect(shown).toEqual([1]);
+});
+
+test('기록 화면: 개념 카드 번호가 든 기록이 없으면 "다시 볼 개념" 칸이 없다', async ({ page }) => {
+  await open(page, { student: true, storage: records(STUDENT.id), url: '/#/stats' });
+  await expect(page.locator('.page-title')).toHaveText('학습 기록');
+  await expect(page.locator('.stats-again')).toHaveCount(0);
+});
+
+test('기록 화면에도 "다시 볼 개념" — 최근 30일 동안 두 번 이상 틀린 개념 카드를 많이 틀린 차례로, 그 카드로 가는 링크', async ({ page }) => {
+  const id = STUDENT.id;
+  const recs = records(id);
+  recs['tutor.p.' + id + '.attempts'] = ATTEMPTS.concat([
+    att(9, 20, 'math-m2-01', false, { c: 3 }), att(9, 21, 'math-m2-01', false, { c: 3 }), // 30일 안
+    att(10, 7, 'math-m2-01', false, { c: 1 }), att(10, 8, 'math-m2-01', false, { c: 1 }), att(10, 8, 'math-m2-01', false, { c: 1 }),
+  ]);
+  await open(page, { student: true, storage: recs, url: '/#/stats' });
+  const sec = page.locator('.stats-again');
+  await expect(sec.getByRole('heading', { name: '다시 볼 개념' })).toBeVisible();
+  await expect(sec.locator('a')).toHaveText(['부등식의 성질', '해를 수직선에 나타내기']);
+  await expect(sec.locator('a').first()).toHaveAttribute('href', '#/unit/math-m2-01/learn?card=1');
+  await expect(sec).toContainText('일차부등식 · 틀린 문제 3개');
+});

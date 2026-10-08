@@ -61,3 +61,27 @@ test('주소로 카드를 고르면(개념 카드에서 보기 ›) 이어 보�
   expect(await visibleCard(page)).toEqual([1]);
   await expect(page.locator('#cvResume')).toHaveCount(0);
 });
+
+test('홈의 "이어서 공부하기"가 어디부터인지 알린다: 안 본 첫 카드부터 · 다 봤으면 문제 풀기로', async ({ page }) => {
+  const recent = { ['tutor.p.' + STUDENT.id + '.recent']: ['math-m2-01'] };
+  await open(page, { student: true, storage: Object.assign({}, prog([0, 1]), recent), url: '/#/home' });
+  const card = page.locator('.continue-card').first();
+  await expect(card).toContainText('일차부등식');
+  await expect(card.locator('.cc-next')).toHaveText('개념 3/4부터');
+  await expect(card).toHaveAttribute('href', '#/unit/math-m2-01/learn');
+  // 다 본 단원
+  await page.evaluate(([k]) => { Tutor.store.set(k, { 'math-m2-01': { seen: [0, 1, 2, 3], cards: 4, solved: 0, correct: 0, best: 0, last: 1 } }); },
+    ['p.' + STUDENT.id + '.progress']);
+  await page.evaluate(() => { location.hash = '#/stats'; });
+  await page.evaluate(() => { location.hash = '#/home'; });
+  await expect(page.locator('.continue-card').first().locator('.cc-next')).toHaveText('개념 카드 다 봄 · 문제 풀기');
+  await expect(page.locator('.continue-card').first()).toHaveAttribute('href', '#/unit/math-m2-01/practice');
+});
+
+test('아직 개념 카드를 한 장도 보지 않은 단원은 "어디부터"를 따로 쓰지 않는다', async ({ page }) => {
+  const recent = { ['tutor.p.' + STUDENT.id + '.recent']: ['math-m2-01'] };
+  await open(page, { student: true, storage: Object.assign({}, prog([]), recent), url: '/#/home' });
+  await expect(page.locator('.continue-card').first()).toContainText('일차부등식');
+  await expect(page.locator('.continue-card .cc-next')).toHaveCount(0);
+  await expect(page.locator('.continue-card').first()).toHaveAttribute('href', '#/unit/math-m2-01/learn');
+});

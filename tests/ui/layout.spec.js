@@ -71,6 +71,22 @@ test.describe('가장 좁은 휴대폰 (360px)', () => {
   });
 });
 
+/* 태블릿(아이패드·안드로이드 태블릿): 세로 768px·가로 1024px — 탭 막대가 위·아래로 바뀌는 언저리 폭도 함께 */
+for (const vp of [{ width: 768, height: 1024 }, { width: 1024, height: 768 }]) {
+  test.describe('태블릿 (' + vp.width + 'px)', () => {
+    test.use({ viewport: vp });
+    test('모든 주요 화면에서 가로 스크롤이 생기지 않는다', async ({ page }) => {
+      await open(page, { student: true, storage: { 'tutor.p.p-test-a.notes': [NOTE] }, url: '/#/home' });
+      expect(await checkAllRoutes(page)).toEqual([]);
+    });
+    test('글자를 "아주 크게" 해도 가로 스크롤이 생기지 않는다', async ({ page }) => {
+      await open(page, { student: true, storage: { 'tutor.settings': { fontScale: 3, theme: 'auto' }, 'tutor.p.p-test-a.notes': [NOTE] }, url: '/#/home' });
+      await expect(page.locator('html')).toHaveAttribute('data-font', '3');
+      expect(await checkAllRoutes(page)).toEqual([]);
+    });
+  });
+}
+
 test('탭 막대: 좁은 화면에서는 아래쪽에 붙고, 넓은 화면에서는 위쪽 막대 안에', async ({ page }) => {
   await open(page, { student: true, url: '/#/home' });
   const vp = page.viewportSize();

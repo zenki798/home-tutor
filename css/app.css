@@ -308,6 +308,16 @@ html.no-profile .tabbar, html.no-profile .student-chip { display: none; }
   .tabbar a svg { width: 1.25rem; height: 1.25rem; padding: 0; background: none !important; }
   .tabbar a:hover { background: var(--surface-3); color: var(--ink); }
   .tabbar a[aria-current="page"] { background: var(--brand-wash); }
+  /* 글자를 크게 하면 위쪽 막대가 모자랄 수 있다 — 학생 이름표가 먼저 줄어든다(이름은 …으로) */
+  .student-chip { flex: 0 1 auto; min-width: 2.75rem; overflow: hidden; }
+}
+/* 글자 '아주 크게' + 태블릿 세로 폭: 메뉴는 그림만 보인다(메뉴 이름은 화면 읽기 프로그램에 그대로 남는다) */
+@media (min-width: 760px) and (max-width: 899px) {
+  html[data-font="3"] .tabbar a { padding: 0 0.625rem; }
+  html[data-font="3"] .tabbar a span {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
 }
 
 /* ================= 설치 안내 ================= */
@@ -555,6 +565,7 @@ html.no-profile .main { padding-bottom: 2rem; }
 .cc-label { font-size: 0.8125rem; font-weight: 800; color: var(--c-ink); }
 .cc-unit { font-size: 1.0625rem; font-weight: 800; }
 .cc-course { font-size: 0.875rem; color: var(--ink-2); }
+.cc-next { margin-top: 0.125rem; font-size: 0.8125rem; font-weight: 700; color: var(--c-ink); }
 
 /* 새 학년 안내 (홈) */
 .grade-up { margin: 0.625rem 0 0.25rem; border-left: 5px solid var(--brand); }
@@ -1234,8 +1245,8 @@ html:not(.can-speak) .speak-btn { display: none !important; }
 .sum-subjects li { display: grid; gap: 0.25rem; }
 .ss-name { font-weight: 800; }
 .ss-num { font-size: 0.875rem; color: var(--ink-2); }
-.sum-strong, .sum-weak, .sum-studied { margin: 0; padding-left: 1.25rem; }
-.sum-strong li, .sum-weak li, .sum-studied li { margin: 0.25rem 0; }
+.sum-strong, .sum-weak, .sum-studied, .sum-concepts { margin: 0; padding-left: 1.25rem; }
+.sum-strong li, .sum-weak li, .sum-studied li, .sum-concepts li { margin: 0.25rem 0; }
 .sum-review p { margin: 0 0 0.25rem; }
 .sum-text { display: block; width: 100%; margin-top: 0.75rem; font-size: 0.875rem; }
 .sum-print-head { display: none; }

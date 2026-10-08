@@ -104,3 +104,39 @@ test('글로 복사할 요약: 학년만, 별명 같은 학생 정보는 넣지 
   const empty = M.toText(M.build({}, { today: TODAY }), {});
   expect(empty).toContain('정답률 -');
 });
+
+test('자주 틀린 개념: 이 기간에 2번 이상 틀린 개념 카드만, 많이 틀린 차례(같으면 최근)로 — 이해 확인도 센다', () => {
+  const TITLES = { 'math-m2-02#1': '가감법', 'math-m2-02#0': '연립방정식의 해', 'sci-e5-01#2': '용해와 온도' };
+  const conceptTitle = (u, c) => TITLES[u + '#' + c] || null;
+  const A = [
+    att(9, 20, 'math-m2-02', false, { c: 1 }),                       // 7일 밖
+    att(10, 6, 'math-m2-02', false, { c: 1 }),
+    att(10, 6, 'math-m2-02', false, { c: 1 }),
+    att(10, 7, 'math-m2-02', true, { c: 1 }),
+    att(10, 7, 'math-m2-02', false, { c: 0 }),
+    att(10, 7, 'math-m2-02', false, { c: 0 }),
+    att(10, 8, 'sci-e5-01', false, { c: 2, level: 0, pid: 'check-2' }), // 이해 확인도 개념 카드별로 센다
+    att(10, 8, 'sci-e5-01', false, { c: 2 }),
+    att(10, 8, 'sci-e5-01', false, { c: 3 }),                          // 한 번만 틀림 — 넣지 않는다
+    att(10, 8, 'math-m2-01', false),                                   // 개념 번호 없는 기록 — 세지 않는다
+    att(10, 8, 'math-m2-01', false, { c: -1 }), att(10, 8, 'math-m2-01', false, { c: 1.5 }), att(10, 8, 'math-m2-01', false, { c: '2' }),
+  ];
+  const s = M.build({ attempts: A }, { today: TODAY, period: 7, unitInfo, conceptTitle });
+  expect(s.concepts).toEqual([
+    { unit: 'sci-e5-01', c: 2, n: 2, wrong: 2, title: '용해와 온도', unitTitle: '물질의 용해' },
+    { unit: 'math-m2-02', c: 0, n: 2, wrong: 2, title: '연립방정식의 해', unitTitle: '연립일차방정식' },
+    { unit: 'math-m2-02', c: 1, n: 3, wrong: 2, title: '가감법', unitTitle: '연립일차방정식' },
+  ]);
+  // 30일이면 9월 20일 것까지 — 가감법이 3번으로 맨 앞
+  const s30 = M.build({ attempts: A }, { today: TODAY, period: 30, unitInfo, conceptTitle });
+  expect(s30.concepts[0]).toMatchObject({ unit: 'math-m2-02', c: 1, wrong: 3 });
+  // 제목을 모르면 '개념 n'(번호는 1부터)
+  const noTitle = M.build({ attempts: A }, { today: TODAY, period: 7, unitInfo });
+  expect(noTitle.concepts[0].title).toBe('');
+  const text = M.toText(noTitle, {});
+  expect(text).toContain('자주 틀린 개념\n- 개념 3 · 물질의 용해 (틀린 문제 2개)');
+  expect(M.toText(s, {})).toContain('- 가감법 · 연립일차방정식 (틀린 문제 2개)');
+  // 개념 기록이 없으면 그 줄이 없다
+  expect(M.toText(M.build({ attempts: ATTEMPTS }, { today: TODAY, unitInfo }), {})).not.toContain('자주 틀린 개념');
+  expect(M.MIN_CONCEPT).toBe(2);
+});

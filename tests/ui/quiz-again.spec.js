@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { open, quizState, solveAll, waitReady } = require('./helpers');
+const { open, quizState, solveAll, waitReady, readStore, STUDENT } = require('./helpers');
 
 /*
  * 다시 볼 개념 (docs/ARCHITECTURE.md §18 — 2순위 오답 분석·복습 추천): 예상문제 결과에서 틀린 문제가 묶인
@@ -35,6 +35,9 @@ test('틀린 문제가 묶인 개념 카드를 많이 틀린 차례로 보여 �
   const got = await againItems(page);
   expect(got.map((x) => ({ href: x.href, n: x.n }))).toEqual(expected);
   expect(got.every((x) => x.title.length > 0)).toBe(true);
+  // 풀이 기록에도 문제가 묶인 개념 카드 번호(c)가 남는다 — 보호자용 요약의 '자주 틀린 개념'이 쓴다
+  const atts = (await readStore(page, 'p.' + STUDENT.id + '.attempts')) || [];
+  expect(atts.map((a) => (typeof a.c === 'number' ? a.c : null))).toEqual(st.items.map((it) => it.concept));
   // 누르면 그 개념 카드로 (이어 보기보다 고른 카드가 먼저)
   await page.locator('.again-list a').first().click();
   await waitReady(page);

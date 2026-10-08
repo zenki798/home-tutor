@@ -13,6 +13,7 @@
 
   var MAX_ATTEMPTS = 2000; // 화면이 남기는 풀이 기록 수(app.js 와 같다) — 다 차면 앞부분이 빠졌을 수 있다
   var MIN_UNIT = 3;        // 잘한 단원·더 연습할 단원은 그 기간에 3문제 이상 푼 단원만
+  var MIN_CONCEPT = 2;     // 자주 틀린 개념은 그 기간에 2번 이상 틀린 개념 카드만(한 번은 실수일 수 있다)
   var DAY_MS = 86400000;
   var DAY_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
@@ -30,8 +31,10 @@
   function pct(c, n) { return n ? Math.round((100 * c) / n) : null; }
 
   /* input: { attempts, days, progress, notes, reports }  — 모두 그 학생의 기록(없으면 빈 것)
-   * opts:  { today: 'YYYY-MM-DD', period: 7|30, unitInfo(unitId) → { subject, subjectName, title } | null, due: 오늘 복습할 수 }
-   * → { from, to, period, studyDays, solved, correct, rate, checks, checksOk, daily, bySubject, units, strong, weak, causes, studied, notes, due, reports, partial } */
+   * opts:  { today: 'YYYY-MM-DD', period: 7|30, unitInfo(unitId) → { subject, subjectName, title } | null, due: 오늘 복습할 수,
+   *          conceptTitle(unitId, 카드 번호) → 개념 카드 제목 | null }
+   * → { from, to, period, studyDays, solved, correct, rate, checks, checksOk, daily, bySubject, units, strong, weak, causes,
+   *     concepts(자주 틀린 개념 — 풀이 기록의 c: 개념 카드 번호), studied, notes, due, reports, partial } */
   function build(input, opts) {
     input = input || {};
     opts = opts || {};
@@ -57,6 +60,9 @@
     var unitOrder = [];
     var causes = {};
     var causeOrder = [];
+    var concepts = {};
+    var conceptOrder = [];
+    var conceptTitle = typeof opts.conceptTitle === 'function' ? opts.conceptTitle : function () { return null; };
     var solved = 0;
     var correct = 0;
     var checks = 0;
@@ -66,6 +72,13 @@
       if (!inRange(day)) return;
       byDay[day].n += 1;
       if (a.ok) byDay[day].c += 1;
+      // 개념 카드별(이해 확인·문제 모두): 풀이 기록의 c 가 그 문제가 묶인 개념 카드 번호
+      if (typeof a.unit === 'string' && a.unit && typeof a.c === 'number' && a.c >= 0 && Math.floor(a.c) === a.c) {
+        var ck = a.unit + '#' + a.c;
+        if (!concepts[ck]) { concepts[ck] = { unit: a.unit, c: a.c, n: 0, wrong: 0, i: idx }; conceptOrder.push(ck); }
+        concepts[ck].n += 1;
+        if (!a.ok) { concepts[ck].wrong += 1; concepts[ck].i = idx; }
+      }
       if (num(a.level) === 0) { // 개념 카드의 이해 확인
         checks += 1;
         if (a.ok) checksOk += 1;
@@ -103,6 +116,15 @@
     var topCauses = causeOrder.map(function (k) { return causes[k]; })
       .sort(function (a, b) { return (b.n - a.n) || (b.i - a.i); }).slice(0, 3)
       .map(function (c) { return { text: c.text, n: c.n }; });
+    /* 자주 틀린 개념: 이 기간에 MIN_CONCEPT 번 이상 틀린 개념 카드 — 많이 틀린 차례(같으면 최근에 틀린 차례)로 5개까지 */
+    var weakConcepts = conceptOrder.map(function (k) { return concepts[k]; })
+      .filter(function (x) { return x.wrong >= MIN_CONCEPT; })
+      .sort(function (a, b) { return (b.wrong - a.wrong) || (b.i - a.i); }).slice(0, 5)
+      .map(function (x) {
+        var ui = info(x.unit) || {};
+        var t = conceptTitle(x.unit, x.c);
+        return { unit: x.unit, c: x.c, n: x.n, wrong: x.wrong, title: typeof t === 'string' ? t : '', unitTitle: ui.title || x.unit };
+      });
 
     /* 개념 카드를 본 단원(진도의 마지막 공부 시각이 기간 안) */
     var prog = isObj(input.progress) ? input.progress : {};
@@ -124,7 +146,7 @@
       studyDays: uniqDays.length,
       solved: solved, correct: correct, rate: pct(correct, solved),
       checks: checks, checksOk: checksOk,
-      daily: daily, bySubject: bySubject, units: unitList, strong: strong, weak: weak, causes: topCauses,
+      daily: daily, bySubject: bySubject, units: unitList, strong: strong, weak: weak, causes: topCauses, concepts: weakConcepts,
       studied: studied.slice(0, 5), studiedCount: studied.length,
       notes: Array.isArray(input.notes) ? input.notes.length : 0,
       due: num(opts.due),
@@ -159,6 +181,13 @@
       lines.push('더 연습하면 좋은 단원');
       s.weak.forEach(function (x) { lines.push('- ' + x.title + ' (' + x.n + '문제, ' + x.rate + '%)'); });
     }
+    if (s.concepts && s.concepts.length) {
+      lines.push('');
+      lines.push('자주 틀린 개념');
+      s.concepts.forEach(function (x) {
+        lines.push('- ' + (x.title || '개념 ' + (x.c + 1)) + ' · ' + x.unitTitle + ' (틀린 문제 ' + x.wrong + '개)');
+      });
+    }
     if (s.causes.length) {
       lines.push('');
       lines.push('자주 틀린 까닭');
@@ -170,5 +199,5 @@
     return lines.join('\n');
   }
 
-  return { build: build, toText: toText, dayOf: dayOf, addDays: addDays, MIN_UNIT: MIN_UNIT };
+  return { build: build, toText: toText, dayOf: dayOf, addDays: addDays, MIN_UNIT: MIN_UNIT, MIN_CONCEPT: MIN_CONCEPT };
 });
