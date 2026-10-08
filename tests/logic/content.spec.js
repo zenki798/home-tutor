@@ -71,6 +71,26 @@ test('같은 문제 검사: 글·보기가 같으면 경고하고, 그림이 다
   expect(dup[0].msg).toContain('practice[');
 });
 
+test('값이 같은 보기 검사: 값만 묻는 문제는 경고하고, 형태(대분수·기약분수·약분 등)를 묻는 문제는 경고하지 않는다', () => {
+  const fs = require('fs');
+  const { validateUnitFile } = require(path.join(ROOT, 'scripts', 'validate-content.js'));
+  const file = path.join(ROOT, 'tests', 'fixtures', 'units', 'math-m2-01.js');
+  const add = (extra) => 'var __reg = Tutor.registerUnit; Tutor.registerUnit = function (u) { u.practice = u.practice.concat(' +
+    JSON.stringify(extra) + '); __reg(u); };\n' + fs.readFileSync(file, 'utf8');
+  const p = (id, q, choices) => ({ id, level: 1, type: 'choice', q, choices, answer: 0, why: ['', '다른 꼴이에요.', '크기가 달라요.'],
+    explain: '보기를 하나씩 따져 봐요. 그래서 첫째 보기가 답이에요.', concept: 0 });
+  const same = (extra) => validateUnitFile(file, { source: add(extra), seeds: 3, catalog: null })
+    .warnings.filter((w) => /값이 같은 보기/.test(w.msg)).map((w) => w.path);
+  // 값을 묻는데 1/2 와 2/4 가 함께 있으면 정답이 둘
+  expect(same([p('z1', '$\\frac{1}{4}+\\frac{1}{4}$ 의 값은?', ['$\\frac{1}{2}$', '$\\frac{2}{4}$', '$\\frac{3}{4}$'])])).toHaveLength(1);
+  // 형태를 묻는 문제는 값이 같아도 정답이 하나
+  expect(same([
+    p('z1', '대분수인 것은 무엇일까요?', ['$2\\frac{1}{3}$', '$\\frac{7}{3}$', '$\\frac{2}{3}$']),
+    p('z2', '다음 중 **기약분수**는 무엇일까요?', ['$\\frac{2}{3}$', '$\\frac{4}{6}$', '$\\frac{1}{5}$']),
+    p('z3', '$\\frac{12}{18}$를 약분한 분수가 **아닌** 것은?', ['$\\frac{4}{9}$', '$\\frac{6}{9}$', '$\\frac{2}{3}$']),
+  ])).toEqual([]);
+});
+
 test('그림 지시 검사: "다음 그림을 보고"인데 그림이 없으면 경고, 인용 지문 속 이야기·그림 편지·줄기와 잎 그림은 그림 지시가 아니다', () => {
   const fs = require('fs');
   const { validateUnitFile } = require(path.join(ROOT, 'scripts', 'validate-content.js'));

@@ -487,7 +487,9 @@ function extraProblemChecks(p, base, where, report) {
     }
   }
   // 값이 같은 보기 (정답 1/2 와 오답 2/4 → 정답이 둘). 형태를 묻는 문제면 괜찮으므로 경고
-  if ((p.type === 'choice' || p.type === 'order') && Array.isArray(p.choices)) {
+  // — 문제 글이 형태를 묻으면(대분수·가분수·진분수·기약분수·약분·통분·꼴·형태) 값이 같아도 정답이 하나라서 경고하지 않는다(2026-10-08)
+  const FORM_Q = /대분수|가분수|진분수|기약분수|약분|통분|꼴|형태/;
+  if ((p.type === 'choice' || p.type === 'order') && Array.isArray(p.choices) && !(p.type === 'choice' && isStr(p.q) && FORM_Q.test(p.q))) {
     const vals = p.choices.map(choiceNumber);
     outer:
     for (let i = 0; i < vals.length; i++) {
