@@ -11,8 +11,8 @@
 | 묶음 | 작업 (과정#n · 단원 수) |
 |---|---|
 | ~~W1~~ ✅ | math-u-calc#1(4) · math-u-linalg#1(4) · math-u-stat#1(4) · eng-u-grammar#1(2) · eng-u-toeic#1(4) — 10-08 밤 끝(66곳 고침, 전체 1073 passed) |
-| W2 | eng-u-toeic 05~10(4·2) · soc-u-econ#1~3(4·4·2) — `content-jobs.js` 는 남은 단원으로 다시 번호를 매긴다(eng-u-toeic#1·#2) |
-| W3 | soc-u-psych#1~3(4·4·2) · sci-u-bio#1~2(4·4) |
+| ~~W2~~ ✅ | eng-u-toeic 05~10(4·2) · soc-u-econ#1~3(4·4·2) — 10-08 밤 끝(46곳 고침). `content-jobs.js` 는 남은 단원으로 다시 번호를 매긴다 |
+| W3 | soc-u-psych#1~3(4·4·2) · sci-u-bio#1~2(4·4) — 다음 차례(`content-jobs.js --run 5` 첫 묶음과 같음) |
 | W4 | sci-u-bio#3(2) · sci-u-chem#1~3(4·4·2) · sci-u-phy#1(4) |
 | W5 | sci-u-phy#2~3(4·2) · kor-a-literacy#1~3(4·4·2) |
 | W6 | kor-a-spell#1~3(4·4·2) · math-a-basic#1~2(4·4) |
@@ -40,8 +40,9 @@
 1. (1순위 점검) 학생 기록 분리·저장·백업 복원 회귀가 없는지 — 새 기능의 기록(오답노트 due·reports·prefs·gradeAt)이 백업·학생 삭제·기록 지우기와 맞는지 시험이 덮는다(`tests/logic/storage.spec.js`, `tests/ui/backup.spec.js`)
 2. (2순위) 검토자들이 남긴 의문(대학 35단원 24건 — `tmp/r1-review.json`, 그 전 약 1,150건 — `tmp/*-review.json`)을 확인 가능한 것부터 처리
 3. ~~(2순위) 내용 검사 경고 8건~~ ✅ 10-08 밤 처리(오류 0·경고 0)
-3-1. (3순위) **좁은 화면의 긴 수식(§16)** — 글 칸보다 넓은 수식은 글자를 0.8배까지 줄이고, 그래도 넓으면 그 수식만 옆으로 밀기(`js/app.js` fitMath, `css/mathtext.css` .mt-fit, 시험 `tests/ui/math-fit.spec.js`).
-   넣은 뒤 휴대폰 폭 검사(`tmp/overflow-scan.js`)를 문제 해설·생성 문제까지 넓혀 다시 확인
+3-1. ~~(3순위) 좁은 화면의 긴 수식(§16)~~ ✅ 10-08 밤 — 고등·대학 수학 112단원 1,344문제 휴대폰 폭 확인 넘침 0. 새 묶음마다 `QW=360 node tmp/quiz-scan.js <단원…>` 로 확인
+3-2. ~~(1순위) 기록 저장 실패 알림·자동 재시도(§9.6)~~ ✅ · ~~(3순위) 개념 카드 이어 보기(§17)~~ ✅ · ~~첨자 별표 x^*~~ ✅ (10-08 밤)
+3-3. (다음 후보) 예제 탭도 보던 예제부터? · 홈의 "이어서 공부하기"가 이어 볼 카드 이름을 보여 주기 · 검토자 의문 중 확인 가능한 것(사실·연도) 처리
 4. (3순위) 교육과정 수동 확인 3건은 공식 원문 파일이 있어야 한다(사람 일 — `docs/CURRICULUM-REVISION.md`)
 
 ## 4. 복구할 때 주의
