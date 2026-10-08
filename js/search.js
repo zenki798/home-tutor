@@ -192,6 +192,7 @@
   var DOT = '\u00b7\u318d\u119e\u30fb\u2219\u2022';
   var DIGIT_DOT_RE = new RegExp('(\\d) ?[' + DOT + '] ?(\\d)', 'g');
   var HAS_DOT = new RegExp('[' + DOT + ']');
+  var DIGIT_PERIOD_RE = /(\d)\.(?=\d)/g;   // 수 사이의 마침표도: 5.18 → 518, 6.25 → 625 (2026-10-09 — 가운뎃점을 치기 어려워 마침표로 쓴다)
   var NEEDS_NFKC = /[^\u0000-\u007f가-힣]/;   // 이런 글자가 있을 때만 NFKC (한글·ASCII 만이면 건너뛰어 색인을 빨리)
 
   var UPPER_RE = /[A-Z]/;
@@ -206,6 +207,7 @@
     if (wide || UPPER_RE.test(s)) s = s.toLowerCase();
     if (APOS_TEST.test(s)) s = s.replace(APOS_G, '');                // don't → dont
     if (HAS_DOT.test(s)) s = s.replace(DIGIT_DOT_RE, '$1$2');        // 6·25 → 625, 3·1 → 31 (어떻게 써도 같은 열쇠)
+    if (s.indexOf('.') >= 0) s = s.replace(DIGIT_PERIOD_RE, '$1');
     return s.replace(DROP_RE, ' ');
   }
   // clean 에서 문장부호 지우기만 뺀 것 (색인의 긴 본문용: 남길 글자인지는 keep 으로 훑으며 본다)
@@ -213,12 +215,13 @@
   function prep(s) {
     if (s === null || s === undefined) return '';
     s = String(s);
-    if (!PLAIN_RE.test(s)) return s;
+    if (!PLAIN_RE.test(s)) return s.indexOf('.') >= 0 ? s.replace(DIGIT_PERIOD_RE, '$1') : s;
     var wide = NEEDS_NFKC.test(s);
     if (wide && typeof s.normalize === 'function') s = s.normalize('NFKC');
     if (wide || UPPER_RE.test(s)) s = s.toLowerCase();
     if (APOS_TEST.test(s)) s = s.replace(APOS_G, '');
     if (HAS_DOT.test(s)) s = s.replace(DIGIT_DOT_RE, '$1$2');
+    if (s.indexOf('.') >= 0) s = s.replace(DIGIT_PERIOD_RE, '$1');
     if (s.indexOf('차') >= 0) s = canon(s);
     return s;
   }

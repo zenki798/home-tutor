@@ -322,6 +322,21 @@ test.describe('TutorSearch — 질문 찾기', () => {
     for (const [q, id, opts] of STUDENT_QUESTIONS) expectFound(q, id, opts);
   });
 
+  test('수 사이의 마침표도 가운뎃점처럼: "3.1 운동"·"6.25 전쟁"으로도 3·1 운동·6·25 전쟁을 찾는다', () => {
+    expectFound('3.1 운동이 뭐야', 'hist-m3-02#c1');
+    expectFound('6.25 전쟁', 'hist-m3-04#c1');
+    expect(TS.normalize('5.18 민주화 운동')).toBe(TS.normalize('5·18 민주화 운동'));
+    expect(TS.normalize('1.2.3')).toBe('123');
+    // 소수도 양쪽(색인·질문)에서 똑같이 바뀌므로 그대로 찾힌다
+    expect(TS.normalize('원주율 3.14')).toBe(TS.normalize('원주율 3·14'));
+    // 긴 본문(색인의 text)에 마침표로 쓴 날짜도 가운뎃점·마침표 어느 쪽 질문으로든 찾는다
+    const idx = TS.build([
+      E('hist-x-01#c1', 'concept', 'h1', '민주화 운동의 흐름', ['민주화'], '1980년에 일어난 5.18 민주화 운동은 광주에서 시작되었습니다.'),
+      E('hist-x-01#c2', 'concept', 'h1', '산업화', ['경제 성장'], '1970년대에는 중화학 공업이 크게 자랐습니다.'),
+    ]);
+    for (const q of ['5·18', '5.18', '518']) expect(TS.query(idx, q).map((r) => r.entry.id)[0], q).toBe('hist-x-01#c1');
+  });
+
   test('곱셈구구의 "7단"은 수와 함께 찾는다 (한 자리 수는 버려도 N단은 남긴다)', () => {
     const idx = TS.build([
       E('math-e2-07#c2', 'concept', 'e2', '2단, 5단 곱셈구구', ['2단', '5단'], '2단은 2씩, 5단은 5씩 커져요.'),

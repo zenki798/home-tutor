@@ -335,7 +335,9 @@
         return { type: 'group', items: uprightVars(inner.items) };
       }
       // \mathrm{A'B}: 수식 안의 ' 는 프라임(′) — 기하의 점 A′ (글자 명령 \text{…} 안의 ' 는 그대로 작은따옴표)
-      return { type: 'styled', style: TEXTCMD[v], text: v === 'mathrm' ? raw.replace(/'/g, '′') : raw };
+      // \text{물가 상승률(\%)}: 글자 안의 \% \$ \& \# \_ \{ \} \(공백) 은 그 글자로 — 예전에는 백슬래시째 보였다(2026-10-09)
+      var plainText = raw.replace(/\\([%$&#_{} ])/g, function (m, ch) { return ch; });
+      return { type: 'styled', style: TEXTCMD[v], text: v === 'mathrm' ? plainText.replace(/'/g, '′') : plainText };
     }
     if (v === 'left') return this.parseLeftRight(t);
     if (v === 'right') {

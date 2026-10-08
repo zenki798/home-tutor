@@ -1000,7 +1000,10 @@
     return t.normalize('NFKC').toLowerCase()
       .replace(MINUS_RE, '-')
       .replace(/\u00D7/g, '*').replace(/[\u00F7\u2044]/g, '/')            // ÷, ½ 의 NFKC 결과(1⁄2)의 빗금
+      // 가운뎃점은 자판마다 다르다: 한글 자판 ㆍ(NFKC 로 ᆞ)·‧·∙·⋅·・(･) → · (2026-10-09 — '5ㆍ18' 이 오답이 되던 것)
+      .replace(/[\u318D\u119E\u2027\u2219\u22C5\u30FB\uFF65]/g, '\u00B7')
       .replace(/\s+/g, '')
+      .replace(/(\d)\.(?=\d)/g, '$1\u00B7')                               // 수 사이의 마침표도 가운뎃점으로: 5.18 = 5·18, 3.1 = 3·1 (양쪽을 똑같이 바꾼다)
       .replace(END_PUNCT_RE, '');
   }
 

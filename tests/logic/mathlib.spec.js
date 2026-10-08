@@ -539,6 +539,17 @@ test.describe('checkAnswer', () => {
     expect(mark({ type: 'short', check: 'text', answer: 'ice cream' }, 'Ice  Cream')).toBe('T');
   });
 
+  test("short 'text': 가운뎃점은 자판마다 달라도 같은 글자(ㆍ·・･‧∙⋅), 수 사이의 마침표도(5.18 = 5·18, 3.1 = 3·1)", () => {
+    const p = { type: 'short', answer: '5·18 민주화 운동' };
+    expect(['5ㆍ18 민주화 운동', '5・18 민주화 운동', '5･18민주화운동', '5‧18 민주화 운동', '5.18 민주화 운동', '5·18 민주화 운동.'].map((s) => mark(p, s)))
+      .toEqual(Array(6).fill('T'));
+    expect(['5,18 민주화 운동', '518 민주화 운동', '4·19 혁명'].map((s) => mark(p, s))).toEqual(['F', 'F', 'F']);
+    expect(mark({ type: 'short', answer: '3·1 운동' }, '3.1운동')).toBe('T');
+    expect(mark({ type: 'short', answer: '이ㆍ저' }, '이·저')).toBe('T');
+    // 소수가 든 글 답도 양쪽을 똑같이 바꾸므로 그대로 같다
+    expect(mark({ type: 'short', answer: '1.5배' }, '1.5배')).toBe('T');
+  });
+
   test("short 'number': 단위(cm·cm²·개·원·명)·공백을 떼고 값으로 비교", () => {
     const cm = { type: 'short', check: 'number', unit: 'cm', answer: '12' };
     expect(['12 cm', '12cm', '12', '12.0', '24/2', '12CM', '１２ｃｍ', 'x=12', '12 cm.'].map((s) => mark(cm, s)))

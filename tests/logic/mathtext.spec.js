@@ -194,6 +194,13 @@ test.describe('TeX → 교과서 모양 (구조)', () => {
     expect(tex('x_1^2')).toContain('<span class="mt-supsub"><span class="mt-sup">2</span><span class="mt-sub">1</span></span>');
     expect(tex('x^2_1')).toContain('<span class="mt-supsub"><span class="mt-sup">2</span><span class="mt-sub">1</span></span>');
   });
+  test('\\text{…} 안의 \\% \\$ \\& \\# \\_ \\{ \\} 는 그 글자로 보인다 — 예전에는 백슬래시가 보였다(생활 법률 08)', () => {
+    const h = tex('~text{물가 상승률(~%)}');
+    expect(h).toContain('물가 상승률(%)');
+    expect(h).not.toContain(B + '%');
+    expect(tex('~text{A~&B ~#1 a~_b ~{x~} ~$5}')).toContain('A&amp;B #1 a_b {x} $5');
+    expect(T.check(S('$~text{물가 상승률(~%)}$'))).toEqual([]);
+  });
   test('\\mathrm{…} 안의 첨자·명령은 수식으로 읽고 글자는 곧게(m/s²·kg·m/s²·CO₂·kΩ) — 단순한 \\mathrm{cm} 은 예전처럼 글자 그대로', () => {
     // 예전에는 \mathrm{m/s^2} 가 "m/s^2" 로 글자째 보였다(일반물리·고등 물리 단원)
     expect(tex('~mathrm{m/s^2}')).toContain('<span class="mt-up">m</span>/<span class="mt-up">s</span><span class="mt-sup">2</span>');
