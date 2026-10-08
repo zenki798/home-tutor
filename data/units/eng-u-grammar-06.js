@@ -61,7 +61,7 @@ Tutor.registerUnit({
         '배수 비교는 저울에 올려 보는 일입니다. 민수의 구슬이 30개, 지아의 구슬이 10개라면 민수는 지아의 **세 배**를 가졌습니다: Minsu has three times as many marbles as Jia.',
       check: {
         type: 'short', check: 'number',
-        q: 'A 공장은 하루에 물을 600 L, B 공장은 200 L 씁니다. 빈칸에 알맞은 수를 쓰십시오.\n\nFactory A uses ___ times as much water as Factory B.',
+        q: 'A 공장은 하루에 물을 600 L, B 공장은 200 L 씁니다. 빈칸에 알맞은 수를 **숫자로** 쓰십시오(예: 7).\n\nFactory A uses ___ times as much water as Factory B.',
         answer: '3',
         wrong: [{ a: '400', why: '두 공장이 쓰는 물의 차이를 구했습니다. 배수 비교는 A 공장이 B 공장의 몇 배인지 나눗셈으로 구합니다: 600 ÷ 200 = 3' }],
         explain: '600 ÷ 200 = 3이므로 A 공장은 B 공장의 **세 배**를 씁니다: three times as much water as Factory B.',
@@ -491,8 +491,9 @@ Tutor.registerUnit({
         var a = k * b;
         var words = { 3: 'three times', 4: 'four times', 5: 'five times', 6: 'six times' };
         return {
+          // 빈칸이 영어 문장 안이라 three 처럼 낱말로 쓰기 쉽다 — number 채점은 낱말을 읽지 못하므로 숫자로 쓰라고 밝힌다
           type: 'short', check: 'number', concept: 1,
-          q: t[0].replace('{a}', R.fmt.num(a)).replace('{b}', R.fmt.num(b)) + ' 빈칸에 알맞은 수를 쓰십시오.\n\n' + t[1] + ' ___ times as ' + t[3] + ' ' + t[2] + '.',
+          q: t[0].replace('{a}', R.fmt.num(a)).replace('{b}', R.fmt.num(b)) + ' 빈칸에 알맞은 수를 **숫자로** 쓰십시오(예: 7).\n\n' + t[1] + ' ___ times as ' + t[3] + ' ' + t[2] + '.',
           answer: String(k),
           wrong: [{ a: String(a - b), why: '두 양의 차이를 구했습니다. 배수 비교는 한쪽이 다른 쪽의 몇 배인지 나눗셈으로 구합니다.' }],
           explain: R.fmt.num(a) + ' ÷ ' + R.fmt.num(b) + ' = ' + k + ', 곧 ' + t[4] + ' 쪽이 ' + t[5] + ' 쪽의 ' + k + '배입니다. 영어로는 ' + words[k] + ' as ' + t[3] + ' … as 꼴입니다(셀 수 ' + (t[3] === 'much' ? '없는' : '있는') + ' 명사라서 ' + t[3] + ' 낱말을 씁니다).\n\n' + t[1] + ' **' + words[k] + '** as ' + t[3] + ' ' + t[2] + '.',

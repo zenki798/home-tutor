@@ -225,7 +225,7 @@
         hint: '$\\infty-\\infty$ 꼴입니다. 통분해 $\\frac{0}{0}$ 꼴로 만드십시오.',
         wrong: [
           { a: '0', why: '두 항이 모두 커지므로 차를 0으로 보았습니다. $\\infty-\\infty$는 부정형이라 통분해 따져야 합니다.' },
-          { a: '1', why: '로피탈 정리를 한 번만 쓰고 멈추었을 수 있습니다. 한 번 쓴 뒤에도 $\\frac{0}{0}$ 꼴이면 다시 씁니다.' },
+          { a: '1', why: '분모 $x(e^x-1)$을 미분할 때 곱의 미분법에서 한 항을 빠뜨려 $xe^x$로만 썼습니다. 도함수는 $(e^x-1)+xe^x$입니다.' },
         ],
         explain: '통분하면 $\\dfrac{e^x-1-x}{x(e^x-1)}$로 $\\frac{0}{0}$ 꼴입니다. 로피탈 정리를 쓰면 $\\dfrac{e^x-1}{e^x-1+xe^x}$이고 아직 $\\frac{0}{0}$ 꼴이므로 한 번 더 쓰면 $\\dfrac{e^x}{2e^x+xe^x} \\to \\dfrac{1}{2}$입니다.',
       },
@@ -316,7 +316,7 @@
         hint: '닮음으로 수면의 반지름 $r$을 깊이 $h$로 나타낸 뒤 부피를 $h$만의 식으로 쓰십시오.',
         wrong: [
           { a: '27/25', why: '수면의 반지름을 5 m로 고정했습니다. 깊이에 따라 반지름도 $r=\\frac{h}{2}$로 변합니다.' },
-          { a: '1/4', why: '$V=\\frac{\\pi h^3}{12}$을 미분하면 $\\frac{\\pi h^2}{4}\\frac{dh}{dt}$입니다. $h=6$을 넣었는지 확인하십시오.' },
+          { a: '1/4', why: '수면의 반지름을 깊이와 같게($r=h$) 보아 $\\frac{dV}{dt}=\\pi h^2\\frac{dh}{dt}$로 계산했습니다. 닮음에서 $r=\\frac{h}{2}$이므로 $V=\\frac{\\pi h^3}{12}$, $\\frac{dV}{dt}=\\frac{\\pi h^2}{4}\\frac{dh}{dt}$입니다.' },
         ],
         explain: '닮음에서 $\\dfrac{r}{h}=\\dfrac{5}{10}$, 곧 $r=\\dfrac{h}{2}$이므로 $V=\\dfrac{1}{3}\\pi r^2 h=\\dfrac{\\pi h^3}{12}$입니다. $t$로 미분하면 $\\dfrac{dV}{dt}=\\dfrac{\\pi h^2}{4}\\dfrac{dh}{dt}$이고, $9\\pi=\\dfrac{36\\pi}{4}\\dfrac{dh}{dt}=9\\pi\\dfrac{dh}{dt}$에서 $\\dfrac{dh}{dt}=1$입니다.',
       },
@@ -388,10 +388,10 @@
         make: function (R) {
           // 함수 이름 → [식, 미분한 식, x=0 에서 안쪽 미분 계수 1 이 곱해지는 값]
           function form(kind, k) {
-            var u = kx(k);
-            if (kind === 'sin') return ['\\sin ' + u, k + '\\cos ' + u];
+            var u = kx(k), c = k === 1 ? '' : String(k);   // 계수 1 은 쓰지 않는다
+            if (kind === 'sin') return ['\\sin ' + u, c + '\\cos ' + u];
             if (kind === 'tan') return ['\\tan ' + u, '\\dfrac{' + k + '}{\\cos^2 ' + u + '}'];
-            if (kind === 'exp') return ['e^{' + u + '}-1', k + 'e^{' + u + '}'];
+            if (kind === 'exp') return ['e^{' + u + '}-1', c + 'e^{' + u + '}'];
             return ['\\ln(1+' + u + ')', '\\dfrac{' + k + '}{1+' + u + '}'];
           }
           var kinds = R.sample(['sin', 'tan', 'exp', 'ln'], 2);
@@ -474,6 +474,7 @@
             expr = '\\lim_{x \\to 0}(1' + (a < 0 ? '-' : '+') + (Math.abs(a) === 1 ? '' : Math.abs(a)) + 'x)^{\\frac{' + b + '}{x}}';
           }
           var correct = '$' + ePow(ans) + '$';
+          var v = kind === 'inf' ? 't' : 'x';   // 해설에서 0 으로 가는 변수
           var cands = [
             [R.F(a), '지수의 ' + b + R.josa(b, '을/를') + ' 빠뜨렸습니다. $\\ln y$의 극한은 $' + a + ' \\times ' + b + '$입니다.'],
             [R.F(b), '괄호 안의 계수 ' + a + R.josa(a, '을/를') + ' 빠뜨렸습니다. $\\ln y$의 극한은 두 수의 곱입니다.'],
@@ -501,7 +502,7 @@
             explain: '$1^{\\infty}$ 꼴입니다. 식을 $y$로 놓으면 ' + (kind === 'inf'
               ? '$\\ln y=' + (b === 1 ? '' : b) + 'x\\ln\\left(1' + (a < 0 ? '-' : '+') + '\\frac{' + Math.abs(a) + '}{x}\\right)$이고, $t=\\frac{1}{x}$로 놓으면 $' + (b === 1 ? '' : b + ' \\cdot ') + '\\dfrac{\\ln(1' + (a < 0 ? '-' : '+') + (Math.abs(a) === 1 ? '' : Math.abs(a)) + 't)}{t}$의 $t \\to 0+$ 극한입니다.'
               : '$\\ln y=\\dfrac{' + (b === 1 ? '' : b) + '\\ln(1' + (a < 0 ? '-' : '+') + (Math.abs(a) === 1 ? '' : Math.abs(a)) + 'x)}{x}$입니다.') +
-              ' 로피탈 정리로 $\\lim\\dfrac{\\ln(1+' + R.fmt.paren(a) + 't)}{t}=\\lim\\dfrac{' + a + '}{1+' + R.fmt.paren(a) + 't}=' + a + '$이므로 $\\ln y \\to ' + (a * b) + '$이고, 극한은 ' + correct + '입니다.',
+              ' 로피탈 정리로 $\\lim\\dfrac{\\ln(1+' + R.fmt.paren(a) + v + ')}{' + v + '}=\\lim\\dfrac{' + a + '}{1+' + R.fmt.paren(a) + v + '}=' + a + '$이므로 $\\ln y \\to ' + (a * b) + '$이고, 극한은 ' + correct + '입니다.',
           };
         },
       },

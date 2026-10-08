@@ -54,7 +54,7 @@
     ['Students who live far from the campus (spends / spend) more time on buses.', 'spend', 'spends', 'Students', 1],
     ['The main topic of the lectures (is / are) climate change.', 'is', 'are', 'topic', 1],
     ['Growing vegetables in small city gardens (is / are) becoming popular.', 'is', 'are', 'Growing vegetables (동명사 주어)', 2],
-    ['That the plan failed so quickly (was / were) a surprise to everyone.', 'was', 'were', 'That the plan failed so quickly (that절 주어)', 2],
+    ['That the two plans failed so quickly (was / were) a surprise to everyone.', 'was', 'were', 'That the two plans failed so quickly (that절 주어)', 2],
     ['To learn three languages at the same time (requires / require) a lot of effort.', 'requires', 'require', 'To learn three languages (to부정사 주어)', 2],
     ['Whether these methods work in other countries (is / are) still unclear.', 'is', 'are', 'Whether these methods work (whether절 주어)', 2],
     ['Reading the instructions before the experiment (prevents / prevent) many mistakes.', 'prevents', 'prevent', 'Reading the instructions (동명사 주어)', 2],
@@ -127,7 +127,7 @@
           '| that절 | **That the plan failed** was surprising. |\n' +
           '| whether절 | **Whether the method works** remains unclear. |\n' +
           '| what절 | **What the data show** is a steady decline. |\n\n' +
-          '이런 주어 덩어리는 **단수**로 취급합니다(덩어리 하나가 주어). 그리고 주어 덩어리 안에도 동사가 있으므로, 그 덩어리가 끝나는 곳을 찾으면 바로 뒤에 주절의 동사가 나옵니다.\n\n' +
+          '이런 주어 덩어리는 **단수**로 취급합니다(덩어리 하나가 주어). 다만 what절은 뒤의 보어가 복수이면 복수 동사를 쓰기도 합니다(What we need are more data.). 그리고 주어 덩어리 안에도 동사가 있으므로, 그 덩어리가 끝나는 곳을 찾으면 바로 뒤에 주절의 동사가 나옵니다.\n\n' +
           '주어가 너무 길면 뒤로 보내고 그 자리에 **가주어 it**을 둡니다. It is difficult **to predict the weather accurately**. / It was surprising **that the plan failed**. 이때 진짜 주어는 뒤의 to부정사구·that절입니다.',
         easy: '문장 맨 앞에 -ing, To, That, Whether, What이 보이면 "주어가 길어지겠구나" 하고 마음의 준비를 하십시오. 그 덩어리 전체가 한 사람의 이름표라고 생각하면 됩니다. 이름표가 아무리 길어도 사람은 한 명이니 동사는 단수입니다.',
         check: {
@@ -154,7 +154,7 @@
           '| 5형식 | 주어 + 동사 + 목적어 + 목적격 보어 | The committee **considered** the plan unrealistic. |\n\n' +
           '학술 글에서 자주 보는 동사의 쓰임 유형도 함께 익혀 둡니다.\n\n' +
           '- **allow / enable / require / encourage** + 목적어 + to부정사: The grant **enabled** us **to hire** two assistants.\n' +
-          '- **make / let / help** + 목적어 + 동사원형: The new tool **helps** students **organize** their notes.\n' +
+          '- **make / let / help** + 목적어 + 동사원형: The new tool **helps** students **organize** their notes. (help는 to부정사도 씁니다: helps students to organize)\n' +
           '- **regard / see A as B**(A를 B로 여기다): Many scholars **regard** the book **as** a classic.\n' +
           '- **attribute A to B**(A를 B 탓·덕으로 돌리다), **provide A with B**(A에게 B를 주다)\n\n' +
           '> 💡 5형식에서 목적어와 목적격 보어 사이에는 "목적어가 보어이다/보어하다"라는 관계가 숨어 있습니다. considered the plan unrealistic → the plan is unrealistic.',
@@ -300,7 +300,7 @@
         answer: 2,
         why: [
           'reasons·delays·projects 같은 복수 명사에 맞추었습니다. 중심 명사는 One이므로 단수입니다.',
-          '복수 동사이고, 시제도 문맥과 맞지 않습니다. 주어의 중심은 단수 One입니다.',
+          'were도 복수 동사입니다. 주어의 중심은 단수 One이므로 단수 동사가 필요합니다.',
           '',
           'being은 정동사가 아닙니다. 이 문장에는 주절의 동사가 필요합니다.',
         ],
@@ -434,7 +434,7 @@
         title: '정원길 문장(garden-path sentence)',
         body: '언어학에서는 처음에 잘못된 구조로 읽히도록 만들어진 문장을 **정원길 문장**이라고 부릅니다. 대표적인 유형이 "명사 + 과거형처럼 보이는 과거분사"입니다.\n\n' +
           'The students taught by the new instructor improved quickly.\n\n' +
-          'taught를 처음에 주절의 동사로 읽으면 by the new instructor 뒤에서 막힙니다. 사실 taught by the new instructor는 students를 꾸미는 과거분사구이고, 주절의 동사는 improved입니다.\n\n' +
+          'taught를 처음에 주절의 동사로 읽으면 뒤에 improved가 나올 때 막힙니다. 사실 taught by the new instructor는 students를 꾸미는 과거분사구이고, 주절의 동사는 improved입니다.\n\n' +
           '이런 문장을 만났을 때 "동사가 둘인데 접속사가 없다"는 점을 알아차리면 곧바로 바로잡을 수 있습니다.',
       },
     ],

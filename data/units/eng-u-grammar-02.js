@@ -209,7 +209,7 @@
         steps: [
           'This study (examine) ~ : 이 글이 무엇을 다루는지 소개하는 문장이므로 현재 시제 examines입니다.',
           'We (test) 80 students ~ : 이번 연구에서 이미 한 일(방법)이므로 과거 시제 tested입니다.',
-          'The results (show) ~ : 이번 연구에서 관찰한 결과 보고이므로 과거 시제 showed입니다. that절의 read도 과거(read)입니다.',
+          'The results (show) ~ : 이번 연구에서 관찰한 결과 보고이므로 과거 시제 showed입니다. that절의 read도 과거(read)입니다. (초록에서는 The results show ~처럼 현재로 쓰는 글도 많습니다. 여기서는 결과 보고와 해석을 시제로 구별해 과거로 씁니다.)',
           'These findings (suggest) ~ : 결과를 해석하고 일반화하는 문장이므로 현재 시제 suggest입니다. helps도 현재입니다.',
         ],
         answer: 'examines — tested — showed — suggest',
@@ -309,14 +309,14 @@
       },
       {
         id: 'p8', level: 2, type: 'choice', concept: 2,
-        q: '연구의 결과와 해석입니다. 빈칸 (A), (B)에 알맞은 짝은 무엇입니까?\n\nThe students in Group A (A) higher than those in Group B. This (B) that the new method is effective.',
-        choices: ['scored — suggests', 'score — suggested', 'have scored — suggested', 'scored — suggested'],
+        q: '연구의 결과와 해석입니다. 빈칸 (A), (B)에 들어갈 짝으로 가장 알맞은 것은 무엇입니까?\n\nThe students in Group A (A) higher than those in Group B. This (B) that the new method is effective.',
+        choices: ['scored — suggests', 'score — suggested', 'have scored — suggested', 'scoring — suggests'],
         answer: 0,
         why: [
           '',
           '(A)는 이번 연구에서 관찰한 결과라서 과거, (B)는 해석이라서 현재입니다. 둘을 거꾸로 썼습니다.',
           '(A)의 결과 보고에는 과거 시제가 알맞고, (B)의 해석에는 현재 시제가 알맞습니다.',
-          '(A)는 맞습니다. 그러나 (B)는 결과를 해석·일반화하는 문장이라 현재 시제를 씁니다. that절의 is와도 시제가 어울립니다.',
+          '(B)는 맞습니다. 그러나 scoring은 분사·동명사라서 정동사가 아닙니다. (A) 자리에는 시제가 드러나는 동사(과거 scored)가 필요합니다.',
         ],
         hint: '결과 보고와 결과 해석은 시제가 다릅니다.',
         explain: '(A) 이번 연구에서 관찰한 결과 → 과거 scored. (B) 결과를 해석해 지금도 유효한 결론을 내리는 문장 → 현재 suggests.',

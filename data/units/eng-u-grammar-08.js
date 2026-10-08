@@ -5,7 +5,7 @@
   // 가상의 자료: 한 도시의 연간 자전거 이용자 수(천 명)
   var BIKE_FIG = { type: 'line', labels: ['2019', '2020', '2021', '2022', '2023'], values: [40, 45, 60, 58, 58], unit: '천 명', title: '가상의 자료: 한 도시의 자전거 이용자 수', alt: '2019년 40, 2020년 45, 2021년 60, 2022년 58, 2023년 58(천 명)을 이은 꺾은선그래프' };
   // 훑어 읽기용 글
-  var FOREST = 'Urban Forests and Summer Heat\n\nCities are often several degrees warmer than the countryside around them, especially on summer afternoons. This difference is caused mainly by roads and buildings, which absorb heat during the day and release it slowly at night.\n\nTrees can reduce this effect in two ways. Their leaves block sunlight before it reaches the ground, and the water that evaporates from them cools the air. In one hypothetical neighborhood study, streets with many trees were about 3 degrees cooler at 3 p.m. than streets with none.\n\nFor these reasons, many city planners now treat trees not as decoration but as part of the city\'s basic equipment for dealing with heat.';
+  var FOREST = 'Urban Forests and Summer Heat\n\nCities are often several degrees warmer than the countryside around them, especially in summer. This difference is caused mainly by roads and buildings, which absorb heat during the day and release it slowly at night.\n\nTrees can reduce this effect in two ways. Their leaves block sunlight before it reaches the ground, and the water that evaporates from them cools the air. In one hypothetical neighborhood study, streets with many trees were about 3 degrees cooler at 3 p.m. than streets with none.\n\nFor these reasons, many city planners now treat trees not as decoration but as part of the city\'s basic equipment for dealing with heat.';
   // 개요 정리용 글
   var WATER = 'Cities can save water in three main ways. First, they can repair leaking pipes, which in some cities lose a large share of clean water before it reaches homes. Second, they can encourage residents to use less water, for example by charging lower prices to households that use little. Finally, they can reuse treated wastewater to water parks and to cool machines in factories.';
 
@@ -531,7 +531,7 @@ Tutor.registerUnit({
           ['The term "biodiversity" ___ the variety of living things in a particular area.', 'refers to'],
           ['"Photosynthesis" ___ the process by which green plants make food from light.', 'refers to'],
           ['Some renewable energy sources, ___, wind and solar power, have become cheaper.', 'e.g.'],
-          ['The meeting is held on the last day of the month, ___, on 31 May this month.', 'i.e.'],
+          ['This month\'s meeting will be held on the last day of the month, ___, on 31 May.', 'i.e.'],
           ['Mammals that live in the sea, ___, whales and dolphins, must breathe air.', 'e.g.'],
           ['The country has a bicameral parliament, ___, a parliament with two chambers.', 'i.e.'],
           ['Large animals, ___, elephants and giraffes, need a lot of food every day.', 'e.g.'],

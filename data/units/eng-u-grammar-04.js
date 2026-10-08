@@ -145,7 +145,8 @@
           '| -tion, -ment, -ity, -ness, -ance | 명사 | evaluation, equality |\n' +
           '| -ize, -ify | 동사 | minimize, clarify |\n' +
           '| -al, -ive, -ous, -able | 형용사 | critical, effective, various, reliable |\n' +
-          '| -ly | 부사 | relatively, significantly |',
+          '| -ly | 부사 | relatively, significantly |\n\n' +
+          '> ⚠️ 접미사는 대체로 맞는 단서일 뿐입니다. -al은 approval(승인)처럼 명사를, -ly는 likely(~할 것 같은)처럼 형용사를 만들기도 합니다.',
         easy: '낱말을 레고 블록처럼 생각해 보십시오. under(덜) + estimate(평가하다) = underestimate(과소평가하다). 블록 하나하나의 뜻을 알면, 처음 보는 조합도 뜻을 짐작할 수 있습니다. 끝 블록(접미사)은 그 낱말이 명사인지 동사인지 알려 주는 이름표입니다.',
         check: {
           type: 'choice',
@@ -379,7 +380,7 @@
         ],
         answer: 1,
         why: [
-          '통계적으로 유의미하다는 말은 차이의 크기가 아니라, 차이가 우연이 아닐 가능성이 높다는 뜻입니다.',
+          '통계적으로 유의미하다는 말은 차이의 크기가 아니라, 그 차이가 우연만으로 생겼다고 보기 어렵다는 뜻입니다.',
           '',
           'significant를 반대로 읽었습니다. 유의미한 차이가 있었다는 말입니다.',
           '유의미한 차이가 있었다는 말이므로 차이가 없었다는 것과 반대입니다.',

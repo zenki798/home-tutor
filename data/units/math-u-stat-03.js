@@ -423,7 +423,7 @@
             var swapped = p.pow(n - k).mul(q.pow(k)).mul(c);
             return {
               type: 'short', check: 'number', concept: 2,
-              q: '$X$가 이항분포 $B\\left(' + n + ', ' + pT + '\\right)$' + R.josa(pr[0], '을/를') + ' 따를 때 $P(X=' + k + ')$를 분수로 구하세요.',
+              q: '$X$가 이항분포 $B\\left(' + n + ', ' + pT + '\\right)$' + R.josa(pr[0], '을/를') + ' 따를 때 $P(X=' + k + ')$' + R.josa(k, '을/를') + ' 분수로 구하세요.',
               answer: ans.toString(),
               hint: '$P(X=k)=\\binom{n}{k}p^{k}(1-p)^{n-k}$',
               wrong: W(ans, [
@@ -441,7 +441,7 @@
           var ans2 = askV ? Vx : Ex;
           return {
             type: 'short', check: 'number', concept: 2,
-            q: '$X$가 이항분포 $B(' + n2 + ', ' + texOf(P) + ')$를 따를 때 ' + (askV ? '$\\mathrm{Var}(X)$' : '$E(X)$') + '를 구하세요.',
+            q: '$X$가 이항분포 $B(' + n2 + ', ' + texOf(P) + ')$' + R.josa(texOf(P), '을/를') + ' 따를 때 ' + (askV ? '$\\mathrm{Var}(X)$' : '$E(X)$') + '를 구하세요.',
             answer: ansText(ans2),
             wrong: askV
               ? W(ans2, [[Ex, '기댓값 $np$를 구했습니다. 분산은 $np(1-p)$입니다.'], [P.mul(Q), '$n$을 곱하지 않았습니다.'], [P.mul(P).mul(n2), '$1-p$ 대신 $p$를 한 번 더 곱했습니다.']])
@@ -483,7 +483,7 @@
             var pick = R.choices(correct, R.shuffle(Object.keys(reason)));
             return {
               type: 'choice', concept: 3,
-              q: intro + '$P(X=' + k + ')$는 무엇입니까?',
+              q: intro + '$P(X=' + k + ')$' + R.josa(k, '은/는') + ' 무엇입니까?',
               choices: pick.choices,
               answer: pick.answer,
               hint: '$P(X=k)=\\dfrac{e^{-\\lambda}\\lambda^{k}}{k!}$',
@@ -529,7 +529,7 @@
               type: 'short', check: 'number', concept: 4,
               q: '성공 확률이 $' + pT + '$인 시행을 독립적으로 되풀이합니다. ' + k + '번째 시행에서 **처음으로** 성공할 확률을 분수로 구하세요.',
               answer: ans.toString(),
-              hint: '처음 ' + (k - 1) + '번은 모두 실패해야 합니다.',
+              hint: k === 2 ? '첫 번째 시행은 실패해야 합니다.' : '처음 ' + (k - 1) + '번은 모두 실패해야 합니다.',
               wrong: W(ans, [
                 [q.pow(k).mul(p), '실패를 ' + k + '번 곱했습니다. ' + k + '번째가 성공이므로 실패는 ' + (k - 1) + '번입니다.'],
                 [p.pow(k - 1).mul(q), '성공 확률과 실패 확률을 바꾸어 썼습니다.'],
@@ -541,13 +541,13 @@
           var ans2 = q.pow(k);
           return {
             type: 'short', check: 'number', concept: 4,
-            q: '성공 확률이 $' + pT + '$인 시행을 처음 성공할 때까지 되풀이합니다. 처음 성공할 때까지의 시행 횟수 $X$에 대하여 $P(X>' + k + ')$를 분수로 구하세요.',
+            q: '성공 확률이 $' + pT + '$인 시행을 처음 성공할 때까지 되풀이합니다. 처음 성공할 때까지의 시행 횟수 $X$에 대하여 $P(X>' + k + ')$' + R.josa(k, '을/를') + ' 분수로 구하세요.',
             answer: ans2.toString(),
             hint: '$X>' + k + '$' + R.josa(k, '은/는') + ' 처음 ' + k + '번이 어떻게 되었다는 뜻일까요?',
             wrong: W(ans2, [
               [q.pow(k - 1), '실패를 ' + (k - 1) + '번만 곱했습니다. $X>' + k + '$' + R.josa(k, '은/는') + ' 처음 ' + k + '번이 모두 실패라는 뜻입니다.'],
-              [q.pow(k - 1).mul(p), '$P(X=' + k + ')$를 구했습니다.'],
-              [R.F(1, 1).sub(q.pow(k)), '$P(X\\le' + k + ')$를 구했습니다.'],
+              [q.pow(k - 1).mul(p), '$P(X=' + k + ')$' + R.josa(k, '을/를') + ' 구했습니다.'],
+              [R.F(1, 1).sub(q.pow(k)), '$P(X\\le' + k + ')$' + R.josa(k, '을/를') + ' 구했습니다.'],
             ]),
             explain: '$X>' + k + '$' + R.josa(k, '은/는') + ' 처음 ' + k + '번 모두 실패한다는 뜻이므로 $P(X>' + k + ')=(1-p)^{' + k + '}=' + powTex(q.toTex(), k) + '=' + ans2.toTex() + '$입니다.',
           };

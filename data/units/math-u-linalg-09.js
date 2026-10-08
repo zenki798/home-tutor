@@ -38,13 +38,13 @@
     '<text x="22" y="226" font-size="12" fill="var(--fig-1)">5x²−4xy+5y²=48</text>' +
     '</svg>';
 
-  /* A = [[2,2],[-1,1]] : 단위원 → 반축 2√2 (x축), √2 (y축) 인 타원 */
+  /* A = [[2,2],[-1,1]] : 단위원 → 반축 2√2 (x축), √2 (y축) 인 타원 — 두 그림 모두 1단위 = 30px */
   var SVD_SVG = '<svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg">' +
-    '<circle cx="62" cy="95" r="40" fill="none" stroke="var(--fig-1)" stroke-width="2"/>' +
-    '<line x1="62" y1="95" x2="90.3" y2="66.7" stroke="var(--fig-2)" stroke-width="2.5"/>' +
-    '<line x1="62" y1="95" x2="90.3" y2="123.3" stroke="var(--fig-3)" stroke-width="2.5"/>' +
-    '<text x="94" y="64" font-size="12" fill="var(--fig-2)">v₁</text>' +
-    '<text x="94" y="134" font-size="12" fill="var(--fig-3)">v₂</text>' +
+    '<circle cx="62" cy="95" r="30" fill="none" stroke="var(--fig-1)" stroke-width="2"/>' +
+    '<line x1="62" y1="95" x2="83.2" y2="73.8" stroke="var(--fig-2)" stroke-width="2.5"/>' +
+    '<line x1="62" y1="95" x2="83.2" y2="116.2" stroke="var(--fig-3)" stroke-width="2.5"/>' +
+    '<text x="87" y="72" font-size="12" fill="var(--fig-2)">v₁</text>' +
+    '<text x="87" y="128" font-size="12" fill="var(--fig-3)">v₂</text>' +
     '<text x="62" y="175" font-size="12" fill="currentColor" text-anchor="middle">단위원</text>' +
     '<line x1="118" y1="95" x2="146" y2="95" stroke="currentColor" stroke-width="1.5"/>' +
     '<path d="M146 95 L139 91 L139 99 Z" fill="currentColor"/>' +
@@ -75,7 +75,7 @@
         title: '직교행렬',
         body: '정사각행렬 $Q$가 $Q^TQ=I$를 만족하면 **직교행렬**이라고 합니다. $Q^TQ$의 $(i,j)$ 성분은 $i$번째 열과 $j$번째 열의 내적이므로, 이 조건은 **열벡터들이 서로 수직이고 길이가 모두 1**, 곧 열벡터가 정규직교기저를 이룬다는 뜻입니다.\n\n' +
           '- 역행렬이 곧 전치행렬입니다: $Q^{-1}=Q^T$. 역행렬을 따로 계산할 필요가 없습니다.\n' +
-          '- 길이와 내적을 보존합니다: $|Q\\mathbf{x}|=|\\mathbf{x}|$, $(Q\\mathbf{x})\\cdot(Q\\mathbf{y})=\\mathbf{x}\\cdot\\mathbf{y}$. 그래서 각도도 보존됩니다.\n' +
+          '- 길이와 내적을 보존합니다: $\\|Q\\mathbf{x}\\|=\\|\\mathbf{x}\\|$, $(Q\\mathbf{x})\\cdot(Q\\mathbf{y})=\\mathbf{x}\\cdot\\mathbf{y}$. 그래서 각도도 보존됩니다.\n' +
           '- $\\det(Q^TQ)=(\\det Q)^2=1$이므로 $\\det Q=\\pm 1$입니다. 회전이면 $1$, 반사가 섞이면 $-1$입니다.\n\n' +
           '예: $Q=\\frac{1}{5}' + mat(3, -4, 4, 3) + '$의 두 열 $\\frac{1}{5}(3,4)$, $\\frac{1}{5}(-4,3)$은 길이가 1이고 내적이 $\\frac{-12+12}{25}=0$입니다. $\\cos\\theta=\\frac{3}{5}$인 각 $\\theta$만큼 돌리는 회전행렬입니다.\n\n' +
           '> ⚠️ 열벡터가 서로 수직이기만 하고 길이가 1이 아니면 직교행렬이 아닙니다. 예를 들어 $' + mat(1, -1, 1, 1) + '$은 $Q^TQ=2I$입니다.',
@@ -174,7 +174,7 @@
           '- $V$ ($n\\times n$ 직교행렬): 열 $\\mathbf{v}_i$는 $A^TA$의 정규직교 고유벡터\n' +
           '- $\\Sigma$ ($m\\times n$): 대각에 **특이값** $\\sigma_1\\ge\\sigma_2\\ge\\cdots\\ge 0$, 나머지는 0\n' +
           '- $U$ ($m\\times m$ 직교행렬): $\\sigma_i>0$이면 $\\mathbf{u}_i=\\frac{1}{\\sigma_i}A\\mathbf{v}_i$, 모자란 열은 정규직교가 되게 채움\n\n' +
-          '특이값은 $\\sigma_i=\\sqrt{\\lambda_i}$이고 $\\lambda_i$는 $A^TA$의 고윳값입니다. $A^TA$는 대칭이고 $\\mathbf{x}^TA^TA\\mathbf{x}=|A\\mathbf{x}|^2\\ge 0$이므로 양의 준정부호입니다. 그래서 고윳값이 0 이상이고 제곱근을 씌울 수 있습니다.\n\n' +
+          '특이값은 $\\sigma_i=\\sqrt{\\lambda_i}$이고 $\\lambda_i$는 $A^TA$의 고윳값입니다. $A^TA$는 대칭이고 $\\mathbf{x}^TA^TA\\mathbf{x}=\\|A\\mathbf{x}\\|^2\\ge 0$이므로 양의 준정부호입니다. 그래서 고윳값이 0 이상이고 제곱근을 씌울 수 있습니다.\n\n' +
           '**기하학적 뜻**: $V^T$ 회전, $\\Sigma$ 늘이기(축 방향), $U$ 회전의 순서로 움직입니다. 그래서 $A$는 단위원을 반축의 길이가 $\\sigma_1$, $\\sigma_2$인 타원으로 보냅니다. 또 $A\\mathbf{v}_i=\\sigma_i\\mathbf{u}_i$이고, **0이 아닌 특이값의 개수는 $A$의 계수(rank)**입니다.\n\n' +
           '예: $A=' + mat(2, 2, -1, 1) + '$이면 $A^TA=' + mat(5, 3, 3, 5) + '$의 고윳값이 8, 2이므로 특이값은 $2\\sqrt{2}$, $\\sqrt{2}$입니다.\n\n' +
           '> ⚠️ 특이값은 고윳값과 다릅니다. 대칭행렬이면 특이값은 고윳값의 절댓값이지만, 일반 행렬에서는 전혀 다른 값일 수 있습니다.',
@@ -297,7 +297,7 @@
           { a: '14', why: '성분을 더했습니다. 길이는 $\\sqrt{6^2+8^2}$으로 구합니다.' },
           { a: '100', why: '길이의 제곱을 구했습니다. 제곱근을 씌웁니다.' },
         ],
-        explain: '직교행렬은 길이를 보존하므로 $|Q\\mathbf{x}|=|\\mathbf{x}|=\\sqrt{36+64}=10$입니다. $Q$가 무엇인지 몰라도 답할 수 있습니다.',
+        explain: '직교행렬은 길이를 보존하므로 $\\|Q\\mathbf{x}\\|=\\|\\mathbf{x}\\|=\\sqrt{36+64}=10$입니다. $Q$가 무엇인지 몰라도 답할 수 있습니다.',
       },
       {
         id: 'p4', level: 1, type: 'choice', concept: 2,

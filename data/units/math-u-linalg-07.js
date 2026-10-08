@@ -517,9 +517,14 @@
           var other = R.F(askFirst ? a : b, a + b);
           var P = [[dec(10 - a), dec(b)], [dec(a), dec(10 - b)]];
           var target = askFirst ? places[0] : places[1];
+          // 유한소수로 나타나지 않는 답(2/7, 1/3 …)은 소수로 쓰면 정확히 맞출 수 없으므로 분수로만 묻는다
+          var dd = ans.den;
+          while (dd % 2 === 0) dd /= 2;
+          while (dd % 5 === 0) dd /= 5;
+          var form = dd === 1 ? '분수나 소수로' : '분수로';
           return {
             type: 'short', check: 'number', concept: 4,
-            q: '가상의 두 곳 ' + places[0] + ', ' + places[1] + ' 사이를 사람들이 매주 옮겨 다닙니다. ' + places[0] + '에 있던 사람의 ' + (a * 10) + '%는 ' + places[1] + R.josa(places[1], '으로/로') + ', ' + places[1] + '에 있던 사람의 ' + (b * 10) + '%는 ' + places[0] + R.josa(places[0], '으로/로') + ' 옮기고 나머지는 그대로 있습니다. 오래 지난 뒤 ' + target + '에 있는 사람의 비율을 분수나 소수로 구하세요.',
+            q: '가상의 두 곳 ' + places[0] + ', ' + places[1] + ' 사이를 사람들이 매주 옮겨 다닙니다. ' + places[0] + '에 있던 사람의 ' + (a * 10) + '%는 ' + places[1] + R.josa(places[1], '으로/로') + ', ' + places[1] + '에 있던 사람의 ' + (b * 10) + '%는 ' + places[0] + R.josa(places[0], '으로/로') + ' 옮기고 나머지는 그대로 있습니다. 오래 지난 뒤 ' + target + '에 있는 사람의 비율을 ' + form + ' 구하세요.',
             answer: ans.toString(),
             hint: '전이행렬 $P=' + mat(P) + '$에서 $P\\mathbf{q}=\\mathbf{q}$, $q_1+q_2=1$을 푸세요.',
             wrong: [{ a: other.toString(), why: '다른 곳의 비율을 구했습니다. 균형식 $0.' + a + 'q_1=0.' + b + 'q_2$에서 어느 쪽이 큰지 다시 확인해 보세요.' }],

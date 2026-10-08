@@ -574,7 +574,7 @@
             choices: pick.choices,
             answer: pick.answer,
             why: pick.choices.map(function (ch) { return ch === correct ? '' : reason[ch] || ''; }),
-            explain: '$U$에서 피벗은 ' + (pv[0] + 1) + '열과 ' + (pv[1] + 1) + '열에 있습니다. 그래서 원래 $A$의 ' + (pv[0] + 1) + '열이 $\\operatorname{Col} A$의 기저입니다: ' + correct + '. 기저 벡터가 2개이므로 $\\operatorname{rank} A=2$입니다.',
+            explain: '$U$에서 피벗은 ' + (pv[0] + 1) + '열과 ' + (pv[1] + 1) + '열에 있습니다. 그래서 원래 $A$의 ' + (pv[0] + 1) + '열과 ' + (pv[1] + 1) + '열이 $\\operatorname{Col} A$의 기저입니다: ' + correct + '. 기저 벡터가 2개이므로 $\\operatorname{rank} A=2$입니다.',
           };
         },
       },

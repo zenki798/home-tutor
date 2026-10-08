@@ -39,7 +39,7 @@ Tutor.registerUnit({
         '| 그럴 수도 있다 (조금 더 조심스럽게) | might, could | The error **might** come from the sensor. (센서 때문일지도 모른다) |\n' +
         '| 거의 확실하다 (부정) | can\'t, cannot | The error **cannot** come from the sensor. (센서 때문일 리 없다) |\n\n' +
         'must 문장의 확신은 증거에서 끌어낸 **논리적 추론**에서 나옵니다. 반면 may·might·could 문장은 "그럴 가능성이 있다"는 것만 말하고 **다른 설명의 여지**를 남겨 둡니다. 두 조동사 may·might 사이의 차이는 크지 않으며, 대개 might 쪽을 조금 더 조심스러운 말로 씁니다.\n\n' +
-        '> ⚠️ 추측의 must 표현을 부정할 때는 mustn\'t 꼴이 아니라 **can\'t(cannot)** 꼴을 씁니다. mustn\'t 표현은 "~하면 안 된다(금지)"라는 뜻입니다.\n\n' +
+        '> ⚠️ "~일 리 없다"는 mustn\'t 꼴이 아니라 **can\'t(cannot)** 꼴로 씁니다. 줄임꼴 mustn\'t 표현은 주로 "~하면 안 된다(금지)"라는 뜻입니다. (미국 영어에서는 줄이지 않은 must not 표현이 "틀림없이 ~가 아닐 것이다"라는 추측으로도 쓰이지만, "~일 리 없다"의 대표 꼴은 can\'t입니다.)\n\n' +
         '> 💡 같은 must 문장이라도 뜻이 둘입니다. You **must** submit the form today.(오늘 제출해야 한다 — 의무) / The form **must** be lost.(틀림없이 분실되었다 — 추측). 사람이 할 **행동**이면 의무, **상태·사실**에 대한 판단이면 추측인 경우가 많습니다.',
       easy: '하늘을 보고 비를 예상하는 장면을 떠올려 보십시오.\n\n' +
         '- 먹구름이 몰려오고 천둥까지 치면 "곧 비가 오겠다"고 거의 확신합니다. → must\n' +
@@ -232,7 +232,7 @@ Tutor.registerUnit({
       id: 'p2', level: 1, type: 'ox', concept: 0,
       q: '추측의 must 문장(틀림없이 ~이다)과 반대되는 "~일 리 없다"는 뜻은 mustn\'t 꼴로 나타낸다.',
       answer: false,
-      explain: 'mustn\'t 표현은 "~하면 안 된다(금지)"라는 뜻입니다. "~일 리 없다"는 **can\'t(cannot)** 꼴로 씁니다. 예: The result can\'t be a coincidence.(그 결과가 우연일 리 없다)',
+      explain: 'mustn\'t 표현은 주로 "~하면 안 된다(금지)"라는 뜻입니다. "~일 리 없다"는 **can\'t(cannot)** 꼴로 씁니다(미국 영어의 must not 추측 용법은 "틀림없이 ~가 아닐 것이다" 정도이고, 대표 꼴은 can\'t입니다). 예: The result can\'t be a coincidence.(그 결과가 우연일 리 없다)',
     },
     {
       id: 'p3', level: 1, type: 'choice', concept: 1,
@@ -398,7 +398,7 @@ Tutor.registerUnit({
       choices: [
         'Early home reading is the main cause of a large vocabulary.',
         'Early home reading has nothing to do with vocabulary size.',
-        'Early home reading is probably one factor linked to later vocabulary.',
+        'The results suggest that early home reading is probably one factor linked to later vocabulary.',
         'Reading at home early in life guarantees a large vocabulary for every child.',
       ],
       answer: 2,
@@ -409,7 +409,7 @@ Tutor.registerUnit({
         'guarantees, every child 같은 센 말로 부풀렸습니다. 원문은 suggest, likely 표현으로 두 번 확신을 낮추었습니다.',
       ],
       hint: '원문에서 확신을 낮춘 suggest·likely, 범위를 좁힌 one of several factors 표현이 살아 있는지 확인하십시오.',
-      explain: '원문은 suggest, is likely to 표현으로 확신을 낮추고 one of several factors, related to 표현으로 주장을 좁혔습니다. probably(가능성 큼), one factor(여러 요인 가운데 하나), linked to(관련됨) 세 표현이 이 강도를 그대로 지킵니다.',
+      explain: '원문은 suggest, is likely to 표현으로 확신을 낮추고 one of several factors, related to 표현으로 주장을 좁혔습니다. 줄여 쓴 문장도 suggest(시사함), probably(가능성 큼), one factor(여러 요인 가운데 하나), linked to(관련됨) 표현으로 이 강도를 그대로 지킵니다.',
     },
   ],
 

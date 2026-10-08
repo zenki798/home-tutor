@@ -418,7 +418,7 @@
         hint: '$1-\\cos t=2\\sin^2\\frac{t}{2}$를 이용하면 근호를 벗길 수 있습니다.',
         wrong: [
           { a: '8', why: '반지름이 1인 사이클로이드의 길이입니다. 이 곡선은 반지름이 2이므로 길이도 2배입니다.' },
-          { a: '0', why: '$\\sqrt{\\sin^2\\frac{t}{2}}=\\sin\\frac{t}{2}$는 $0 \\le t \\le 2\\pi$에서 0 이상이므로 적분값이 0이 될 수 없습니다. 부정적분 $-2\\cos\\frac{t}{2}$의 부호를 확인해 보십시오.' },
+          { a: '0', why: '속력을 $4\\sin t$처럼 반각 없이 적분하면 $\\int_{0}^{2\\pi}\\sin t\\,dt=0$이 나옵니다. $1-\\cos t=2\\sin^2\\frac{t}{2}$이므로 속력은 $4\\sin\\frac{t}{2}$이고, 이 값은 $0 \\le t \\le 2\\pi$에서 0 이상이라 길이가 0이 될 수 없습니다.' },
         ],
         explain: '$\\frac{dx}{dt}=2(1-\\cos t)$, $\\frac{dy}{dt}=2\\sin t$이므로\n\n$\\left(\\frac{dx}{dt}\\right)^2+\\left(\\frac{dy}{dt}\\right)^2=4(1-2\\cos t+\\cos^2 t+\\sin^2 t)=8(1-\\cos t)=16\\sin^2\\frac{t}{2}$\n\n$0 \\le t \\le 2\\pi$에서 $\\sin\\frac{t}{2} \\ge 0$이므로 속력은 $4\\sin\\frac{t}{2}$입니다.\n\n$L=\\int_{0}^{2\\pi}4\\sin\\frac{t}{2}\\,dt=\\left[-8\\cos\\frac{t}{2}\\right]_{0}^{2\\pi}=8+8=16$\n\n반지름이 $r$이면 길이는 $8r$입니다.',
       },
@@ -444,7 +444,7 @@
         hint: '$x=r\\cos\\theta$, $y=r\\sin\\theta$로 놓으면 $\\theta$를 매개변수로 하는 매개곡선입니다.',
         wrong: [
           { a: '-1', why: '$\\frac{dr}{d\\theta}=-\\sin\\theta=-1$을 기울기로 썼습니다. $\\frac{dr}{d\\theta}$은 접선의 기울기가 아닙니다. $\\frac{dy}{d\\theta}\\div\\frac{dx}{d\\theta}$를 구합니다.' },
-          { a: '0', why: '점 $(0, 1)$에서 $r$이 최대라고 생각했을 수 있습니다. 직접 $\\frac{dy}{d\\theta}$와 $\\frac{dx}{d\\theta}$를 계산해 보십시오.' },
+          { a: '0', why: '점 $(0, 1)$이 곡선의 맨 위 점이라 접선이 수평이라고 생각했을 수 있습니다. 이 심장형에서 $y$가 가장 큰 점은 $\\theta=\\frac{\\pi}{3}$인 점이고, $\\theta=\\frac{\\pi}{2}$에서는 $\\frac{dy}{d\\theta}=-1 \\ne 0$입니다.' },
         ],
         explain: '$x=(1+\\cos\\theta)\\cos\\theta$, $y=(1+\\cos\\theta)\\sin\\theta$입니다.\n\n$\\frac{dx}{d\\theta}=-\\sin\\theta-2\\sin\\theta\\cos\\theta$, $\\frac{dy}{d\\theta}=\\cos\\theta+\\cos^2\\theta-\\sin^2\\theta$\n\n$\\theta=\\frac{\\pi}{2}$이면 $\\frac{dx}{d\\theta}=-1$, $\\frac{dy}{d\\theta}=0+0-1=-1$이므로 $\\frac{dy}{dx}=\\frac{-1}{-1}=1$입니다. (접점은 $(0, 1)$입니다.)',
       },
@@ -587,7 +587,7 @@
           var fn = R.pick(['cos', 'sin']), eq, k, steps, wrong = [];
           if (kind === 'cardioid') {
             var a = R.int(1, 4), sg = R.pick(['+', '-']);
-            eq = 'r=' + (a === 1 ? '' : a) + '(1' + sg + '\\' + fn + '\\theta)';
+            eq = 'r=' + (a === 1 ? '1' + sg + '\\' + fn + '\\theta' : a + '(1' + sg + '\\' + fn + '\\theta)');
             k = R.F(3 * a * a, 2);
             steps = '$A=\\frac{1}{2}\\int_{0}^{2\\pi}' + (a === 1 ? '' : a * a) + '(1' + sg + '\\' + fn + '\\theta)^2\\,d\\theta=\\frac{' + a * a + '}{2}\\int_{0}^{2\\pi}(1' + sg + '2\\' + fn + '\\theta+\\' + fn + '^2\\theta)\\,d\\theta=\\frac{' + a * a + '}{2}(2\\pi+0+\\pi)=' + piTex(k) + '$';
             wrong.push({ a: k.mul(2).toString(), why: '넓이 공식의 $\\frac{1}{2}$을 빠뜨렸습니다.' });
