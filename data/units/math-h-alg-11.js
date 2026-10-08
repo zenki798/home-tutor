@@ -157,7 +157,7 @@
         q: '$\\sum_{k=1}^{10}\\frac{1}{(2k-1)(2k+1)}$의 값을 구하십시오.',
         steps: [
           '두 인수의 차가 2이므로 $\\frac{1}{(2k-1)(2k+1)}=\\frac{1}{2}\\left(\\frac{1}{2k-1}-\\frac{1}{2k+1}\\right)$입니다.',
-          '늘어놓으면 $\\frac{1}{2}\\left\\{\\left(1-\\frac{1}{3}\\right)+\\left(\\frac{1}{3}-\\frac{1}{5}\\right)+\\cdots+\\left(\\frac{1}{19}-\\frac{1}{21}\\right)\\right\\}$',
+          '늘어놓으면 $\\frac{1}{2}\\left(1-\\frac{1}{3}\\right)+\\frac{1}{2}\\left(\\frac{1}{3}-\\frac{1}{5}\\right)+\\cdots+\\frac{1}{2}\\left(\\frac{1}{19}-\\frac{1}{21}\\right)$',
           '가운데 항이 모두 지워져 $\\frac{1}{2}\\left(1-\\frac{1}{21}\\right)=\\frac{1}{2}\\times\\frac{20}{21}=\\frac{10}{21}$입니다.',
         ],
         answer: '$\\frac{10}{21}$',

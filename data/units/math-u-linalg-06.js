@@ -535,7 +535,8 @@
           do {
             A = rnd(); B = rnd();
             AB = mul(A, B); BA = mul(B, A);
-          } while (AB.join() === BA.join() || A.join() === B.join() || A.join() === '0,0,0,0' || B.join() === '0,0,0,0');
+          } while (AB.join() === BA.join() || A.join() === B.join() || A.join() === '0,0,0,0' || B.join() === '0,0,0,0' ||
+            AB.join() === '0,0,0,0' || BA.join() === '0,0,0,0');
           var sFirst = R.bool();
           // sFirst: T 를 먼저 하고 S 를 나중에 (S∘T → BA), 아니면 T∘S → AB
           var good = sFirst ? BA : AB, rev = sFirst ? AB : BA;
@@ -547,6 +548,9 @@
             ['$' + mat(had) + '$', '같은 자리의 성분끼리 곱했습니다. 행렬의 곱은 행과 열의 내적으로 계산합니다.'],
             ['$' + mat(sum) + '$', '합성은 행렬의 합이 아니라 곱입니다.'],
             ['$' + mat(transpose(good)) + '$', '곱은 맞지만 행과 열을 바꿔 적었습니다. $(i, j)$ 성분은 왼쪽 행렬의 $i$행과 오른쪽 행렬의 $j$열의 내적입니다.'],
+            // 앞의 넷이 서로 겹치는 드문 경우에만 쓰인다
+            ['$' + mat(sFirst ? B : A) + '$', '나중에 하는 변환의 행렬만 적었습니다. 합성의 표준행렬은 두 행렬의 곱입니다.'],
+            ['$' + mat(sFirst ? A : B) + '$', '먼저 하는 변환의 행렬만 적었습니다. 합성의 표준행렬은 두 행렬의 곱입니다.'],
           ];
           var reason = {};
           cands.forEach(function (k) { if (!(k[0] in reason)) reason[k[0]] = k[1]; });

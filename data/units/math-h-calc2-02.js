@@ -143,7 +143,7 @@
         q: '급수 $\\sum_{n=1}^{\\infty}\\dfrac{1}{(2n-1)(2n+1)}$의 합을 구하십시오.',
         steps: [
           '일반항을 두 분수의 차로 나눕니다. $\\dfrac{1}{(2n-1)(2n+1)}=\\dfrac{1}{2}\\left(\\dfrac{1}{2n-1}-\\dfrac{1}{2n+1}\\right)$',
-          '부분합을 구하면 가운데 항이 서로 지워집니다. $S_n=\\frac{1}{2}\\left\\{\\left(1-\\frac{1}{3}\\right)+\\left(\\frac{1}{3}-\\frac{1}{5}\\right)+\\cdots+\\left(\\frac{1}{2n-1}-\\frac{1}{2n+1}\\right)\\right\\}=\\frac{1}{2}\\left(1-\\frac{1}{2n+1}\\right)$',
+          '부분합을 구하면 가운데 항이 서로 지워집니다. $S_n=\\frac{1}{2}\\left(1-\\frac{1}{3}\\right)+\\frac{1}{2}\\left(\\frac{1}{3}-\\frac{1}{5}\\right)+\\cdots+\\frac{1}{2}\\left(\\frac{1}{2n-1}-\\frac{1}{2n+1}\\right)=\\frac{1}{2}\\left(1-\\frac{1}{2n+1}\\right)$',
           '급수의 합은 $\\lim_{n \\to \\infty} S_n=\\frac{1}{2}(1-0)=\\frac{1}{2}$입니다.',
         ],
         answer: '$\\frac{1}{2}$',

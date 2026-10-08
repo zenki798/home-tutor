@@ -47,11 +47,11 @@ Tutor.registerUnit({
       easy: '"a apple"과 "an apple"을 소리 내어 차례로 말해 보세요. a 다음에 바로 apple의 첫소리가 오면 소리가 부딪혀서 끊어지지요?\n\nan을 쓰면 n이 두 소리 사이에 다리를 놓아 주어서 매끄럽게 이어져요. 그래서 apple, egg, eraser처럼 모음 소리로 시작하는 낱말 앞에는 an을 써요.',
       check: {
         type: 'choice',
-        q: "빈칸에 알맞은 말은 무엇일까요?\n\nIt's [[빈칸]] egg.",
-        choices: ['an', 'a'],
+        q: 'a와 an을 바르게 쓴 문장은 무엇일까요?',
+        choices: ["It's an egg.", "It's a egg.", "It's an book."],
         answer: 0,
-        why: ['', 'egg는 모음 소리로 시작하는 낱말이라서 a가 아니라 an을 써요.'],
-        explain: "egg(달걀)는 모음 소리로 시작해요. 그래서 It's an egg.라고 해요.",
+        why: ['', 'egg는 모음 소리로 시작하는 낱말이라서 a가 아니라 an을 써요.', "book은 자음 소리로 시작하는 낱말이라서 an이 아니라 a를 써요. It's a book.이라고 해요."],
+        explain: "egg(달걀)는 모음 소리로 시작해서 an을 써요. 그래서 It's an egg.가 바른 문장이에요. book처럼 자음 소리로 시작하는 낱말 앞에는 a를 써요.",
       },
     },
     {

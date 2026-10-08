@@ -80,7 +80,7 @@
       },
       {
         title: '미분계수 식의 여러 모양',
-        body: '$f\'(a)=\\lim_{h \\to 0}\\dfrac{f(a+h)-f(a)}{h}$에서 중요한 것은 **$f$ 안에서 $a$에 더해진 양과 분모가 같다**는 점입니다. 이 모양을 맞추면 여러 극한을 $f\'(a)$로 나타낼 수 있습니다.\n\n1. $\\lim_{h \\to 0}\\dfrac{f(a+2h)-f(a)}{h}=\\lim_{h \\to 0}\\dfrac{f(a+2h)-f(a)}{2h} \\times 2=2f\'(a)$\n2. $\\lim_{h \\to 0}\\dfrac{f(a+h)-f(a-h)}{h}=\\lim_{h \\to 0}\\left\\{\\dfrac{f(a+h)-f(a)}{h}+\\dfrac{f(a-h)-f(a)}{-h}\\right\\}=f\'(a)+f\'(a)=2f\'(a)$\n3. $\\lim_{x \\to a}\\dfrac{f(x)-f(a)}{x^2-a^2}=\\lim_{x \\to a}\\dfrac{f(x)-f(a)}{x-a} \\cdot \\dfrac{1}{x+a}=\\dfrac{f\'(a)}{2a}$ ($a \\ne 0$)\n\n> 💡 2에서처럼 $f(a)$를 빼고 더해서 두 극한으로 나누는 방법을 기억해 둡니다. $2h$, $-h$도 $h$와 함께 0으로 가므로 $\\lim_{h \\to 0}\\frac{f(a+2h)-f(a)}{2h}=f\'(a)$입니다.',
+        body: '$f\'(a)=\\lim_{h \\to 0}\\dfrac{f(a+h)-f(a)}{h}$에서 중요한 것은 **$f$ 안에서 $a$에 더해진 양과 분모가 같다**는 점입니다. 이 모양을 맞추면 여러 극한을 $f\'(a)$로 나타낼 수 있습니다.\n\n1. $\\lim_{h \\to 0}\\dfrac{f(a+2h)-f(a)}{h}=\\lim_{h \\to 0}\\dfrac{f(a+2h)-f(a)}{2h} \\times 2=2f\'(a)$\n2. $\\lim_{h \\to 0}\\dfrac{f(a+h)-f(a-h)}{h}=\\lim_{h \\to 0}\\dfrac{f(a+h)-f(a)}{h}+\\lim_{h \\to 0}\\dfrac{f(a-h)-f(a)}{-h}=f\'(a)+f\'(a)=2f\'(a)$\n3. $\\lim_{x \\to a}\\dfrac{f(x)-f(a)}{x^2-a^2}=\\lim_{x \\to a}\\dfrac{f(x)-f(a)}{x-a} \\cdot \\dfrac{1}{x+a}=\\dfrac{f\'(a)}{2a}$ ($a \\ne 0$)\n\n> 💡 2에서처럼 $f(a)$를 빼고 더해서 두 극한으로 나누는 방법을 기억해 둡니다. $2h$, $-h$도 $h$와 함께 0으로 가므로 $\\lim_{h \\to 0}\\frac{f(a+2h)-f(a)}{2h}=f\'(a)$입니다.',
         easy: '미분계수의 정의는 "$f$ 안에서 움직인 거리 ÷ 움직인 거리"라는 틀입니다. 안에서 $2h$만큼 움직였는데 분모가 $h$라면, 분모가 절반밖에 안 되니 결과는 두 배가 됩니다.\n\n그래서 틀에 맞게 분모를 고쳐 놓고, 고친 만큼 밖에서 곱하거나 나누어 줍니다.',
         check: {
           type: 'short', check: 'number',

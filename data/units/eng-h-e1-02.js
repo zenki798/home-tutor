@@ -327,11 +327,12 @@ Tutor.registerUnit({
       check: {
         type: 'choice',
         q: '빈칸에 알맞은 것은 무엇입니까?\n\nThe number of visitors to the museum ___ increasing.',
-        choices: ['is', 'are'],
+        choices: ['is', 'are', 'were'],
         answer: 0,
         why: [
           '',
           'visitors에 맞추었습니다. the number of의 주어는 number(수)이므로 단수 is입니다.',
+          'were는 복수 주어에 쓰는 과거형입니다. 주어의 중심인 number는 단수이므로 were를 쓸 수 없습니다.',
         ],
         explain: 'the number of + 복수 명사는 "~의 수"이고 주어의 중심은 number입니다. 그래서 단수 동사 **is**를 씁니다. "박물관 방문객 수가 늘고 있다"는 뜻입니다.',
       },

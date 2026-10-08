@@ -1,7 +1,7 @@
 # NEXT_TASK — 다음 작업과 재개 방법 (가정교사)
 
 > 새 세션은 `PROGRESS.md`(지금 상태 한 장) → 이 파일 → `docs/PROGRESS.md`(날짜별 자세한 기록) 순서로 읽고, **실제 상태(git·파일)와 대조한 뒤** 이어 간다.
-> 마지막 갱신: 2026-10-08 (사용자 지시 "자율개발·자동복구", 기한 2026-10-10)
+> 마지막 갱신: 2026-10-08 밤 (사용자 지시 "자율개발·자동복구", 기한 2026-10-10)
 
 ## 1. 바로 다음 작업
 
@@ -10,8 +10,8 @@
 
 | 묶음 | 작업 (과정#n · 단원 수) |
 |---|---|
-| W1 | math-u-calc#1(4) · math-u-linalg#1(4) · math-u-stat#1(4) · eng-u-grammar#1(2) · eng-u-toeic#1(4) |
-| W2 | eng-u-toeic#2(4) · eng-u-toeic#3(2) · soc-u-econ#1~3(4·4·2) |
+| ~~W1~~ ✅ | math-u-calc#1(4) · math-u-linalg#1(4) · math-u-stat#1(4) · eng-u-grammar#1(2) · eng-u-toeic#1(4) — 10-08 밤 끝(66곳 고침, 전체 1073 passed) |
+| W2 | eng-u-toeic 05~10(4·2) · soc-u-econ#1~3(4·4·2) — `content-jobs.js` 는 남은 단원으로 다시 번호를 매긴다(eng-u-toeic#1·#2) |
 | W3 | soc-u-psych#1~3(4·4·2) · sci-u-bio#1~2(4·4) |
 | W4 | sci-u-bio#3(2) · sci-u-chem#1~3(4·4·2) · sci-u-phy#1(4) |
 | W5 | sci-u-phy#2~3(4·2) · kor-a-literacy#1~3(4·4·2) |
@@ -39,7 +39,9 @@
 
 1. (1순위 점검) 학생 기록 분리·저장·백업 복원 회귀가 없는지 — 새 기능의 기록(오답노트 due·reports·prefs·gradeAt)이 백업·학생 삭제·기록 지우기와 맞는지 시험이 덮는다(`tests/logic/storage.spec.js`, `tests/ui/backup.spec.js`)
 2. (2순위) 검토자들이 남긴 의문(대학 35단원 24건 — `tmp/r1-review.json`, 그 전 약 1,150건 — `tmp/*-review.json`)을 확인 가능한 것부터 처리
-3. (2순위) 내용 검사 경고 8건(값이 같은 보기 3·보기 2개짜리 이해 확인 4·선형대수 생성기 1/300 실패) 확인
+3. ~~(2순위) 내용 검사 경고 8건~~ ✅ 10-08 밤 처리(오류 0·경고 0)
+3-1. (3순위) **좁은 화면의 긴 수식(§16)** — 글 칸보다 넓은 수식은 글자를 0.8배까지 줄이고, 그래도 넓으면 그 수식만 옆으로 밀기(`js/app.js` fitMath, `css/mathtext.css` .mt-fit, 시험 `tests/ui/math-fit.spec.js`).
+   넣은 뒤 휴대폰 폭 검사(`tmp/overflow-scan.js`)를 문제 해설·생성 문제까지 넓혀 다시 확인
 4. (3순위) 교육과정 수동 확인 3건은 공식 원문 파일이 있어야 한다(사람 일 — `docs/CURRICULUM-REVISION.md`)
 
 ## 4. 복구할 때 주의
