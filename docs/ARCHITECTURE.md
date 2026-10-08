@@ -31,7 +31,7 @@
 `index.html` 이 싣는 순서 (모두 `defer` 없는 일반 스크립트, body 끝):
 
 ```
-js/mathlib.js → js/mathtext.js → js/figures.js → js/search.js → js/solver.js → js/storage.js → js/impact.js → js/review.js → js/summary.js → js/core.js → data/catalog.js → js/app.js
+js/mathlib.js → js/mathtext.js → js/figures.js → js/search.js → js/solver.js → js/storage.js → js/impact.js → js/review.js → js/summary.js → js/speech.js → js/core.js → data/catalog.js → js/app.js
 ```
 
 단원 내용(`data/units/<id>.js`)과 검색 색인(`data/index/<과목>-<학교급>.js`)은 필요할 때 `Tutor.loadScript` 로 싣는다.
@@ -470,7 +470,7 @@ tutor.settings   { fontScale, theme }
 | `p.<id>.stats` | 학습 통계(날짜별 푼 수·맞힌 수, 과목별 합계) |
 | `p.<id>.recent` · `p.<id>.days` | 최근 단원, 공부한 날 |
 | `p.<id>.chat` | 최근 질문 대화(과목별 최대 30개) — 학습 연속성에 필요한 만큼만 |
-| `p.<id>.prefs` | 그 학생의 학습 선택(예: 마지막 문제 수·난이도) |
+| `p.<id>.prefs` | 그 학생의 학습 선택 — `tts`('on'\|'off', 없으면 자동: 초등 1~3학년만 켬)·`ttsRate`('normal', 없으면 천천히) (§13) |
 | `p.<id>.reports` | 틀린 곳 알림 `[{ t, unit, kind('problem'\|'concept'\|'example'), ref, reason, memo(200자), q(150자), v }]` — 최근 200개, 새것이 앞 (§11) |
 | `sys.*` | 저장 계층 자체(되돌리기 지점) — 백업·내보내기에 넣지 않는다 |
 
@@ -559,3 +559,22 @@ TutorSummary.toText(summary, { grade }) → 글로 복사할 요약 (학년만 �
 - 화면 `#/summary`(기록 화면 아래 링크): 기간 고르기(7·30일, 메모리에만 — 저장 안 함)·숫자 4칸·날짜별 막대(30일은 일주일마다 날짜)·과목별·단원·자주 틀린 까닭·
   오답노트·복습·틀린 곳 알림·개념을 공부한 단원, [인쇄하기](`@media print` — 막대·버튼을 숨기고 맨 위에 '가정교사 · 날짜 기준')·[글로 복사하기].
   문서 제목은 '학습 요약 · 가정교사'(별명 없음 — 인쇄 머리글에 남지 않게). PIN 이 걸린 학생은 PIN 을 맞혀야 연다(다른 화면과 같다).
+
+---
+
+## 13. 읽어 주기 (`js/speech.js` — `TutorSpeech`, 2026-10-08)
+
+```
+TutorSpeech.toSpeech(src) → string   서식 글(마크다운 일부 + $TeX$) → 소리 내어 읽기 좋은 한국어
+   분수 \frac{a}{b}·a/b → "b분의 a", 대분수 → "2와 3분의 1", + - × ÷ → 더하기·빼기(앞이 수·글자면)/마이너스·곱하기·나누기,
+   = → "A는 B"(받침에 맞게 은/는), < > ≤ ≥ ≠ → "A는 B보다 작다/크다/작거나 같다/크거나 같다, 와 같지 않다",
+   식은 조각(⇒ "그러면" · 쉼표 · 쌍반점)마다 따로, 기호만 늘어놓으면 기호 이름, ^2·^3·^{n} → 제곱·세제곱·n제곱, ^\circ → 도,
+   \sqrt → 루트(세제곱근), \overline → 선분, \text{…} → 글자, [[빈칸]] → 빈칸, 굵게·목록·인용·표 기호는 빼고 글만, 그림 글자(이모지)는 읽지 않는다
+TutorSpeech.pickVoice(voices) → voice | null   이 기기 안(localService)의 한국어 목소리만, 기본 목소리 먼저
+```
+
+- **인터넷 목소리는 쓰지 않는다**(규칙 4·7) — 크롬·엣지의 온라인 목소리는 읽을 글을 회사 서버로 보낸다. 기기 안 한국어 목소리가 없으면
+  `html.can-speak` 가 붙지 않아 🔊 버튼이 숨고, 설정의 '읽어 주기'가 까닭과 설치 방법(윈도·안드로이드·아이폰)을 알린다. `voiceschanged` 로 늦게 와도 붙는다.
+- 화면(app.js): `speakBtn(fn, 이름)` — 누를 때 fn() 의 서식 글을 읽는다(같은 버튼을 다시 누르면 멈춤, `aria-pressed`). 개념 카드(`.cc-tools`: 제목·(기초 다지기면 쉬운 설명)·본문),
+  예제(`.ex-tools`: 문제와 지금까지 펼친 풀이), 문제(`.pw-tools` '문제 읽어 주기': 문제 + 화면에 보인 순서의 보기 번호), 채점 뒤 해설('해설 읽어 주기': 정답·왜 틀렸을까·해설).
+  다른 화면으로 가면 멈춘다(`render` 가 `speechSynthesis.cancel`). 빠르기: 천천히 0.85 · 보통 1. 읽어 주기를 지원하지 않는 브라우저에서는 버튼을 만들지 않는다.

@@ -568,6 +568,13 @@ html.no-profile .main { padding-bottom: 2rem; }
 .review-sum { list-style: none; margin: 0.5rem 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 1rem; color: var(--ink-2); }
 .review-left { margin: 0.625rem 0 0; font-weight: 800; color: var(--ok); }
 
+/* 읽어 주기 — 이 기기 안의 한국어 목소리가 있을 때만 보인다(html.can-speak) */
+html:not(.can-speak) .speak-btn { display: none !important; }
+.cc-tools, .ex-tools, .pw-tools { display: flex; justify-content: flex-end; margin: 0 0 0.375rem; }
+.speak-btn[aria-pressed="true"] { background: var(--c-wash); border-color: var(--c); color: var(--c-ink); }
+.fb-speak { margin: 0 0 0.5rem; }
+.speech-voice { margin: 0.5rem 0; font-weight: 700; }
+
 /* 틀린 곳 알리기 (문제·개념 카드·예제) · 설정의 틀린 곳 알림 */
 .report { margin-top: 0.75rem; }
 .report-btn { font-size: 0.8125rem; color: var(--muted); }

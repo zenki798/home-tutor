@@ -32,6 +32,7 @@
   var TS = window.TutorStorage || null; // 백업·PIN (js/storage.js). 없으면 그 기능만 막는다
   var TI = window.TutorImpact || null;  // 교육과정 변경이 학생에게 닿는가(js/impact.js, 기기 안 계산). 없으면 그 안내만 빠진다
   var TR = window.TutorReview || null;  // 복습 일정(js/review.js). 없으면 오답노트만 예전처럼 쓴다
+  var TSP = window.TutorSpeech || null; // 읽어 주기 글 만들기(js/speech.js). 없으면 🔊 버튼만 빠진다
 
   /* ================= 설정(글자 크기·테마) — 화면을 그리기 전에 먼저 적용해 깜빡임을 줄인다 ================= */
 
@@ -784,6 +785,8 @@
     window.TutorApp.route = r;
     setState('loading');
     if (S.closeModal) S.closeModal();
+    stopSpeaking();     // 다른 화면으로 가면 읽기를 멈춘다(§13)
+    SPEECH.reg = {};    // 🔊 버튼은 화면마다 새로 만든다
 
     if (!Tutor.catalog) {
       mount(seq, errorView('catalog'));
@@ -1789,9 +1792,12 @@
         '<span class="badge ok-badge"' + (checked.indexOf(i) >= 0 ? '' : ' hidden') + '>확인함 ✔</span></h4>' +
         '<p class="check-sub">' + esc(say({ e: '방금 읽은 내용을 잘 알았는지 풀어 봐요.', m: '방금 읽은 내용을 확인해 봐요.', h: '방금 읽은 내용을 확인해 봅시다.' })) + '</p>' +
         '<div class="check-host" data-i="' + i + '"></div></section>' : '';
+      /* 읽어 주기(§13): 제목 → (기초 다지기면 쉬운 설명) → 본문 */
+      var sb = speakBtn(function () { return [c.title, easyFirst && c.easy ? c.easy : '', c.body].filter(Boolean).join('\n\n'); });
       return '<article class="concept-card' + (easyFirst && c.easy ? ' is-easy-first' : '') + '" id="cc-' + i + '" data-i="' + i + '" aria-labelledby="cct-' + i + '">' +
         '<p class="cc-step">개념 ' + (i + 1) + ' / ' + n + '</p>' +
         '<h3 class="cc-title" id="cct-' + i + '" tabindex="-1">' + E.inline(c.title) + '</h3>' +
+        (sb ? '<div class="cc-tools">' + sb + '</div>' : '') +
         (easyFirst && c.easy ? easyHtml + body : body + easyHtml) + check +
         '<div class="report-host" data-i="' + i + '"></div></article>';
     }).join('');
@@ -1963,8 +1969,17 @@
     }
     html += '<ol class="example-list">' + exs.map(function (ex, i) {
       var steps = Array.isArray(ex.steps) ? ex.steps : [];
+      /* 읽어 주기(§13): 문제 + 지금까지 펼친 풀이(+ 답을 펼쳤으면 답) */
+      var sb = speakBtn(function () {
+        var li = doc.getElementById('ex-' + i);
+        var shown = li ? parseInt(li.getAttribute('data-shown'), 10) || 0 : 0;
+        var parts = ['예제 ' + (i + 1) + '. ' + ex.q];
+        steps.slice(0, shown).forEach(function (st, k) { parts.push((k + 1) + '단계. ' + st); });
+        if (shown > steps.length) parts.push('답은 ' + ex.answer);
+        return parts.join('\n');
+      });
       return '<li class="example card" id="ex-' + i + '" data-i="' + i + '" data-shown="0">' +
-        '<h3 class="ex-title">예제 ' + (i + 1) + '</h3>' +
+        '<h3 class="ex-title">예제 ' + (i + 1) + '</h3>' + (sb ? '<div class="ex-tools">' + sb + '</div>' : '') +
         '<div class="rich ex-q">' + E.render(ex.q) + '</div>' + E.fig(ex.fig) +
         '<ol class="steps" aria-live="polite">' + steps.map(function (st, k) {
           return '<li hidden><span class="step-num" aria-hidden="true">' + (k + 1) + '</span><div class="rich">' + E.render(st) + '</div></li>';
@@ -2123,6 +2138,111 @@
       },
     };
   };
+
+  /* ================= 읽어 주기 (§13, js/speech.js) — 이 기기 안의 목소리만 =================
+   * 인터넷 목소리(localService 가 아닌 것)는 읽을 글을 회사 서버로 보내므로 쓰지 않는다(규칙 4·7). 목소리가 없으면 버튼을 숨긴다.
+   * 학생별 선택은 p.<id>.prefs 의 tts('on'|'off', 없으면 자동: 초등 1~3학년만 켬)·ttsRate('normal', 없으면 천천히). */
+  var SPEECH = { synth: null, voice: null, btn: null, reg: {}, seq: 0 };
+  var TTS_GRADES = ['e1', 'e2', 'e3'];
+  function ttsMode(p) { var v = readObj(pk('prefs', p)).tts; return v === 'on' || v === 'off' ? v : 'auto'; }
+  function ttsRateMode(p) { return readObj(pk('prefs', p)).ttsRate === 'normal' ? 'normal' : 'slow'; }
+  function ttsOn() {
+    var p = S.profile;
+    if (!p || !TSP || !SPEECH.synth) return false;
+    var m = ttsMode(p);
+    return m === 'auto' ? TTS_GRADES.indexOf(p.grade) >= 0 : m === 'on';
+  }
+  function initSpeech() {
+    try { SPEECH.synth = window.speechSynthesis || null; } catch (e) { SPEECH.synth = null; }
+    if (!SPEECH.synth || typeof window.SpeechSynthesisUtterance !== 'function' || !TSP) { SPEECH.synth = null; return; }
+    function pick() {
+      var list = [];
+      try { list = SPEECH.synth.getVoices() || []; } catch (e) { list = []; }
+      SPEECH.voice = TSP.pickVoice(list);
+      root.classList.toggle('can-speak', !!SPEECH.voice);
+      var slot = doc.querySelector('#speech .speech-slot'); // 설정 화면이 열려 있으면 목소리 안내도 고친다
+      if (slot) slot.innerHTML = speechStateHtml();
+      var tb = doc.querySelector('#speech [data-act="speech-test"]');
+      if (tb) tb.disabled = !SPEECH.voice;
+    }
+    pick();
+    try {
+      if (typeof SPEECH.synth.addEventListener === 'function') SPEECH.synth.addEventListener('voiceschanged', pick);
+      else SPEECH.synth.onvoiceschanged = pick;
+    } catch (e) { /* 목소리 목록이 바뀌어도 알 수 없는 브라우저 */ }
+  }
+  /* 🔊 버튼: fn() 이 읽을 서식 글을 낸다(누를 때 만든다). 읽어 주기를 쓰지 않으면 '' */
+  function speakBtn(fn, label, cls) {
+    if (!ttsOn()) return '';
+    var id = 'sp' + (++SPEECH.seq);
+    SPEECH.reg[id] = fn;
+    return '<button type="button" class="btn small soft speak-btn' + (cls ? ' ' + cls : '') + '" data-speak="' + id + '" aria-pressed="false">' +
+      '<span aria-hidden="true">🔊</span> ' + esc(label || '읽어 주기') + '</button>';
+  }
+  function stopSpeaking() {
+    if (SPEECH.synth) { try { SPEECH.synth.cancel(); } catch (e) { /* 무시 */ } }
+    if (SPEECH.btn) {
+      SPEECH.btn.setAttribute('aria-pressed', 'false');
+      SPEECH.btn.classList.remove('is-speaking');
+    }
+    SPEECH.btn = null;
+  }
+  function speakText(src, btn) {
+    if (!SPEECH.synth || !SPEECH.voice || !TSP) return;
+    var again = !!btn && SPEECH.btn === btn;
+    stopSpeaking();
+    if (again) return; // 읽는 중에 같은 버튼을 다시 누르면 멈춘다
+    var text = TSP.toSpeech(src);
+    if (!text) return;
+    var u = new window.SpeechSynthesisUtterance(text);
+    u.voice = SPEECH.voice;
+    u.lang = SPEECH.voice.lang || 'ko-KR';
+    u.rate = ttsRateMode(S.profile) === 'normal' ? 1 : 0.85;
+    function done() {
+      if (btn && SPEECH.btn === btn) {
+        btn.setAttribute('aria-pressed', 'false');
+        btn.classList.remove('is-speaking');
+        SPEECH.btn = null;
+      }
+    }
+    u.onend = done;
+    u.onerror = done;
+    if (btn) {
+      SPEECH.btn = btn;
+      btn.setAttribute('aria-pressed', 'true');
+      btn.classList.add('is-speaking');
+    }
+    try { SPEECH.synth.speak(u); } catch (e) { done(); }
+  }
+  function speechStateHtml() {
+    if (!SPEECH.synth) return '<p class="notice small">이 브라우저는 읽어 주기를 지원하지 않아요.</p>';
+    if (!SPEECH.voice) {
+      return '<p class="notice small">이 기기 안의 한국어 목소리를 찾지 못했어요. 그래서 🔊 버튼이 보이지 않아요.</p>' +
+        '<ul class="plain-list small"><li>윈도: 설정 → 시간 및 언어 → 음성 → 음성 추가에서 ‘한국어’</li>' +
+        '<li>안드로이드: 설정 → 텍스트 음성 변환(TTS) → 기본 엔진의 음성 데이터에서 ‘한국어’ 설치</li>' +
+        '<li>아이폰·아이패드: 설정 → 손쉬운 사용 → 읽기 및 말하기 → 음성 → ‘한국어’</li></ul>' +
+        '<p class="muted small">기기마다 메뉴 이름이 조금 달라요. 목소리를 설치한 뒤 이 화면을 다시 열어 주세요.</p>';
+    }
+    return '<p class="speech-voice">목소리: ' + esc(SPEECH.voice.name || '한국어') + '</p>';
+  }
+  /* 문제 읽기: 문제 + 보기(화면에 보인 순서와 번호) */
+  function problemSpeech(p, order) {
+    var parts = [p.q];
+    var ch = Array.isArray(p.choices) ? p.choices : [];
+    var idx = order || ch.map(function (c, i) { return i; });
+    if (p.type === 'choice') idx.forEach(function (oi, k) { parts.push((k + 1) + '번, ' + ch[oi]); });
+    else if (p.type === 'ox') parts.push('맞으면 O, 틀리면 X를 골라요.');
+    else if (p.type === 'order') parts.push('줄 세울 것: ' + idx.map(function (oi) { return ch[oi]; }).join(', '));
+    return parts.join('\n');
+  }
+  /* 채점 뒤: 정답 · 왜 틀렸을까 · 해설 */
+  function feedbackSpeech(p, ok, why) {
+    var ans = E.answerText(p);
+    var parts = ['정답은 ' + ans + (p.type === 'short' && p.unit && ans.indexOf(p.unit) < 0 ? ' ' + p.unit : '') + '.'];
+    if (!ok && why) parts.push('왜 틀렸을까? ' + why);
+    if (p.explain) parts.push('해설. ' + p.explain);
+    return parts.join('\n');
+  }
 
   /* ================= 틀린 곳 알리기 (§11) — 그 기기에만 모은다(사용자 결정 2026-10-08) =================
    * 문제(채점 뒤)·개념 카드·예제마다 버튼. 알린 것은 그 학생의 p.<id>.reports 에만 쌓이고(서버·외부 요청 없음),
@@ -2342,9 +2462,11 @@
     h.push('<div class="pq rich" id="' + id + '-q" tabindex="-1">' + E.render(p.q) + '</div>');
     h.push(E.fig(p.fig));
     var count = 0;
+    var dispOrder = null; // 화면에 보인 보기 순서 — 읽어 주기도 이 순서·번호로 읽는다
     if (type === 'choice' && Array.isArray(p.choices)) {
       var idx = p.choices.map(function (c, i) { return i; });
       var order = p.fixed ? idx : shuffle(idx, rnd);
+      dispOrder = order;
       h.push('<fieldset class="choices"><legend class="sr-only">보기 중 하나를 고르세요</legend>' + order.map(function (oi, k) {
         return '<label class="choice" data-i="' + oi + '"><input type="radio" name="' + id + '-c" value="' + oi + '">' +
           '<span class="c-num" aria-hidden="true">' + (CIRCLED[k] || (k + 1)) + '</span>' +
@@ -2368,6 +2490,7 @@
       var items = p.choices.map(function (c, i) { return i; });
       var shown = shuffle(items, rnd);
       if (shown.length > 1 && sameArr(shown, p.answer)) shown = shown.slice(1).concat(shown[0]); // 처음부터 정답 순서로 보이지 않게
+      dispOrder = shown;
       h.push('<div class="order"><p class="help">항목을 순서대로 눌러요. 잘못 눌렀으면 ‘되돌리기’를 눌러요.</p>' +
         '<ol class="order-picked" aria-label="내가 정한 순서"></ol>' +
         '<div class="order-pool" role="group" aria-label="남은 항목">' + shown.map(function (i) {
@@ -2377,6 +2500,9 @@
     } else {
       h.push('<p class="notice">이 문제는 아직 화면에 보여 줄 수 없는 형식이에요.</p>');
     }
+    /* 읽어 주기(§13): 문제 위에 🔊 — 문제와 보기(보인 순서·번호) */
+    var psb = speakBtn(function () { return problemSpeech(p, dispOrder); }, '문제 읽어 주기');
+    if (psb) h.unshift('<div class="pw-tools">' + psb + '</div>');
     if (p.hint) {
       h.push('<div class="hint-wrap"><button type="button" class="btn small soft" data-act="hint" aria-expanded="false" aria-controls="' + id + '-hint">' +
         '<span aria-hidden="true">💡</span> 힌트 보기</button><div class="hint rich" id="' + id + '-hint" hidden>' + E.render(p.hint) + '</div></div>');
@@ -2472,6 +2598,7 @@
         esc(ok ? say({ e: '정답이에요! 잘했어요.', m: '정답이에요!', h: '정답입니다.' }) :
           say({ e: '오답이에요. 괜찮아요, 해설을 같이 봐요.', m: '오답이에요. 해설을 확인해 봐요.', h: '오답입니다. 해설을 확인하세요.' })) +
         '</strong></p>' +
+        speakBtn(function () { return feedbackSpeech(p, ok, why); }, '해설 읽어 주기', 'fb-speak') +
         '<div class="fb-answer"><span class="fb-label">정답</span> ' + answerHtml(p) + '</div>' +
         (why ? '<div class="fb-why"><p class="fb-label">왜 틀렸을까?</p><div class="rich">' + E.render(why) + '</div></div>' : '') +
         (p.explain ? '<div class="fb-explain"><p class="fb-label">해설</p><div class="rich">' + E.render(p.explain) + '</div></div>' : '') +
@@ -4127,6 +4254,15 @@
       html += '<section class="set-sec card" aria-labelledby="setPace"><h3 id="setPace">공부 수준</h3>' +
         '<fieldset class="pick-set"><legend class="sr-only">공부 수준</legend>' + paceRadios('pace', paceOf(cur)) + '</fieldset>' +
         '<p class="muted">기초 다지기는 쉬운 설명을 먼저 보여 주고 기본 문제부터 내요. 도전은 실력 문제부터 내고 잘 맞히면 심화 문제까지 올라가요.</p></section>';
+      /* 읽어 주기(§13) — 이 학생의 선택(p.<id>.prefs) */
+      html += '<section class="set-sec card" id="speech" aria-labelledby="setSpeech"><h3 id="setSpeech">읽어 주기</h3>' +
+        '<p class="muted">개념 카드·예제·문제·해설 옆에 🔊 버튼이 생겨 글을 소리 내어 읽어 줘요. 이 기기 안의 목소리로만 읽고, 읽을 글을 인터넷으로 보내는 목소리는 쓰지 않아요.</p>' +
+        '<fieldset class="seg"><legend class="field-label">🔊 버튼</legend><div class="seg-row">' +
+        radios('tts', [['auto', '기본(초등 1~3학년만)'], ['on', '켜기'], ['off', '끄기']], ttsMode(cur)) + '</div></fieldset>' +
+        '<fieldset class="seg"><legend class="field-label">읽는 빠르기</legend><div class="seg-row">' +
+        radios('ttsRate', [['slow', '천천히'], ['normal', '보통']], ttsRateMode(cur)) + '</div></fieldset>' +
+        '<div class="speech-slot">' + speechStateHtml() + '</div>' +
+        '<button type="button" class="btn" data-act="speech-test"' + (SPEECH.voice ? '' : ' disabled') + '>들어 보기</button></section>';
     }
 
     html += '<section class="set-sec card" aria-labelledby="setStudents"><h3 id="setStudents">학생 관리</h3>' +
@@ -4274,6 +4410,14 @@
             var row = page.querySelector('.student-row.is-current .p-meta');
             if (row) row.textContent = gradeLabel(cur.grade) + ' · ' + paceName(t.value) + ' · 지금 공부 중';
             announce('공부 수준을 ‘' + paceName(t.value) + '’' + josa(paceName(t.value), '으로/로') + ' 바꿨어요.');
+          } else if ((t.name === 'tts' || t.name === 'ttsRate') && cur) {
+            /* 읽어 주기: 기본값(자동·천천히)은 적지 않는다 */
+            var pr = readObj(pk('prefs'));
+            if (t.name === 'tts') { if (t.value === 'on' || t.value === 'off') pr.tts = t.value; else delete pr.tts; }
+            else if (t.value === 'normal') pr.ttsRate = 'normal';
+            else delete pr.ttsRate;
+            if (Object.keys(pr).length) store.set(pk('prefs'), pr); else store.remove(pk('prefs'));
+            announce('읽어 주기 설정을 바꿨어요.');
           }
         });
 
@@ -4645,6 +4789,8 @@
             });
           } else if (act === 'install') {
             promptInstall();
+          } else if (act === 'speech-test') {
+            speakText('안녕하세요. 저는 가정교사예요. 이 빠르기로 읽어 줄게요. $\\frac{1}{4}+\\frac{2}{4}=\\frac{3}{4}$', b);
           } else if (act === 'report-copy') {
             copyReports();
           } else if (act === 'report-del') {
@@ -4755,6 +4901,18 @@
     });
     window.addEventListener('hashchange', render);
     initInstall();
+    /* 읽어 주기(§13): 이 기기 안의 목소리를 찾고, 어느 화면의 🔊 버튼이든 여기서 받는다 */
+    initSpeech();
+    doc.addEventListener('click', function (e) {
+      var b = e.target && e.target.closest ? e.target.closest('[data-speak]') : null;
+      if (!b) return;
+      var fn = SPEECH.reg[b.getAttribute('data-speak')];
+      if (typeof fn === 'function') {
+        var src = '';
+        try { src = String(fn() || ''); } catch (err) { report(err); }
+        speakText(src, b);
+      }
+    });
     /* 서비스 워커: 설치 조건을 채우고 오프라인에서도 화면을 띄운다. file:// 에서는 쓸 수 없다. */
     if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
       navigator.serviceWorker.register('sw.js').then(null, function () { /* 실패해도 페이지는 동작한다 */ });
