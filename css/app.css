@@ -568,6 +568,26 @@ html.no-profile .main { padding-bottom: 2rem; }
 .review-sum { list-style: none; margin: 0.5rem 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 1rem; color: var(--ink-2); }
 .review-left { margin: 0.625rem 0 0; font-weight: 800; color: var(--ok); }
 
+/* 틀린 곳 알리기 (문제·개념 카드·예제) · 설정의 틀린 곳 알림 */
+.report { margin-top: 0.75rem; }
+.report-btn { font-size: 0.8125rem; color: var(--muted); }
+.report-form {
+  display: grid; gap: 0.375rem; margin-top: 0.5rem; padding: 0.75rem;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2);
+}
+.rf-title { margin: 0; font-weight: 800; }
+.rf-reasons { display: grid; gap: 0.125rem; }
+.rf-memo { width: 100%; resize: vertical; }
+.report .report-done { margin: 0.5rem 0 0; font-size: 0.875rem; font-weight: 700; color: var(--ok); }
+.report-count { margin: 0.5rem 0 0; font-weight: 800; }
+.report-list { list-style: none; margin: 0.25rem 0 0.75rem; padding: 0; }
+.report-item { padding: 0.625rem 0; border-top: 1px solid var(--line); }
+.rp-head { margin: 0; font-size: 0.875rem; color: var(--muted); }
+.rp-reason { margin: 0.25rem 0 0; font-weight: 800; }
+.rp-memo { margin: 0.25rem 0 0; overflow-wrap: anywhere; }
+.rp-q { margin: 0.25rem 0 0.5rem; overflow-wrap: anywhere; }
+.report-text { display: block; width: 100%; margin-top: 0.75rem; font-size: 0.875rem; }
+
 .teacher-grid { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)); }
 .teacher-card {
   display: flex; align-items: center; gap: 0.875rem; height: 100%; padding: 1rem;

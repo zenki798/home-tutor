@@ -1792,7 +1792,7 @@
         '<p class="cc-step">개념 ' + (i + 1) + ' / ' + n + '</p>' +
         '<h3 class="cc-title" id="cct-' + i + '" tabindex="-1">' + E.inline(c.title) + '</h3>' +
         (easyFirst && c.easy ? easyHtml + body : body + easyHtml) + check +
-        '</article>';
+        '<div class="report-host" data-i="' + i + '"></div></article>';
     }).join('');
 
     var dots = concepts.map(function (c, i) {
@@ -1890,6 +1890,7 @@
           var c = concepts[i];
           host.innerHTML = '';
           var w = problemWidget(c.check, {
+            report: { unit: unit.id, kind: 'problem', ref: 'check-' + i, q: c.check.q },
             onGraded: function (res, after) {
               logAttempt({ unit: unit.id, pid: 'check-' + i, level: 0, ok: res.correct, cause: res.correct ? '' : causeText(res.why) });
               if (res.correct) {
@@ -1911,6 +1912,11 @@
           if (focus) w.focus();
         }
         $$('.check-host', sec).forEach(function (host) { mountCheck(host, parseInt(host.getAttribute('data-i'), 10), false); });
+        /* 개념 카드마다 '틀린 곳 알리기' (§11) */
+        $$('.report-host', sec).forEach(function (h) {
+          var ci = parseInt(h.getAttribute('data-i'), 10);
+          h.appendChild(reportUI({ unit: unit.id, kind: 'concept', ref: 'c' + ci, q: concepts[ci].title }).el);
+        });
 
         /* 키보드 ← → 로 카드 넘기기 (이해 확인 문제의 보기·입력 칸 안에서는 그 칸의 방향키로 둔다) */
         sec.addEventListener('keydown', function (e) {
@@ -1964,11 +1970,17 @@
         }).join('') + '</ol>' +
         '<div class="ex-answer" hidden><span class="ans-label">답</span> <span class="ans-body">' + E.inline(ex.answer) + '</span></div>' +
         '<div class="ex-actions"><button type="button" class="btn primary" data-act="step">' + (steps.length ? '풀이 첫 단계 보기' : '답 보기') + '</button>' +
-        '<button type="button" class="btn ghost" data-act="all">한 번에 보기</button></div></li>';
+        '<button type="button" class="btn ghost" data-act="all">한 번에 보기</button></div>' +
+        '<div class="report-host" data-i="' + i + '"></div></li>';
     }).join('') + '</ol>';
     return {
       html: html,
       mount: function (page) {
+        /* 예제마다 '틀린 곳 알리기' (§11) — 버튼은 data-rp 라서 아래 data-act 처리와 섞이지 않는다 */
+        $$('.example .report-host', page).forEach(function (h) {
+          var xi = parseInt(h.getAttribute('data-i'), 10);
+          h.appendChild(reportUI({ unit: unit.id, kind: 'example', ref: 'ex' + xi, q: exs[xi].q }).el);
+        });
         function update(li) {
           var shown = parseInt(li.getAttribute('data-shown'), 10);
           var steps = $$('.steps > li', li);
@@ -2111,6 +2123,145 @@
     };
   };
 
+  /* ================= 틀린 곳 알리기 (§11) — 그 기기에만 모은다(사용자 결정 2026-10-08) =================
+   * 문제(채점 뒤)·개념 카드·예제마다 버튼. 알린 것은 그 학생의 p.<id>.reports 에만 쌓이고(서버·외부 요청 없음),
+   * 설정의 '틀린 곳 알림'에서 보호자가 글로 복사해 직접 전한다. 같은 곳을 다시 알리면 하나로 고친다. */
+  var REPORT_REASONS = [
+    ['answer', '정답이 틀린 것 같아요'],
+    ['question', '문제나 보기가 이상해요'],
+    ['explain', '설명·해설이 틀린 것 같아요'],
+    ['typo', '글자·그림이 잘못됐어요'],
+    ['other', '기타'],
+  ];
+  var REPORT_KINDS = { problem: '문제', concept: '개념 카드', example: '예제' };
+  var MAX_REPORTS = 200;
+  function reasonText(id) {
+    for (var i = 0; i < REPORT_REASONS.length; i++) if (REPORT_REASONS[i][0] === id) return REPORT_REASONS[i][1];
+    return '기타';
+  }
+  function reportsList() {
+    return readArr(pk('reports')).filter(function (r) { return isObj(r) && typeof r.unit === 'string' && typeof r.ref === 'string'; });
+  }
+  /* 알리는 사람이 쓴 짧은 말: 제어 문자를 빼고 200자까지 (화면에는 늘 글자로만 넣는다) */
+  function cleanMemo(s) {
+    return String(s || '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200);
+  }
+  function snippet(src) {
+    var t = E.plain(src || '').replace(/\s+/g, ' ').trim();
+    return t.length > 150 ? t.slice(0, 149) + '…' : t;
+  }
+  /* 문제를 다시 찾을 수 있는 이름: 문제은행은 문제 번호, 생성기 문제는 'g-<생성기>-<seed>'(같은 문제를 다시 만든다) */
+  function problemRef(p) { return p && typeof p.id === 'string' && p.id ? p.id : 'q-' + hashStr(String(p && p.q)); }
+  function saveReport(ctx, reason, memo) {
+    var list = reportsList().filter(function (r) { return !(r.unit === ctx.unit && r.kind === ctx.kind && r.ref === ctx.ref); });
+    list.unshift({ t: Date.now(), unit: ctx.unit, kind: ctx.kind, ref: ctx.ref, reason: reason, memo: cleanMemo(memo), q: snippet(ctx.q), v: VERSION });
+    store.set(pk('reports'), list.slice(0, MAX_REPORTS));
+  }
+
+  /* 설정의 '틀린 곳 알림' 목록 (그 학생 것만) */
+  function reportsBodyHtml(list) {
+    var intro = '<p class="muted">문제·개념 카드·예제의 ‘틀린 곳 알리기’로 알린 것을 이 기기에만 모아 두었어요. 어디로도 보내지 않아요. ' +
+      '보호자가 [글로 복사하기]로 복사해 가정교사를 만든 사람에게 직접 전해 주세요.</p>';
+    if (!list.length) return intro + '<p class="report-empty">아직 알린 곳이 없어요. 문제를 풀다 이상한 곳을 찾으면 ‘틀린 곳 알리기’를 눌러 주세요.</p>';
+    return intro + '<p class="report-count">모두 ' + list.length + '건</p><ol class="report-list">' + list.map(function (r, i) {
+      var meta = Tutor.unitMeta(r.unit);
+      var s = meta ? subjectOf(meta.course.subject) : null;
+      var where = (s ? s.name + ' · ' : '') + (meta ? E.plain(meta.unit.title) : r.unit) + ' · ' + (REPORT_KINDS[r.kind] || '문제');
+      return '<li class="report-item"><p class="rp-head"><span class="rp-when">' + esc(dateText(r.t)) + '</span> <span class="rp-where">' + esc(where) + '</span></p>' +
+        '<p class="rp-reason">' + esc(reasonText(r.reason)) + '</p>' +
+        (r.memo ? '<p class="rp-memo">“' + esc(r.memo) + '”</p>' : '') +
+        (r.q ? '<p class="rp-q muted small">' + esc(r.q) + '</p>' : '') +
+        '<button type="button" class="btn small ghost danger" data-act="report-del" data-i="' + i + '">지우기</button></li>';
+    }).join('') + '</ol><div class="form-actions"><button type="button" class="btn primary" data-act="report-copy">글로 복사하기</button>' +
+      '<button type="button" class="btn ghost danger" data-act="report-clear">모두 지우기</button></div>';
+  }
+  /* 보호자가 전할 글 — 별명 같은 학생 정보는 넣지 않는다 */
+  function reportsText(list) {
+    var lines = ['가정교사 틀린 곳 알림 ' + list.length + '건 (' + todayStr() + ' · 판 ' + VERSION + ')', ''];
+    list.forEach(function (r, i) {
+      var meta = Tutor.unitMeta(r.unit);
+      var s = meta ? subjectOf(meta.course.subject) : null;
+      lines.push((i + 1) + ') ' + (typeof r.t === 'number' && isFinite(r.t) ? todayStr(new Date(r.t)) + ' · ' : '') +
+        (s ? s.name + ' · ' : '') + (meta ? E.plain(meta.unit.title) + ' ' : '') + '(' + r.unit + ') · ' + (REPORT_KINDS[r.kind] || '문제') + ' ' + r.ref);
+      lines.push('   이유: ' + reasonText(r.reason));
+      if (r.memo) lines.push('   메모: ' + cleanMemo(r.memo));
+      if (r.q) lines.push('   내용: ' + cleanMemo(r.q));
+    });
+    return lines.join('\n');
+  }
+  /* 클립보드에 쓰기 — 안 되면 false (화면이 글을 보여 주고 직접 복사하게 한다) */
+  function copyText(text) {
+    try {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return false; });
+      }
+    } catch (e) { /* 막힘 */ }
+    return Promise.resolve(false);
+  }
+
+  /* 버튼 + 펼치는 칸. ctx: { unit, kind: 'problem'|'concept'|'example', ref, q }
+   * 문제 위젯(<form>) 안에도 들어가므로 <form> 을 쓰지 않고, 바깥 화면의 data-act 처리와 섞이지 않게 data-rp 를 쓴다 */
+  function reportUI(ctx) {
+    var id = nextId('rp');
+    var el = doc.createElement('div');
+    el.className = 'report';
+    el.innerHTML = '<button type="button" class="btn small ghost report-btn" data-rp="open" aria-expanded="false" aria-controls="' + id + '">' +
+      '<span aria-hidden="true">🚩</span> 틀린 곳 알리기</button>' +
+      '<div class="report-form" id="' + id + '" role="group" aria-labelledby="' + id + '-t" hidden>' +
+      '<p class="rf-title" id="' + id + '-t">어떤 점이 이상한가요?</p><div class="rf-reasons">' +
+      REPORT_REASONS.map(function (r, i) {
+        return '<label class="check"><input type="radio" name="' + id + '-r" value="' + r[0] + '" id="' + id + '-r' + i + '"><span>' + esc(r[1]) + '</span></label>';
+      }).join('') + '</div>' +
+      '<label class="field-label" for="' + id + '-m">더 적을 말 <span class="opt">(선택)</span></label>' +
+      '<textarea id="' + id + '-m" class="text-input rf-memo" rows="2" maxlength="200" aria-describedby="' + id + '-h"></textarea>' +
+      '<p class="help" id="' + id + '-h">이름·연락처는 쓰지 마세요. 알린 내용은 이 기기에만 모아 두고, 보호자가 설정의 ‘틀린 곳 알림’에서 확인해 전해 줄 수 있어요.</p>' +
+      '<p class="form-msg" role="alert" hidden></p>' +
+      '<div class="form-actions"><button type="button" class="btn small primary" data-rp="send">알리기</button>' +
+      '<button type="button" class="btn small ghost" data-rp="cancel">취소</button></div></div>' +
+      '<p class="report-done" role="status" hidden></p>';
+    var btn = $('.report-btn', el);
+    var box = $('.report-form', el);
+    var msg = $('.form-msg', el);
+    var done = $('.report-done', el);
+    function toggle(open) {
+      box.hidden = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      msg.hidden = true;
+      if (open) {
+        done.hidden = true;
+        var first = $('input', box);
+        if (first) first.focus();
+      }
+    }
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-rp]');
+      if (!b || !el.contains(b)) return;
+      var act = b.getAttribute('data-rp');
+      if (act === 'open') { toggle(box.hidden); return; }
+      if (act === 'cancel') { toggle(false); btn.focus(); return; }
+      if (act === 'send') {
+        var picked = box.querySelector('input[type="radio"]:checked');
+        if (!picked) {
+          msg.textContent = '어떤 점이 이상한지 골라 주세요.';
+          msg.hidden = false;
+          return;
+        }
+        saveReport(ctx, picked.value, $('.rf-memo', box).value);
+        $$('input', box).forEach(function (r) { r.checked = false; });
+        $('.rf-memo', box).value = '';
+        toggle(false);
+        done.textContent = say({
+          e: '고마워요! 알린 내용은 이 기기에 모아 두었어요. 보호자에게 설정의 ‘틀린 곳 알림’을 보여 주세요.',
+          m: '고마워요! 알린 내용은 이 기기에 모아 두었어요. 보호자가 설정의 ‘틀린 곳 알림’에서 확인할 수 있어요.',
+          h: '고맙습니다. 알린 내용은 이 기기에 모아 두었습니다. 설정의 ‘틀린 곳 알림’에서 확인할 수 있습니다.',
+        });
+        done.hidden = false;
+        btn.focus();
+      }
+    });
+    return { el: el };
+  }
+
   /* ================= 문제 위젯 (예상문제·오답노트가 함께 쓴다) ================= */
 
   var CIRCLED = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩'];
@@ -2234,6 +2385,7 @@
     h.push('<p class="pw-msg" role="alert" hidden></p>');
     h.push('<div class="feedback" role="status" tabindex="-1" hidden></div>');
     h.push('<div class="pw-after"></div>');
+    h.push('<div class="pw-report"></div>'); // 채점한 뒤 '틀린 곳 알리기' (opt.report)
     form.innerHTML = h.join('');
 
     var picked = [];
@@ -2325,6 +2477,8 @@
         (more ? moreBoxHtml(more, id) : '');
       fb.hidden = false;
       announce(ok ? '정답' : '오답');
+      var rctx = typeof opt.report === 'function' ? opt.report() : opt.report;
+      if (isObj(rctx)) $('.pw-report', form).appendChild(reportUI(rctx).el);
       if (typeof opt.onGraded === 'function') {
         opt.onGraded(res2, $('.pw-after', form));
       }
@@ -2739,6 +2893,7 @@
       '<div class="pw-host"></div>';
     var w = problemWidget(p, {
       rnd: q.rnd,
+      report: { unit: item.unit, kind: 'problem', ref: problemRef(p), q: p.q },
       more: function () {
         var idx = typeof p.concept === 'number' ? p.concept : null;
         var sim = similarFor(q, item);
@@ -3427,6 +3582,7 @@
             $('.note-actions', li).hidden = true;
             host.innerHTML = '';
             var w = problemWidget(prob, {
+              report: { unit: found.note.unit, kind: 'problem', ref: problemRef(prob), q: prob.q },
               more: function () {
                 var nt = found.note;
                 var idx = typeof prob.concept === 'number' ? prob.concept : null;
@@ -3521,6 +3677,7 @@
       '<div class="pw-host ' + subjClass(s.id) + '"></div>';
     var key = note.key;
     var w = problemWidget(prob, {
+      report: { unit: note.unit, kind: 'problem', ref: problemRef(prob), q: prob.q },
       more: function () {
         var idx = typeof prob.concept === 'number' ? prob.concept : null;
         if (!note.gen && idx === null) return null;
@@ -3884,6 +4041,14 @@
         '<p class="muted small">PIN을 잊으면 그 학생의 기록은 백업 파일로만 되살릴 수 있어요.</p></section>';
     }
 
+    /* 틀린 곳 알림 (§11): 이 학생이 '틀린 곳 알리기'로 모은 것 — 이 기기에만, 보호자가 글로 복사해 전한다 */
+    if (cur) {
+      html += '<section class="set-sec card" id="reports" aria-labelledby="setReports"><h3 id="setReports">틀린 곳 알림</h3>' +
+        '<div class="reports-body">' + reportsBodyHtml(reportsList()) + '</div>' +
+        '<textarea class="text-input report-text" readonly rows="6" aria-label="전해 줄 글" hidden></textarea>' +
+        '<p class="done-msg report-done" role="status"></p></section>';
+    }
+
     /* 학습 기록 옮기기 (§9.3): 암호로 잠근 백업 파일로 내보내기·가져오기 */
     var lockedOther = list.some(function (p) { return isLocked(p) && !(cur && p.id === cur.id); });
     var rp = TS && !reason ? TS.restorePointInfo(store) : null;
@@ -4189,6 +4354,32 @@
           store.keys().forEach(function (k) { if (k !== 'settings') store.remove(k); });
           return flushStore();
         }
+        /* ---- 틀린 곳 알림 (§11) ---- */
+        function refreshReports(text) {
+          var sec = $('#reports', page);
+          if (!sec) return;
+          $('.reports-body', sec).innerHTML = reportsBodyHtml(reportsList());
+          var ta = $('.report-text', sec);
+          ta.hidden = true;
+          ta.value = '';
+          $('.report-done', sec).textContent = text || '';
+          if (text) announce(text);
+        }
+        function copyReports() {
+          var sec = $('#reports', page);
+          var ta = $('.report-text', sec);
+          var dm = $('.report-done', sec);
+          var text = reportsText(reportsList());
+          ta.value = text;
+          ta.hidden = false;
+          copyText(text).then(function (ok) {
+            dm.textContent = ok ? '복사했어요. 메일이나 메시지에 붙여 넣어 전해 주세요. 복사한 글은 아래에도 있어요.' :
+              '자동으로 복사하지 못했어요. 아래 글을 직접 복사해 주세요.';
+            announce(dm.textContent);
+            if (!ok) { ta.focus(); ta.select(); }
+          });
+        }
+
         function resetSession() {
           S.profile = null;
           S.quiz = null;
@@ -4324,6 +4515,25 @@
             });
           } else if (act === 'install') {
             promptInstall();
+          } else if (act === 'report-copy') {
+            copyReports();
+          } else if (act === 'report-del') {
+            var rl = reportsList();
+            rl.splice(parseInt(b.getAttribute('data-i'), 10), 1);
+            if (rl.length) store.set(pk('reports'), rl); else store.remove(pk('reports'));
+            refreshReports('알림 하나를 지웠어요.');
+            var nextDel = $('#reports [data-act="report-del"]', page) || $('#reports [data-act="report-copy"]', page);
+            if (nextDel) nextDel.focus();
+          } else if (act === 'report-clear') {
+            confirmBox({
+              title: '틀린 곳 알림을 모두 지울까요?',
+              body: '이 기기에 모아 둔 ' + reportsList().length + '건이 지워져요. 보호자가 전했는지 먼저 확인해 주세요.',
+              ok: '지우기', danger: true,
+            }).then(function (yes) {
+              if (!yes) return;
+              store.remove(pk('reports'));
+              refreshReports('틀린 곳 알림을 모두 지웠어요.');
+            });
           }
         });
       },

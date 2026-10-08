@@ -467,7 +467,7 @@
   var MAX_FILE = 25 * 1024 * 1024;  // 백업 파일 크기 상한
   var MAX_KEY_BYTES = 4 * 1024 * 1024;
   var MAX_PROFILES = 30;
-  var DATA_KINDS = ['progress', 'notes', 'recent', 'days', 'attempts', 'stats', 'chat', 'prefs'];
+  var DATA_KINDS = ['progress', 'notes', 'recent', 'days', 'attempts', 'stats', 'chat', 'prefs', 'reports'];
   var LEVELS = ['elem', 'mid', 'high', 'univ', 'adult'];
   var PACES = ['easy', 'normal', 'hard'];
   var ID_RE = /^[A-Za-z0-9_-]{1,40}$/;
@@ -642,7 +642,7 @@
   function typeOk(kind, v) {
     switch (kind) {
       case 'progress': case 'stats': case 'prefs': return isObj(v);
-      case 'notes': case 'attempts': return Array.isArray(v);
+      case 'notes': case 'attempts': case 'reports': return Array.isArray(v);
       case 'recent': case 'days': return Array.isArray(v) && v.every(function (x) { return typeof x === 'string'; });
       case 'chat': return isObj(v) || Array.isArray(v);
     }

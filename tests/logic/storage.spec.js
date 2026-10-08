@@ -311,6 +311,16 @@ test.describe('백업 내용 검사(validatePayload)', () => {
     p.profiles = Array.from({ length: 31 }, (_, i) => ({ id: 'p' + i, grade: 'e1' }));
     expect(V(p).ok).toBe(false);
   });
+  test('틀린 곳 알림(reports)도 백업에 들어가고, 배열이 아니면 거절', () => {
+    expect(S.DATA_KINDS).toContain('reports');
+    const p = ok();
+    p.data['p.pa.reports'] = [{ t: 1, unit: 'math-m2-01', kind: 'problem', ref: 'p6', reason: 'answer', memo: '', q: '문제' }];
+    const r = V(p);
+    expect(r.ok).toBe(true);
+    expect(Object.keys(r.payload.data).sort()).toEqual(['p.pa.progress', 'p.pa.reports']);
+    p.data['p.pa.reports'] = { not: 'array' };
+    expect(V(p).ok).toBe(false);
+  });
 });
 
 test.describe('복원', () => {
