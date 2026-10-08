@@ -31,7 +31,7 @@ function failingProvider(base) {
   const p = base || new S.MemoryProvider();
   p.failWrites = false;
   const write = p.write.bind(p);
-  p.write = (changes) => (p.failWrites ? Promise.reject(new Error('디스크가 가득 찼어요')) : write(changes));
+  p.write = (changes) => (p.failWrites ? Promise.reject(p.failError || new Error('디스크가 가득 찼어요')) : write(changes));
   return p;
 }
 const ITER = 100000; // 시험은 반복 횟수를 줄인다(최솟값)
@@ -126,6 +126,33 @@ test.describe('저장소: 동기 API + 모아서 저장', () => {
     prov.failWrites = false;
     await store.flush();
     expect(prov.data['p.pa.progress']).toEqual({ u: 1 });
+  });
+
+  test('쓰기가 실패하면 상태로 알리고(status·onStatus) 잠시 뒤 저절로 다시 저장한다 — 되면 알림을 거둔다', async () => {
+    const prov = failingProvider();
+    const store = S.createStore({ providers: [prov], win: {}, retryMs: 20 });
+    await store.ready();
+    expect(store.status()).toMatchObject({ ok: true, failing: 0, pending: 0 });
+    const seen = [];
+    store.onStatus((st) => seen.push(st.ok ? 'ok' : 'fail:' + st.error));
+    prov.failWrites = true;
+    prov.failError = Object.assign(new Error('저장 공간이 가득 찼어요'), { name: 'QuotaExceededError' });
+    store.set('p.pa.progress', { u: 1 });
+    await store.flush().catch(() => {});
+    expect(store.status()).toMatchObject({ ok: false, failing: 1, error: 'QuotaExceededError', pending: 1 });
+    expect(store.get('p.pa.progress')).toEqual({ u: 1 }); // 값은 메모리에 그대로 — 화면은 계속된다
+    // 아무것도 하지 않아도 다시 쓴다(실패가 이어지면 횟수가 는다)
+    await expect.poll(() => store.status().failing).toBeGreaterThan(1);
+    prov.failWrites = false;
+    await expect.poll(() => store.status().ok, { timeout: 5000 }).toBe(true);
+    expect(prov.data['p.pa.progress']).toEqual({ u: 1 });
+    expect(store.status()).toMatchObject({ ok: true, failing: 0, error: '', pending: 0 });
+    expect(seen[0]).toBe('fail:QuotaExceededError');
+    expect(seen[seen.length - 1]).toBe('ok');
+    // 다시 되면 더는 다시 쓰지 않는다(쓸 것이 없다)
+    const n = seen.length;
+    await new Promise((r) => setTimeout(r, 120));
+    expect(seen.length).toBe(n);
   });
 
   test('예전 localStorage(tutor.*) 기록을 IndexedDB 로 옮기고 지운다', async () => {

@@ -34,7 +34,7 @@
   };
   // 연산 기호: 보통 간격
   // \circ 는 위첨자로 쓰면 도(30^\circ → 30°), 그 밖에는 합성함수 기호(f∘g)
-  var OP = { times: '×', div: '÷', pm: '±', mp: '∓', cdot: '·', cup: '∪', cap: '∩', setminus: '∖', land: '∧', lor: '∨', circ: '∘', circledast: '⊛' };
+  var OP = { times: '×', div: '÷', pm: '±', mp: '∓', cdot: '·', cup: '∪', cap: '∩', setminus: '∖', land: '∧', lor: '∨', circ: '∘', circledast: '⊛', ast: '∗' };
   // 글자처럼 쓰는 기호
   var ORD = {
     infty: '∞', angle: '∠', triangle: '△', square: '□', degree: '°', cdots: '⋯', ldots: '…', dots: '…', vdots: '⋮', ddots: '⋱',
@@ -210,6 +210,8 @@
         var slot = t.t === '^' ? 'sup' : 'sub';
         var arg = this.parseArg(slot === 'sup' ? '위첨자' : '아래첨자');
         while (items.length && items[items.length - 1].type === 'ws') items.pop();
+        // x^*·P^{*}: 첨자 자리의 별표 하나는 곱하기(×)가 아니라 별표(∗) — 리만 합의 x_k^*, 경제학의 P^*
+        if (isAstArg(arg)) arg = { type: 'ord', v: '∗' };
         // 30^\circ → 30° (도 기호는 원래 위에 붙는 글자라 한 번 더 올리지 않는다)
         if (slot === 'sup' && isCircArg(arg)) {
           items.push({ type: 'ord', v: '°' });
@@ -261,6 +263,11 @@
     if (t.t !== 'cmd') return null;
     return this.parseCommand(t);
   };
+
+  function isAstArg(a) {
+    var one = a.type === 'group' ? a.items.filter(function (x) { return x.type !== 'ws'; }) : [a];
+    return one.length === 1 && one[0].type === 'op' && (one[0].raw === '*' || one[0].v === '∗');
+  }
 
   function isCircArg(a) {
     if (a.type === 'op') return a.v === '∘';
@@ -698,7 +705,7 @@
    * 노드 → 평문 (검색 색인·aria-label·검토 도구)
    * ================================================================ */
 
-  var SUP_CH = { 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹', n: 'ⁿ' };
+  var SUP_CH = { 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹', n: 'ⁿ', '∗': '*' };
   var SUB_CH = { 0: '₀', 1: '₁', 2: '₂', 3: '₃', 4: '₄', 5: '₅', 6: '₆', 7: '₇', 8: '₈', 9: '₉' };
 
   function wrapPlain(s) {

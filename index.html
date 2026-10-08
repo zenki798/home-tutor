@@ -71,6 +71,13 @@
     </button>
   </div>
 
+  <!-- 이 기기에 기록을 쓰지 못할 때(저장 공간 부족 등) — app.js 가 보이고 감춘다 -->
+  <div class="save-problem" id="save-problem" role="region" aria-label="기록 저장 문제" hidden>
+    <span class="save-problem-icon" aria-hidden="true">⚠️</span>
+    <p id="save-problem-text"></p>
+    <button type="button" class="btn small primary" id="save-retry">지금 다시 저장하기</button>
+  </div>
+
   <main id="main" class="main" tabindex="-1">
     <div class="page"><p class="loading-text">가정교사를 준비하고 있어요…</p></div>
   </main>

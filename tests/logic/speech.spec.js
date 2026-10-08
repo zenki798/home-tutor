@@ -45,6 +45,10 @@ test('빼기와 음수, 부등호, 거듭제곱·근호·도·퍼센트·선분'
   expect(say('$2x+3>7 \\Rightarrow 2x>4 \\Rightarrow x>2$')).toBe('2x 더하기 3은 7보다 크다. 그러면 2x는 4보다 크다. 그러면 x는 2보다 크다');
   expect(say('$x+y=5, x-y=1$')).toBe('x 더하기 y는 5, x 빼기 y는 1');
   expect(say('$1,000$원')).toBe('1,000 원');
+  // 별표 첨자는 '스타', 수식 안 * 는 화면처럼 곱하기
+  expect(say('$x^*$')).toBe('x 스타');
+  expect(say('$P^{*}$')).toBe('P 스타');
+  expect(say('$2*3$')).toBe('2 곱하기 3');
   // 제목 끝의 물음표 뒤에 마침표를 덧붙이지 않는다
   expect(say('부등식이란?\n\n수나 식의 크기')).toBe('부등식이란? 수나 식의 크기');
 });

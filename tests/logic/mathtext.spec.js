@@ -194,6 +194,18 @@ test.describe('TeX → 교과서 모양 (구조)', () => {
     expect(tex('x_1^2')).toContain('<span class="mt-supsub"><span class="mt-sup">2</span><span class="mt-sub">1</span></span>');
     expect(tex('x^2_1')).toContain('<span class="mt-supsub"><span class="mt-sup">2</span><span class="mt-sub">1</span></span>');
   });
+  test('별표 첨자 x^*·P^{*}·x^{\\ast} 는 곱하기(×)가 아니라 별표(∗) — 첨자가 아닌 * 는 예전처럼 ×', () => {
+    const star = '<span class="mt-sup"><span class="mt-ord">∗</span></span>';
+    expect(tex('x^*')).toContain(star);
+    expect(tex('P^{*}')).toContain(star);
+    expect(tex('x_k^*')).toContain('<span class="mt-sup"><span class="mt-ord">∗</span></span><span class="mt-sub"><i class="mt-v">k</i></span>');
+    expect(tex('x^{~ast}')).toContain(star);
+    expect(tex('a ~ast b')).toContain('<span class="mt-op">∗</span>');
+    expect(tex('2*3')).toContain('<span class="mt-op">×</span>');
+    expect(T.plain('$x_k^*$')).toBe('x_k*');
+    expect(T.plain(S('$P^{~ast}$'))).toBe('P*');
+    expect(T.check('$' + S('~sum f(x_k^*)~Delta x_k') + '$')).toEqual([]);
+  });
   test('변수는 기울임, 숫자는 곧게, 한글은 \\text 없이도 곧은 .mt-text', () => {
     const h = tex('2x+3=7');
     expect(h).toContain('2<i class="mt-v">x</i>');

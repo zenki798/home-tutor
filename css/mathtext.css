@@ -51,6 +51,12 @@
   overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
 }
 .mt-block > .mt { font-size: 1.2em; }
+/* 좁은 화면에서 칸보다 넓은 수식(앱이 붙인다 — ARCHITECTURE §16): 그 수식만 한 줄로 떼어 옆으로 민다 */
+.mt.mt-fit {
+  display: block; max-width: 100%; padding: .35em 0;
+  contain: inline-size; /* 긴 수식이 위 칸(보기 단추 격자)을 밀어 넓히지 않게 */
+  overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
+}
 
 .mt-v { font-style: italic; padding-right: .02em; }     /* 변수: 기울임 */
 .mt-up, .mt-ord, .mt-fn { font-style: normal; }          /* 숫자·기호·함수 이름: 곧은 글씨 */

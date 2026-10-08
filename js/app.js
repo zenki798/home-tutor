@@ -954,6 +954,108 @@
       (text ? '<span class="pbar-text">' + esc(text) + '</span>' : '');
   }
 
+  /* ================= 좁은 화면의 긴 수식 (§16) =================
+   * 괄호·분수 안처럼 줄을 바꿀 수 없는 수식 덩어리가 글 칸보다 넓으면 칸 밖으로 삐져나오고, 화면 끝을 넘으면
+   * 화면 전체가 옆으로 밀린다(휴대폰 360px 에서 예제 풀이 칸은 230px 남짓). 그런 수식만 고친다:
+   *  - 조금 넓으면 그 수식의 글자를 FIT_MIN 배까지 줄여 칸에 맞춘다
+   *  - 그래도 넓으면 그 수식만 한 줄로 떼어 옆으로 밀어 보게 한다(.mt-fit — 손가락으로, 또는 Tab 으로 가서 화살표로)
+   * 화면을 그리거나 칸이 보이거나 바뀔 때(펼치기·채점 뒤 해설·정답 표시), 칸 너비가 바뀔 때(화면 돌리기) 다시 잰다.
+   * 늘 다시 재고, 바뀐 수식만 고친다. 가운데 블록 수식(.mt-block)은 원래 옆으로 민다. */
+  var FIT_MIN = 0.8;
+  var fit = { queued: false, pass: 0, chain: 0 };
+
+  function queueFit() {
+    if (fit.queued) return;
+    fit.queued = true;
+    var run = function () {
+      fit.queued = false;
+      try { fitMath(); } catch (e) { report(e); }
+    };
+    if (window.requestAnimationFrame) window.requestAnimationFrame(run);
+    else setTimeout(run, 16);
+  }
+
+  // 수식이 놓인 글 칸(블록)
+  function fitBox(m) {
+    for (var p = m.parentElement; p; p = p.parentElement) {
+      var d = getComputedStyle(p).display;
+      if (d !== 'inline' && d !== 'contents') return p;
+    }
+    return null;
+  }
+
+  function fitEdge(cs, side) {
+    return (parseFloat(cs['padding' + side]) || 0) + (parseFloat(cs['border' + side + 'Width']) || 0);
+  }
+
+  // 수식이 쓸 수 있는 너비: 글 칸 안쪽 왼쪽 끝부터, 글 칸과 그 위 칸들 가운데 가장 먼저 끝나는 안쪽 오른쪽 끝까지
+  // (사이 칸들의 오른쪽 여백만큼 덜어서). 격자·줄 상자 안의 칸(보기 단추)은 긴 수식에 밀려 넓어질 수 있어
+  // 위쪽 칸(문제 카드)이 진짜 한계다. 옆으로 미는 상자(표 상자) 안이면 거기서 멈춘다 — 표는 상자째 민다
+  function fitRoom(box, main) {
+    var cs = getComputedStyle(box), r = box.getBoundingClientRect();
+    var left = r.left + fitEdge(cs, 'Left');
+    var right = r.right - fitEdge(cs, 'Right');
+    var after = fitEdge(cs, 'Right') + (parseFloat(cs.marginRight) || 0);
+    for (var p = box.parentElement; p && p !== main; p = p.parentElement) {
+      var ps = getComputedStyle(p);
+      if (ps.overflowX === 'auto' || ps.overflowX === 'scroll') break;
+      right = Math.min(right, p.getBoundingClientRect().right - fitEdge(ps, 'Right') - after);
+      after += fitEdge(ps, 'Right') + (parseFloat(ps.marginRight) || 0);
+    }
+    return right - left;
+  }
+
+  // 줄을 바꿀 수 없는 가장 넓은 덩어리 (긴 수식은 관계 기호 뒤에서 나뉜 덩어리마다, 아니면 수식 전체).
+  // 줄여 둔 수식은 원래 크기로 되돌려 센다
+  function fitNeed(m) {
+    var parts = m.querySelectorAll('.mt-c');
+    if (!parts.length) parts = [m.firstElementChild || m];
+    var w = 0;
+    for (var i = 0; i < parts.length; i++) w = Math.max(w, parts[i].getBoundingClientRect().width);
+    return w / (m.__fitScale || 1);
+  }
+
+  function fitMath() {
+    var main = doc.getElementById('main');
+    if (!main) return;
+    var pass = ++fit.pass;
+    var all = main.querySelectorAll('.mt:not(.mt-disp)');
+    var plan = [];
+    for (var i = 0; i < all.length; i++) {
+      var m = all[i];
+      if (!m.getClientRects().length) continue; // 숨은 칸: 보일 때 잰다
+      var box = fitBox(m);
+      if (!box) continue;
+      if (box.__fitPass !== pass) { box.__fitPass = pass; box.__fitRoom = fitRoom(box, main); }
+      var room = box.__fitRoom, need = fitNeed(m);
+      var mode = '', scale = 1;
+      if (need > room + 0.5) {
+        scale = (room - 1) / need;
+        mode = scale >= FIT_MIN ? 'shrink' : 'scroll';
+      }
+      var was = m.__fitMode || '';
+      if (mode !== was || (mode === 'shrink' && Math.abs(scale - m.__fitScale) > 0.01)) plan.push({ m: m, mode: mode, scale: scale });
+    }
+    // 읽기를 다 한 뒤에 고친다 (화면 계산을 한 번만)
+    plan.forEach(function (x) {
+      var m = x.m;
+      m.classList.toggle('mt-fit', x.mode === 'scroll');
+      m.style.fontSize = '';
+      m.__fitScale = 1;
+      if (x.mode === 'shrink') {
+        m.style.fontSize = (parseFloat(getComputedStyle(m).fontSize) * x.scale).toFixed(2) + 'px';
+        m.__fitScale = x.scale;
+      }
+      // 키보드로도 밀 수 있게 — 보기 단추(label) 안에서는 단추가 초점을 받는다
+      if (x.mode === 'scroll' && !m.closest('label, button, a')) m.setAttribute('tabindex', '0');
+      else m.removeAttribute('tabindex');
+      m.__fitMode = x.mode;
+    });
+    // 고친 수식 때문에 둘레 칸이 바뀌었을 수 있다(넓어졌던 보기 단추가 줄어듦) — 바뀐 것이 없을 때까지 몇 번 더 잰다
+    fit.chain = plan.length ? fit.chain + 1 : 0;
+    if (plan.length && fit.chain < 4) queueFit();
+  }
+
   /* ================= 처음: 누가 공부하나요? ================= */
 
   function lockMark(p) {
@@ -1748,7 +1850,8 @@
   var TAB_LABELS = { learn: '개념', examples: '예제', practice: '문제', advanced: '심화', ask: '질문' };
 
   function unitUI(id) {
-    if (!S.unitUI[id]) S.unitUI[id] = { card: 0, all: false };
+    // fresh: 이번에 이 단원을 처음 여는지 — 그러면 개념 탭이 지난번에 본 다음 카드부터 보인다(§17)
+    if (!S.unitUI[id]) S.unitUI[id] = { card: 0, all: false, fresh: true };
     return S.unitUI[id];
   }
 
@@ -1826,14 +1929,27 @@
     var concepts = Array.isArray(unit.concepts) ? unit.concepts : [];
     var n = concepts.length;
     var ui = unitUI(unit.id);
+    var resumed = false;
     if (r.query.card !== undefined) {
       ui.card = clamp(parseInt(r.query.card, 10) || 0, 0, Math.max(0, n - 1));
       ui.all = false;
+    } else if (ui.fresh && n > 1) {
+      /* 이어서 보기(§17): 이 단원을 이번에 처음 열면, 지난번에 본 카드 다음 — 아직 안 본 첫 카드부터 */
+      var seenBefore = unitProg(progressAll(), unit.id).seen;
+      var next = 0;
+      while (next < n && seenBefore.indexOf(next) >= 0) next++;
+      if (next > 0 && next < n) { ui.card = next; resumed = true; }
     }
+    ui.fresh = false;
     ui.card = clamp(ui.card, 0, Math.max(0, n - 1));
     var first = n ? E.plain(concepts[0].title) : '';
     var ut = E.plain(unit.title);
-    var intro = say({
+    var from = resumed ? E.plain(concepts[ui.card].title) : '';
+    var intro = resumed ? say({
+      e: '‘' + ut + '’ 공부를 이어서 해요. 지난번에 본 다음인 ‘' + from + '’부터 볼까요?',
+      m: '‘' + ut + '’ 공부를 이어서 해요. 지난번에 본 다음인 ‘' + from + '’부터 볼까요?',
+      h: '‘' + ut + '’ 공부를 이어서 합니다. 지난번에 본 다음인 ‘' + from + '’부터 살펴보겠습니다.',
+    }) : say({
       e: '오늘은 ‘' + ut + '’' + josa(ut, '을/를') + ' 배워요.' + (first ? ' 먼저 ‘' + first + '’부터 알아볼까요?' : ''),
       m: '오늘은 ‘' + ut + '’' + josa(ut, '을/를') + ' 배워요.' + (first ? ' 먼저 ‘' + first + '’부터 알아볼까요?' : ''),
       h: '이번 시간에는 ‘' + ut + '’' + josa(ut, '을/를') + ' 공부합니다.' + (first ? ' 먼저 ‘' + first + '’부터 살펴보겠습니다.' : ''),
@@ -1888,6 +2004,8 @@
       html += '<section class="concepts" aria-label="개념 카드">' +
         '<div class="cv-bar"><p class="cv-count" id="cvCount" aria-live="polite"></p>' +
         '<button type="button" class="btn small ghost" data-act="all" aria-pressed="false">모두 펼쳐 보기</button></div>' +
+        (resumed ? '<p class="notice small resume-note" id="cvResume" role="status">지난번에 본 다음 카드부터 보여 드려요. ' +
+          '<button type="button" class="btn small ghost" data-act="first">처음부터 보기</button></p>' : '') +
         '<div class="cv-cards">' + cards + '</div>' +
         '<div class="cv-nav" id="cvNav"><button type="button" class="btn" data-act="prev">‹ 이전</button>' +
         '<div class="dots" role="group" aria-label="카드 고르기">' + dots + '</div>' +
@@ -1939,7 +2057,13 @@
           if (!b || !sec.contains(b)) return;
           var act = b.getAttribute('data-act');
           if (act === 'prev') show(ui.card - 1, true);
-          else if (act === 'next') {
+          else if (act === 'first') {
+            /* 이어서 보기(§17)를 마다하고 첫 카드부터 */
+            var rn = $('#cvResume', sec);
+            if (rn) rn.hidden = true;
+            ui.all = false;
+            show(0, true);
+          } else if (act === 'next') {
             if (ui.card === n - 1) {
               done.hidden = false;
               var a = $('a', done);
@@ -3264,6 +3388,27 @@
       '<p class="score"><strong>' + right + '</strong><span> / ' + total + '</span></p>' +
       '<p class="score-sub">' + total + '문제 중 ' + right + '문제를 맞혔어요 · ' + pct + '점</p>' +
       progressBar(pct, '') + '</section>';
+    /* 다시 볼 개념(§18 — 오답 분석·복습 추천): 틀린 문제가 묶인 개념 카드를 많이 틀린 차례로, 그 카드로 바로 간다 */
+    var again = {}, order = 0;
+    wrong.forEach(function (w) {
+      var ci = w.it.p && typeof w.it.p.concept === 'number' ? w.it.p.concept : -1;
+      var u = w.it.unit ? Tutor.units[w.it.unit] : null;
+      if (ci < 0 || !u || !Array.isArray(u.concepts) || !u.concepts[ci]) return;
+      var k = u.id + '#' + ci;
+      if (!again[k]) again[k] = { u: u, i: ci, n: 0, at: order++ };
+      again[k].n += 1;
+    });
+    var againList = Object.keys(again).map(function (k) { return again[k]; })
+      .sort(function (a, b) { return b.n - a.n || a.at - b.at; }).slice(0, 5);
+    var manyUnits = againList.some(function (x) { return x.u.id !== againList[0].u.id; });
+    if (againList.length) {
+      html += '<section class="again-box" aria-labelledby="againTitle"><h3 class="section-title" id="againTitle">다시 볼 개념</h3>' +
+        '<p class="muted small">' + esc(say({ e: '틀린 문제와 이어진 개념 카드예요. 한 번 더 보고 다시 풀어 봐요.', m: '틀린 문제와 이어진 개념 카드예요. 한 번 더 보고 다시 풀어 봐요.', h: '틀린 문제와 이어진 개념 카드입니다. 한 번 더 보고 다시 풀어 봅시다.' })) + '</p>' +
+        '<ul class="again-list">' + againList.map(function (x) {
+          return '<li class="card again-item"><a class="link again-link" href="#/unit/' + encodeURIComponent(x.u.id) + '/learn?card=' + x.i + '">' + E.inline(x.u.concepts[x.i].title) + '</a>' +
+            '<span class="muted small">' + (manyUnits ? esc(E.plain(x.u.title)) + ' · ' : '') + '틀린 문제 ' + x.n + '개</span></li>';
+        }).join('') + '</ul></section>';
+    }
     if (wrong.length) {
       html += '<section class="wrong-box"><h3 class="section-title">틀린 문제 ' + wrong.length + '개</h3><ol class="wrong-list">' + wrong.map(function (w) {
         return '<li class="card"><div class="rich">' + E.render(w.it.p.q) + '</div>' +
@@ -4983,6 +5128,44 @@
     };
   };
 
+  /* ================= 기록 저장 문제 (ARCHITECTURE §9.6 — 1순위 데이터 보호) =================
+   * 이 기기에 기록을 쓰지 못하면(저장 공간 부족 등) 저장소(js/storage.js)가 값을 메모리에 둔 채 잠시 뒤 저절로 다시 쓴다.
+   * 그동안 화면 위에 알린다: 공간을 비우면 저절로(또는 '지금 다시 저장하기'로) 저장되고, 창을 닫기 전에 설정의 백업으로
+   * 파일에 남길 수도 있다(백업은 메모리의 지금 기록을 쓴다). 다시 저장되면 알림을 거둔다. */
+  function initSaveWatch() {
+    var bar = doc.getElementById('save-problem');
+    if (!bar || !store || typeof store.onStatus !== 'function') return;
+    var text = doc.getElementById('save-problem-text');
+    var retry = doc.getElementById('save-retry');
+    var shown = '';
+    store.onStatus(function (st) {
+      if (st.ok) {
+        if (!bar.hidden) {
+          bar.hidden = true;
+          shown = '';
+          announce('밀린 학습 기록을 저장했어요.');
+        }
+        return;
+      }
+      var kind = /quota/i.test(st.error || '') ? 'full' : 'other';
+      if (!bar.hidden && shown === kind) return; // 다시 시도할 때마다 같은 알림을 되풀이하지 않는다
+      shown = kind;
+      text.innerHTML = '<strong>학습 기록을 이 기기에 저장하지 못하고 있어요.</strong> ' +
+        (kind === 'full' ? '기기의 저장 공간이 부족해요. 사진이나 쓰지 않는 앱을 정리하면 저절로 다시 저장해요. ' : '잠시 뒤 저절로 다시 저장해요. ') +
+        '창을 닫기 전에 <a href="#/settings">설정</a>의 백업으로 기록을 파일에 남겨 둘 수 있어요.';
+      var first = bar.hidden;
+      bar.hidden = false;
+      if (first) announce('학습 기록을 저장하지 못하고 있어요.');
+    });
+    retry.addEventListener('click', function () {
+      retry.disabled = true;
+      flushStore().then(function () {
+        retry.disabled = false;
+        if (!bar.hidden) announce('아직 저장하지 못했어요. 저장 공간을 확인해 주세요.');
+      });
+    });
+  }
+
   /* ================= 앱 설치 안내 ================= */
 
   function showInstall(text, withButton) {
@@ -5068,6 +5251,14 @@
     });
     window.addEventListener('hashchange', render);
     initInstall();
+    initSaveWatch();
+    /* 좁은 화면의 긴 수식(§16): 화면을 그리거나, 칸이 보이거나, 너비가 바뀌면 다시 잰다 */
+    var mainEl = doc.getElementById('main');
+    if (window.MutationObserver) {
+      new MutationObserver(queueFit).observe(mainEl, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'open', 'class'] });
+    }
+    if (window.ResizeObserver) new ResizeObserver(queueFit).observe(mainEl);
+    else window.addEventListener('resize', queueFit);
     /* 마지막에 누른 단추·링크(사파리는 눌러도 초점이 옮겨지지 않는다 — confirmBox 가 닫힌 뒤 초점을 돌려줄 곳) */
     doc.addEventListener('click', function (e) {
       var t = e.target && e.target.closest ? e.target.closest('button, a[href], input, select, textarea') : null;

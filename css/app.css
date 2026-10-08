@@ -321,6 +321,19 @@ html.no-profile .tabbar, html.no-profile .student-chip { display: none; }
 .install-icon { font-size: 1.25rem; }
 @media (min-width: 62rem) { .install { margin: 0.75rem auto 0; } }
 
+/* ================= 기록 저장 문제 (ARCHITECTURE §9.6) ================= */
+.save-problem {
+  max-width: 60rem; margin: 0.75rem 1rem 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem;
+  padding: 0.625rem 0.75rem 0.625rem 0.875rem; border-radius: 14px;
+  background: var(--warn-wash); color: var(--warn-ink); font-size: 0.9375rem;
+}
+.save-problem p { flex: 1 1 14rem; margin: 0; }
+.save-problem a { color: inherit; font-weight: 700; }
+.save-problem-icon { font-size: 1.25rem; }
+@media (min-width: 62rem) { .save-problem { margin: 0.75rem auto 0; } }
+@media print { .save-problem { display: none !important; } }
+
 /* ================= 본문 틀 ================= */
 .main {
   display: block; outline: none;
@@ -884,6 +897,9 @@ html:not(.can-speak) .speak-btn { display: none !important; }
 .wrong-list { display: grid; gap: 0.75rem; margin-bottom: 0.5rem; }
 .wl-given { margin: 0.5rem 0 0.25rem; color: var(--bad); font-weight: 700; }
 .wl-label { background: var(--surface-3); }
+/* 다시 볼 개념 (ARCHITECTURE §18) */
+.again-list { display: grid; gap: 0.5rem; margin: 0.5rem 0; padding: 0; list-style: none; }
+.again-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.625rem; }
 .result-actions .btn { flex: 1 1 13rem; }
 
 /* ================= 질문 대화 ================= */

@@ -88,7 +88,9 @@ test.describe('서비스 워커를 켜고 검사', () => {
     await page.goto('/?source=pwa#/unit/math-m2-01/learn');
     await waitReady(page);
     await expect(page.locator('.page-title')).toHaveText('일차부등식');
-    await expect(page.locator('.concept-card:visible .cc-title')).toHaveText('부등식이란?');
+    // 캐시의 단원 내용이 그대로 뜬다 — 첫 카드는 아까 봤으니 이어 보기(ARCHITECTURE §17)로 다음 카드부터
+    await expect(page.locator('.concept-card:visible .cc-title')).toHaveText('부등식의 성질');
+    await expect(page.locator('#cvResume')).toBeVisible();
     await expect(page.locator('html')).toHaveClass(/app-mode/);
     await context.setOffline(false);
   });

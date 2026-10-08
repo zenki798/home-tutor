@@ -64,6 +64,7 @@
   function powerWord(base, exp) {
     var e = exp.replace(/\s+/g, '');
     if (e === '\\circ' || e === '°') return base + '도';
+    if (e === '*' || e === '\\ast') return base + ' 스타'; // x^* — 별표 첨자(리만 합의 x*, 경제학의 P*)
     if (e === '2') return base + ' 제곱';
     if (e === '3') return base + ' 세제곱';
     return base + '의 ' + texWords(exp).trim() + '제곱';
@@ -135,6 +136,11 @@
         var base = /(\S+)\s*$/.exec(out);
         if (base) out = out.slice(0, out.length - base[0].length) + powerWord(base[1], p.body);
         else out += powerWord('', p.body);
+        continue;
+      }
+      if (ch === '*') { // 수식 안 * 는 화면처럼 곱하기(×) — 첨자 x^* 는 위에서 '스타'
+        out += ' 곱하기 ';
+        i += 1;
         continue;
       }
       if (ch === '_') {

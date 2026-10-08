@@ -203,7 +203,10 @@
    *   snapshot()          지금 데이터 사본({ key: value }, sys.* 제외)
    *   replaceAll(entries, keep)  지금 데이터를 entries 로 바꾼다(keep(key) 가 참인 키는 남김). 저장이 성공해야 메모리도 바뀐다
    *   onChange(fn)        키가 바뀌면 fn(key) (다른 탭에서 바뀐 것도)
+   *   status()            저장 상태 { ok, failing(이어서 실패한 횟수), since, error(오류 이름), provider, pending(못 쓴 키 수) }
+   *   onStatus(fn)        저장이 실패하기 시작하거나 다시 되면 fn(status()) — 화면이 알림을 띄운다
    *   provider            'indexeddb' | 'localstorage' | 'memory' | 'loading'
+   * 쓰기가 실패하면(저장 공간 부족 등) 값은 메모리에 그대로 두고 잠시 뒤 저절로 다시 쓴다(opts.retryMs 부터 두 배씩, 30초까지).
    * ================================================================ */
 
   function createStore(opts) {
@@ -221,6 +224,11 @@
     var listeners = [];
     var channel = null;
     var holding = 0; // batch 중이면 쓰기를 미룬다
+    // 저장 실패 상태와 다시 쓰기 — 실패가 이어지면 retryMs 부터 두 배씩(30초까지) 기다렸다가 다시 쓴다
+    var health = { failing: 0, since: 0, error: '' };
+    var statusListeners = [];
+    var retryTimer = null;
+    var retryMs = opts.retryMs > 0 ? opts.retryMs : 2000;
 
     function mirrorRead(k) {
       try {
@@ -279,6 +287,34 @@
         timer = null;
         if (provider) store.flush().then(null, function () {});
       }, 40);
+    }
+
+    function emitStatus() {
+      var st = store.status();
+      statusListeners.slice().forEach(function (fn) { try { fn(st); } catch (e) { /* 듣는 쪽 오류는 무시 */ } });
+    }
+
+    // 오류 이름만 남긴다(QuotaExceededError 등) — 화면이 까닭에 맞는 말을 고른다
+    function errName(e) {
+      var n = e && typeof e.name === 'string' ? e.name : '';
+      return n && n !== 'Error' ? n.slice(0, 60) : 'Error';
+    }
+
+    function scheduleRetry() {
+      if (retryTimer) return;
+      var delay = Math.min(30000, retryMs * Math.pow(2, Math.min(10, Math.max(0, health.failing - 1))));
+      retryTimer = setTimeout(function () {
+        retryTimer = null;
+        if (!provider) return;
+        if (Object.keys(dirty).length) store.flush().then(null, function () {});
+        else if (health.failing) recovered(); // 다른 쓰기가 밀린 것을 다 썼다
+      }, delay);
+    }
+
+    function recovered() {
+      health = { failing: 0, since: 0, error: '' };
+      if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
+      emitStatus();
     }
 
     function changesFor(keys) {
@@ -389,12 +425,35 @@
         var changes = changesFor(keys);
         var run = function () { return provider.write(changes); };
         var p = writing.then(run, run);
-        writing = p.then(function () { announce(keys); }, function (e) {
-          // 저장 실패: 다음 기회에 다시 쓰도록 표시만 되돌린다(메모리의 값은 그대로)
+        writing = p.then(function () {
+          announce(keys);
+          if (!health.failing) return;
+          // 다시 저장됐다 — 밀린 것까지 다 쓰면 실패 상태를 거둔다(아직 남았으면 곧 마저 쓴다)
+          if (Object.keys(dirty).length) { schedule(); return; }
+          recovered();
+        }, function (e) {
+          // 저장 실패: 값은 메모리에 그대로 두고, 표시를 되돌려 잠시 뒤 저절로 다시 쓴다
           keys.forEach(function (k) { dirty[k] = true; });
-          warn('저장하지 못했어요 — 다음에 다시 시도해요 (' + (e && e.message) + ')');
+          health.failing += 1;
+          if (!health.since) health.since = Date.now();
+          health.error = errName(e);
+          warn('저장하지 못했어요 — 잠시 뒤 다시 시도해요 (' + (e && e.message) + ')');
+          emitStatus();
+          scheduleRetry();
         });
         return p;
+      },
+
+      status: function () {
+        return {
+          ok: !health.failing, failing: health.failing, since: health.since, error: health.error,
+          provider: provider ? provider.name : 'loading', pending: Object.keys(dirty).length,
+        };
+      },
+
+      onStatus: function (fn) {
+        if (typeof fn === 'function') statusListeners.push(fn);
+        return function () { statusListeners = statusListeners.filter(function (x) { return x !== fn; }); };
       },
 
       snapshot: function () {
